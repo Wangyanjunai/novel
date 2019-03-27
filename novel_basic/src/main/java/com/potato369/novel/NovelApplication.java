@@ -1,13 +1,13 @@
-package com.potato369.novel.app.web;
+package com.potato369.novel;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class NovelAppWebApplication {
+public class NovelApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(NovelAppWebApplication.class, args);
+        SpringApplication.run(NovelApplication.class, args);
     }
 
 }
