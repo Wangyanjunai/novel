@@ -14,7 +14,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.potato369.novel.builder.NewsBuilder;
 import com.potato369.novel.converter.WxMpUser2UserInfoConverter;
-import com.potato369.novel.service.UserInfoService;
+import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.utils.JsonUtil;
 
 import javax.servlet.http.HttpServletRequest;

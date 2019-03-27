@@ -1,4 +1,4 @@
-package com.potato369.novel.service.impl;
+package com.potato369.novel.basic.service.impl;
 
 import com.potato369.novel.basic.dataobject.OrderDetail;
 import com.potato369.novel.basic.dataobject.OrderMaster;
@@ -9,14 +9,11 @@ import com.potato369.novel.basic.enums.PayStatusEnum;
 import com.potato369.novel.basic.enums.ResultEnum;
 import com.potato369.novel.basic.repository.OrderDetailRepository;
 import com.potato369.novel.basic.repository.OrderMasterRepository;
+import com.potato369.novel.basic.repository.ProductInfoRepository;
+import com.potato369.novel.basic.repository.UserInfoRepository;
+import com.potato369.novel.basic.service.OrderService;
 import com.potato369.novel.basic.service.UserInfoService;
-import com.potato369.novel.converter.OrderMaster2OrderDTOConverter;
-import com.potato369.novel.dto.OrderDTO;
-import com.potato369.novel.exception.NovelOrderException;
-import com.potato369.novel.service.*;
-import com.potato369.novel.utils.JsonUtil;
-import com.potato369.novel.utils.UUIDUtil;
-
+import com.potato369.novel.basic.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +22,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.service.impl
@@ -48,90 +43,51 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
-    private ProductService productService;
+    private ProductInfoRepository productRepository;
 
     @Autowired
-    private UserInfoService userInfoService;
+    private UserInfoRepository userInfoRepository;
 
     @Autowired
     private OrderDetailRepository orderDetailRepository;
 
     @Autowired
     private OrderMasterRepository orderMasterRepository;
-
-    @Autowired
-    private PushMessageService pushMessageService;
-
-    @Autowired
-    private WebSocket webSocket;
-
-    @Autowired
-    private WeChatPayService weChatPayService;
     
     /**
      * <pre>
-     * 创建订单
-     * @param orderDTO
-     * @return OrderDTO
+     * 创建保存订单信息
+     * @param orderMaster
+     * @return OrderMaster.class
      * </pre>
      */
     @Override
     @Transactional
-    public OrderDTO create(OrderDTO orderDTO) {
-        /** 1.查询商品（数量，价格）*/
-        // 订单总金额
-        BigDecimal orderAmount = BigDecimal.ZERO;
-        // 订单id
-        String orderId = UUIDUtil.genTimstampUUID();
-        for (OrderDetail orderDetail : orderDTO.getOrderDetailList()) {
-            /** 2.计算订单总价 */
-            orderAmount = orderDTO.getOrderAmount();
-            /** 3.订单详情入库 */
-            orderDetail.setDetailId(UUIDUtil.gen32UUID());
-            orderDetail.setOrderId(orderId);
-            orderDetail.setBuyerOpenid(orderDTO.getBuyerOpenid());
-            orderDetailRepository.save(orderDetail);
-        }
-        /** 4.订单入库 */
-        OrderMaster orderMaster = OrderMaster.builder().build();
-        BeanUtils.copyProperties(orderDTO, orderMaster);
-        orderMaster.setOrderId(orderId);
-        orderMaster.setOrderAmount(orderAmount);
-        orderMaster.setOrderStatus(OrderStatusEnum.NEW.getCode());
-        orderMaster.setPayStatus(PayStatusEnum.WAITING.getCode());
-        orderMasterRepository.save(orderMaster);
-        orderDTO.setOrderAmount(orderAmount);
-        orderDTO.setOrderId(orderId);
-        /** 6、推送订单创建成功模板消息*/
-        pushMessageService.pushOrderSuccess(orderDTO);
-        /**7、发送WebSocket消息 */
-        webSocket.sendMessage(orderId);
-        return orderDTO;
+    public OrderMaster save(OrderMaster orderMaster) throws Exception{
+    	return orderMasterRepository.save(orderMaster);
     }
 
     /**
      * <pre>
      * 查询单个订单
      * @param orderId
-     * @return OrderDTO
+     * @return OrderMaster.class
      * </pre>
      */
     @Override
-    public OrderDTO findOne(String orderId) {
+    public OrderMaster findOne(String orderId) throws Exception{
         OrderMaster orderMaster = orderMasterRepository.findOne(orderId);
         if (orderMaster == null) {
             log.error("【查询订单】订单信息不存在，订单id={}", orderId);
-            throw new NovelOrderException(ResultEnum.ORDER_NOT_EXIST);
+            throw new Exception(ResultEnum.ORDER_NOT_EXIST.getMessage());
         }
         List<OrderDetail> orderDetailList = orderDetailRepository.findByOrderId(orderId);
         if (CollectionUtils.isEmpty(orderDetailList)) {
             log.error("【查询订单详情】订单详情信息不存在，订单id={}", orderId);
-            throw new NovelOrderException(ResultEnum.ORDERDETAIL_NOT_EXIST);
+            throw new Exception(ResultEnum.ORDERDETAIL_NOT_EXIST.getMessage());
         }
-        OrderDTO orderDTO = OrderDTO.builder().build();
-        BeanUtils.copyProperties(orderMaster, orderDTO);
-        orderDTO.setOrderDetailList(orderDetailList);
-        return orderDTO;
+        orderMaster.setOrderDetailList(orderDetailList);
+        return orderMaster;
     }
 
     /**
@@ -143,8 +99,8 @@ public class OrderServiceImpl implements OrderService {
      * </pre>
      */
     @Override
-    public List<OrderDTO> findTimeOutUnpaid(Integer payStatus, Integer orderStatus) {
-        return OrderMaster2OrderDTOConverter.convertToOrderDTOList(orderMasterRepository.findOrderMastersByPayStatusAndOrderStatus(payStatus, orderStatus));
+    public List<OrderMaster> findTimeOutUnpaid(Integer payStatus, Integer orderStatus) throws Exception{
+        return orderMasterRepository.findOrderMastersByPayStatusAndOrderStatus(payStatus, orderStatus);
     }
 
     /**
@@ -156,8 +112,8 @@ public class OrderServiceImpl implements OrderService {
      * </pre>
      */
     @Override
-    public Page<OrderDTO> findAll(String buyerOpenid, Pageable pageable) {
-        return OrderMaster2OrderDTOConverter.convertToOrderDTOPage(orderMasterRepository.findByBuyerOpenid(buyerOpenid, pageable), pageable);
+    public Page<OrderMaster> findAll(String buyerOpenid, Pageable pageable) throws Exception{
+        return orderMasterRepository.findByBuyerOpenid(buyerOpenid, pageable);
     }
 
     /**
@@ -169,11 +125,11 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     @Transactional
-    public OrderDTO cancel(OrderDTO orderDTO) {
+    public OrderMaster cancel(OrderMaster order) throws Exception{
         /** 1、判断订单是否为空 */
-        if (orderDTO == null) {
+        if (order == null) {
             log.error("【取消订单】订单信息不存在");
-            throw new NovelOrderException(ResultEnum.ORDER_NOT_EXIST);
+            throw new Exception(ResultEnum.ORDER_NOT_EXIST.getMessage());
         }
         /** 2、判断订单的状态 */
         if (orderDTO.getOrderStatus() != OrderStatusEnum.NEW.getCode()) {
@@ -207,7 +163,7 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     @Transactional
-    public OrderDTO finish(OrderDTO orderDTO) {
+    public OrderDTO finish(OrderDTO orderDTO) throws Exception{
         /** 1、判断订单状态 */
         if (orderDTO.getOrderStatus() != OrderStatusEnum.NEW.getCode()){
             log.error("【完结订单】 订单状态不正确， orderId={}，orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
@@ -235,7 +191,7 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     @Transactional
-    public OrderDTO paid(OrderDTO orderDTO) {
+    public OrderDTO paid(OrderDTO orderDTO) throws Exception{
         Date now = new Date();
         /** 1、判断订单状态 */
         if (OrderStatusEnum.NEW.getCode() != orderDTO.getOrderStatus()){
@@ -255,7 +211,7 @@ public class OrderServiceImpl implements OrderService {
         List<OrderDetail> orderDetailList = orderDTO.getOrderDetailList();
         for (OrderDetail orderDetail : orderDetailList) {
             orderDetail.setPayTime(now);
-            ProductInfo productInfo = productService.findOne(orderDetail.getProductId());
+            ProductInfo productInfo = productRepository.findOne(orderDetail.getProductId());
             if (productInfo == null) {
                 log.error("【查询书币产品信息】书币产品信息不存在， 产品id={}", orderDetail.getProductId());
                 throw new NovelOrderException(ResultEnum.PRODUCT_NOT_EXIST);
@@ -278,14 +234,14 @@ public class OrderServiceImpl implements OrderService {
                 orderDetail.setEndTime(now);
             }
             /**给对应的用户发放书币*/
-            UserInfo userInfo = userInfoService.findByOpenid(orderDTO.getBuyerOpenid());
+            UserInfo userInfo = userInfoRepository.findByOpenid(orderDTO.getBuyerOpenid());
             if (userInfo == null) {
                 log.error("【微信公众号支付更新订单】给对应的用户发放书币失败，用户微信openid={}", orderDTO.getBuyerOpenid());
                 throw new NovelOrderException(ResultEnum.ORDER_UPDATE_FAIL);
             }
             BigDecimal balance = userInfo.getBalance().add(orderDetail.getProductQuantity()).add(orderDetail.getProductGiveQuantity());
             userInfo.setBalance(balance);
-            UserInfo userInfoUpdateResult =  userInfoService.save(userInfo);
+            UserInfo userInfoUpdateResult =  userInfoRepository.save(userInfo);
             if (userInfoUpdateResult == null) {
                 log.error("【微信公众号支付更新订单】给对应的用户发放书币失败，用户信息={}", JsonUtil.toJson(userInfo));
                 throw new NovelOrderException(ResultEnum.ORDER_UPDATE_FAIL);
@@ -310,26 +266,13 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * <pre>
-     * findList:(查询订单列表)
+     * findAll:(分页查询订单列表)
      * @param pageable
-     * @return Page<OrderDTO>
+     * @return Page<OrderMaster>
      * </pre>
      */
     @Override
-    public Page<OrderDTO> findAll(Pageable pageable) {
-        return OrderMaster2OrderDTOConverter.convertToOrderDTOPage(orderMasterRepository.findAll(pageable), pageable);
+    public Page<OrderMaster> findAll(Pageable pageable) throws Exception{
+        return orderMasterRepository.findAll(pageable);
     }
-
-	
-	/**
-	 * <pre>
-	 * 描述该方法的实现功能：关闭未支付的超时订单
-	 * @see com.potato369.novel.service.OrderService#closeOrCancelOrder(com.potato369.novel.dto.OrderDTO)
-	 * </pre>
-	 */
-		
-	@Override
-	public void closeOrCancelOrder(OrderDTO orderDTO) {
-        weChatPayService.close(orderDTO);
-	}
 }

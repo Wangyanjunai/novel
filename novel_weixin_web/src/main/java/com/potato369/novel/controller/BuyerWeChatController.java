@@ -8,7 +8,7 @@ import com.potato369.novel.constant.RedisConstant;
 import com.potato369.novel.converter.WxMpUser2UserInfoConverter;
 import com.potato369.novel.exception.BuyerAuthorizeException;
 import com.potato369.novel.manage.RedisManager;
-import com.potato369.novel.service.UserInfoService;
+import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.utils.CookieUtil;
 import com.potato369.novel.utils.JsonUtil;
 import com.potato369.novel.utils.UUIDUtil;

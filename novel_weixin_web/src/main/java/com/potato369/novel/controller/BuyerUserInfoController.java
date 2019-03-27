@@ -2,7 +2,7 @@ package com.potato369.novel.controller;
 
 import com.potato369.novel.basic.dataobject.UserInfo;
 import com.potato369.novel.basic.enums.ResultEnum;
-import com.potato369.novel.service.UserInfoService;
+import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.utils.ResultVOUtil;
 import com.potato369.novel.vo.ResultVO;
 import com.potato369.novel.vo.UserInfoVO;

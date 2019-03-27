@@ -1,7 +1,7 @@
 package com.potato369.novel.handler;
 
 import com.potato369.novel.basic.dataobject.UserInfo;
-import com.potato369.novel.service.UserInfoService;
+import com.potato369.novel.basic.service.UserInfoService;
 
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;

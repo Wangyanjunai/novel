@@ -2,7 +2,7 @@ package com.potato369.novel.task;
 
 import com.potato369.novel.basic.dataobject.UserInfo;
 import com.potato369.novel.converter.WxMpUser2UserInfoConverter;
-import com.potato369.novel.service.UserInfoService;
+import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.utils.DateUtil;
 
 import lombok.extern.slf4j.Slf4j;

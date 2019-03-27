@@ -10,7 +10,7 @@ import com.potato369.novel.exception.NovelOrderException;
 import com.potato369.novel.model.PayResult;
 import com.potato369.novel.service.OrderService;
 import com.potato369.novel.service.ProductService;
-import com.potato369.novel.service.UserInfoService;
+import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.service.WeChatPayService;
 import com.potato369.novel.utils.JsonUtil;
 import com.potato369.novel.utils.WwwUtil;

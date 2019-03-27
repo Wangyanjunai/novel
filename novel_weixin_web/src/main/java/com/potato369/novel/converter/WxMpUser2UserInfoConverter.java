@@ -1,7 +1,7 @@
 package com.potato369.novel.converter;
 
 import com.potato369.novel.basic.dataobject.UserInfo;
-import com.potato369.novel.service.UserInfoService;
+import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.utils.JsonUtil;
 import com.potato369.novel.utils.UUIDUtil;
 

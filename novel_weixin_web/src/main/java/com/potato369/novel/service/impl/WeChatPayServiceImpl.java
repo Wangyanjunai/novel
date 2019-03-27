@@ -18,7 +18,7 @@ import com.potato369.novel.exception.SellerAuthorizeException;
 import com.potato369.novel.model.PayResult;
 import com.potato369.novel.service.OrderDetailService;
 import com.potato369.novel.service.OrderService;
-import com.potato369.novel.service.UserInfoService;
+import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.service.WeChatPayService;
 import com.potato369.novel.utils.JsonUtil;
 import com.potato369.novel.utils.StringUtil;
