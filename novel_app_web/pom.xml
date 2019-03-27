@@ -9,7 +9,7 @@
 		<relativePath/>
 	</parent>
 	<groupId>com.potato369.novel.app.web</groupId>
-	<artifactId>novel_web</artifactId>
+	<artifactId>novel_app_web</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>novel_app_web</name>
 	<packaging>war</packaging>
