@@ -64,7 +64,7 @@
     </dependencies>
 
     <build>
-        <finalName>novel-basic</finalName>
+        <finalName>novel_basic</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

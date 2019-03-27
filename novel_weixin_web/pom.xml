@@ -143,7 +143,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>novel-weixin-web</finalName>
+		<finalName>novel_weixin_web</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

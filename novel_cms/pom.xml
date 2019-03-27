@@ -61,7 +61,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>novel-cms</finalName>
+		<finalName>novel_cms</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
