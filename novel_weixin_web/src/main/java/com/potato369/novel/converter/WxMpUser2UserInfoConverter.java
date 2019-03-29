@@ -37,14 +37,19 @@ public class WxMpUser2UserInfoConverter {
      */
     public static List<UserInfo> WxMpUserList2UserInfoListConvert(UserInfoService userInfoService, List<WxMpUser> wxMpUserList) {
         List<UserInfo> userInfoList = new ArrayList<UserInfo>();
-        for (WxMpUser wxMpUser : wxMpUserList) {
-            UserInfo userInfo = userInfoService.findByOpenid(wxMpUser.getOpenId());
-            if (userInfo == null) {
-                userInfo = WxMpUser2UserInfoConvert(wxMpUser);
-                userInfoList.add(userInfo);
+        try {
+            for (WxMpUser wxMpUser : wxMpUserList) {
+                UserInfo userInfo = userInfoService.findByOpenid(wxMpUser.getOpenId());
+                if (userInfo == null) {
+                    userInfo = WxMpUser2UserInfoConvert(wxMpUser);
+                    userInfoList.add(userInfo);
+                }
             }
+            return userInfoList;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-        return userInfoList;
     }
 
     /**

@@ -34,6 +34,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "novel_chapter")
 public class NovelChapter implements Serializable {
+
     /**
      * @serialField serialVersionUID: 序列号
      */

@@ -14,9 +14,18 @@
 	<name>novel_crawler</name>
 	<packaging>jar</packaging>
 	<url>http://maven.apache.org</url>
-	<description>极速追书小说内容爬虫管理服务支持项目</description>
+	<description>急速追书小说内容爬虫管理服务支持项目</description>
+
+	<developers>
+		<developer>
+			<id>wyj</id>
+			<name>novel crawler</name>
+			<email>wyj@potato369.com</email>
+		</developer>
+	</developers>
 
 	<properties>
+		<seimiCrawler.version>2.1.1</seimiCrawler.version>
 		<java.version>1.8</java.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -35,6 +44,15 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>cn.wanghaomiao</groupId>
+			<artifactId>SeimiCrawler</artifactId>
+			<version>${seimiCrawler.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
 		</dependency>
 
 		<dependency>

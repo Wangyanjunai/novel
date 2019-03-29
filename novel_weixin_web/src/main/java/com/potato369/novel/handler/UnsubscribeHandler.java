@@ -25,11 +25,15 @@ public class UnsubscribeHandler extends AbstractHandler {
   public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context, WxMpService wxMpService, WxSessionManager sessionManager) {
     String openId = wxMessage.getFromUser();
     this.logger.info("取消关注用户 OPENID: " + openId);
-    UserInfo userInfo = userInfoService.findByOpenid(openId);
-    if (userInfo != null) {
-      userInfo.setSubscribe(0);
+    try {
+      UserInfo userInfo = userInfoService.findByOpenid(openId);
+      if (userInfo != null) {
+        userInfo.setSubscribe(0);
+      }
+      userInfoService.save(userInfo);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-    userInfoService.save(userInfo);
     return null;
   }
 }

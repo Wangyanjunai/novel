@@ -12,10 +12,7 @@ import com.potato369.novel.basic.repository.OrderMasterRepository;
 import com.potato369.novel.basic.repository.ProductInfoRepository;
 import com.potato369.novel.basic.repository.UserInfoRepository;
 import com.potato369.novel.basic.service.OrderService;
-import com.potato369.novel.basic.service.UserInfoService;
-import com.potato369.novel.basic.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -64,6 +61,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderMaster save(OrderMaster orderMaster) throws Exception{
+        if (orderMaster == null) {
+            log.error("【创建保存订单信息】，订单信息为空");
+            throw new Exception("【创建保存订单信息】出现错误");
+        }
+        List<OrderDetail> orderDetailList = orderMaster.getOrderDetailList();
+        for (OrderDetail orderDetail:orderDetailList) {
+            orderDetailRepository.save(orderDetail);
+        }
     	return orderMasterRepository.save(orderMaster);
     }
 
@@ -88,6 +93,17 @@ public class OrderServiceImpl implements OrderService {
         }
         orderMaster.setOrderDetailList(orderDetailList);
         return orderMaster;
+    }
+
+    /**
+     * <pre>
+     * 查询所有的订单列表
+     * @return OrderMaster.class
+     * </pre>
+     */
+    @Override
+    public List<OrderMaster> findAll() throws Exception {
+        return orderMasterRepository.findAll();
     }
 
     /**
@@ -119,102 +135,88 @@ public class OrderServiceImpl implements OrderService {
     /**
      * <pre>
      * 取消订单
-     * @param orderDTO
-     * @return OrderDTO
+     * @param orderMaster
+     * @return OrderMaster.class
      * </pre>
      */
     @Override
     @Transactional
-    public OrderMaster cancel(OrderMaster order) throws Exception{
+    public OrderMaster cancel(OrderMaster orderMaster) throws Exception{
         /** 1、判断订单是否为空 */
-        if (order == null) {
+        if (orderMaster == null) {
             log.error("【取消订单】订单信息不存在");
             throw new Exception(ResultEnum.ORDER_NOT_EXIST.getMessage());
         }
         /** 2、判断订单的状态 */
-        if (orderDTO.getOrderStatus() != OrderStatusEnum.NEW.getCode()) {
-            log.error("【取消订单】订单状态不正确， orderId={}，orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
-            throw new NovelOrderException(ResultEnum.ORDER_STATUS_ERROR);
+        if (orderMaster.getOrderStatus() != OrderStatusEnum.NEW.getCode()) {
+            log.error("【取消订单】订单状态不正确， orderId={}，orderStatus={}", orderMaster.getOrderId(), orderMaster.getOrderStatus());
+            throw new Exception(ResultEnum.ORDER_STATUS_ERROR.getMessage());
         }
         /** 3、修改订单的状态 */
-        orderDTO.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
-        OrderMaster orderMaster = new OrderMaster();
-        BeanUtils.copyProperties(orderDTO, orderMaster);
+        orderMaster.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
         OrderMaster updateResult = orderMasterRepository.save(orderMaster);
         if (updateResult == null){
-            log.error("【取消订单】更新失败，orderMaster={}", JsonUtil.toJson(orderMaster));
-            throw new NovelOrderException(ResultEnum.ORDER_UPDATE_FAIL);
+            log.error("【取消订单】更新失败，orderMaster={}", orderMaster);
+            throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
         }
-        /** 4、如果订单已经支付，需要退款 */
-        if (orderDTO.getPayStatus().equals(PayStatusEnum.SUCCESS.getCode())) {
-            weChatPayService.refund(orderDTO);
-        }
-        /** 5、推送订单取消通知模板消息 */
-        pushMessageService.pushOrderStatus(orderDTO,"您好，您的订单已取消，订单状态已通过系统确认！！！", "如果您已经支付，我们会尽快原路退回您支付的金额到您的原支付账户，具体到账时间以银行时间为准。感谢您对土豆互联科技的支持，有任何疑问可拨打客服电话：0755-86969315");
-        return orderDTO;
+        return orderMaster;
     }
 
     /**
      * <pre>
      * 完结订单
-     * @param orderDTO
-     * @return orderDTO
+     * @param orderMaster
+     * @return OrderMaster.class
      * </pre>
      */
     @Override
     @Transactional
-    public OrderDTO finish(OrderDTO orderDTO) throws Exception{
+    public OrderMaster finish(OrderMaster orderMaster) throws Exception{
         /** 1、判断订单状态 */
-        if (orderDTO.getOrderStatus() != OrderStatusEnum.NEW.getCode()){
-            log.error("【完结订单】 订单状态不正确， orderId={}，orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
-            throw new NovelOrderException(ResultEnum.ORDER_STATUS_ERROR);
+        if (orderMaster.getOrderStatus() != OrderStatusEnum.NEW.getCode()){
+            log.error("【完结订单】 订单状态不正确， orderId={}，orderStatus={}", orderMaster.getOrderId(), orderMaster.getOrderStatus());
+            throw new Exception(ResultEnum.ORDER_STATUS_ERROR.getMessage());
         }
         /** 2.修改订单状态为完结状态 */
-        orderDTO.setOrderStatus(OrderStatusEnum.FINISHED.getCode());
-        OrderMaster orderMaster = new OrderMaster();
-        BeanUtils.copyProperties(orderDTO, orderMaster);
+        orderMaster.setOrderStatus(OrderStatusEnum.FINISHED.getCode());
         OrderMaster updateResult = orderMasterRepository.save(orderMaster);
         if (updateResult == null){
-            log.error("【完结订单】 更新失败，orderMaster={}", JsonUtil.toJson(orderMaster));
-            throw new NovelOrderException(ResultEnum.ORDER_UPDATE_FAIL);
+            log.error("【完结订单】 更新失败，orderMaster={}", orderMaster);
+            throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
         }
-        /** 3、推送订单完结状态模板消息 */
-        pushMessageService.pushOrderStatus(orderDTO, "您好，您的订单已经完成，订单状态已通过系统确认！！！", "请您核对收到的商品是否与您购买的一致！感谢您对土豆互联的支持，有任何疑问可拨打客服电话：0755-86969315");
-        return orderDTO;
+        return orderMaster;
     }
     /**
      * <pre>
      * 支付订单
-     * @param orderDTO
-     * @return OrderDTO
+     * @param orderMaster
+     * @return OrderMaster.class
      * </pre>
      */
     @Override
     @Transactional
-    public OrderDTO paid(OrderDTO orderDTO) throws Exception{
+    public OrderMaster paid(OrderMaster orderMaster) throws Exception{
         Date now = new Date();
         /** 1、判断订单状态 */
-        if (OrderStatusEnum.NEW.getCode() != orderDTO.getOrderStatus()){
-            log.error("【微信公众号支付订单】订单状态不正确， orderId={}，orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
-            throw new NovelOrderException(ResultEnum.ORDER_STATUS_ERROR);
+        if (OrderStatusEnum.NEW.getCode() != orderMaster.getOrderStatus()){
+            log.error("【微信公众号支付订单】订单状态不正确， orderId={}，orderStatus={}", orderMaster.getOrderId(), orderMaster.getOrderStatus());
+            throw new Exception(ResultEnum.ORDER_STATUS_ERROR.getMessage());
         }
         /** 2、判断支付状态 */
-        if (PayStatusEnum.WAITING.getCode() != orderDTO.getPayStatus()){
-            log.error("【微信公众号支付订单】订单支付状态不正确， orderId={}，orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
-            throw new NovelOrderException(ResultEnum.ORDER_PAY_STATUS_ERROR);
+        if (PayStatusEnum.WAITING.getCode() != orderMaster.getPayStatus()){
+            log.error("【微信公众号支付订单】订单支付状态不正确， orderId={}，orderStatus={}", orderMaster.getOrderId(), orderMaster.getOrderStatus());
+            throw new Exception(ResultEnum.ORDER_PAY_STATUS_ERROR.getMessage());
         }
         /** 3、修改订单支付状态 */
-        orderDTO.setPayStatus(PayStatusEnum.SUCCESS.getCode());
-        OrderMaster orderMaster = OrderMaster.builder().build();
-        BeanUtils.copyProperties(orderDTO, orderMaster);
+        orderMaster.setPayStatus(PayStatusEnum.SUCCESS.getCode());
         orderMaster.setPayTime(now);
-        List<OrderDetail> orderDetailList = orderDTO.getOrderDetailList();
+        List<OrderDetail> orderDetailList = orderMaster.getOrderDetailList();
         for (OrderDetail orderDetail : orderDetailList) {
             orderDetail.setPayTime(now);
             ProductInfo productInfo = productRepository.findOne(orderDetail.getProductId());
             if (productInfo == null) {
                 log.error("【查询书币产品信息】书币产品信息不存在， 产品id={}", orderDetail.getProductId());
-                throw new NovelOrderException(ResultEnum.PRODUCT_NOT_EXIST);
+                throw new Exception(ResultEnum.PRODUCT_NOT_EXIST.getMessage());
             }
             if (productInfo.getProductId().equals("5ff041a3da12455b83546e2987741a10")) {
                 Calendar calendar =Calendar.getInstance();
@@ -234,34 +236,32 @@ public class OrderServiceImpl implements OrderService {
                 orderDetail.setEndTime(now);
             }
             /**给对应的用户发放书币*/
-            UserInfo userInfo = userInfoRepository.findByOpenid(orderDTO.getBuyerOpenid());
+            UserInfo userInfo = userInfoRepository.findUserInfoByOpenid(orderMaster.getBuyerOpenid());
             if (userInfo == null) {
-                log.error("【微信公众号支付更新订单】给对应的用户发放书币失败，用户微信openid={}", orderDTO.getBuyerOpenid());
-                throw new NovelOrderException(ResultEnum.ORDER_UPDATE_FAIL);
+                log.error("【微信公众号支付更新订单】给对应的用户发放书币失败，用户微信openid={}", orderMaster.getBuyerOpenid());
+                throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
             }
             BigDecimal balance = userInfo.getBalance().add(orderDetail.getProductQuantity()).add(orderDetail.getProductGiveQuantity());
             userInfo.setBalance(balance);
             UserInfo userInfoUpdateResult =  userInfoRepository.save(userInfo);
             if (userInfoUpdateResult == null) {
-                log.error("【微信公众号支付更新订单】给对应的用户发放书币失败，用户信息={}", JsonUtil.toJson(userInfo));
-                throw new NovelOrderException(ResultEnum.ORDER_UPDATE_FAIL);
+                log.error("【微信公众号支付更新订单】给对应的用户发放书币失败，用户信息={}", userInfo);
+                throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
             }
             /**更新订单详情表数据*/
             OrderDetail orderDetailUpdateResult = orderDetailRepository.save(orderDetail);
             if (orderDetailUpdateResult == null) {
-                log.error("【微信公众号支付更新订单】更新订单订单详情失败，orderDetail={}", JsonUtil.toJson(orderDetail));
-                throw new NovelOrderException(ResultEnum.ORDER_UPDATE_FAIL);
+                log.error("【微信公众号支付更新订单】更新订单订单详情失败，orderDetail={}", orderDetail);
+                throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
             }
         }
         /**更新订单表数据*/
         OrderMaster orderMasterUpdateResult = orderMasterRepository.save(orderMaster);
         if (orderMasterUpdateResult == null) {
-            log.error("【微信公众号支付更新订单】更新订单失败，orderMaster={}", JsonUtil.toJson(orderMaster));
-            throw new NovelOrderException(ResultEnum.ORDER_UPDATE_FAIL);
+            log.error("【微信公众号支付更新订单】更新订单失败，orderMaster={}", orderMaster);
+            throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
         }
-        /** 4、推送订单支付成功模板消息 */
-        pushMessageService.pushPaySuccess(orderDTO);
-        return orderDTO;
+        return orderMaster;
     }
 
     /**

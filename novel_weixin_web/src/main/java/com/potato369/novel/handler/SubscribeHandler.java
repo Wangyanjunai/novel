@@ -51,9 +51,9 @@ public class SubscribeHandler extends AbstractHandler {
     if (this.logger.isDebugEnabled()) {
       this.logger.info("【新关注用户】  WxMpUser={}" + JsonUtil.toJson(userWxInfo));
     }
-    userInfoService.save(WxMpUser2UserInfoConverter.WxMpUser2UserInfoConvert(userWxInfo));
     WxMpXmlOutMessage responseResult = null;
     try {
+      userInfoService.save(WxMpUser2UserInfoConverter.WxMpUser2UserInfoConvert(userWxInfo));
       responseResult = handleSpecial(wxMessage);
     } catch (Exception e) {
       this.logger.error(e.getMessage(), e);

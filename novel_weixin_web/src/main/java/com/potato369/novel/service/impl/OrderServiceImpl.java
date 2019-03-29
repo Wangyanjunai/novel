@@ -13,7 +13,10 @@ import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.converter.OrderMaster2OrderDTOConverter;
 import com.potato369.novel.dto.OrderDTO;
 import com.potato369.novel.exception.NovelOrderException;
-import com.potato369.novel.service.*;
+import com.potato369.novel.service.OrderService;
+import com.potato369.novel.service.ProductService;
+import com.potato369.novel.service.PushMessageService;
+import com.potato369.novel.service.WeChatPayService;
 import com.potato369.novel.utils.JsonUtil;
 import com.potato369.novel.utils.UUIDUtil;
 
@@ -278,14 +281,26 @@ public class OrderServiceImpl implements OrderService {
                 orderDetail.setEndTime(now);
             }
             /**给对应的用户发放书币*/
-            UserInfo userInfo = userInfoService.findByOpenid(orderDTO.getBuyerOpenid());
+            UserInfo userInfo = null;
+			try {
+				userInfo = userInfoService.findByOpenid(orderDTO.getBuyerOpenid());
+			} catch (Exception e) {
+				log.error("【微信公众号支付更新订单】根据用户openid查询用户信息错误", e);
+				throw new NovelOrderException(ResultEnum.MP_USER_INFO_EMPTY);
+			}
             if (userInfo == null) {
                 log.error("【微信公众号支付更新订单】给对应的用户发放书币失败，用户微信openid={}", orderDTO.getBuyerOpenid());
                 throw new NovelOrderException(ResultEnum.ORDER_UPDATE_FAIL);
             }
             BigDecimal balance = userInfo.getBalance().add(orderDetail.getProductQuantity()).add(orderDetail.getProductGiveQuantity());
             userInfo.setBalance(balance);
-            UserInfo userInfoUpdateResult =  userInfoService.save(userInfo);
+            UserInfo userInfoUpdateResult = null;
+			try {
+				userInfoUpdateResult = userInfoService.save(userInfo);
+			} catch (Exception e) {
+				log.error("【微信公众号支付更新订单】保存用户信息错误", e);
+				throw new NovelOrderException(ResultEnum.MP_USER_INFO_EMPTY);
+			}
             if (userInfoUpdateResult == null) {
                 log.error("【微信公众号支付更新订单】给对应的用户发放书币失败，用户信息={}", JsonUtil.toJson(userInfo));
                 throw new NovelOrderException(ResultEnum.ORDER_UPDATE_FAIL);

@@ -103,7 +103,13 @@ public class BuyerPayController {
         BeanUtils.copyProperties(productInfo, orderDTO);
         orderDTO.setCreateTime(null);
         orderDTO.setUpdateTime(null);
-        UserInfo userInfo = userInfoService.findByOpenid(openid);
+        UserInfo userInfo = null;
+		try {
+			userInfo = userInfoService.findByOpenid(openid);
+		} catch (Exception e) {
+			log.error("【微信公众号支付订单】根据用户openid查询用户信息错误", e);
+			throw new NovelOrderException(ResultEnum.MP_USER_INFO_EMPTY);
+		}
         if (userInfo == null) {
             log.error("【微信公众号支付订单】用户信息不存在", ResultEnum.MP_USER_INFO_EMPTY);
             throw new NovelOrderException(ResultEnum.MP_USER_INFO_EMPTY);
