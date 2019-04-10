@@ -450,7 +450,7 @@ CREATE TABLE `user_info` (
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
   `login_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '登录时间',
-  `subscribe_time` timestamp NULL DEFAULT NULL COMMENT '关注公众号时间',
+  `subscribe_time` timestamp(0) NULL DEFAULT NULL COMMENT '关注公众号时间',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `key_uid` (`uid`) USING BTREE,
   KEY `key_openid` (`openid`) USING BTREE
