@@ -10,7 +10,7 @@ import org.seimicrawler.xpath.JXDocument;
  * <pre>
  * 类名：BiQuGeNovelCrawler
  * 类的作用：爬取笔趣阁小说网内容 https://www.sbiquge.com
- * 创建原因：
+ * 创建原因：使用的爬虫框架github地址：https://github.com/zhegexiaohuozi/SeimiCrawler
  * 创建时间： 2019年4月8日 下午4:24:52
  * 描述：
  * @author Jack
