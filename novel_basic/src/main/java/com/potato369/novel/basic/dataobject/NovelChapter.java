@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
+
+import cn.wanghaomiao.seimi.annotation.Xpath;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -51,6 +53,7 @@ public class NovelChapter implements Serializable {
      * @serialField chaperName：章节名称
      */
     @Column(name = "chapter_name", nullable = false, length = 256)
+    @Xpath(value="//div[@class='listmain']/dl/dd/a/text()|//div[@class='content']/h1/text()")
     private String chaperName;
 
     /**
@@ -62,6 +65,7 @@ public class NovelChapter implements Serializable {
     /**
      * @serialField content：章节内容
      */
+    @Xpath(value="//div[@id='content']/text()")
     @Column(name = "chapter_content", nullable = false)
     private String chapterContent;
 
@@ -69,6 +73,7 @@ public class NovelChapter implements Serializable {
      * @serialField chapterUrl：章节内容链接url
      */
     @Column(name = "chapter_url", nullable = false, length = 256)
+    @Xpath(value="//div[@class='listmain']/dl/dd/a/@href()")
     private String chapterUrl;
 
     /**

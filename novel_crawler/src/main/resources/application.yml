@@ -67,4 +67,5 @@ server:
 seimi:
   crawler:
     enabled: true
-    names: dindian,biquyun,23us,sbiquge,gxwztv,00ksw,xbiquge,xbxwx,bxwx,zhuishushenqi
+    names: sbiquge
+    ##names: dindian,biquyun,23us,sbiquge,gxwztv,00ksw,xbiquge,xbxwx,bxwx,zhuishushenqi

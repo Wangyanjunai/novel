@@ -1,6 +1,6 @@
 package com.potato369.novel.controller;
 
-import com.potato369.novel.basic.dataobject.MenuButtonInfo;
+import com.potato369.novel.basic.dataobject.NovelMenuInfo;
 import com.potato369.novel.utils.JsonUtil;
 
 import lombok.extern.slf4j.Slf4j;
@@ -49,9 +49,9 @@ public class SellerWeChatMenuController {
 			WxMpMenu.WxMpConditionalMenu mpConditionalMenu = menu.getMenu();
 			String menuId = mpConditionalMenu.getMenuId();
 			List<WxMenuButton> menuButtonList = mpConditionalMenu.getButtons();
-			List<MenuButtonInfo> menuButtonInfoList = new ArrayList<>();
+			List<NovelMenuInfo> menuButtonInfoList = new ArrayList<>();
 			for (WxMenuButton menuButton : menuButtonList) {
-				MenuButtonInfo menuButtonInfo = MenuButtonInfo.builder().build();
+				NovelMenuInfo menuButtonInfo = NovelMenuInfo.builder().build();
 				BeanUtils.copyProperties(menuButton, menuButtonInfo);
 				menuButtonInfo.setMenuId(menuId);
 				menuButtonInfoList.add(menuButtonInfo);

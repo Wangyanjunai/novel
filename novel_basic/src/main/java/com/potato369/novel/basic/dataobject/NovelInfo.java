@@ -14,12 +14,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
-
+import cn.wanghaomiao.seimi.annotation.Xpath;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
+import java.util.List;
 /**
  * <pre>
  * @PackageName com.potato369.novel.dataobject
@@ -58,24 +58,28 @@ public class NovelInfo implements Serializable {
      * @serialField fileName：小说名称
      */
     @Column(name = "file_name", length = 256)
+    @Xpath(value="//div[@id='info']/h1/text()")
     private String fileName;
 
     /**
      * @serialField cover：封面图片
      */
     @Column(name = "cover", length = 256)
+    @Xpath(value="//div[@id='fmimg']/img/@src()")
     private String cover;
 
     /**
      * @serialField title：标题
      */
     @Column(name = "title", length = 256)
+    @Xpath(value="//div[@id='info']/h1/text()")
     private String title;
 
     /**
      * @serialField author：作者
      */
     @Column(name = "author", length = 256)
+    @Xpath(value="//div[@id='info']/p[1]/text()")
     private String author;
 
     /**
@@ -95,6 +99,14 @@ public class NovelInfo implements Serializable {
      */
     @Column(name = "total_words", length = 16)
     private BigDecimal totalWords;
+    
+    @Xpath(value="//div[@class='listmain']/dl/dd/a/text()")
+    @Transient
+    private List<String> chapterName;
+    
+    @Xpath(value="//div[@class='listmain']/dl/dd/a/@href()")
+    @Transient
+    private List<String> chapterUrl;
 
     /**
      * @serialField novelStatus：状态
@@ -130,6 +142,7 @@ public class NovelInfo implements Serializable {
      * @serialField description：小说简介
      */
     @Column(name = "introduction", length = 1024)
+    @Xpath(value="//div[@id='intro']/p[1]/text()")
     private String introduction;
 
     /**

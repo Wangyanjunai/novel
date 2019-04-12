@@ -24,9 +24,11 @@ public class BiQuYunNovelCrawler extends BaseSeimiCrawler{
 
 	private static final long serialVersionUID = -6000214532002090859L;
 		
+	private static final String DOMAIN_URL = "https://www.sbiquge.com";
+	
 	@Override
 	public String[] startUrls() {
-		return new String[]{"https://www.biquyun.com"};
+		return new String[]{DOMAIN_URL};
 	}
 
 	@Override

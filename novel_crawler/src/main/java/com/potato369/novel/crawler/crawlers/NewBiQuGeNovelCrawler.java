@@ -35,7 +35,7 @@ public class NewBiQuGeNovelCrawler extends BaseSeimiCrawler{
 	public void start(Response response) {
 		try {
 			if (log.isDebugEnabled()) {
-				log.debug("【爬虫系统后台】开始爬取笔趣阁小说信息");
+				log.debug("【爬虫系统后台】开始爬取新笔趣阁小说网站内容，网址：http://www.xbiquge.la");
 			}
 			JXDocument document =  response.document();
 			List<Object> objects = document.sel("//div[@class='item']");
@@ -43,10 +43,10 @@ public class NewBiQuGeNovelCrawler extends BaseSeimiCrawler{
 				log.info("", object.toString());
 			}
 		} catch (Exception e) {
-			log.error("【爬虫系统后台】爬取笔趣阁小说信息出现错误", e);
+			log.error("【爬虫系统后台】爬取新笔趣阁小说网站内容，网址：http://www.xbiquge.la出现错误", e);
 		} finally {
 			if (log.isDebugEnabled()) {
-				log.debug("【爬虫系统后台】结束爬取笔趣阁小说信息");
+				log.debug("【爬虫系统后台】结束爬取新笔趣阁小说网站内容，网址：http://www.xbiquge.la");
 			}
 		}
 	}

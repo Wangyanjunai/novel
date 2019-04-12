@@ -5,17 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.dataobject
- * @ClassName MenuButtonInfo
+ * @ClassName NovelMenuInfo
  * @Desc 公众号自定义菜单按钮数据信息数据库对象实体
  * @WebSite https://www.potato369.com
  * @Author Jack
@@ -28,10 +26,10 @@ import java.io.Serializable;
 @Builder
 @DynamicUpdate
 @Data
-@Entity(name = "MenuButtonInfo")
+@Entity(name = "NovelMenuInfo")
 @NoArgsConstructor
-@Table(name = "menu_button_info")
-public class MenuButtonInfo implements Serializable {
+@Table(name = "novel_menu_info")
+public class NovelMenuInfo implements Serializable {
 
     /**
      * @serialField serialVersionUID: 序列号。
