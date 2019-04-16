@@ -1,8 +1,6 @@
 package com.potato369.novel.crawler.crawlers;
 
-import java.util.LinkedList;
 import java.util.List;
-
 import com.potato369.novel.crawler.constants.BusinessConstants;
 import org.seimicrawler.xpath.JXDocument;
 import cn.wanghaomiao.seimi.annotation.Crawler;
@@ -90,22 +88,31 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
 				}
 				push(Request.build(BusinessConstants.CURRENT_GET_DATA_URL, DuShu88NovelCrawler::renderBean));
 			}
-			//给定数据http://blog.java1234.com/index.html?typeId=1
-			//目标数据http://blog.java1234.com/index.html?page=2&typeId=1&
-			String nextPageEndPrefix = BusinessConstants.CURRENT_START_URL.substring(BusinessConstants.CURRENT_START_URL.indexOf("typeId"));
-			StringBuffer bf =new StringBuffer(startUrls()[0]).append("?page=").append(BusinessConstants.CURRENT_PAGE_NUMBER).append("&").append(nextPageEndPrefix).append("&");
-			push(Request.build(bf.toString(),DuShu88NovelCrawler::getEachPage));
+			StringBuffer bf =new StringBuffer(BusinessConstants.CURRENT_GET_DATA_URL).append(BusinessConstants.CURRENT_PAGE_NUMBER);
+			if (log.isDebugEnabled()) {
+				log.debug("url={}", bf.toString());
+			}
+			push(Request.build(bf.toString(), DuShu88NovelCrawler::getEachPage));
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		} finally {
-			
+			if (log.isDebugEnabled()) {
+				log.debug("");
+			}
 		}
 	}
 	public void renderBean(Response response) {
 		try {
-
+			if (log.isDebugEnabled()) {
+				log.debug("");
+			}
+			Novel novel = response.render(Novel.class);
 		} catch (Exception e) {
-
+			log.error("", e);
+		} finally {
+			if (log.isDebugEnabled()) {
+				log.debug("");
+			}
 		}
 	}
 	@Data
