@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 	<groupId>com.potato369.novel.master</groupId>
@@ -9,10 +10,10 @@
 	<packaging>pom</packaging>
 	<description>Novel master project for Spring Boot</description>
 	<modules>
-		<module>novel_app_web</module><!--小说app接口模块-->
-		<module>novel_basic</module><!--基础模块-->
-		<module>novel_cms</module><!--后台管理模块-->
-		<module>novel_crawler</module><!--爬虫模块-->
-		<module>novel_weixin_web</module><!--微信公众号接口模块-->
+		<module>novel_app_web</module><!--急速追书小说APP后端接口模块-->
+		<module>novel_basic</module><!--急速追书小说基础模块-->
+		<module>novel_cms</module><!--急速追书小说后台管理模块-->
+		<module>novel_crawler</module><!--急速追书小说爬虫模块-->
+		<module>novel_weixin_web</module><!--急速追书小说微信公众号接口模块-->
 	</modules>
 </project>
