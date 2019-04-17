@@ -40,15 +40,10 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
 	@Override
 	public void start(Response response){
 		try {
-			if (log.isDebugEnabled()) {
-			}
 			JXDocument document = response.document();
 			List<Object> urlList = document.sel("//div[@class='tuijian']/ul/li/h2/a/@href");
-			if (urlList.size() < 1) {
+			if (urlList.size() <= 1) {
 				return;
-			}
-			if (log.isDebugEnabled()) {
-				log.debug("the url list size={}", urlList.size());
 			}
 			for (Object url:urlList) {
 				String urlStr = url.toString();
@@ -57,67 +52,49 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
 				} else {
 					BusinessConstants.CURRENT_START_URL = urlStr;
 				}
-				if (log.isDebugEnabled()) {
-					log.debug("CURRENT_START_URL={}", BusinessConstants.CURRENT_START_URL);
-				}
 				push(Request.build(BusinessConstants.CURRENT_START_URL, DuShu88NovelCrawler::getEachPage));
 			}
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			log.error("", e);
 		} finally {
-			if (log.isDebugEnabled()) {
-				log.debug("");
-			}
 		}
 	}
 	public void getEachPage(Response response) {
 		try {
 			JXDocument document = response.document();
+			String realUrl = response.getRealUrl();
 			List<Object> urlList = document.sel("//div[@class='booklist']/ul/li/span[@class='sm']/a/@href");
-			log.info("the url list size is {}", urlList.size());
-			if(urlList.size() < 1 ){
+			if (urlList.size() <= 1 ) {
 				BusinessConstants.CURRENT_PAGE_NUMBER = 1;
 				return;
 			}
 			BusinessConstants.CURRENT_PAGE_NUMBER += 1;
 			for (Object url:urlList) {
 				String urlStr = url.toString();
-				if(!urlStr.startsWith(startUrls()[0]) && !urlStr.contains(startUrls()[0])) {
-					BusinessConstants.CURRENT_GET_DATA_URL = new StringBuffer(startUrls()[0]).append(urlStr).toString();
+				if (!urlStr.startsWith(DOMAIN_URL) && !urlStr.contains(DOMAIN_URL)) {
+					BusinessConstants.CURRENT_GET_DATA_URL = new StringBuffer(DOMAIN_URL).append(urlStr).toString();
 				} else {
 					BusinessConstants.CURRENT_GET_DATA_URL = urlStr;
 				}
-				if (log.isDebugEnabled()) {
-					log.debug("CURRENT_GET_DATA_URL={}", BusinessConstants.CURRENT_GET_DATA_URL);
-				}
 				push(Request.build(BusinessConstants.CURRENT_GET_DATA_URL, DuShu88NovelCrawler::renderBean));
 			}
-			StringBuffer bf =new StringBuffer(BusinessConstants.CURRENT_START_URL.substring(BusinessConstants.CURRENT_START_URL.lastIndexOf("/",2))).append(BusinessConstants.CURRENT_PAGE_NUMBER);
+			StringBuffer bf =new StringBuffer(realUrl.substring(0, realUrl.length() - 2)).append(BusinessConstants.CURRENT_PAGE_NUMBER).append("/");
 			if (log.isDebugEnabled()) {
 				log.debug("url={}", bf.toString());
 			}
 			BusinessConstants.CURRENT_START_URL = bf.toString();
 			push(Request.build(BusinessConstants.CURRENT_START_URL, DuShu88NovelCrawler::getEachPage));
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			log.error("", e);
 		} finally {
-			if (log.isDebugEnabled()) {
-				log.debug("");
-			}
 		}
 	}
 	public void renderBean(Response response) {
 		try {
-			if (log.isDebugEnabled()) {
-				log.debug("");
-			}
-			Novel novel = response.render(Novel.class);
+			//Novel novel = response.render(Novel.class);
 		} catch (Exception e) {
 			log.error("", e);
 		} finally {
-			if (log.isDebugEnabled()) {
-				log.debug("");
-			}
 		}
 	}
 	@Data
@@ -186,8 +163,4 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
 		@Xpath(value = "//div[@class='booklist']/li/span[@class='zj']/a/@href|//div[@class='jieshao']/div[@class='rt']/div[@class='msg']/em/a/@href")
 		private String lastChapterURL;
 	}
-	
-	public void callback(Response response) {
-	}
-	
 }
