@@ -14,16 +14,15 @@ package com.potato369.novel.crawler.constants;
  */
 public class BusinessConstants {
     /**
-     * 定义一个静态变量，用于全局协调页数
-     * 默认从第一页开始
+     * 定义一个静态变量，用于全局协调页数，默认从第一页开始
      */
     public static Integer CURRENT_PAGE_NUMBER = 1;
     /**
-     * 定义一个静态变量，用于记录每次的起始url
-     * */
+     * 定义一个静态变量，用于记录每次的起始URL
+     */
     public static String CURRENT_START_URL = null;
     /**
-     * 定义一个静态变量，用于记录当前获取数据的url
-     * */
+     * 定义一个静态变量，用于记录当前获取数据的URL
+     */
     public static String CURRENT_GET_DATA_URL = null;
 }
