@@ -3,9 +3,6 @@
 !.mvn/wrapper/maven-wrapper.jar
 /apidoc/
 /doc/
-/apidoc.json
-/footer.md
-/header.md
 
 ### STS ###
 .apt_generated
