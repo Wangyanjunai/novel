@@ -16,7 +16,7 @@
         </encoder>
         <!-- 滚动策略 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>log/tomcat/novel/info/info.%d.log</fileNamePattern>
+            <fileNamePattern>log/novel_app_web/info/info.%d.log</fileNamePattern>
         </rollingPolicy>
     </appender>
 
@@ -29,7 +29,7 @@
         </encoder>
         <!-- 滚动策略 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>log/tomcat/novel/error/error.%d.log</fileNamePattern>
+            <fileNamePattern>log/novel_app_web/error/error.%d.log</fileNamePattern>
         </rollingPolicy>
     </appender>
 
