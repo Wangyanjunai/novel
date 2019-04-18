@@ -60,7 +60,32 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
 			}
 			for (int i = 0; i < urList.size(); i++) {
 				log.info("aaaaaa url={}", urList.get(i));
-				push(Request.build(urList.get(i), DuShu88NovelCrawler::getEachPage));
+				push(Request.build(urList.get(i), DuShu88NovelCrawler::getEachCategory));
+			}
+		} catch (Exception e) {
+			log.error("", e);
+		} finally {
+		}
+	}
+	
+	public void getEachCategory(Response response) {
+		try {
+			log.info("getEachCategory url={}", response.getUrl());
+			JXDocument doc = response.document();
+			List<Object> novelUrList = doc.sel("//div[@class='booklist']/ul/li/span[@class='sm']/a/@href");
+			if (novelUrList.size() < 1) {
+				BusinessConstants.CURRENT_PAGE_NUMBER = 1;
+				return;
+			}
+			for (Object object : novelUrList) {
+				String url = object.toString();
+				if (!url.startsWith(DOMAIN_URL)) {
+					BusinessConstants.CURRENT_GET_DATA_URL = new StringBuffer(DOMAIN_URL).append(url).toString();
+				} else {
+					BusinessConstants.CURRENT_GET_DATA_URL = url;
+				}
+				push(Request.build(BusinessConstants.CURRENT_GET_DATA_URL, DuShu88NovelCrawler::getEachPage));
+				log.info(BusinessConstants.CURRENT_START_URL);
 			}
 		} catch (Exception e) {
 			log.error("", e);
