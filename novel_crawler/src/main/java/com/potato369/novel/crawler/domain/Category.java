@@ -24,9 +24,9 @@ import lombok.NoArgsConstructor;
 @Data
 public class Category{
 
-    @Xpath(value = "//div[@class='tuijian']/ul/li/h2/a/text()")
+    @Xpath(value = "//div[@class='booklist']/h1/text()")
     private String categoryText;
 
-    @Xpath(value = "//div[@class='tuijian']/ul/li/h2/a/@href")
+    @Xpath(value = "//div[@class='booklist']/div[@class='pagelink']/a[@class='first']/@href")
     private String categoryUrl;
 }
