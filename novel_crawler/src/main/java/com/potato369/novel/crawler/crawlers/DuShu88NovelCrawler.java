@@ -2,7 +2,6 @@ package com.potato369.novel.crawler.crawlers;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.potato369.novel.crawler.constants.BusinessConstants;
 import org.seimicrawler.xpath.JXDocument;
 import cn.wanghaomiao.seimi.annotation.Crawler;
