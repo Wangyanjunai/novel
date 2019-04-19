@@ -31,7 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @since JDK 1.6
  * </pre>
  */
-@Crawler(name = "sbiquge", useUnrepeated = false)
+@Crawler(name = "sbiquge", useUnrepeated = true)
 @Slf4j
 public class BiQuGeNovelCrawler extends BaseSeimiCrawler{
 
@@ -47,15 +47,16 @@ public class BiQuGeNovelCrawler extends BaseSeimiCrawler{
 		
 	@Override
 	public String[] startUrls() {
-		return new String[]{
-				DOMAIN_URL+"/",   				 
+		String[] urlList = new String[] {
+				DOMAIN_URL+"/",  				 
 				DOMAIN_URL+"/xuanhuanxiaoshuo/",
-				DOMAIN_URL+"/xiuzhenxiaoshuo/",   
+				DOMAIN_URL+"/xiuzhenxiaoshuo/",  
 				DOMAIN_URL+"/dushixiaoshuo/",
-				DOMAIN_URL+"/chuanyuexiaoshuo/",  
+				DOMAIN_URL+"/chuanyuexiaoshuo/", 
 				DOMAIN_URL+"/wangyouxiaoshuo/",
 				DOMAIN_URL+"/kehuanxiaoshuo/",    
 				DOMAIN_URL+"/qitaxiaoshuo/"};
+		return urlList;
 	}
 
 	@Override

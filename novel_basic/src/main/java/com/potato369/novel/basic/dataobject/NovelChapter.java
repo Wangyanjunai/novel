@@ -38,58 +38,67 @@ import lombok.NoArgsConstructor;
 public class NovelChapter implements Serializable {
 
     /**
-     * @serialField serialVersionUID: 序列号
+     * <pre>
+     * @serialField serialVersionUID: 序列号。
+     * </pre>
      */
     private static final long serialVersionUID = -2729952944003350231L;
 
     /**
-     * @serialField chapterId：章节id，主键
+     * <pre>
+     * @serialField chapterId：章节id，主键。
+     * </pre>
      */
     @Id
     @Column(name = "chapter_id", nullable = false, length = 32)
     private String chapterId;
 
     /**
-     * @serialField chaperName：章节名称
+     * <pre>
+     * @serialField chaperName：章节标题（名称）。
+     * </pre>
      */
     @Column(name = "chapter_name", nullable = false, length = 256)
     @Xpath(value="//div[@class='listmain']/dl/dd/a/text()|//div[@class='content']/h1/text()")
     private String chaperName;
 
     /**
-     * @serialField bookId：章节所属小说id
+     * <pre>
+     * @serialField bookId：章节所属小说id。
+     * </pre>
      */
     @Column(name = "book_id", nullable = false, length = 11)
     private Integer bookId;
 
     /**
-     * @serialField content：章节内容
+     * <pre>
+     * @serialField content：章节内容。
+     * </pre>
      */
     @Xpath(value="//div[@id='content']/text()")
     @Column(name = "chapter_content", nullable = false)
     private String chapterContent;
 
     /**
-     * @serialField chapterUrl：章节内容链接url
+     * <pre>
+     * @serialField chapterUrl：章节内容链接URL。
+     * </pre>
      */
-    @Column(name = "chapter_url", nullable = false, length = 256)
     @Xpath(value="//div[@class='listmain']/dl/dd/a/@href()")
     private String chapterUrl;
 
     /**
-     * @serialField index：章节索引
-     */
-    @Column(name = "chapter_index", nullable = false, length = 8)
-    private Integer chapterIndex;
-
-    /**
-     * @serialField createTime：创建时间
+     * <pre>
+     * @serialField createTime：创建时间。
+     * </pre>
      */
     @Column(name = "create_time", nullable = false, length = 64)
     private Date createTime;
 
     /**
-     * @serialField updateTime：更新时间
+     * <pre>
+     * @serialField updateTime：更新时间。
+     * </pre>
      */
     @Column(name = "update_time", nullable = false, length = 64)
     private Date updateTime;

@@ -33,55 +33,89 @@ import java.util.Date;
 public class NovelCategory implements Serializable {
 
     /**
-     * @serialField serialVersionUID: 序列号
+     * <pre>
+     * @serialField serialVersionUID: 序列号。
+     * <pre>
      */
     private static final long serialVersionUID = -8639503100980376589L;
 
     /**
-     * @serialField categoryId：类目id，主键
+     * <pre>
+     * @serialField categoryId：类目id，主键。
+     * <pre>
      */
     @Id
     @Column(name = "category_id", nullable = false, length = 32)
     private String categoryId;
 
     /**
-     * @serialField parentCategoryId：父级id
+     * <pre>
+     * @serialField parentCategoryId：父级id。
+     * </pre>
      */
     @Column(name = "parent_category_id", nullable = true, length = 32)
     private String parentCategoryId;
 
     /**
-     * @serialField categoryName：类目名称
+     * <pre>
+     * @serialField categoryZhName：类目中文名称。
+     * <pre>
      */
-    @Column(name = "category_name", nullable = true, length = 64)
-    private String categoryName;
+    @Column(name = "category_zh_name", nullable = true, length = 64)
+    private String categoryZhName;
 
     /**
-     * @serialField categoryEnName：类目英文名称
+     * <pre>
+     * @serialField categoryEnName：类目英文名称。
+     * <pre>
      */
     @Column(name = "category_en_name", nullable = true, length = 64)
     private String categoryEnName;
 
     /**
-     * @serialField categoryType：类目类型编号
+     * <pre>
+     * @serialField categoryType：类目类型编号。
+     * <pre>
      */
     @Column(name = "category_type", nullable = true, length = 4)
     private Integer categoryType;
 
     /**
-     * @serialField isDeleted：类目是否删除；0-否，1-是
+     * <pre>
+     * @serialField readingNumber：阅读（点击）用户数。
+     * <pre>
+     */
+    @Column(name = "reading_number", nullable = true, length = 11)
+    private Integer readingNumber;
+
+    /**
+     * <pre>
+     * @serialField clickNumber：点击次数。
+     * <pre>
+     */
+    @Column(name = "click_number", nullable = true, length = 11)
+    private Integer clickNumber;
+
+    /**
+     * <pre>
+     * @serialField isDeleted：类目是否删除；0-否，1-是。
+     * </pre>
      */
     @Column(name = "is_deleted", nullable = true, length = 4)
     private Integer isDeleted;
 
     /**
-     * @serialField createTime：创建时间
+     * <pre>
+     * @serialField createTime：创建时间。
+     * </pre>
      */
     @Column(name = "create_time", nullable = false, length = 64)
     private Date createTime;
 
     /**
-     * @serialField updateTime：更新时间
+     * <pre>
+     * @serialField updateTime：更新时间。
+     * </pre>
      */
     @Column(name = "update_time", nullable = false, length = 64)
     private Date updateTime;

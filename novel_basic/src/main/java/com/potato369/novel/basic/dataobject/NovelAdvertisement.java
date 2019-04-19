@@ -1,5 +1,6 @@
 package com.potato369.novel.basic.dataobject;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -33,24 +34,61 @@ import lombok.NoArgsConstructor;
 @Entity(name = "NovelAdvertisement")
 @NoArgsConstructor
 @Table(name = "novel_advertisement")
-public class NovelAdvertisement {
+public class NovelAdvertisement implements Serializable{
 
+	/**
+	 * <pre>
+	 * @serialField serialVersionUID：序列号
+	 * </pre>
+	 */
+	private static final long serialVersionUID = -7773745504940953409L;
+
+	/**
+	 * <pre>
+	 * @serialField adId：主键，广告id。
+	 * </pre>
+	 */
 	@Id
     @Column(name = "ad_id", nullable = false, length = 32)
 	private String adId;
 	
+	/**
+	 * <pre>
+	 * @serialField tag：标识广告是否可以跳转，0-可以跳转，1-不可以跳转。
+	 * </pre>
+	 */
 	@Column(name = "tag", nullable = false, length = 32)
 	private Integer tag;
 	
-	@Column(name = "image_url", nullable = false, length = 256)
+	/**
+	 * <pre>
+	 * @serialField imageUrl：广告图片链接地址。
+	 * </pre>
+	 */
+	@Column(name = "image_url", nullable = false, length = 1256)
 	private String imageUrl;
 	
-	@Column(name = "link_url", nullable = true, length = 256)
+	/**
+	 * <pre>
+	 * @serialField linkUrl：广告跳转链接地址。
+	 * </pre>
+	 */
+	@Column(name = "link_url", nullable = true, length = 1256)
 	private String linkUrl;
 	
-	@Column(name = "create_time", nullable = false, length = 0)
+	/**
+	 * <pre>
+	 * @serialField createTime：创建时间。
+	 * </pre>
+	 */
+	@Column(name = "create_time", nullable = false, length = 64)
 	private Date createTime;
 	
-	@Column(name = "update_time", nullable = false, length = 0)
+	/**
+	 * <pre>
+	 * @serialField updateTime：更新时间。
+	 * </pre>
+	 */
+	@Column(name = "update_time", nullable = false, length = 64)
 	private Date updateTime;
 }

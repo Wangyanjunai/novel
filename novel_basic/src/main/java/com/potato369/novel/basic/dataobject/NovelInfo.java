@@ -42,12 +42,16 @@ import java.util.List;
 public class NovelInfo implements Serializable {
 
     /**
-     * @serialField serialVersionUID: 序列号
+     * <pre>
+     * @serialField serialVersionUID: 序列号。
+     * </pre>
      */
     private static final long serialVersionUID = -8639503100980373589L;
 
     /**
-     * @serialField id：id，主键id
+     * <pre>
+     * @serialField id：id，主键id。
+     * </pre>
      */
     @Id
     @Column(name = "id", nullable = false, length = 11)
@@ -55,47 +59,44 @@ public class NovelInfo implements Serializable {
     private Integer id;
 
     /**
-     * @serialField fileName：小说名称
+     * <pre>
+     * @serialField cover：封面图片路径。
+     * </pre>
      */
-    @Column(name = "file_name", length = 256)
-    @Xpath(value="//div[@id='info']/h1/text()")
-    private String fileName;
-
-    /**
-     * @serialField cover：封面图片
-     */
-    @Column(name = "cover", length = 256)
+    @Column(name = "coverURL", length = 1256)
     @Xpath(value="//div[@id='fmimg']/img/@src()")
-    private String cover;
+    private String coverURL;
 
     /**
-     * @serialField title：标题
+     * <pre>
+     * @serialField title：小说名标题（名称）。
+     * </pre>
      */
     @Column(name = "title", length = 256)
     @Xpath(value="//div[@id='info']/h1/text()")
     private String title;
 
     /**
-     * @serialField author：作者
+     * <pre>
+     * @serialField author：作者。
+     * </pre>
      */
     @Column(name = "author", length = 256)
     @Xpath(value="//div[@id='info']/p[1]/text()")
     private String author;
 
     /**
-     * @serialField publisher：出版社
+     * <pre>
+     * @serialField publisher：出版社，或者爬取的网站名称。
+     * </pre>
      */
     @Column(name = "publisher", length = 128)
     private String publisher;
 
     /**
-     * @serialField bookId：文件id
-     */
-    @Column(name = "book_id", nullable = false, length = 256)
-    private String bookId;
-
-    /**
-     * @serialField totalWords：总字数
+     * <pre>
+     * @serialField totalWords：总字数。
+     * </pre>
      */
     @Column(name = "total_words", length = 16)
     private BigDecimal totalWords;
