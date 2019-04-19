@@ -93,13 +93,12 @@ public class BiQuGeNovelCrawler extends BaseSeimiCrawler{
 				log.debug("【爬虫系统后台】开始渲染爬取到的笔趣阁小说网站小说内容");
 			}
 			NovelInfo novelInfo = response.render(NovelInfo.class);
-			novelInfo.setCover(DOMAIN_URL.concat(novelInfo.getCover()));
+			novelInfo.setCoverURL(DOMAIN_URL.concat(novelInfo.getCoverURL()));
 			novelInfo.setAuthor(novelInfo.getAuthor().split("：")[1]);
 			String realUrl = response.getRealUrl();
 			CategoryEnum category = getCategoryType(realUrl);
 			novelInfo.setCategoryType(category.getCode());
 			novelInfo.setCategoryText(category.getMessage());
-			novelInfo.setBookId(UUIDUtil.gen32UUID());
 			novelInfo.setNovelStatus(NovelInfoEnum.NOVEL_STATUS_FINISHED.getCode());
 			novelInfo.setHaveRead(category.getCode());
 			novelInfo.setType(category.getCode());

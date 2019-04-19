@@ -144,7 +144,7 @@ public class BuyerNovelInfoController {
 		resultVO.setTotal(BigDecimal.valueOf(novelInfoList.size()));
 		Map<String, List<NovelInfo>> map = new HashMap<String, List<NovelInfo>>();
 		for(NovelInfo novelInfo : novelInfoList) {
-			novelInfo.setCover(getCover(novelInfo));
+			novelInfo.setCoverURL(getCover(novelInfo));
 			List<NovelInfo> tempList = map.get(novelInfo.getCategoryText());
 			if(tempList == null) {
 				tempList = new ArrayList<NovelInfo>();
@@ -332,7 +332,7 @@ public class BuyerNovelInfoController {
 			bannerInfoVO.setNovelInfoId(String.valueOf(novelInfo.getId()));
 			bannerInfoVO.setTitle(novelInfo.getTitle());
 			bannerInfoVO.setCategory(novelInfo.getCategoryText());
-			bannerInfoVO.setNovelId(novelInfo.getBookId());
+			bannerInfoVO.setNovelId(novelInfo.getId().toString());
 			bannerInfoVOList.add(bannerInfoVO);
 		}
 		return bannerInfoVOList;
@@ -342,8 +342,8 @@ public class BuyerNovelInfoController {
 		return new StringBuffer(projectUrlProperties.getResUrl()
 				.concat("/book/res/img/cover").concat("/")
 				.concat(novelInfo.getCategoryText()).concat("/")
-				.concat(novelInfo.getBookId()).concat("/")
-				.concat(novelInfo.getCover())
+				.concat(novelInfo.getId().toString()).concat("/")
+				.concat(novelInfo.getCoverURL())
 		).toString().trim();
 	}
 }

@@ -74,17 +74,6 @@ public class NovelInfoServiceImpl implements NovelInfoService {
     }
 
     /**
-     * 根据fileName查找小说详情信息
-     *
-     * @param fileName
-     * @return
-     */
-    @Override
-    public NovelInfoDTO findByFileName(String fileName) {
-        return NovelInfo2NovelInfoDTOConverter.convert(novelInfoRepository.findNovelInfoByFileName(fileName));
-    }
-
-    /**
      * 根据小说的状态查询小说信息列表
      *
      * @param novelStatus
@@ -115,4 +104,18 @@ public class NovelInfoServiceImpl implements NovelInfoService {
     public Page<NovelInfoDTO> findAll(Pageable pageable) {
         return NovelInfo2NovelInfoDTOConverter.convertToNovelInfoDTOPage(novelInfoRepository.findAll(pageable), pageable);
     }
+
+	
+	/**
+	 * <pre>
+	 * 描述该方法的实现功能：
+	 * @see com.potato369.novel.service.NovelInfoService#findByFileName(java.lang.String)
+	 * </pre>
+	 */
+		
+	@Override
+	public NovelInfoDTO findByFileName(String fileName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
