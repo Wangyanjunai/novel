@@ -3,7 +3,7 @@ spring:
     #################################################################################### Druid连接池的配置信息 ####################################################################
     druid:
       async-init: true                                        #有initialSize数量较多时，打开会加快应用启动时间
-      url: jdbc:mysql://139.159.210.42:3306/novel_tmp?useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&useOldAliasMetadataBehavior=true&serverTimezone=GMT%2B8 #数据库连接URL
+      url: jdbc:mysql://139.159.210.42:3306/app_novel?useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&useOldAliasMetadataBehavior=true&serverTimezone=GMT%2B8 #数据库连接URL
       driver-class-name: com.mysql.jdbc.Driver                #数据库连接驱动类名称
       username: root                                          #数据库连接用户名
       password: MyNewPassword4!                               #数据库连接密码

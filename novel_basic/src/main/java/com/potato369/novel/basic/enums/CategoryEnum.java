@@ -25,35 +25,43 @@ public enum CategoryEnum implements CodeEnum<Object> {
 
     NOT_DELETE(0, Boolean.FALSE, "否"),
     
-    MALE(200, Boolean.TRUE, "Male"),
+    MALE(100, Boolean.TRUE, "male"),
     
-    FEMALE(300, Boolean.TRUE, "Female"),
+    FEMALE(200, Boolean.TRUE, "female"),
     
-    FANTASY(201, Boolean.TRUE, "Fantasy"),
+    PICTURE(300, Boolean.TRUE, "picture"),
     
-    COATARD(202, Boolean.TRUE, "Coatard"),
+    XUANHUANQIHUAN(101, Boolean.TRUE, "xuanhuanqihuan"),
     
-    WEBGAME(203, Boolean.TRUE, "Webgame"),
+    XIUXIANXIUZHEN(102, Boolean.TRUE, "xiuxianxiuzhen"),
     
-    MILITARY(204, Boolean.TRUE, "Military"),
+    XIANXIAWUXIA(103, Boolean.TRUE, "xianxiawuxia"),
     
-    SCIENCE(205, Boolean.TRUE, "Science"),
+    DUSHIQINGGAN(104, Boolean.TRUE, "dushiqinggan"),
     
-    HISTORY(206, Boolean.TRUE, "History"),
+    DUSHIYINENG(105, Boolean.TRUE, "dushiyineng"),
     
-    BIZARRE(207, Boolean.TRUE, "Bizarre"),
+    LISHIJUNSHI(106, Boolean.TRUE, "lishijunshi"),
     
-    WUXIA(208, Boolean.TRUE, "Wuxia"),
+    KEHUANMOSHI(107, Boolean.TRUE, "kehuanmoshi"),
     
-    XIANXIA(209, Boolean.TRUE, "Xianxia"),
+    YOUXIJINGJI(108, Boolean.TRUE, "youxijingji"),
     
-    CAMPUS(210, Boolean.TRUE, "Campus"),
+    HUANXIANGYANQING(201, Boolean.TRUE, "huanxiangyanqing"),
     
-    MYSTERY(212, Boolean.TRUE, "Mystery"),
+    GUDAIYANQING(202, Boolean.TRUE, "gudaiyanqing"),
     
-    CITY(301, Boolean.TRUE, "City"),
+    DUSHISHENGHUO(203, Boolean.TRUE, "dushishenghuo"),
     
-    THROUGH(302, Boolean.TRUE, "Through"),
+    QINGCHUNXIAOYUAN(204, Boolean.TRUE, "qingchunxiaoyuan"),
+    
+    ZONGCAIHAOMEN(205, Boolean.TRUE, "zongcaihaomen"),
+    
+    XUANYILINGYI(206, Boolean.TRUE, "xuanyilingyi"),
+    
+    CHUANGYUECHONGSHENG(207, Boolean.TRUE, "chuangyuechongsheng"),
+    
+    QITALEIBIE(208, Boolean.TRUE, "qitaleibie"),
     ;
 
     private Integer code;

@@ -1,15 +1,20 @@
 package com.potato369.novel.basic.service.impl;
 
+import com.potato369.novel.basic.constants.BusinessConstants;
 import com.potato369.novel.basic.dataobject.NovelChapter;
 import com.potato369.novel.basic.dataobject.NovelInfo;
 import com.potato369.novel.basic.repository.NovelChapterRepository;
 import com.potato369.novel.basic.repository.NovelInfoRepository;
 import com.potato369.novel.basic.service.NovelChapterService;
+import com.potato369.novel.basic.utils.UUIDUtil;
+import com.vladsch.flexmark.convert.html.FlexmarkHtmlParser;
+import cn.wanghaomiao.seimi.struct.Response;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 /**
@@ -25,6 +30,7 @@ import java.util.List;
  * </pre>
  */
 @Service
+@Slf4j
 public class NovelChapterServiceImpl implements NovelChapterService {
 
     @Autowired
@@ -43,6 +49,40 @@ public class NovelChapterServiceImpl implements NovelChapterService {
     @Override
     public NovelChapter save(NovelChapter novelChapter) {
         return repository.save(novelChapter);
+    }
+    
+    /**
+     * <pre>
+     * 新增小说章节信息
+     * @param response
+     * @return NovelChapter.class
+     * </pre>
+     */
+    @Override
+    public NovelChapter save(Response response, Integer bookId) {
+    	NovelChapter novelChapterTemp = null;
+    	try {
+    		novelChapterTemp = response.render(NovelChapter.class);
+    		log.info("bean resolve res={}, url={}", novelChapterTemp, response.getUrl());
+    		if (novelChapterTemp != null) {
+    			novelChapterTemp.setChapterId(UUIDUtil.gen32UUID());
+    			novelChapterTemp.setBookId(bookId);
+    			String htmlContent = null;
+    			if(StringUtils.isNotBlank(novelChapterTemp.getChapterContent())){
+    				novelChapterTemp.setStarturl(BusinessConstants.CURRENT_GET_DATA_URL);
+    				novelChapterTemp.setChaperUrl(BusinessConstants.CURRENT_GET_BOOK_DATA_URL);
+                    htmlContent = novelChapterTemp.getChapterContent();
+                    //内容不为空的时候转化
+                    novelChapterTemp.setChapterContent(FlexmarkHtmlParser.parse(htmlContent));
+                }
+    			novelChapterTemp = save(novelChapterTemp);
+    			log.info("store success, chapterId={}, chaperName={}", novelChapterTemp.getChapterId(), novelChapterTemp.getChaperName());
+			}
+		} catch (Exception e) {
+			log.error("【后台管理】爬取小说章节信息失败", e);
+		} finally {
+		}
+        return novelChapterTemp;
     }
 
     /**

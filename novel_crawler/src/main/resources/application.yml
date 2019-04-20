@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: prod
 #  jackson:
 #    default-property-inclusion: non_default
   freemarker:
@@ -67,5 +67,5 @@ server:
 seimi:
   crawler:
     enabled: true
-    names: sbiquge
+    names: 88dush
     ##names: dindian,biquyun,23us,sbiquge,gxwztv,00ksw,xbiquge,xbxwx,bxwx,zhuishushenqi,88dush

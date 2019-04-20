@@ -4,12 +4,9 @@ import cn.wanghaomiao.seimi.annotation.Crawler;
 import cn.wanghaomiao.seimi.def.BaseSeimiCrawler;
 import cn.wanghaomiao.seimi.struct.Request;
 import cn.wanghaomiao.seimi.struct.Response;
-import com.potato369.novel.basic.service.NovelChapterService;
 import com.potato369.novel.basic.service.NovelInfoService;
 import com.potato369.novel.basic.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
-
-import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.List;
 import org.seimicrawler.xpath.JXDocument;
@@ -17,7 +14,6 @@ import com.potato369.novel.basic.dataobject.NovelChapter;
 import com.potato369.novel.basic.dataobject.NovelInfo;
 import com.potato369.novel.basic.enums.CategoryEnum;
 import com.potato369.novel.basic.enums.NovelInfoEnum;
-
 import org.springframework.beans.factory.annotation.Autowired;
 /**
  * <pre>
@@ -41,9 +37,6 @@ public class BiQuGeNovelCrawler extends BaseSeimiCrawler{
 
 	@Autowired
 	private NovelInfoService novelInfoService;
-
-	@Autowired
-	private NovelChapterService chapterService;
 		
 	@Override
 	public String[] startUrls() {
@@ -103,8 +96,7 @@ public class BiQuGeNovelCrawler extends BaseSeimiCrawler{
 			novelInfo.setHaveRead(category.getCode());
 			novelInfo.setType(category.getCode());
 			log.info("novelInfo={}", novelInfo);
-			NovelInfo novelInfoTmp = novelInfoService.save(novelInfo);
-			Integer id = novelInfoTmp.getId();
+			novelInfoService.save(novelInfo);
 			List<String> urlList = novelInfo.getChapterUrl();
 			for (String string : urlList) {
 				String url = DOMAIN_URL.concat(string);
@@ -138,38 +130,22 @@ public class BiQuGeNovelCrawler extends BaseSeimiCrawler{
 	}
 	
 	public CategoryEnum getCategoryType(String realUrl) {
-		if (realUrl.contains("xuanhuan")) {
-			return CategoryEnum.FANTASY;
-		} if (realUrl.contains("xiuzhen")) {
-			return CategoryEnum.COATARD;
-		} if (realUrl.contains("dushi")) {
-			return CategoryEnum.CITY;
-		} if (realUrl.contains("chuanyue")) {
-			return CategoryEnum.THROUGH;
-		} if (realUrl.contains("wangyou")) {
-			return CategoryEnum.WEBGAME;
-		} if (realUrl.contains("kehuan")) {
-			return CategoryEnum.SCIENCE;
-		} if (realUrl.contains("qita")) {
-			return CategoryEnum.SCIENCE;
+		if (realUrl.contains("xuanhuanxiaoshuo")) {
+			return CategoryEnum.XUANYILINGYI;
+		} if (realUrl.contains("xiuzhenxiaoshuo")) {
+			return CategoryEnum.XIUXIANXIUZHEN;
+		} if (realUrl.contains("dushixiaoshuo")) {
+			return CategoryEnum.DUSHIQINGGAN;
+		} if (realUrl.contains("chuanyuexiaoshuo")) {
+			return CategoryEnum.CHUANGYUECHONGSHENG;
+		} if (realUrl.contains("wangyouxiaoshuo")) {
+			return CategoryEnum.YOUXIJINGJI;
+		} if (realUrl.contains("kehuanxiaoshuo")) {
+			return CategoryEnum.KEHUANMOSHI;
+		} if (realUrl.contains("qitaxiaoshuo")) {
+			return CategoryEnum.QITALEIBIE;
 		} else {
-			return CategoryEnum.FANTASY;
+			return CategoryEnum.QITALEIBIE;
 		}
 	}
-	
-	public synchronized String getNumber(int width, int number) {
-    	DecimalFormat df = null;
-        String result = null;
-        try {
-            char[] chs = new char[width];
-            for (int i = 0; i < width; i++) {
-                chs[i] = '0';
-            }
-            df = new DecimalFormat(new String(chs));
-            result = df.format(number).concat(String.valueOf(System.currentTimeMillis()));
-        } catch (Exception e) {
-            log.error("生成id有误", e);
-        }
-        return result;
-    }
 }

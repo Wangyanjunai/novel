@@ -2,6 +2,9 @@ package com.potato369.novel.basic.service;
 
 import com.potato369.novel.basic.dataobject.NovelChapter;
 import com.potato369.novel.basic.dataobject.NovelInfo;
+
+import cn.wanghaomiao.seimi.struct.Response;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
@@ -18,7 +21,7 @@ import java.util.List;
  * </pre>
  */
 public interface NovelChapterService {
-
+	
     /**
      * <pre>
      * 新增小说章节信息
@@ -27,6 +30,15 @@ public interface NovelChapterService {
      * </pre>
      */
     NovelChapter save(NovelChapter novelChapter);
+
+    /**
+     * <pre>
+     * 新增小说章节信息
+     * @param response
+     * @return NovelChapter.class
+     * </pre>
+     */
+    NovelChapter save(Response response, Integer bookId);
 
     /**
      * <pre>

@@ -39,22 +39,25 @@ CREATE TABLE `novel_category` (
 -- Records of novel_category
 -- ----------------------------
 BEGIN;
-INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdb', NULL, '男版', 'male', 100, 0, 0, 0, '2018-11-15 17:26:38', '2019-01-18 17:23:44');
-INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdc', NULL, '女版', 'female', 200, 0, 0, 0, '2018-11-15 17:27:03', '2019-01-18 17:23:49');
-INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bda', NULL, '漫画', 'picture', 300, 0, 0, 0, '2018-11-15 17:27:03', '2019-01-18 17:23:49');
-INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdd', '61ae83410ed64850bb3d334845d83bdb', '玄幻', 'fantasy', 101, 0, 0, 0, '2018-11-15 17:40:52', '2019-01-18 17:25:51');
-INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bde', '61ae83410ed64850bb3d334845d83bdb', '修仙', 'xianxia', 102, 0, 0, 0, '2018-11-15 17:46:14', '2019-01-18 17:25:27');
-INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdf', '61ae83410ed64850bb3d334845d83bdb', '武侠', 'wuxia', 103, 0, 0, 0, '2018-11-15 17:45:38', '2019-01-18 17:25:16');
-INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdg', '61ae83410ed64850bb3d334845d83bdb', '都市', 'citys', 104, 0, 0, 0, '2018-11-15 17:46:48', '2019-01-18 17:24:58');
-INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdh', '61ae83410ed64850bb3d334845d83bdb', '游戏', 'games', 105, 0, 0, 0, '2018-11-15 17:47:53', '2019-01-18 17:25:34');
-INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdi', '61ae83410ed64850bb3d334845d83bdb', '悬疑', 'mystery', 106, 0, 0, 0, '2018-11-15 17:47:53', '2019-01-18 17:25:34');
-INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdj', '61ae83410ed64850bb3d334845d83bdb', '科幻', 'bizarre', 107, 0, 0, 0, '2018-11-15 17:44:53', '2019-01-18 17:25:48');
-INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdk', '61ae83410ed64850bb3d334845d83bdc', '幻想言情', 'fantasy', 201, 0, 0, 0, '2018-11-15 17:46:14', '2019-01-18 17:25:27');
-INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdl', '61ae83410ed64850bb3d334845d83bdc', '古代言情', 'ancient', 202, 0, 0, 0, '2018-11-15 17:45:38', '2019-01-18 17:25:16');
-INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdm', '61ae83410ed64850bb3d334845d83bdc', '都市言情', 'citys', 203, 0, 0, 0, '2018-11-15 17:46:48', '2019-01-18 17:24:58');
-INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdn', '61ae83410ed64850bb3d334845d83bdc', '青春校园', 'campus', 204, 0, 0, 0, '2018-11-15 17:47:53', '2019-01-18 17:25:34');
-INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdp', '61ae83410ed64850bb3d334845d83bdc', '科幻', 'bizarre', 205, 0, 0, 0, '2018-11-15 17:44:53', '2019-01-18 17:25:48');
-INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdo', '61ae83410ed64850bb3d334845d83bdc', '悬疑', 'mystery', 206, 0, 0, 0, '2018-11-15 17:47:53', '2019-01-18 17:25:34');
+INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bda', NULL, '男版', 'male', 100, 0, 0, 0, '2018-11-15 17:26:38', '2019-01-18 17:23:44');
+INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdb', NULL, '女版', 'female', 200, 0, 0, 0, '2018-11-15 17:27:03', '2019-01-18 17:23:49');
+INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdc', NULL, '漫画', 'picture', 300, 0, 0, 0, '2018-11-15 17:27:03', '2019-01-18 17:23:49');
+INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdd', '61ae83410ed64850bb3d334845d83bda', '玄幻奇幻', 'xuanhuanqihuan', 101, 0, 0, 0, '2018-11-15 17:40:52', '2019-01-18 17:25:51');
+INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bde', '61ae83410ed64850bb3d334845d83bda', '修仙修真', 'xiuxianxiuzhen', 102, 0, 0, 0, '2018-11-15 17:46:14', '2019-01-18 17:25:27');
+INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdf', '61ae83410ed64850bb3d334845d83bda', '仙侠武侠', 'xianxiawuxia', 103, 0, 0, 0, '2018-11-15 17:45:38', '2019-01-18 17:25:16');
+INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdg', '61ae83410ed64850bb3d334845d83bda', '都市情感', 'dushiqinggan', 104, 0, 0, 0, '2018-11-15 17:46:48', '2019-01-18 17:24:58');
+INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdh', '61ae83410ed64850bb3d334845d83bda', '都市异能', 'dushiyineng', 105, 0, 0, 0, '2018-11-15 17:47:53', '2019-01-18 17:25:34');
+INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdj', '61ae83410ed64850bb3d334845d83bda', '历史军事', 'lishijunshi', 106, 0, 0, 0, '2018-11-15 17:44:53', '2019-01-18 17:25:48');
+INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdk', '61ae83410ed64850bb3d334845d83bda', '科幻末世', 'kehuanmoshi', 107, 0, 0, 0, '2018-11-15 17:44:53', '2019-01-18 17:25:48');
+INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdl', '61ae83410ed64850bb3d334845d83bda', '游戏竞技', 'youxijingji', 108, 0, 0, 0, '2018-11-15 17:47:53', '2019-01-18 17:25:34');
+INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdm', '61ae83410ed64850bb3d334845d83bdb', '幻想言情', 'huanxiangyanqing', 201, 0, 0, 0, '2018-11-15 17:46:14', '2019-01-18 17:25:27');
+INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdn', '61ae83410ed64850bb3d334845d83bdb', '古代言情', 'gudaiyanqing', 202, 0, 0, 0, '2018-11-15 17:45:38', '2019-01-18 17:25:16');
+INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdo', '61ae83410ed64850bb3d334845d83bdb', '都市生活', 'dushishenghuo', 203, 0, 0, 0, '2018-11-15 17:46:48', '2019-01-18 17:24:58');
+INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdp', '61ae83410ed64850bb3d334845d83bdb', '青春校园', 'qingchunxiaoyuan', 204, 0, 0, 0, '2018-11-15 17:47:53', '2019-01-18 17:25:34');
+INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdq', '61ae83410ed64850bb3d334845d83bdb', '总裁豪门', 'zongcaihaomen', 205, 0, 0, 0, '2018-11-15 17:44:53', '2019-01-18 17:25:48');
+INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdr', '61ae83410ed64850bb3d334845d83bdb', '悬疑灵异', 'xuanyilingyi', 206, 0, 0, 0, '2018-11-15 17:47:53', '2019-01-18 17:25:34');
+INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bds', '61ae83410ed64850bb3d334845d83bdb', '穿越重生', 'chuangyuechongsheng', 207, 0, 0, 0, '2018-11-15 17:47:53', '2019-01-18 17:25:34');
+INSERT INTO `novel_category` VALUES ('61ae83410ed64850bb3d334845d83bdt', '61ae83410ed64850bb3d334845d83bdb', '其他类别', 'qitaleibie', 208, 0, 0, 0, '2018-11-15 17:47:53', '2019-01-18 17:25:34');
 COMMIT;
 
 -- ----------------------------
@@ -94,8 +97,9 @@ CREATE TABLE `novel_info`  (
 DROP TABLE IF EXISTS `novel_chapter`;
 CREATE TABLE `novel_chapter` (
   `chapter_id` varchar(32) NOT NULL COMMENT '章节id，主键id',
-  `chapter_name` varchar(256) NOT NULL COMMENT '章节标题（名称）',
   `book_id` int(11) UNSIGNED NOT NULL COMMENT '章节所属小说id',
+  `chapter_name` varchar(256) NOT NULL COMMENT '章节标题（名称）',
+  `chapter_url` varchar(1024) NOT NULL COMMENT '章节url',
   `chapter_content` blob NOT NULL COMMENT '章节内容',
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
