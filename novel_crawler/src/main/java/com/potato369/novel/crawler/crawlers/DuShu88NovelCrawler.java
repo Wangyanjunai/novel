@@ -176,6 +176,38 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
         		log.debug("【后台爬虫系统爬取数据】开始爬取每页小说的目录和内容数据");
 			}
             JXDocument document = response.document();
+            List<Object> urlList = document.sel("//div[@class='mulu']/ul/li/a/@href");
+            BusinessConstants.CURRENT_TOTAL_CHAPTERS = urlList.size();
+            BusinessConstants.threadPoolBook.execute(()-> {
+                BusinessConstants.lock.lock();
+                for (Object url:urlList) {
+                    String urlStr = url.toString();
+                    if (!urlStr.startsWith(BusinessConstants.CURRENT_GET_DATA_URL)) {
+                        BusinessConstants.CURRENT_GET_BOOK_DATA_URL = new StringBuffer(BusinessConstants.CURRENT_GET_DATA_URL).append(urlStr).toString();
+                    } else {
+                        BusinessConstants.CURRENT_GET_BOOK_DATA_URL = urlStr;
+                    }
+                    if (log.isDebugEnabled()) {
+                    	log.debug("【后台爬虫系统爬取数据】爬取每页小说的目录和内容数据URL={}", BusinessConstants.CURRENT_GET_BOOK_DATA_URL);
+					}
+                    push(Request.build(BusinessConstants.CURRENT_GET_BOOK_DATA_URL, DuShu88NovelCrawler::renderChapterBean));
+                    try {
+                        //防止被屏蔽间隔1到2秒钟访问
+                        Thread.sleep(new Random().nextInt(1000) + 1000);
+                    } catch (Exception e) {
+                        log.error("【后台爬虫系统爬取数据】爬取每页小说的目录和内容数据出现错误", e);
+                    }
+                    //当前线程等待直到被唤醒
+                    try {
+                        BusinessConstants.conditionPoolBook.await();
+                    } catch (Exception e) {
+                    	log.error("【后台爬虫系统爬取数据】爬取每页小说的目录和内容数据出现错误", e);
+                    }
+                }
+                //唤醒上一级线程
+                BusinessConstants.conditionPoolPage.signal();
+                BusinessConstants.lock.unlock();
+            });
             NovelInfo novelInfo = NovelInfo.builder().build();
             List<Object> categoryList = document.sel("//div[@class='place']/a/text()");
             StringBuffer category = new StringBuffer();
@@ -285,6 +317,7 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
             novelInfo.setClickNumber(BigDecimal.ZERO);
             novelInfo.setPublisher("八八读书网（88dush.com）");
             novelInfo.setTotalWords(BigDecimal.ZERO);
+            novelInfo.setTotalChapters(BusinessConstants.CURRENT_TOTAL_CHAPTERS);
             novelInfo.setReaders(BigDecimal.ZERO);
             novelInfo.setRecentReaders(BigDecimal.ZERO);
             novelInfo.setRetention(0);
@@ -292,37 +325,6 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
         		log.debug("【后台爬虫系统爬取数据】开始爬取每页小说信息数据={}", novelInfo);
 			}
             novelInfoService.save(novelInfo);
-            List<Object> urlList = document.sel("//div[@class='mulu']/ul/li/a/@href");
-            BusinessConstants.threadPoolBook.execute(()-> {
-                BusinessConstants.lock.lock();
-                for (Object url:urlList) {
-                    String urlStr = url.toString();
-                    if (!urlStr.startsWith(BusinessConstants.CURRENT_GET_DATA_URL)) {
-                        BusinessConstants.CURRENT_GET_BOOK_DATA_URL = new StringBuffer(BusinessConstants.CURRENT_GET_DATA_URL).append(urlStr).toString();
-                    } else {
-                        BusinessConstants.CURRENT_GET_BOOK_DATA_URL = urlStr;
-                    }
-                    if (log.isDebugEnabled()) {
-                    	log.debug("【后台爬虫系统爬取数据】爬取每页小说的目录和内容数据URL={}", BusinessConstants.CURRENT_GET_BOOK_DATA_URL);
-					}
-                    push(Request.build(BusinessConstants.CURRENT_GET_BOOK_DATA_URL, DuShu88NovelCrawler::renderChapterBean));
-                    try {
-                        //防止被屏蔽间隔1到2秒钟访问
-                        Thread.sleep(new Random().nextInt(1000) + 1000);
-                    } catch (Exception e) {
-                        log.error("【后台爬虫系统爬取数据】爬取每页小说的目录和内容数据出现错误", e);
-                    }
-                    //当前线程等待直到被唤醒
-                    try {
-                        BusinessConstants.conditionPoolBook.await();
-                    } catch (Exception e) {
-                    	log.error("【后台爬虫系统爬取数据】爬取每页小说的目录和内容数据出现错误", e);
-                    }
-                }
-                //唤醒上一级线程
-                BusinessConstants.conditionPoolPage.signal();
-                BusinessConstants.lock.unlock();
-            });
         } catch (Exception e) {
             log.error("【后台爬虫系统爬取数据】爬取每页小说的目录和内容数据出现错误", e);
             //当前有异常唤醒上一级
