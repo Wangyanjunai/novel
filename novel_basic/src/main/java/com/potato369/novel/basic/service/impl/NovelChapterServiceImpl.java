@@ -1,16 +1,11 @@
 package com.potato369.novel.basic.service.impl;
 
-import com.potato369.novel.basic.constants.BusinessConstants;
 import com.potato369.novel.basic.dataobject.NovelChapter;
 import com.potato369.novel.basic.dataobject.NovelInfo;
 import com.potato369.novel.basic.repository.NovelChapterRepository;
 import com.potato369.novel.basic.repository.NovelInfoRepository;
 import com.potato369.novel.basic.service.NovelChapterService;
-import com.potato369.novel.basic.utils.UUIDUtil;
-import com.vladsch.flexmark.convert.html.FlexmarkHtmlParser;
 import cn.wanghaomiao.seimi.struct.Response;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +25,6 @@ import java.util.List;
  * </pre>
  */
 @Service
-@Slf4j
 public class NovelChapterServiceImpl implements NovelChapterService {
 
     @Autowired
@@ -59,30 +53,31 @@ public class NovelChapterServiceImpl implements NovelChapterService {
      * </pre>
      */
     @Override
-    public NovelChapter save(Response response, Integer bookId) {
-    	NovelChapter novelChapterTemp = null;
-    	try {
-    		novelChapterTemp = response.render(NovelChapter.class);
-    		log.info("bean resolve res={}, url={}", novelChapterTemp, response.getUrl());
-    		if (novelChapterTemp != null) {
-    			novelChapterTemp.setChapterId(UUIDUtil.gen32UUID());
-    			novelChapterTemp.setBookId(bookId);
-    			String htmlContent = null;
-    			if(StringUtils.isNotBlank(novelChapterTemp.getChapterContent())){
-    				novelChapterTemp.setStarturl(BusinessConstants.CURRENT_GET_DATA_URL);
-    				novelChapterTemp.setChaperUrl(BusinessConstants.CURRENT_GET_BOOK_DATA_URL);
-                    htmlContent = novelChapterTemp.getChapterContent();
-                    //内容不为空的时候转化
-                    novelChapterTemp.setChapterContent(FlexmarkHtmlParser.parse(htmlContent));
-                }
-    			novelChapterTemp = save(novelChapterTemp);
-    			log.info("store success, chapterId={}, chaperName={}", novelChapterTemp.getChapterId(), novelChapterTemp.getChaperName());
-			}
-		} catch (Exception e) {
-			log.error("【后台管理】爬取小说章节信息失败", e);
-		} finally {
-		}
-        return novelChapterTemp;
+    public NovelChapter save(Response response, String bookId) {
+//    	NovelChapter novelChapterTemp = null;
+//    	try {
+//    		novelChapterTemp = response.render(NovelChapter.class);
+//    		log.info("bean resolve res={}, url={}", novelChapterTemp, response.getUrl());
+//    		if (novelChapterTemp != null) {
+//    			novelChapterTemp.setId(UUIDUtil.gen32UUID());
+//    			novelChapterTemp.setBookId(bookId);
+//    			String htmlContent = null;
+//    			if(StringUtils.isNotBlank(novelChapterTemp.getContent())){
+//    				//novelChapterTemp.setStarturl(BusinessConstants.CURRENT_GET_DATA_URL);
+//    				novelChapterTemp.setUrl(BusinessConstants.CURRENT_GET_BOOK_DATA_URL);
+//                    htmlContent = novelChapterTemp.getContent();
+//                    //内容不为空的时候转化
+//                    novelChapterTemp.setChapterContent(FlexmarkHtmlParser.parse(htmlContent));
+//                }
+//    			novelChapterTemp = save(novelChapterTemp);
+//    			log.info("store success, chapterId={}, chaperName={}", novelChapterTemp.getChapterId(), novelChapterTemp.getChaperName());
+//			}
+//		} catch (Exception e) {
+//			log.error("【后台管理】爬取小说章节信息失败", e);
+//		} finally {
+//		}
+//        return novelChapterTemp;
+    	return null;
     }
 
     /**
@@ -132,7 +127,7 @@ public class NovelChapterServiceImpl implements NovelChapterService {
     	NovelChapter novelChapter = repository.findOne(chapterId);
     	NovelInfo novelInfo = null;
     	if (novelChapter != null) {
-    		Integer bookId = novelChapter.getBookId();
+    		String bookId = novelChapter.getBookId();
     		novelInfo = novelInfoRepository.findOne(bookId);
 		}
         return novelInfo;
@@ -147,7 +142,7 @@ public class NovelChapterServiceImpl implements NovelChapterService {
      * @param bookId
      */
     @Override
-    public List<NovelChapter> findAll(Integer bookId) {
+    public List<NovelChapter> findAll(String bookId) {
         return repository.findByBookId(bookId);
     }
 
@@ -161,7 +156,7 @@ public class NovelChapterServiceImpl implements NovelChapterService {
      * @param pageable
      */
     @Override
-    public Page<NovelChapter> findAll(Integer bookId, Pageable pageable) {
+    public Page<NovelChapter> findAll(String bookId, Pageable pageable) {
     	return repository.findAll(null, pageable);
     }
 }

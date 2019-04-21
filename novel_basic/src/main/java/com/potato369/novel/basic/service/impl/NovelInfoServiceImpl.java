@@ -46,7 +46,7 @@ public class NovelInfoServiceImpl implements NovelInfoService {
      * @param id
      */
     @Override
-    public void delete(Integer id) {
+    public void delete(String id) {
     	repository.delete(id);
     }
 
@@ -68,7 +68,7 @@ public class NovelInfoServiceImpl implements NovelInfoService {
      * @return
      */
     @Override
-    public NovelInfo find(Integer id) {
+    public NovelInfo find(String id) {
         return repository.findOne(id);
     }
 
@@ -116,5 +116,10 @@ public class NovelInfoServiceImpl implements NovelInfoService {
 	public NovelInfo findByFileName(String fileName) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public NovelInfo findByTitleAndCategoryText(String title, String categoryText) {
+		return repository.findByTitleAndCategoryText(title, categoryText);
 	}
 }

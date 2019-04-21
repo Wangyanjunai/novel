@@ -47,7 +47,7 @@ public class NovelInfoServiceImpl implements NovelInfoService {
      * @param id
      */
     @Override
-    public void delete(Integer id) {
+    public void delete(String id) {
         novelInfoRepository.delete(id);
     }
 
@@ -69,7 +69,7 @@ public class NovelInfoServiceImpl implements NovelInfoService {
      * @return
      */
     @Override
-    public NovelInfoDTO find(Integer id) {
+    public NovelInfoDTO find(String id) {
         return NovelInfo2NovelInfoDTOConverter.convert(novelInfoRepository.findOne(id));
     }
 

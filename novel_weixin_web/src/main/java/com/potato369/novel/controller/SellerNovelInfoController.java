@@ -108,7 +108,7 @@ public class SellerNovelInfoController {
      * </pre>
      */
     @GetMapping(value = "/index")
-    public ModelAndView index(@RequestParam(name = "id", required = false) Integer id,
+    public ModelAndView index(@RequestParam(name = "id", required = false) String id,
                               @RequestParam(name = "bookInfo", required = false) NovelInfoDTO bookInfo,
                               Map<String, Object> map) {
         findCategoryList(map);

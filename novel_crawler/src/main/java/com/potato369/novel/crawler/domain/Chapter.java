@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.crawler.domain
@@ -23,19 +22,22 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class Chapter {
-    // 章节名称
-    @Xpath(value = "//div[@class='mulu']/ul/li/a/allText()|//div[@class='mulu']/ul/li/a/text()|div[@class='novel']/h1/text()|div[@class='novel']/h1/allText()")
-    private String chapterTitle;
-    // 章节URL
-    @Xpath(value = "//div[@class='mulu']/ul/li/a/@href")
-    private String chapterURL;
-    // 章节内容
-    @Xpath(value = "//div[@class='yd_text2']/allText()|//div[@class='yd_text2']/text()|//div[@class='yd_text2']/allText()|//div[@class='yd_text2']/allText()")
-    private String chapterContent;
-    // 最新章节标题
-    @Xpath(value = "//div[@class='booklist']/li/span[@class='zj']/a/allText()|//div[@class='booklist']/li/span[@class='zj']/a/text()|//div[@class='jieshao']/div[@class='rt']/div[@class='msg']/em/a/text()|//div[@class='jieshao']/div[@class='rt']/div[@class='msg']/em/a/allText()")
-    private String lastChapterTitle;
-    // 最新章节URL
-    @Xpath(value = "//div[@class='booklist']/li/span[@class='zj']/a/@href|//div[@class='jieshao']/div[@class='rt']/div[@class='msg']/em/a/@href")
-    private String lastChapterURL;
+	
+    private String id;
+    
+    @Xpath("//div[@class='novel']/h1/text()")
+    private String title;
+
+    @Xpath("//div[@class='novel']/div[@class='yd_text2']")
+    private String content;
+    
+    @Xpath("//div[@class='read_t']/a[2]/text()")
+    private String categoryText;
+    
+    @Xpath("//div[@class='read_t']/a[3]/text()")
+    private String novelName;
+    
+    private String url;
+
+    private String starturl;
 }

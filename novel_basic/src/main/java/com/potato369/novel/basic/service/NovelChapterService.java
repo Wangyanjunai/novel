@@ -38,7 +38,7 @@ public interface NovelChapterService {
      * @return NovelChapter.class
      * </pre>
      */
-    NovelChapter save(Response response, Integer bookId);
+    NovelChapter save(Response response, String bookId);
 
     /**
      * <pre>
@@ -81,7 +81,7 @@ public interface NovelChapterService {
      * @return NovelChapter.class
      * </pre>
      */
-    List<NovelChapter> findAll(Integer bookId);
+    List<NovelChapter> findAll(String bookId);
 
     /**
      * <pre>
@@ -89,5 +89,5 @@ public interface NovelChapterService {
      * @return NovelChapter.class
      * </pre>
      */
-    Page<NovelChapter> findAll(Integer bookId, Pageable pageable);
+    Page<NovelChapter> findAll(String bookId, Pageable pageable);
 }

@@ -60,16 +60,16 @@ public class BuyerNovelInfoController {
 		List<CategoryDataVO> categoryDataVOList = new ArrayList<CategoryDataVO>();
 		List<CategoriesDataVO> categoriesData = new ArrayList<CategoriesDataVO>();
 		Map<Integer, List<NovelInfo>> map = new HashMap<Integer, List<NovelInfo>>();
-		for(NovelInfo novelInfo : novelInfoList) {
-			List<NovelInfo> tempList = map.get(novelInfo.getType());
-			if(tempList == null) {
-				tempList = new ArrayList<NovelInfo>();
-				tempList.add(novelInfo);
-				map.put(novelInfo.getType(), tempList);
-			} else {
-				tempList.add(novelInfo);
-			}
-		}
+//		for(NovelInfo novelInfo : novelInfoList) {
+//			List<NovelInfo> tempList = map.get(novelInfo.getType());
+//			if(tempList == null) {
+//				tempList = new ArrayList<NovelInfo>();
+//				tempList.add(novelInfo);
+//				map.put(novelInfo.getType(), tempList);
+//			} else {
+//				tempList.add(novelInfo);
+//			}
+//		}
 		for(Integer category: map.keySet()) {
 			CategoryDataVO categoryDataVO = new CategoryDataVO();
 			categoryDataVO.setCategory(category);
@@ -250,18 +250,18 @@ public class BuyerNovelInfoController {
 		novelInfoVO.setCategory(novelInfo.getCategoryType());
 		novelInfoVO.setCover(getCover(novelInfo));
 		novelInfoVO.setIntroduction(new StringBuffer().append("『内容简介：").append(novelInfo.getIntroduction()).append("……』").toString().trim());
-		if (novelInfo.getCache() == NovelInfoEnum.CACHE.getCode()) {
-			novelInfoVO.setCache(NovelInfoEnum.CACHE.getStatus());
-		}
-		if (novelInfo.getHaveRead() == NovelInfoEnum.HAVE_READ.getCode()) {
-			novelInfoVO.setHaveRead(NovelInfoEnum.HAVE_READ.getStatus());
-		}
-		if (novelInfo.getSelected() == NovelInfoEnum.SELECTED.getCode()) {
-			novelInfoVO.setSelected(NovelInfoEnum.SELECTED.getStatus());
-		}
-		if (novelInfo.getPrivated() == NovelInfoEnum.PRIVATED.getCode()) {
-			novelInfoVO.setPrivated(NovelInfoEnum.PRIVATED.getStatus());
-		}
+//		if (novelInfo.getCache() == NovelInfoEnum.CACHE.getCode()) {
+//			novelInfoVO.setCache(NovelInfoEnum.CACHE.getStatus());
+//		}
+//		if (novelInfo.getHaveRead() == NovelInfoEnum.HAVE_READ.getCode()) {
+//			novelInfoVO.setHaveRead(NovelInfoEnum.HAVE_READ.getStatus());
+//		}
+//		if (novelInfo.getSelected() == NovelInfoEnum.SELECTED.getCode()) {
+//			novelInfoVO.setSelected(NovelInfoEnum.SELECTED.getStatus());
+//		}
+//		if (novelInfo.getPrivated() == NovelInfoEnum.PRIVATED.getCode()) {
+//			novelInfoVO.setPrivated(NovelInfoEnum.PRIVATED.getStatus());
+//		}
 		return novelInfoVO;
 	}
 

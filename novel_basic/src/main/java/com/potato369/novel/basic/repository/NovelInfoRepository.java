@@ -17,9 +17,11 @@ import java.util.List;
  * @Copyright Copyright (c) 2016 ~ 2020 版权所有 (C) 土豆互联科技(深圳)有限公司 https://www.potato369.com All Rights Reserved。
  * </pre>
  */
-public interface NovelInfoRepository extends JpaRepository<NovelInfo, Integer> {
+public interface NovelInfoRepository extends JpaRepository<NovelInfo, String> {
 
     List<NovelInfo> findNovelInfoByNovelStatus(Integer novelStatus);
 
     List<NovelInfo> findNovelInfoByCategoryType(Integer categoryType);
+    
+    NovelInfo findByTitleAndCategoryText(String title, String categoryText);
 }

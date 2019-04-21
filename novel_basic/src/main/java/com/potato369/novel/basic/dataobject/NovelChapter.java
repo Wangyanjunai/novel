@@ -2,16 +2,11 @@ package com.potato369.novel.basic.dataobject;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.DynamicUpdate;
-
-import cn.wanghaomiao.seimi.annotation.Xpath;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -52,15 +47,15 @@ public class NovelChapter implements Serializable {
      */
     @Id
     @Column(name = "chapter_id", nullable = false, length = 32)
-    private String chapterId;
+    private String id;
 
     /**
      * <pre>
      * @serialField bookId：章节所属小说id。
      * </pre>
      */
-    @Column(name = "book_id", nullable = false, length = 11)
-    private Integer bookId;
+    @Column(name = "book_id", nullable = false, length = 32)
+    private String bookId;
     
     /**
      * <pre>
@@ -68,26 +63,31 @@ public class NovelChapter implements Serializable {
      * </pre>
      */
     @Column(name = "chapter_name", nullable = false, length = 256)
-    @Xpath(value="//div[@class='novel']/h1/text()")
-    private String chaperName;
+    private String title;
     
     /**
      * <pre>
-     * @serialField chaperName：章节标题（名称）。
+     * @serialField lastChapterName：最新章节标题（名称）。
+     * </pre>
+     */
+    @Column(name = "last_chapter_name", nullable = false, length = 256)
+    private String lastChapterName;
+    
+    /**
+     * <pre>
+     * @serialField url：章节url
      * </pre>
      */
     @Column(name = "chapter_url", nullable = false, length = 1024)
-    @Xpath(value="//div[@class='mulu']/ul/li/a/@href")
-    private String chaperUrl;
+    private String url;
 
     /**
      * <pre>
      * @serialField content：章节内容。
      * </pre>
      */
-    @Xpath(value="//div[@class='novel']/div[@class='yd_text2']")
     @Column(name = "chapter_content", nullable = false)
-    private String chapterContent;
+    private String content;
 
     /**
      * <pre>
@@ -104,12 +104,4 @@ public class NovelChapter implements Serializable {
      */
     @Column(name = "update_time", nullable = false, length = 64)
     private Date updateTime;
-
-    /**
-     * <pre>
-     * @field starturl：章节数据获取地址。
-     * </pre>
-     */
-    @Transient
-    private String starturl;
 }

@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
 /**
@@ -63,6 +64,14 @@ public class NovelCategory implements Serializable {
      */
     @Column(name = "category_zh_name", nullable = true, length = 64)
     private String categoryZhName;
+    
+    /**
+     * <pre>
+     * @serialField categoryUrl：类目路径url。
+     * <pre>
+     */
+    @Transient
+    private String categoryUrl;
 
     /**
      * <pre>

@@ -18,5 +18,5 @@ import com.potato369.novel.basic.dataobject.NovelChapter;
  */
 public interface NovelChapterRepository extends JpaRepository<NovelChapter, String>{
 
-	List<NovelChapter> findByBookId(Integer bookId);
+	List<NovelChapter> findByBookId(String bookId);
 }

@@ -93,15 +93,15 @@ public class BiQuGeNovelCrawler extends BaseSeimiCrawler{
 			novelInfo.setCategoryType(category.getCode());
 			novelInfo.setCategoryText(category.getMessage());
 			novelInfo.setNovelStatus(NovelInfoEnum.NOVEL_STATUS_FINISHED.getCode());
-			novelInfo.setHaveRead(category.getCode());
-			novelInfo.setType(category.getCode());
+//			novelInfo.setHaveRead(category.getCode());
+//			novelInfo.setType(category.getCode());
 			log.info("novelInfo={}", novelInfo);
 			novelInfoService.save(novelInfo);
-			List<String> urlList = novelInfo.getChapterUrl();
-			for (String string : urlList) {
-				String url = DOMAIN_URL.concat(string);
-				push(Request.build(url, "renderChapter"));
-			}
+//			List<String> urlList = novelInfo.getChapterUrl();
+//			for (String string : urlList) {
+//				String url = DOMAIN_URL.concat(string);
+//				push(Request.build(url, "renderChapter"));
+//			}
 		} catch (Exception e) {
 			log.error("【爬虫系统后台】渲染爬取到的笔趣阁小说网站小说内容出现错误", e);
 		} finally {
@@ -117,7 +117,7 @@ public class BiQuGeNovelCrawler extends BaseSeimiCrawler{
 				log.debug("【爬虫系统后台】开始渲染爬到的取笔趣阁小说网站小说章节内容");
 			}
 			NovelChapter chapter = response.render(NovelChapter.class);
-			chapter.setChapterId(UUIDUtil.gen32UUID());
+			chapter.setId(UUIDUtil.gen32UUID());
 //			chapterService.save(chapter);
 			log.info("chapter={}", chapter);
 		} catch (Exception e) {

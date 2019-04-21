@@ -37,7 +37,7 @@ public interface NovelInfoService {
      * @param id
      */
     @Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    void delete(Integer id);
+    void delete(String id);
 
     /**
      * 修改
@@ -52,7 +52,16 @@ public interface NovelInfoService {
      * @param id
      * @return
      */
-    NovelInfo find(Integer id);
+    NovelInfo find(String id);
+    
+    /**
+     * 根据小说名称和分类查找小说信息
+     *
+     * @param title
+     * @param categoryText
+     * @return
+     */
+    NovelInfo findByTitleAndCategoryText(String title, String categoryText);
 
     /**
      * 根据fileName查找小说详情信息

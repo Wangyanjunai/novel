@@ -1,10 +1,19 @@
 package com.potato369.novel.crawler.crawlers;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Random;
-import com.potato369.novel.basic.service.NovelChapterService;
+import com.potato369.novel.basic.utils.UUIDUtil;
+import com.potato369.novel.crawler.domain.Chapter;
+import com.vladsch.flexmark.convert.html.FlexmarkHtmlParser;
 import com.potato369.novel.basic.constants.BusinessConstants;
+import com.potato369.novel.basic.dataobject.NovelChapter;
+import com.potato369.novel.basic.dataobject.NovelInfo;
+import com.potato369.novel.basic.service.NovelChapterService;
+import com.potato369.novel.basic.service.NovelInfoService;
+import org.apache.commons.lang3.StringUtils;
 import org.seimicrawler.xpath.JXDocument;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import cn.wanghaomiao.seimi.annotation.Crawler;
 import cn.wanghaomiao.seimi.def.BaseSeimiCrawler;
@@ -23,13 +32,16 @@ import lombok.extern.slf4j.Slf4j;
  * @since JDK 1.8
  * </pre>
  */
-@Crawler(name = "88dush", useUnrepeated = true)
+@Crawler(name = "88dush", useUnrepeated = true) 
 @Slf4j
 public class DuShu88NovelCrawler extends BaseSeimiCrawler{
 
 	private static final long serialVersionUID = 3993378973651481714L;
 
 	private static final String DOMAIN_URL = "https://www.88dush.com";
+	
+	@Autowired
+	private NovelInfoService novelInfoService;
 	
 	@Autowired
 	private NovelChapterService chapterService;
@@ -40,18 +52,22 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
 	}
 	
 	@Override
-	public void start(Response response){
+	public void start(Response response) {
         try {
         	if (log.isDebugEnabled()) {
-        		log.debug("【后台爬虫系统爬取数据】开始首页爬取");
+        		log.debug("【后台爬虫系统爬取数据】开始爬取八八读书网小说推荐分类信息");
 			}
             JXDocument document = response.document();
             List<Object> urlList = document.sel("//body/div[@class='tuijian']/ul/li/h2/a/@href");
-            if (urlList.size() < 1) {
+            urlList.add("/sort8/1/");
+            if (urlList.size() < 1) { 
                 return;
             }
-            log.info("current thread={}", Thread.currentThread());
-            BusinessConstants.threadPoolStart.execute(()->{
+            if (log.isDebugEnabled()) {
+            	log.debug("【后台爬虫系统爬取数据】爬取八八读书网小说推荐分类信息的当前运行线程信息：{}", Thread.currentThread());
+            	log.debug("【后台爬虫系统爬取数据】爬取八八读书网小说推荐分类信息的urllist的大小：{}", urlList.size());
+			}
+            BusinessConstants.threadPoolStart.execute(()-> {
 	            BusinessConstants.lock.lock();
 	            for (Object url:urlList) {
 	                String urlStr = url.toString();
@@ -60,23 +76,25 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
 	                } else {
 	                    BusinessConstants.CURRENT_START_URL = urlStr;
 	                }
-	                log.info("start current start url={}", BusinessConstants.CURRENT_START_URL);
+	                if (log.isDebugEnabled()) {
+	                	log.debug("【后台爬虫系统爬取数据】爬取八八读书网小说信息每次爬取的分类信息URL={}", BusinessConstants.CURRENT_START_URL);
+					}
 	                push(Request.build(BusinessConstants.CURRENT_START_URL, DuShu88NovelCrawler::getEachPage));
 	                //当前线程等待直到被唤醒
 	                try {
 	                    BusinessConstants.conditionPoolStart.await();
 	                } catch (Exception e) {
-	                    log.error("", e);
+	                    log.error("【后台爬虫系统爬取数据】爬取八八读书网小说信息出现错误", e);
 	                }
 	            }
 	            BusinessConstants.lock.unlock();
             }
           );
         } catch (Exception e) {
-            log.error("", e);
+            log.error("【后台爬虫系统爬取数据】爬取八八读书网小说信息出现错误", e);
         } finally {
         	if (log.isDebugEnabled()) {
-        		log.debug("【后台爬虫系统爬取数据】结束首页爬取");
+        		log.debug("【后台爬虫系统爬取数据】结束爬取八八读书网小说推荐分类信息");
 			}
         }
     }
@@ -84,7 +102,7 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
 	public void getEachPage(Response response) {
         try {
         	if (log.isDebugEnabled()) {
-        		log.debug("【后台爬虫系统爬取数据】开始爬取每页分页数据");
+        		log.debug("【后台爬虫系统爬取数据】开始爬取八八读书网小说分页数据");
 			}
             JXDocument document = response.document();
             List<Object> urlList = document.sel("//div[@class='booklist']/ul/li/span[@class='sm']/a/@href");
@@ -101,46 +119,53 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
                     } else {
                         BusinessConstants.CURRENT_GET_DATA_URL = urlStr;
                     }
-                    log.info("start current get data url={}", BusinessConstants.CURRENT_GET_DATA_URL);
+                    if (log.isDebugEnabled()) {
+						log.debug("【后台爬虫系统爬取数据】当前获取数据的URL={}", BusinessConstants.CURRENT_GET_DATA_URL);
+					}
                     push(Request.build(BusinessConstants.CURRENT_GET_DATA_URL, DuShu88NovelCrawler::getEachBook));
                     try {
                         Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        log.error("", e);
+                    } catch (Exception e) {
+                        log.error("【后台爬虫系统爬取数据】爬取八八读书网小说分页数据出现错误", e);
                     }
                     //当前线程等待直到被唤醒
                     try {
                         BusinessConstants.conditionPoolPage.await();
                     } catch (Exception e) {
-                        log.error("", e);
+                        log.error("【后台爬虫系统爬取数据】爬取八八读书网小说分页数据出现错误", e);
                     }
                 }
                 //总页数是多少需要提前获取一下
-                if(BusinessConstants.CURRENT_PAGE_NUMBER>=BusinessConstants.CURRENT_TOTAL_PAGE_NUMBER){
-                    // 当前类型所有页跑完唤醒上一级
+                if(BusinessConstants.CURRENT_PAGE_NUMBER >= BusinessConstants.CURRENT_TOTAL_PAGE_NUMBER){
+                    //当前类型所有页跑完唤醒上一级
+                	BusinessConstants.CURRENT_PAGE_NUMBER = 1;//将这个变量重置为1
                     BusinessConstants.conditionPoolStart.signal();
                     BusinessConstants.lock.unlock();//调用signal()方法后需要手动释放
                     return;
                 }
                 String nextPageEndPrefix = BusinessConstants.CURRENT_START_URL.substring(0, BusinessConstants.CURRENT_START_URL.indexOf("sort") + 6);
-                log.info(nextPageEndPrefix);
+                if (log.isDebugEnabled()) {
+                	log.debug("【后台爬虫系统爬取数据】下一页分页信息的后缀={}", nextPageEndPrefix);
+				}
                 StringBuffer bf = new StringBuffer(nextPageEndPrefix).append(BusinessConstants.CURRENT_PAGE_NUMBER).append("/");
                 if (log.isDebugEnabled()) {
-                    log.debug("url={}", bf.toString());
+                	log.debug("【后台爬虫系统爬取数据】下一页分页信息的URL={}", bf.toString());
                 }
                 BusinessConstants.CURRENT_START_URL = bf.toString();
-                log.info("start current start url={}", BusinessConstants.CURRENT_START_URL);
+                if (log.isDebugEnabled()) {
+                	log.debug("【后台爬虫系统爬取数据】分页信息的开始的URL={}", BusinessConstants.CURRENT_START_URL);
+                }
                 push(Request.build(BusinessConstants.CURRENT_START_URL, DuShu88NovelCrawler::getEachPage));
                 BusinessConstants.lock.unlock();
             });
         } catch (Exception e) {
-            log.error("", e);
+            log.error("【后台爬虫系统爬取数据】爬取八八读书网小说分页数据出现错误", e);
             //当前有异常唤醒上一级
             BusinessConstants.conditionPoolStart.signal();
             BusinessConstants.lock.unlock();
         } finally {
         	if (log.isDebugEnabled()) {
-        		log.debug("【后台爬虫系统爬取数据】结束爬取每页分页数据");
+        		log.debug("【后台爬虫系统爬取数据】结束爬取八八读书网小说分页数据");
 			}
         }
     }
@@ -148,9 +173,125 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
     public void getEachBook(Response response) {
         try {
         	if (log.isDebugEnabled()) {
-        		log.debug("【后台爬虫系统爬取数据】开始爬取每页小说数据");
+        		log.debug("【后台爬虫系统爬取数据】开始爬取每页小说的目录和内容数据");
 			}
             JXDocument document = response.document();
+            NovelInfo novelInfo = NovelInfo.builder().build();
+            List<Object> categoryList = document.sel("//div[@class='place']/a/text()");
+            StringBuffer category = new StringBuffer();
+            for (Object object : categoryList) {
+            	category.append(object.toString()).append(",");
+			}
+            String categoryText = category.toString().split(",")[1];
+            novelInfo.setCategoryText(categoryText);//1、小说分类
+            if (log.isDebugEnabled()) {
+        		log.debug("【后台爬虫系统爬取数据】开始爬取每页1、小说分类信息数据={}", categoryText);
+			}
+            if ("玄幻魔法".equals(categoryText)) {
+            	novelInfo.setCategoryType(101);//2、小说分类类型type
+			}
+            if ("武侠修真".equals(categoryText)) {
+            	novelInfo.setCategoryType(103);
+			}
+            if ("都市言情".equals(categoryText)) {
+            	novelInfo.setCategoryType(104);
+			}
+            if ("历史穿越".equals(categoryText)) {
+            	novelInfo.setCategoryType(207);
+			}
+            if ("恐怖悬疑".equals(categoryText)) {
+            	novelInfo.setCategoryType(206);
+			}
+            if ("游戏竞技".equals(categoryText)) {
+            	novelInfo.setCategoryType(108);
+			}
+            if ("军事科幻".equals(categoryText)) {
+            	novelInfo.setCategoryType(106);
+			}
+            if ("女生频道".equals(categoryText)) {
+            	novelInfo.setCategoryType(203);
+			}
+            if ("综合类型".equals(categoryText)) {
+            	novelInfo.setCategoryType(208);
+			}
+            if (log.isDebugEnabled()) {
+        		log.debug("【后台爬虫系统爬取数据】开始爬取每页2、小说分类类型type数据={}", novelInfo.getCategoryType());
+			}
+            List<Object> novelTitleList = document.sel("//div[@class='jieshao']/div[@class='rt']/h1/text()");
+            String title = "";//3、小说名称（标题）数据
+            for (Object object : novelTitleList) {
+            	title = object.toString();
+            	if (log.isDebugEnabled()) {
+            		log.debug("【后台爬虫系统爬取数据】开始爬取每页3、小说名称（标题）数据={}", title);
+    			}
+			}
+            novelInfo.setTitle(title);
+            List<Object> novelCoverList = document.sel("//div[@class='jieshao']/div[@class='lf']/img/@src");
+            String coverURL = "";//4、小说封面图片路径数据
+            for (Object object : novelCoverList) {
+            	coverURL = object.toString();
+            	if (log.isDebugEnabled()) {
+            		log.debug("【后台爬虫系统爬取数据】开始爬取每页4、小说封面图片路径数据={}", coverURL);
+    			}
+			}
+            novelInfo.setCoverURL(coverURL);
+            List<Object> novelAuthorList = document.sel("//div[@class='jieshao']/div[@class='rt']/div[@class='msg']/em[1]/text()");
+            String author = "";//5、小说作者信息数据
+            for (Object object : novelAuthorList) {
+            	author = object.toString().split("：")[1];
+            	if (log.isDebugEnabled()) {
+            		log.debug("【后台爬虫系统爬取数据】开始爬取每页5、小说作者信息数据={}", author);
+    			}
+			}
+            novelInfo.setAuthor(author);
+            List<Object> novelstatusList = document.sel("//div[@class='jieshao']/div[@class='rt']/div[@class='msg']/em[2]/text()");
+            String status = "";//6、小说更新状态数据
+            for (Object object : novelstatusList) {
+            	status = object.toString().split("：")[1];
+            	if (log.isDebugEnabled()) {
+            		log.debug("【后台爬虫系统爬取数据】开始爬取每页6、小说更新状态数据={}", status);
+    			}
+			}
+            if ("连载中".equals(status)) {
+            	novelInfo.setNovelStatus(1);
+			}else if ("已完结".equals(status)) {
+            	novelInfo.setNovelStatus(0);
+			} else {
+				novelInfo.setNovelStatus(1);
+			}
+            List<Object> novelIntroList = document.sel("//div[@class='jieshao']/div[@class='rt']/div[@class='intro']/text()");
+            String intro = "";//7、小说简介数据
+            for (Object object : novelIntroList) {
+            	intro = object.toString();
+            	if (log.isDebugEnabled()) {
+            		log.debug("【后台爬虫系统爬取数据】开始爬取每页7、小说简介数据={}", intro);
+    			}
+			}
+            novelInfo.setIntroduction(intro);
+            String id = UUIDUtil.gen32UUID();
+            if (log.isDebugEnabled()) {
+        		log.debug("【后台爬虫系统爬取数据】开始爬取每页8、小说id数据={}", id);
+			}
+            List<Object> novelLastChapterTitleList = document.sel("//div[@class='jieshao']/div[@class='rt']/div[@class='msg']/em[4]/a/text()");
+            String lastChapterTitle = "";//9、小说最新章节标题数据
+            for (Object object : novelLastChapterTitleList) {
+            	lastChapterTitle = object.toString();
+            	if (log.isDebugEnabled()) {
+            		log.debug("【后台爬虫系统爬取数据】开始爬取每页9、小说最新章节标题数据={}", lastChapterTitle);
+    			}
+			}
+            novelInfo.setLastChapterTitle(lastChapterTitle);
+            novelInfo.setId(id);
+            novelInfo.setClickNumber(BigDecimal.ZERO);
+            novelInfo.setPublisher("八八读书网（88dush.com）");
+            novelInfo.setTotalWords(BigDecimal.ZERO);
+            novelInfo.setReaders(BigDecimal.ZERO);
+            novelInfo.setRecentReaders(BigDecimal.ZERO);
+            novelInfo.setRetention(0);
+            if (log.isDebugEnabled()) {
+        		log.debug("【后台爬虫系统爬取数据】开始爬取每页小说信息数据={}", novelInfo);
+			}
+            novelInfoService.save(novelInfo);
             List<Object> urlList = document.sel("//div[@class='mulu']/ul/li/a/@href");
             BusinessConstants.threadPoolBook.execute(()-> {
                 BusinessConstants.lock.lock();
@@ -161,19 +302,21 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
                     } else {
                         BusinessConstants.CURRENT_GET_BOOK_DATA_URL = urlStr;
                     }
-                    log.info("start current get book data url={}", BusinessConstants.CURRENT_GET_BOOK_DATA_URL);
+                    if (log.isDebugEnabled()) {
+                    	log.debug("【后台爬虫系统爬取数据】爬取每页小说的目录和内容数据URL={}", BusinessConstants.CURRENT_GET_BOOK_DATA_URL);
+					}
                     push(Request.build(BusinessConstants.CURRENT_GET_BOOK_DATA_URL, DuShu88NovelCrawler::renderChapterBean));
                     try {
                         //防止被屏蔽间隔1到2秒钟访问
                         Thread.sleep(new Random().nextInt(1000) + 1000);
                     } catch (Exception e) {
-                        log.error("", e);
+                        log.error("【后台爬虫系统爬取数据】爬取每页小说的目录和内容数据出现错误", e);
                     }
                     //当前线程等待直到被唤醒
                     try {
                         BusinessConstants.conditionPoolBook.await();
                     } catch (Exception e) {
-                        log.error("", e);
+                    	log.error("【后台爬虫系统爬取数据】爬取每页小说的目录和内容数据出现错误", e);
                     }
                 }
                 //唤醒上一级线程
@@ -181,32 +324,68 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
                 BusinessConstants.lock.unlock();
             });
         } catch (Exception e) {
-            log.error("", e);
+            log.error("【后台爬虫系统爬取数据】爬取每页小说的目录和内容数据出现错误", e);
             //当前有异常唤醒上一级
             BusinessConstants.conditionPoolPage.signal();
             BusinessConstants.lock.unlock();
         } finally {
         	if (log.isDebugEnabled()) {
-        		log.debug("【后台爬虫系统爬取数据】结束爬取每页小说数据");
+        		log.debug("【后台爬虫系统爬取数据】结束爬取每页小说的目录和内容数据");
 			}
         }
     }
     
-    public void renderNovelInfoBean(Response response) {}
-    
     public void renderChapterBean(Response response) {
+    	Chapter chapter = null;
         try {
         	if (log.isDebugEnabled()) {
         		log.debug("【后台爬虫系统爬取数据】开始爬取每页小说章节数据");
 			}
             BusinessConstants.lock.lock();
-            //crawlerService.saveForDuShu88(response);
-            chapterService.save(response, 1000);
+            try {
+            	chapter = response.render(Chapter.class);
+        		if (log.isDebugEnabled()) {
+        			log.debug("bean resolve res={}, url={}", chapter, response.getUrl());
+				}
+        		NovelChapter novelChapter = NovelChapter.builder().build();
+        		if (chapter != null) {
+        			chapter.setId(UUIDUtil.gen32UUID());
+        			String htmlContent = null;
+        			if(StringUtils.isNotBlank(chapter.getContent())){
+        				chapter.setStarturl(BusinessConstants.CURRENT_GET_DATA_URL);
+        				chapter.setUrl(BusinessConstants.CURRENT_GET_BOOK_DATA_URL);
+                        htmlContent = chapter.getContent();
+                        //内容不为空的时候转化
+                        chapter.setContent(FlexmarkHtmlParser.parse(htmlContent));
+                    }
+        			BeanUtils.copyProperties(chapter, novelChapter);
+        			String title = chapter.getNovelName();
+        			String categoryText = chapter.getCategoryText();
+        			NovelInfo novelInfo = novelInfoService.findByTitleAndCategoryText(title, categoryText);
+        			if (novelInfo!=null) {
+        				novelChapter.setBookId(novelInfo.getId());
+        				novelChapter.setLastChapterName(novelInfo.getLastChapterTitle());
+					} else {
+						novelChapter.setBookId(UUIDUtil.gen32UUID());
+						novelChapter.setLastChapterName("最后一章出错了");
+					}
+        			NovelChapter novelChapterTemp = chapterService.save(novelChapter);
+        			if (log.isDebugEnabled()) {
+        				log.debug("covert copy store success in db, novel chapter info={}", novelChapterTemp);
+        			}
+    			}
+    		} catch (Exception e) {
+    			log.error("【后台管理】爬取小说章节信息失败", e);
+    		} finally {
+    			if (log.isDebugEnabled()) {
+    				log.debug("render success chapter info={}", chapter);
+				}
+    		}
             //唤醒上一级线程
             BusinessConstants.conditionPoolBook.signal();
             BusinessConstants.lock.unlock();
         } catch (Exception e) {
-            log.error("", e);
+            log.error("【后台爬虫系统爬取数据】爬取每页小说章节数据出现错误", e);
             //当前有异常唤醒上一级
             BusinessConstants.conditionPoolBook.signal();
             BusinessConstants.lock.unlock();

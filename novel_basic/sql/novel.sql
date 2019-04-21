@@ -65,27 +65,28 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `novel_info`;
 CREATE TABLE `novel_info`  (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id，主键id',
-  `coverURL` varchar(1256) NULL DEFAULT NULL COMMENT '封面图片绝对路径',
+  `id` varchar(32) NOT NULL COMMENT 'id，主键id',
+  `cover_url` varchar(1024) NULL DEFAULT NULL COMMENT '封面图片绝对路径',
   `title` varchar(256) NULL DEFAULT NULL COMMENT '标题，小说的名称',
   `author` varchar(256) NULL DEFAULT NULL COMMENT '作者',
   `publisher` varchar(128) NULL DEFAULT NULL COMMENT '出版社，或者爬取的网站名称',
   `total_words` decimal(16, 0) UNSIGNED NULL DEFAULT 0 COMMENT '总字数',
   `novel_status` tinyint(4) UNSIGNED NOT NULL DEFAULT 0 COMMENT '状态，0-已完结，1-连载中',
   `category_type` smallint(4) UNSIGNED NOT NULL COMMENT '类目类型编号',
-  `introduction` varchar(1024) NULL DEFAULT NULL COMMENT '小说简介',
+  `category_text` varchar(128) NOT NULL COMMENT '类目类型名称',
+  `introduction` varchar(4096) NULL DEFAULT NULL COMMENT '小说简介',
   `readers` decimal(16, 0) UNSIGNED NULL DEFAULT 0 COMMENT '阅读（点击）用户数；默认“0-阅读（点击）用户数”',
   `recent_readers` decimal(16, 0) UNSIGNED NULL DEFAULT 0 COMMENT '最近跟随阅读（点击）用户数；默认“0-最近跟随阅读（点击）用户数”',
-  `click_number` int(11) UNSIGNED NULL DEFAULT 0 COMMENT '点击次数',
-  `last_chapter_id` varchar(32) NOT NULL COMMENT '最新章节id',
-  `last_chapter_name` varchar(256) NOT NULL COMMENT '最新章节标题（名称）',
-  `total_chapters` decimal(16, 0) UNSIGNED NULL DEFAULT 0 COMMENT '章节总数',
-  `retention` smallint(3) UNSIGNED NOT NULL COMMENT '留存率，现在只是保存数字，显示的时候加上百分比',
+  `click_number` decimal(16, 0) UNSIGNED NULL DEFAULT 0 COMMENT '点击次数',
+  `last_chapter_id` varchar(32) NULL DEFAULT NULL COMMENT '最新章节id',
+  `last_chapter_title` varchar(256) NULL DEFAULT NULL COMMENT '最新章节标题（名称）',
+  `total_chapters` int(6) UNSIGNED NULL DEFAULT 0 COMMENT '章节总数',
+  `retention` smallint(3) UNSIGNED NULL DEFAULT 0 COMMENT '留存率，现在只是保存数字，显示的时候加上百分比',
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `idx_title`(`title`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 112 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '小说信息记录表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '小说信息记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of novel_info
@@ -97,15 +98,15 @@ CREATE TABLE `novel_info`  (
 DROP TABLE IF EXISTS `novel_chapter`;
 CREATE TABLE `novel_chapter` (
   `chapter_id` varchar(32) NOT NULL COMMENT '章节id，主键id',
-  `book_id` int(11) UNSIGNED NOT NULL COMMENT '章节所属小说id',
-  `chapter_name` varchar(256) NOT NULL COMMENT '章节标题（名称）',
+  `book_id` varchar(32) NOT NULL COMMENT '章节所属小说id',
+  `chapter_name` varchar(512) NOT NULL COMMENT '章节标题（名称）',
+  `last_chapter_name` varchar(512) NOT NULL COMMENT '最新章节标题（名称）',
   `chapter_url` varchar(1024) NOT NULL COMMENT '章节url',
-  `chapter_content` blob NOT NULL COMMENT '章节内容',
+  `chapter_content` text NOT NULL COMMENT '章节内容',
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
-  PRIMARY KEY (`chapter_id`) USING BTREE,
-  UNIQUE INDEX `uidx_chapter_name`(`chapter_name`) USING BTREE,
-  UNIQUE INDEX `uidx_book_id`(`book_id`) USING BTREE
+  PRIMARY KEY (`chapter_id`, `book_id`) USING BTREE,
+  UNIQUE INDEX `uidx_chapter_name`(`chapter_name`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '小说章节信息记录表' ROW_FORMAT = Dynamic;
 -- ----------------------------
 -- Records of novel_chapter
