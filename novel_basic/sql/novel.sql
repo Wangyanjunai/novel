@@ -105,8 +105,7 @@ CREATE TABLE `novel_chapter` (
   `chapter_content` text NOT NULL COMMENT '章节内容',
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
-  PRIMARY KEY (`chapter_id`, `book_id`) USING BTREE,
-  UNIQUE INDEX `uidx_chapter_name`(`chapter_name`) USING BTREE
+  PRIMARY KEY (`chapter_id`, `book_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '小说章节信息记录表' ROW_FORMAT = Dynamic;
 -- ----------------------------
 -- Records of novel_chapter
