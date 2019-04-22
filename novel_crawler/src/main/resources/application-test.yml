@@ -42,7 +42,9 @@ logging:
   level:
     org.springframework.web: info
     com.potato369.novel: info
-    com.potato369.novel.dataobject.mapper: trace
+    com.potato369.novel.crawler: info
+    com.potato369.novel.basic: info
+    com.potato369.novel.basic.dataobject.mapper: trace
 projectUrl:   
   projectName: /novel
   domainUrl: http://potato369.mynatapp.cc

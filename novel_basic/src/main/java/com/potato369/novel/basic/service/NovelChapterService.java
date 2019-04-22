@@ -2,9 +2,7 @@ package com.potato369.novel.basic.service;
 
 import com.potato369.novel.basic.dataobject.NovelChapter;
 import com.potato369.novel.basic.dataobject.NovelInfo;
-
 import cn.wanghaomiao.seimi.struct.Response;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
@@ -90,4 +88,15 @@ public interface NovelChapterService {
      * </pre>
      */
     Page<NovelChapter> findAll(String bookId, Pageable pageable);
+    
+    /**
+     * <pre>
+     * findChapterByChaperName方法的作用：根据章节标题查询章节信息
+     * @author Jack
+     * @param title
+     * @return
+     * @since JDK 1.8
+     * </pre>
+     */
+    List<NovelChapter> findByChaperTitle(String title);
 }

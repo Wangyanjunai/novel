@@ -9,9 +9,10 @@ import cn.wanghaomiao.seimi.struct.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import java.util.List;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.service.impl
@@ -159,4 +160,17 @@ public class NovelChapterServiceImpl implements NovelChapterService {
     public Page<NovelChapter> findAll(String bookId, Pageable pageable) {
     	return repository.findAll(null, pageable);
     }
+
+	/**
+	 * <pre>
+	 * 描述该方法的实现功能：根据小说章节标题，查询小说信息列表
+	 * @param 章节标题（名称）
+	 * @see com.potato369.novel.basic.service.NovelChapterService#findChapterByChaperName(java.lang.String)
+	 * </pre>
+	 */
+	@Override
+	public List<NovelChapter> findByChaperTitle(String title) {
+		Sort sort = new Sort(Direction.DESC, "createTime", "updateTime");
+		return repository.findByTitle(title, sort);
+	}
 }

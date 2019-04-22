@@ -42,8 +42,10 @@ logging:
   level:
     org.springframework.web: debug
     com.potato369.novel: debug
-    com.potato369.novel.dataobject.mapper: trace
-projectUrl:  
+    com.potato369.novel.crawler: debug
+    com.potato369.novel.basic: debug
+    com.potato369.novel.basic.dataobject.mapper: trace
+projectUrl:   
   projectName: /novel
   domainUrl: http://potato369.mynatapp.cc
   weChatMpAuthorizeUrl: /wechat/authorize

@@ -1,9 +1,10 @@
 package com.potato369.novel.basic.repository;
 
 import java.util.List;
+
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.potato369.novel.basic.dataobject.NovelChapter;
-
 /**
  * <pre>
  * 类名: NovelChapterRepository
@@ -19,4 +20,6 @@ import com.potato369.novel.basic.dataobject.NovelChapter;
 public interface NovelChapterRepository extends JpaRepository<NovelChapter, String>{
 
 	List<NovelChapter> findByBookId(String bookId);
+	
+	List<NovelChapter> findByTitle(String title, Sort sort);
 }
