@@ -15,7 +15,7 @@ DROP TABLE IF EXISTS `blog`;
 CREATE TABLE `blog` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '章节id',
   `title` varchar(512) DEFAULT NULL COMMENT '节章标题（名称）',
-  `content` text COMMENT '章节内容',
+  `content` mediumtext COMMENT '章节内容',
   `url` varchar(1024) DEFAULT NULL COMMENT '章节路径URL',
   `startUrl` varchar(1024) DEFAULT NULL COMMENT '爬取数据开始路径URL',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
