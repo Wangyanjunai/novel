@@ -25,6 +25,8 @@ public class Chapter {
 	
     private String id;
     
+    private Integer index;
+    
     @Xpath("//div[@class='novel']/h1/text()")
     private String title;
 
@@ -32,7 +34,7 @@ public class Chapter {
     private String content;
     
     @Xpath("//div[@class='read_t']/a[2]/text()")
-    private String categoryText;
+    private String categoryCNText;
     
     @Xpath("//div[@class='read_t']/a[3]/text()")
     private String novelName;

@@ -91,7 +91,7 @@ public class BiQuGeNovelCrawler extends BaseSeimiCrawler{
 			String realUrl = response.getRealUrl();
 			CategoryEnum category = getCategoryType(realUrl);
 			novelInfo.setCategoryType(category.getCode());
-			novelInfo.setCategoryText(category.getMessage());
+			novelInfo.setCategoryENText(category.getMessage());
 			novelInfo.setNovelStatus(NovelInfoEnum.NOVEL_STATUS_FINISHED.getCode());
 //			novelInfo.setHaveRead(category.getCode());
 //			novelInfo.setType(category.getCode());

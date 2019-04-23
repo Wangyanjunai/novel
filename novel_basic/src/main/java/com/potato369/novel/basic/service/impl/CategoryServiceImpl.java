@@ -106,7 +106,7 @@ public class CategoryServiceImpl implements CategoryService {
 	 */
 	@Override
 	public NovelCategory findByCategoryEnName(String categoryEnName) {
-		return repository.findNovelCategoryByCategoryEnName(categoryEnName);
+		return repository.findByCategoryENText(categoryEnName);
 	}
 
 	/**

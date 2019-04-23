@@ -114,7 +114,7 @@ public class CategoryServiceImpl implements CategoryService {
 	 */
 	@Override
 	public CategoryDTO findByCategoryEnName(String categoryEnName) {
-		return NovelCategory2CategoryDTOConverter.convert(novelCategoryRepository.findNovelCategoryByCategoryEnName(categoryEnName));
+		return NovelCategory2CategoryDTOConverter.convert(novelCategoryRepository.findByCategoryENText(categoryEnName));
 	}
 
 	/**

@@ -54,9 +54,9 @@ public interface CategoryRepository extends JpaRepository<NovelCategory, String>
 
     /**
      * <pre>
-     * @param categoryEnName
+     * @param categoryENText
      * @return
      * </pre>
      */
-    NovelCategory findNovelCategoryByCategoryEnName(String categoryEnName);
+    NovelCategory findByCategoryENText(String categoryENText);
 }

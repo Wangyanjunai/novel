@@ -76,16 +76,16 @@
     </dependencies>
 
     <build>
-        <finalName>novel_basic</finalName>
+    	<finalName>novel_basic</finalName>
         <plugins>
-            <plugin>
+<!--             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <fork>true</fork>
                     <executable>true</executable>
                 </configuration>
-            </plugin>
+            </plugin> -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

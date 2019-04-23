@@ -64,13 +64,6 @@ public interface NovelInfoService {
     NovelInfo findByTitleAndCategoryText(String title, String categoryText);
 
     /**
-     * 根据fileName查找小说详情信息
-     * @param fileName
-     * @return
-     */
-    NovelInfo findByFileName(String fileName);
-
-    /**
      * 根据小说的状态查询小说信息列表
      * @param novelStatus
      * @return

@@ -1,7 +1,6 @@
 package com.potato369.novel.controller;
 
 import com.potato369.novel.basic.dataobject.NovelInfo;
-import com.potato369.novel.basic.enums.NovelInfoEnum;
 import com.potato369.novel.conf.prop.ProjectUrlProperties;
 import com.potato369.novel.converter.NovelInfo2NovelInfoDTOConverter;
 import com.potato369.novel.dto.CategoryDTO;
@@ -145,11 +144,11 @@ public class BuyerNovelInfoController {
 		Map<String, List<NovelInfo>> map = new HashMap<String, List<NovelInfo>>();
 		for(NovelInfo novelInfo : novelInfoList) {
 			novelInfo.setCoverURL(getCover(novelInfo));
-			List<NovelInfo> tempList = map.get(novelInfo.getCategoryText());
+			List<NovelInfo> tempList = map.get(novelInfo.getCategoryENText());
 			if(tempList == null) {
 				tempList = new ArrayList<NovelInfo>();
 				tempList.add(novelInfo);
-				map.put(novelInfo.getCategoryText(), tempList);
+				map.put(novelInfo.getCategoryENText(), tempList);
 			} else {
 				tempList.add(novelInfo);
 			}
@@ -331,7 +330,7 @@ public class BuyerNovelInfoController {
 			bannerInfoVO.setBannerImg(getCover(novelInfo));
 			bannerInfoVO.setNovelInfoId(String.valueOf(novelInfo.getId()));
 			bannerInfoVO.setTitle(novelInfo.getTitle());
-			bannerInfoVO.setCategory(novelInfo.getCategoryText());
+			bannerInfoVO.setCategory(novelInfo.getCategoryENText());
 			bannerInfoVO.setNovelId(novelInfo.getId().toString());
 			bannerInfoVOList.add(bannerInfoVO);
 		}
@@ -341,7 +340,7 @@ public class BuyerNovelInfoController {
 	private String getCover(NovelInfo novelInfo) {
 		return new StringBuffer(projectUrlProperties.getResUrl()
 				.concat("/book/res/img/cover").concat("/")
-				.concat(novelInfo.getCategoryText()).concat("/")
+				.concat(novelInfo.getCategoryENText()).concat("/")
 				.concat(novelInfo.getId().toString()).concat("/")
 				.concat(novelInfo.getCoverURL())
 		).toString().trim();

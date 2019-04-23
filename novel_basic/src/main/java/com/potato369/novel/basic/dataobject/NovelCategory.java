@@ -59,11 +59,27 @@ public class NovelCategory implements Serializable {
 
     /**
      * <pre>
-     * @serialField categoryZhName：类目中文名称。
+     * @serialField categoryCNText：类目中文名称。
      * <pre>
      */
-    @Column(name = "category_zh_name", nullable = true, length = 64)
-    private String categoryZhName;
+    @Column(name = "category_cn_text", nullable = true, length = 64)
+    private String categoryCNText;
+    
+    /**
+     * <pre>
+     * @serialField categoryENText：类目英文名称。
+     * <pre>
+     */
+    @Column(name = "category_en_text", nullable = true, length = 64)
+    private String categoryENText;
+    
+    /**
+     * <pre>
+     * @serialField categoryType：类目类型编号。
+     * <pre>
+     */
+    @Column(name = "category_type", nullable = true, length = 4)
+    private Integer categoryType;
     
     /**
      * <pre>
@@ -72,22 +88,6 @@ public class NovelCategory implements Serializable {
      */
     @Transient
     private String categoryUrl;
-
-    /**
-     * <pre>
-     * @serialField categoryEnName：类目英文名称。
-     * <pre>
-     */
-    @Column(name = "category_en_name", nullable = true, length = 64)
-    private String categoryEnName;
-
-    /**
-     * <pre>
-     * @serialField categoryType：类目类型编号。
-     * <pre>
-     */
-    @Column(name = "category_type", nullable = true, length = 4)
-    private Integer categoryType;
 
     /**
      * <pre>

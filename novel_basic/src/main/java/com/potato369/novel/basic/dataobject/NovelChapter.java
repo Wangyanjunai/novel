@@ -59,26 +59,34 @@ public class NovelChapter implements Serializable {
     
     /**
      * <pre>
-     * @serialField chaperName：章节标题（名称）。
+     * @serialField chapterIndex：章节索引。
      * </pre>
      */
-    @Column(name = "chapter_name", nullable = false, length = 256)
+    @Column(name = "chapter_index", nullable = true, length = 6)
+    private Integer index;
+    
+    /**
+     * <pre>
+     * @serialField title：章节标题（名称）。
+     * </pre>
+     */
+    @Column(name = "chapter_title", nullable = true, length = 512)
     private String title;
     
     /**
      * <pre>
-     * @serialField lastChapterName：最新章节标题（名称）。
+     * @serialField newestChapterTitle：最新章节标题（名称）。
      * </pre>
      */
-    @Column(name = "last_chapter_name", nullable = false, length = 256)
-    private String lastChapterName;
+    @Column(name = "newest_chapter_title", nullable = true, length = 512)
+    private String newestChapterTitle;
     
     /**
      * <pre>
      * @serialField url：章节url
      * </pre>
      */
-    @Column(name = "chapter_url", nullable = false, length = 1024)
+    @Column(name = "chapter_url", nullable = true, length = 1024)
     private String url;
 
     /**
@@ -86,7 +94,7 @@ public class NovelChapter implements Serializable {
      * @serialField content：章节内容。
      * </pre>
      */
-    @Column(name = "chapter_content", nullable = false)
+    @Column(name = "chapter_content", nullable = true)
     private String content;
 
     /**

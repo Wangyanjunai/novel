@@ -23,5 +23,5 @@ public interface NovelInfoRepository extends JpaRepository<NovelInfo, String> {
 
     List<NovelInfo> findNovelInfoByCategoryType(Integer categoryType);
     
-    NovelInfo findByTitleAndCategoryText(String title, String categoryText);
+    NovelInfo findNovelInfoByTitleAndCategoryCNText(String title, String categoryCNText);
 }

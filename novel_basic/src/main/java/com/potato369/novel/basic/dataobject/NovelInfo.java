@@ -57,7 +57,7 @@ public class NovelInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField cover：封面图片路径。
+     * @serialField coverURL：封面图片路径。
      * </pre>
      */
     @Column(name = "cover_url", nullable = true, length = 1024)
@@ -98,23 +98,29 @@ public class NovelInfo implements Serializable {
     /**
      * @serialField novelStatus：状态
      */
-    @Column(name = "novel_status", nullable = false, length = 4)
+    @Column(name = "novel_status", nullable = true, length = 4)
     private Integer novelStatus;
 
     /**
      * @serialField categoryType：类目类型编号
      */
-    @Column(name = "category_type", nullable = true, length = 4)
+    @Column(name = "category_type", nullable = false, length = 4)
     private Integer categoryType;
 
     /**
-     * @serialField categoryText：类目类型名称
+     * @serialField categoryCNText：类目类型中文名称
      */
-    @Column(name = "category_text", nullable = true, length = 128)
-    private String categoryText;
+    @Column(name = "category_cn_text", nullable = false, length = 64)
+    private String categoryCNText;
+    
+    /**
+     * @serialField categoryEnText：类目类型英文名称
+     */
+    @Column(name = "category_en_text", nullable = false, length = 64)
+    private String categoryENText;
 
     /**
-     * @serialField description：小说简介
+     * @serialField introduction：小说简介
      */
     @Column(name = "introduction", nullable = true, length = 4096)
     private String introduction;
@@ -138,16 +144,16 @@ public class NovelInfo implements Serializable {
     private BigDecimal clickNumber;
     
     /**
-     * @serialField lastChapterId：最新章节id
+     * @serialField newestChapterId：最新章节id
      */
-    @Column(name = "last_chapter_id", nullable = true, length = 32)
-    private String lastChapterId;
+    @Column(name = "newest_chapter_id", nullable = true, length = 32)
+    private String newestChapterId;
     
     /**
-     * @serialField lastChapterTitle：最新章节标题（名称）
+     * @serialField newestChapterTitle：最新章节标题（名称）
      */
-    @Column(name = "last_chapter_title", nullable = true, length = 256)
-    private String lastChapterTitle;
+    @Column(name = "newest_chapter_title", nullable = true, length = 512)
+    private String newestChapterTitle;
     
     /**
      * @serialField totalChapters：总章节数

@@ -29,6 +29,9 @@ public class BusinessConstants {
     
     //定义一个静态变量，用于记录总章节数
     public static Integer CURRENT_TOTAL_CHAPTERS = 0;
+    
+    //定义一个静态变量，用于记录章节索引
+    public static Integer CURRENT_CHAPTER_INDEX = 0;
 
     //定义一个静态变量，用于记录每次的起始URL
     public static String CURRENT_START_URL = null;

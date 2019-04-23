@@ -8,9 +8,9 @@ spring:
       username: root                                          #数据库连接用户名
       password: MyNewPassword4!@#                             #数据库连接密码
       keep-alive: true                                        #保持连接状态
-      initial-size: 5                                         #数据库初始化连接大小
-      min-idle: 5                                             #数据库最小连接池数量
-      max-active: 20                                          #数据库最大连接池数量
+      initial-size: 50                                        #数据库初始化连接大小
+      min-idle: 50                                            #数据库最小连接池数量
+      max-active: 200                                         #数据库最大连接池数量
       max-wait: 60000                                         #获取连接时最大等待时间，单位毫秒
       time-between-log-stats-millis: 300000                   #DruidDataSource有一个属性timeBetweenLogStatsMillis，配置timeBetweenLogStatsMillis>0之后，DruidDataSource会定期把监控数据输出到日志中
       time-between-eviction-runs-millis: 60000                #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
