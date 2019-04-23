@@ -56,7 +56,7 @@ xfYun:
   textType: text
 server:
   context-path: /novel
-  port: 89995
+  port: 8999
   error:
     path: /error
   session:
