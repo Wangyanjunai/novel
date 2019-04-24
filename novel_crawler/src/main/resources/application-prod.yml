@@ -66,7 +66,7 @@ weChat:
 management:
   security:
     enabled: false          #关掉安全认证
-  port: 8978               #管理端口调整成8998
+  port: 8918               #管理端口调整成8998
   context-path: /monitor    #actuator的访问路径
 info:
   app:
@@ -79,11 +79,11 @@ security:
   basic:
     enabled: false
     path: /**
-endpoints: 
+endpoints:  
   enabled: true
 server:
   context-path: /novel
-  port: 8997
+  port: 8991
   error:
     path: /error
   session:
@@ -94,5 +94,5 @@ server:
 seimi:
   crawler:
     enabled: true
-    names: 88dush7
+    names: 88dush
     ##names: dindian,biquyun,23us,sbiquge,gxwztv,00ksw,xbiquge,xbxwx,bxwx,zhuishushenqi,88dush  
