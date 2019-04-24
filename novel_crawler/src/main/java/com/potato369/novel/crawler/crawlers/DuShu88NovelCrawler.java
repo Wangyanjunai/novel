@@ -62,7 +62,7 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
 //            JXDocument document = response.document();
 //            List<Object> urlList = document.sel("//body/div[@class='tuijian']/ul/li/h2/a/@href");
             List<Object> urlList = new LinkedList<Object>();
-            urlList.add("/sort2/1/");
+            urlList.add("/sort1/1/");
             if (urlList == null || urlList.isEmpty() || urlList.size() < 1) { 
                 return;
             }
