@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.potato369.novel.basic.dataobject.UserInfo;
 import com.potato369.novel.basic.repository.UserInfoRepository;
@@ -36,6 +38,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
+    @Transactional
     public UserInfo save(UserInfo userInfo) throws Exception{
         return repository.save(userInfo);
     }
@@ -47,6 +50,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
+    @Transactional
     public List<UserInfo> save(List<UserInfo> userInfoList) throws Exception{
         return repository.save(userInfoList);
     }
@@ -58,6 +62,8 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
+    @Modifying
+    @Transactional
     public void del(String id) throws Exception{
         repository.delete(id);
     }
@@ -69,6 +75,8 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
+    @Modifying
+    @Transactional
     public UserInfo update(UserInfo userInfo) throws Exception{
         return repository.saveAndFlush(userInfo);
     }

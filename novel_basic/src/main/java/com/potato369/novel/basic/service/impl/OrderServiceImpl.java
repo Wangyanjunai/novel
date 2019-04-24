@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -140,6 +141,7 @@ public class OrderServiceImpl implements OrderService {
      * </pre>
      */
     @Override
+    @Modifying
     @Transactional
     public OrderMaster cancel(OrderMaster orderMaster) throws Exception{
         /** 1、判断订单是否为空 */
@@ -170,6 +172,7 @@ public class OrderServiceImpl implements OrderService {
      * </pre>
      */
     @Override
+    @Modifying
     @Transactional
     public OrderMaster finish(OrderMaster orderMaster) throws Exception{
         /** 1、判断订单状态 */
@@ -194,6 +197,7 @@ public class OrderServiceImpl implements OrderService {
      * </pre>
      */
     @Override
+    @Modifying
     @Transactional
     public OrderMaster paid(OrderMaster orderMaster) throws Exception{
         Date now = new Date();

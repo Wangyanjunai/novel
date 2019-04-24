@@ -5,7 +5,9 @@ import com.potato369.novel.basic.repository.SellerInfoRepository;
 import com.potato369.novel.basic.service.SellerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <pre>
@@ -45,6 +47,8 @@ public class SellerServiceImpl implements SellerService {
      * </pre>
      */
     @Override
+    @Modifying
+    @Transactional
     public SellerInfo updateSellerInfo(SellerInfo sellerInfo) throws Exception{
         return repository.saveAndFlush(sellerInfo);
     }

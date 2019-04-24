@@ -61,6 +61,7 @@ public interface NovelInfoService {
      * @param categoryText
      * @return
      */
+    @Transactional(readOnly= false)
     NovelInfo findByTitleAndCategoryText(String title, String categoryText);
 
     /**

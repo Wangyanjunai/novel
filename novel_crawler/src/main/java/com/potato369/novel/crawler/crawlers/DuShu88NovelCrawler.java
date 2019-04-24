@@ -1,6 +1,7 @@
 package com.potato369.novel.crawler.crawlers;
 
 import java.math.BigDecimal;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import com.potato369.novel.basic.utils.UUIDUtil;
@@ -42,16 +43,10 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
 	private static final String DOMAIN_URL = "https://www.88dush.com";
 	
 	@Autowired
-	private NovelInfoService novelInfoServiceWriter;//写数据
+	private NovelInfoService novelInfoService;
 	
 	@Autowired
-	private NovelInfoService novelInfoServiceReader;//读数据
-	
-	@Autowired
-	private NovelChapterService chapterServiceWriter;//写数据
-	
-	@Autowired
-	private NovelChapterService chapterServiceReader;//读数据
+	private NovelChapterService chapterService;
 	
 	@Override
 	public String[] startUrls() {
@@ -64,13 +59,13 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
         	if (log.isDebugEnabled()) {
         		log.debug("【后台爬虫系统爬取数据】开始爬取八八读书网小说推荐分类信息");
 			}
-            JXDocument document = response.document();
-            List<Object> urlList = document.sel("//body/div[@class='tuijian']/ul/li/h2/a/@href");
-//            List<Object> urlList = new LinkedList<Object>();
+//            JXDocument document = response.document();
+//            List<Object> urlList = document.sel("//body/div[@class='tuijian']/ul/li/h2/a/@href");
+            List<Object> urlList = new LinkedList<Object>();
+            urlList.add("/sort2/1/");
             if (urlList == null || urlList.isEmpty() || urlList.size() < 1) { 
                 return;
             }
-            urlList.add("/sort8/1/");
             if (log.isDebugEnabled()) {
             	log.debug("【后台爬虫系统爬取数据】爬取八八读书网小说推荐分类信息的当前运行线程信息info={}", Thread.currentThread());
             	log.debug("【后台爬虫系统爬取数据】爬取八八读书网小说推荐分类信息的the url list size={}", urlList.size());
@@ -364,7 +359,7 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
             if (log.isDebugEnabled()) {
         		log.debug("【后台爬虫系统爬取数据】开始爬取每页小说信息数据={}", novelInfo);
 			}
-            novelInfoServiceWriter.save(novelInfo);
+            novelInfoService.save(novelInfo);
         } catch (Exception e) {
             log.error("【后台爬虫系统爬取数据】爬取每页小说的目录和内容数据出现错误", e);
             //当前有异常唤醒上一级
@@ -404,7 +399,7 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
         			BeanUtils.copyProperties(chapter, novelChapter);
         			String title = chapter.getNovelName();
         			String categoryText = chapter.getCategoryCNText();
-        			NovelInfo novelInfo = novelInfoServiceReader.findByTitleAndCategoryText(title, categoryText);
+        			NovelInfo novelInfo = novelInfoService.findByTitleAndCategoryText(title, categoryText);
         			if (novelInfo != null) {
         				novelChapter.setBookId(novelInfo.getId());
         				novelChapter.setNewestChapterTitle(novelInfo.getNewestChapterTitle());
@@ -412,19 +407,19 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
 						novelChapter.setBookId(UUIDUtil.gen32UUID());
 						novelChapter.setNewestChapterTitle("最后一章出错了");
 					}
-        			NovelChapter novelChapterTemp = chapterServiceWriter.save(novelChapter);
+        			NovelChapter novelChapterTemp = chapterService.save(novelChapter);
         			String lastChapterName = null;
         			if (novelChapterTemp != null) {
         				lastChapterName = novelChapterTemp.getNewestChapterTitle();
-        				List<NovelChapter> chapterList = chapterServiceReader.findByChaperTitle(lastChapterName);
+        				List<NovelChapter> chapterList = chapterService.findByChaperTitle(lastChapterName);
         				if (chapterList != null && chapterList.size() > 0) {
         					NovelChapter lastChapter = chapterList.get(0);
         					String lastChapterId = lastChapter.getId();
         					String bookId = lastChapter.getBookId();
-        					NovelInfo novelInfo2 = novelInfoServiceReader.find(bookId);
+        					NovelInfo novelInfo2 = novelInfoService.find(bookId);
         					if (novelInfo2 != null) {
         						novelInfo2.setNewestChapterId(lastChapterId);
-        						novelInfoServiceWriter.update(novelInfo2);
+        						novelInfoService.update(novelInfo2);
         						if (log.isDebugEnabled()) {
         		            		log.debug("【后台爬虫系统爬取数据】开始爬取每页10、小说最新章节id信息data={}", lastChapterId);
         		    			}
@@ -439,8 +434,6 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
         			//当前类型所有页跑完唤醒上一级
                 	BusinessConstants.CURRENT_CHAPTER_INDEX = BusinessConstants.CURRENT_TOTAL_CHAPTERS;//将这个变量重置为0
                 	BusinessConstants.CURRENT_CHAPTER_INDEX = 0;
-                    BusinessConstants.conditionPoolStart.signal();
-                    BusinessConstants.lock.unlock();//调用signal()方法后需要手动释放
 				}
     		} catch (Exception e) {
     			log.error("【后台管理】爬取小说章节信息失败", e);

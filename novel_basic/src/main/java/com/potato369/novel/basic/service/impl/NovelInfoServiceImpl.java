@@ -7,7 +7,9 @@ import com.potato369.novel.basic.service.NovelInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -36,6 +38,7 @@ public class NovelInfoServiceImpl implements NovelInfoService {
      * @return
      */
     @Override
+    @Transactional
     public NovelInfo save(NovelInfo novelInfo) {
         return repository.save(novelInfo);
     }
@@ -46,6 +49,8 @@ public class NovelInfoServiceImpl implements NovelInfoService {
      * @param id
      */
     @Override
+    @Modifying
+    @Transactional
     public void delete(String id) {
     	repository.delete(id);
     }
@@ -57,6 +62,8 @@ public class NovelInfoServiceImpl implements NovelInfoService {
      * @return
      */
     @Override
+    @Modifying
+    @Transactional
     public NovelInfo update(NovelInfo novelInfo) {
         return repository.saveAndFlush(novelInfo);
     }
@@ -105,6 +112,7 @@ public class NovelInfoServiceImpl implements NovelInfoService {
     }
 	
 	@Override
+	@Transactional(readOnly=true)
 	public NovelInfo findByTitleAndCategoryText(String title, String categoryText) {
 		return repository.findNovelInfoByTitleAndCategoryCNText(title, categoryText);
 	}
