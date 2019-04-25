@@ -26,18 +26,33 @@ public class LoadingDataVO {
 
 	/**
 	 * <pre>
-	 * 
+	 * id:广告id
 	 * </pre>
 	 */
 	@JsonProperty(value="id", required=true)
 	private String id;
-	
+
+	/**
+	 * <pre>
+	 * tag:标识
+	 * </pre>
+	 */
 	@JsonProperty(value="tag", required=true)
 	private Integer tag;
-	
+
+	/**
+	 * <pre>
+	 * imageUrl:图片链接地址
+	 * </pre>
+	 */
 	@JsonProperty(value="imageUrl", required=true)
 	private String imageUrl;
-	
+
+	/**
+	 * <pre>
+	 * linkUrl:广告跳转链接地址
+	 * </pre>
+	 */
 	@JsonProperty(value="linkUrl", required=false)
 	private String linkUrl;
 }

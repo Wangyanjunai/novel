@@ -1,12 +1,18 @@
 package com.potato369.novel.app.web.controller;
 
+import com.potato369.novel.basic.dataobject.NovelAdvertisement;
+import com.potato369.novel.basic.service.AdvertisementService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.potato369.novel.app.web.utils.ResultVOUtil;
 import com.potato369.novel.app.web.vo.LoadingDataVO;
 import com.potato369.novel.app.web.vo.ResultVO;
+
+import java.util.List;
 
 /**
  * <pre>
@@ -20,9 +26,13 @@ import com.potato369.novel.app.web.vo.ResultVO;
  * @Copyright Copyright (c) 2016 ~ 2020 版权所有 (C) 土豆互联科技(深圳)有限公司 https://www.potato369.com All Rights Reserved。
  * </pre>
  */
+@Slf4j
 @RestController
 @RequestMapping(value = "/loading")
 public class LoadingController {
+
+    @Autowired
+    private AdvertisementService advertisementService;
 
     /**
      * @api {GET} /loading/getData 加载广告图片
@@ -55,6 +65,23 @@ public class LoadingController {
      */
     @GetMapping(value = "/getData")
     public ResultVO<LoadingDataVO> getData() {
-    	return ResultVOUtil.success();
+        LoadingDataVO loadingDataVO = LoadingDataVO.builder().build();
+        try {
+            if (log.isDebugEnabled()) {
+                log.debug("【急速追书后台APP接口】开始查找首页初始加载的广告信息");
+            }
+            Sort sort = new Sort(Sort.Direction.DESC, "createTime", "updateTime");
+            List<NovelAdvertisement> advertisementList = advertisementService.findAll(sort);
+            if (advertisementList != null && advertisementList.size() > 0) {
+                NovelAdvertisement advertisement = advertisementList.get(0);
+            }
+        } catch (Exception e) {
+            log.error("【急速追书后台APP接口】查找首页初始加载的广告信息出现错误", e);
+        } finally {
+            if (log.isDebugEnabled()) {
+                log.debug("【急速追书后台APP接口】结束查找首页初始加载的广告信息");
+            }
+        }
+    	return ResultVOUtil.success(loadingDataVO);
     }
 }

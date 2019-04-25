@@ -62,7 +62,7 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
 //            JXDocument document = response.document();
 //            List<Object> urlList = document.sel("//body/div[@class='tuijian']/ul/li/h2/a/@href");
             List<Object> urlList = new LinkedList<Object>();
-            urlList.add("/sort1/1/");
+            urlList.add("/sort4/1/");
             if (urlList == null || urlList.isEmpty() || urlList.size() < 1) { 
                 return;
             }
@@ -127,7 +127,7 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
 					}
                     push(Request.build(BusinessConstants.CURRENT_GET_DATA_URL, DuShu88NovelCrawler::getEachBook));
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(5000);
                     } catch (InterruptedException e) {
                         log.error("【后台爬虫系统爬取数据】爬取八八读书网小说分页数据出现InterruptedException异常", e);
                     }
@@ -196,8 +196,8 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
                     push(Request.build(BusinessConstants.CURRENT_GET_BOOK_DATA_URL, DuShu88NovelCrawler::renderChapterBean));
                     BusinessConstants.CURRENT_CHAPTER_INDEX ++;
                     try {
-                        //防止被屏蔽间隔0.1到0.2秒钟访问
-                        Thread.sleep(new Random().nextInt(100) + 100);
+                        //防止被屏蔽间隔1到2秒钟再访问
+                        Thread.sleep(new Random().nextInt(1000) + 1000);
                     } catch (InterruptedException e) {
                         log.error("【后台爬虫系统爬取数据】爬取每页小说的目录和内容数据出现InterruptedException异常", e);
                     }
@@ -436,6 +436,9 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
                 	BusinessConstants.CURRENT_CHAPTER_INDEX = 0;
 				}
     		} catch (Exception e) {
+    			//唤醒上一级线程
+                BusinessConstants.conditionPoolBook.signal();
+                BusinessConstants.lock.unlock();
     			log.error("【后台管理】爬取小说章节信息失败", e);
     		} finally {
     			if (log.isDebugEnabled()) {
