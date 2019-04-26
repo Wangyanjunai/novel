@@ -82,7 +82,7 @@ public class DuShu88NovelCrawler2 extends BaseSeimiCrawler{
 	                if (log.isDebugEnabled()) {
 	                	log.debug("【后台爬虫系统爬取数据】爬取八八读书网小说信息每次爬取的分类信息URL={}", BusinessConstants.CURRENT_START_URL);
 					}
-	                push(Request.build(BusinessConstants.CURRENT_START_URL, DuShu88NovelCrawler1::getEachPage));
+	                push(Request.build(BusinessConstants.CURRENT_START_URL, DuShu88NovelCrawler2::getEachPage));
 	                //当前线程等待直到被唤醒
 	                try {
 	                    BusinessConstants.conditionPoolStart.await();
@@ -125,7 +125,7 @@ public class DuShu88NovelCrawler2 extends BaseSeimiCrawler{
                     if (log.isDebugEnabled()) {
 						log.debug("【后台爬虫系统爬取数据】当前获取数据的URL={}", BusinessConstants.CURRENT_GET_DATA_URL);
 					}
-                    push(Request.build(BusinessConstants.CURRENT_GET_DATA_URL, DuShu88NovelCrawler1::getEachBook));
+                    push(Request.build(BusinessConstants.CURRENT_GET_DATA_URL, DuShu88NovelCrawler2::getEachBook));
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {
@@ -158,7 +158,7 @@ public class DuShu88NovelCrawler2 extends BaseSeimiCrawler{
                 if (log.isDebugEnabled()) {
                 	log.debug("【后台爬虫系统爬取数据】分页信息的开始的URL={}", BusinessConstants.CURRENT_START_URL);
                 }
-                push(Request.build(BusinessConstants.CURRENT_START_URL, DuShu88NovelCrawler1::getEachPage));
+                push(Request.build(BusinessConstants.CURRENT_START_URL, DuShu88NovelCrawler2::getEachPage));
                 BusinessConstants.lock.unlock();
             });
         } catch (Exception e) {
@@ -193,7 +193,7 @@ public class DuShu88NovelCrawler2 extends BaseSeimiCrawler{
                     if (log.isDebugEnabled()) {
                     	log.debug("【后台爬虫系统爬取数据】爬取每页小说的目录和内容数据URL={}", BusinessConstants.CURRENT_GET_BOOK_DATA_URL);
 					}
-                    push(Request.build(BusinessConstants.CURRENT_GET_BOOK_DATA_URL, DuShu88NovelCrawler1::renderChapterBean));
+                    push(Request.build(BusinessConstants.CURRENT_GET_BOOK_DATA_URL, DuShu88NovelCrawler2::renderChapterBean));
                     BusinessConstants.CURRENT_CHAPTER_INDEX ++;
                     try {
                         //防止被屏蔽间隔1到2秒钟再访问
