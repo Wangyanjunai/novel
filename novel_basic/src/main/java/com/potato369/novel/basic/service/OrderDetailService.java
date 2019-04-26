@@ -5,6 +5,10 @@ import com.potato369.novel.basic.dataobject.ProductInfo;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.service
@@ -24,6 +28,7 @@ public interface OrderDetailService {
      * @param orderId
      * @return
      */
+	@Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     List<OrderDetail> findOrderDetailByOrderId(String orderId);
 
     /**
@@ -31,5 +36,6 @@ public interface OrderDetailService {
      * @param orderId
      * @return
      */
+	@Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     List<ProductInfo> findProductInfoByOrderId(String orderId);
 }

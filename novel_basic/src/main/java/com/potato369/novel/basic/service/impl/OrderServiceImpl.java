@@ -16,9 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -60,7 +58,6 @@ public class OrderServiceImpl implements OrderService {
      * </pre>
      */
     @Override
-    @Transactional
     public OrderMaster save(OrderMaster orderMaster) throws Exception{
         if (orderMaster == null) {
             log.error("【创建保存订单信息】，订单信息为空");
@@ -141,8 +138,6 @@ public class OrderServiceImpl implements OrderService {
      * </pre>
      */
     @Override
-    @Modifying
-    @Transactional
     public OrderMaster cancel(OrderMaster orderMaster) throws Exception{
         /** 1、判断订单是否为空 */
         if (orderMaster == null) {
@@ -172,8 +167,6 @@ public class OrderServiceImpl implements OrderService {
      * </pre>
      */
     @Override
-    @Modifying
-    @Transactional
     public OrderMaster finish(OrderMaster orderMaster) throws Exception{
         /** 1、判断订单状态 */
         if (orderMaster.getOrderStatus() != OrderStatusEnum.NEW.getCode()){
@@ -197,8 +190,6 @@ public class OrderServiceImpl implements OrderService {
      * </pre>
      */
     @Override
-    @Modifying
-    @Transactional
     public OrderMaster paid(OrderMaster orderMaster) throws Exception{
         Date now = new Date();
         /** 1、判断订单状态 */

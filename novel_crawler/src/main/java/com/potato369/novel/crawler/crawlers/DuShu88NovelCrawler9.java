@@ -34,9 +34,9 @@ import lombok.extern.slf4j.Slf4j;
  * @since JDK 1.8
  * </pre>
  */
-@Crawler(name = "88dush", useUnrepeated = true) 
+@Crawler(name = "88dush9", useUnrepeated = true)
 @Slf4j
-public class DuShu88NovelCrawler extends BaseSeimiCrawler{
+public class DuShu88NovelCrawler9 extends BaseSeimiCrawler{
 
 	private static final long serialVersionUID = 3993378973651481714L;
 
@@ -62,7 +62,7 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
 //            JXDocument document = response.document();
 //            List<Object> urlList = document.sel("//body/div[@class='tuijian']/ul/li/h2/a/@href");
             List<Object> urlList = new LinkedList<Object>();
-            urlList.add("/sort4/1/");
+            urlList.add("/sort9/1/");
             if (urlList == null || urlList.isEmpty() || urlList.size() < 1) { 
                 return;
             }
@@ -82,7 +82,7 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
 	                if (log.isDebugEnabled()) {
 	                	log.debug("【后台爬虫系统爬取数据】爬取八八读书网小说信息每次爬取的分类信息URL={}", BusinessConstants.CURRENT_START_URL);
 					}
-	                push(Request.build(BusinessConstants.CURRENT_START_URL, DuShu88NovelCrawler::getEachPage));
+	                push(Request.build(BusinessConstants.CURRENT_START_URL, DuShu88NovelCrawler9::getEachPage));
 	                //当前线程等待直到被唤醒
 	                try {
 	                    BusinessConstants.conditionPoolStart.await();
@@ -125,7 +125,7 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
                     if (log.isDebugEnabled()) {
 						log.debug("【后台爬虫系统爬取数据】当前获取数据的URL={}", BusinessConstants.CURRENT_GET_DATA_URL);
 					}
-                    push(Request.build(BusinessConstants.CURRENT_GET_DATA_URL, DuShu88NovelCrawler::getEachBook));
+                    push(Request.build(BusinessConstants.CURRENT_GET_DATA_URL, DuShu88NovelCrawler9::getEachBook));
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {
@@ -158,7 +158,7 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
                 if (log.isDebugEnabled()) {
                 	log.debug("【后台爬虫系统爬取数据】分页信息的开始的URL={}", BusinessConstants.CURRENT_START_URL);
                 }
-                push(Request.build(BusinessConstants.CURRENT_START_URL, DuShu88NovelCrawler::getEachPage));
+                push(Request.build(BusinessConstants.CURRENT_START_URL, DuShu88NovelCrawler9::getEachPage));
                 BusinessConstants.lock.unlock();
             });
         } catch (Exception e) {
@@ -193,7 +193,7 @@ public class DuShu88NovelCrawler extends BaseSeimiCrawler{
                     if (log.isDebugEnabled()) {
                     	log.debug("【后台爬虫系统爬取数据】爬取每页小说的目录和内容数据URL={}", BusinessConstants.CURRENT_GET_BOOK_DATA_URL);
 					}
-                    push(Request.build(BusinessConstants.CURRENT_GET_BOOK_DATA_URL, DuShu88NovelCrawler::renderChapterBean));
+                    push(Request.build(BusinessConstants.CURRENT_GET_BOOK_DATA_URL, DuShu88NovelCrawler9::renderChapterBean));
                     BusinessConstants.CURRENT_CHAPTER_INDEX ++;
                     try {
                         //防止被屏蔽间隔1到2秒钟再访问

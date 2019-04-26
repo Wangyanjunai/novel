@@ -22,4 +22,6 @@ public interface NovelChapterRepository extends JpaRepository<NovelChapter, Stri
 	List<NovelChapter> findByBookId(String bookId);
 	
 	List<NovelChapter> findByTitle(String title, Sort sort);
+	
+	NovelChapter findByTitleAndBookId(String title, String bookId, Sort sort);
 }

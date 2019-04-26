@@ -3,12 +3,8 @@ package com.potato369.novel.basic.service.impl;
 import com.potato369.novel.basic.dataobject.SellerInfo;
 import com.potato369.novel.basic.repository.SellerInfoRepository;
 import com.potato369.novel.basic.service.SellerService;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.service.impl
@@ -47,8 +43,6 @@ public class SellerServiceImpl implements SellerService {
      * </pre>
      */
     @Override
-    @Modifying
-    @Transactional
     public SellerInfo updateSellerInfo(SellerInfo sellerInfo) throws Exception{
         return repository.saveAndFlush(sellerInfo);
     }

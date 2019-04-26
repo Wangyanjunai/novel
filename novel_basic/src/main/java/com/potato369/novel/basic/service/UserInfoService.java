@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +30,7 @@ public interface UserInfoService {
      * @param userInfo
      * @return
      */
-    @Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     UserInfo save(UserInfo userInfo) throws Exception;
 
     /**
@@ -37,7 +38,7 @@ public interface UserInfoService {
      * @param userInfoList
      * @return
      */
-    @Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     List<UserInfo> save(List<UserInfo> userInfoList) throws Exception;
 
     /**
@@ -45,7 +46,8 @@ public interface UserInfoService {
      * @param id
      * @return
      */
-    @Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    @Modifying
+    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     void del(String id) throws Exception;
 
     /**
@@ -53,7 +55,8 @@ public interface UserInfoService {
      * @param userInfo
      * @return
      */
-    @Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    @Modifying
+    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     UserInfo update(UserInfo userInfo) throws Exception;
 
     /**
@@ -61,6 +64,7 @@ public interface UserInfoService {
      * @param id
      * @return
      */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     UserInfo findById(String id) throws Exception;
 
     /**
@@ -68,12 +72,14 @@ public interface UserInfoService {
      * @param openid
      * @return
      */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     UserInfo findByOpenid(String openid) throws Exception;
 
     /**
      * 查询所有用户信息
      * @return
      */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     List<UserInfo> findAll() throws Exception;
 
     /**
@@ -81,6 +87,7 @@ public interface UserInfoService {
      * @param sex
      * @return
      */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     List<UserInfo> findBySex(String sex) throws Exception;
 
     /**
@@ -88,5 +95,6 @@ public interface UserInfoService {
      * @param pageable
      * @return
      */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     Page<UserInfo> findAll(Pageable pageable) throws Exception;
 }

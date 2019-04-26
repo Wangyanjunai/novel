@@ -3,6 +3,9 @@ package com.potato369.novel.basic.service;
 import com.potato369.novel.basic.dataobject.ProductInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,12 +27,14 @@ public interface ProductService {
      * @param productInfoId
      * @return
      */
+	@Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     ProductInfo findOne(String productInfoId) throws Exception;
 
     /**
      * 查询所有的书币产品信息
      * @return
      */
+	@Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     List<ProductInfo> findAll() throws Exception;
 
     /**
@@ -37,5 +42,6 @@ public interface ProductService {
      * @param pageable
      * @return
      */
+	@Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     Page<ProductInfo> findAll(Pageable pageable) throws Exception;
 }

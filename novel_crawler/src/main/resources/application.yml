@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: prod
+    active: dev1
 #  jackson:
 #    default-property-inclusion: non_default
   freemarker:

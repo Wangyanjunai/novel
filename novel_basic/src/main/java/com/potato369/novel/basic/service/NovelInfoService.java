@@ -2,6 +2,7 @@ package com.potato369.novel.basic.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,14 +30,16 @@ public interface NovelInfoService {
      * @param novelInfo
      * @return
      */
-    @Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+	@Modifying
+    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     NovelInfo save(NovelInfo novelInfo);
 
     /**
      * 删除
      * @param id
      */
-    @Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+	@Modifying
+    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     void delete(String id);
 
     /**
@@ -44,7 +47,8 @@ public interface NovelInfoService {
      * @param novelInfo
      * @return
      */
-    @Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+	@Modifying
+    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     NovelInfo update(NovelInfo novelInfo);
 
     /**
@@ -52,6 +56,7 @@ public interface NovelInfoService {
      * @param id
      * @return
      */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     NovelInfo find(String id);
     
     /**
@@ -61,7 +66,7 @@ public interface NovelInfoService {
      * @param categoryText
      * @return
      */
-    @Transactional(readOnly= false)
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     NovelInfo findByTitleAndCategoryText(String title, String categoryText);
 
     /**
@@ -69,12 +74,14 @@ public interface NovelInfoService {
      * @param novelStatus
      * @return
      */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     List<NovelInfo> findByNovelStatus(Integer novelStatus);
 
     /**
      * 查找小说列表
      * @return
      */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     List<NovelInfo> findAll();
 
     /**
@@ -82,5 +89,6 @@ public interface NovelInfoService {
      * @param pageable
      * @return
      */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     Page<NovelInfo> findAll(Pageable pageable);
 }

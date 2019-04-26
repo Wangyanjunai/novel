@@ -2,6 +2,11 @@ package com.potato369.novel.basic.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.potato369.novel.basic.dataobject.NovelCategory;
 import java.util.List;
 
@@ -26,6 +31,7 @@ public interface CategoryService {
 	 * @return
 	 * </pre>
 	 */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	List<NovelCategory> findByCategoryTypeIn(List<Integer> categoryTypeList);
 
 	/**
@@ -35,6 +41,8 @@ public interface CategoryService {
 	 * @return
 	 * </pre>
 	 */
+    @Modifying
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	NovelCategory save(NovelCategory category);
 
 	/**
@@ -43,6 +51,8 @@ public interface CategoryService {
 	 * @param categoryId
 	 * </pre>
 	 */
+    @Modifying
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	void delete(String categoryId);
 
 	/**
@@ -52,6 +62,8 @@ public interface CategoryService {
 	 * @return
 	 * </pre>
 	 */
+    @Modifying
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	NovelCategory update(NovelCategory category);
 
 	/**
@@ -61,6 +73,7 @@ public interface CategoryService {
 	 * @return
 	 * </pre>
 	 */
+    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
 	NovelCategory findOne(String categoryId);
 
 	/**
@@ -70,6 +83,7 @@ public interface CategoryService {
 	 * @return
 	 * </pre>
 	 */
+    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
 	NovelCategory findByParentCategoryId(String parentCategoryId);
 
 	/**
@@ -79,6 +93,7 @@ public interface CategoryService {
 	 * @return
 	 * </pre>
 	 */
+    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
 	NovelCategory findByCategoryEnName(String categoryEnName);
 
 	/**
@@ -87,6 +102,7 @@ public interface CategoryService {
 	 * @return
 	 * </pre>
 	 */
+    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
 	List<NovelCategory> findAll();
 
 	/**
@@ -95,6 +111,7 @@ public interface CategoryService {
 	 * @return
 	 * </pre>
 	 */
+    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
 	List<NovelCategory> findAllParentCategoryIdIsNotNull();
 
 	/**
@@ -103,6 +120,7 @@ public interface CategoryService {
 	 * @return
 	 * </pre>
 	 */
+    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
 	List<NovelCategory> findAllParentCategoryIdIsNull();
 
 	/**
@@ -112,5 +130,6 @@ public interface CategoryService {
 	 * @return
 	 * </pre>
 	 */
+    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
 	Page<NovelCategory> findAll(Pageable pageable);
 }

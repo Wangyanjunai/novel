@@ -11,10 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 /**
  * <pre>
@@ -45,7 +42,6 @@ public class NovelChapterServiceImpl implements NovelChapterService {
      * </pre>
      */
     @Override
-    @Transactional
     public NovelChapter save(NovelChapter novelChapter) {
         return repository.save(novelChapter);
     }
@@ -58,7 +54,6 @@ public class NovelChapterServiceImpl implements NovelChapterService {
      * </pre>
      */
     @Override
-    @Transactional
     public NovelChapter save(Response response, String bookId) {
 //    	NovelChapter novelChapterTemp = null;
 //    	try {
@@ -93,8 +88,6 @@ public class NovelChapterServiceImpl implements NovelChapterService {
      * </pre>
      */
     @Override
-    @Modifying
-    @Transactional
     public void delete(String chapterId) {
     	repository.delete(chapterId);
     }
@@ -107,8 +100,6 @@ public class NovelChapterServiceImpl implements NovelChapterService {
      * </pre>
      */
     @Override
-    @Modifying
-    @Transactional
     public NovelChapter update(NovelChapter novelChapter) {
         return repository.saveAndFlush(novelChapter);
     }
@@ -181,5 +172,19 @@ public class NovelChapterServiceImpl implements NovelChapterService {
 	public List<NovelChapter> findByChaperTitle(String title) {
 		Sort sort = new Sort(Direction.DESC, "createTime", "updateTime");
 		return repository.findByTitle(title, sort);
+	}
+
+	
+	/**
+	 * <pre>
+	 * 描述该方法的实现功能：
+	 * @see com.potato369.novel.basic.service.NovelChapterService#findByChaperTitleAndBookId(java.lang.String, java.lang.String)
+	 * </pre>
+	 */
+		
+	@Override
+	public NovelChapter findChaperByTitleAndBookId(String title, String bookId) {
+		Sort sort = new Sort(Direction.ASC, "createTime", "updateTime");
+		return repository.findByTitleAndBookId(title, bookId, sort);
 	}
 }

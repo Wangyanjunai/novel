@@ -314,5 +314,6 @@ public class DateUtil {
         // 获取当前时间1小时后的时间 格式yyyy-MM-dd HH:mm:ss
 
         System.out.println("获取当前时间1小时后的时间 格式yyyy-MM-dd HH:mm:ss==>" + getTimeByHour(1));
+        System.out.println("获取当前格式yyyy-MM-dd HH:mm:ss时间 ==>"+DateUtil.fomatDateTimeStamp(DateUtil.getTime()));
     }
 }

@@ -1,6 +1,8 @@
 package com.potato369.novel.basic.service;
 
 import com.potato369.novel.basic.dataobject.SellerInfo;
+
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,7 @@ public interface SellerService {
      * @return
      * </pre>
      */
+	@Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     SellerInfo findSellerInfoByOpenid(String openid) throws Exception;
 
     /**
@@ -35,6 +38,7 @@ public interface SellerService {
      * @return
      * </pre>
      */
-    @Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+	@Modifying
+	@Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     SellerInfo updateSellerInfo(SellerInfo sellerInfo) throws Exception;
 }

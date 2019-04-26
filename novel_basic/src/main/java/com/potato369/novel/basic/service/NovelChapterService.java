@@ -5,6 +5,11 @@ import com.potato369.novel.basic.dataobject.NovelInfo;
 import cn.wanghaomiao.seimi.struct.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 /**
  * <pre>
@@ -27,6 +32,8 @@ public interface NovelChapterService {
      * @return NovelChapter.class
      * </pre>
      */
+	@Modifying
+    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     NovelChapter save(NovelChapter novelChapter);
 
     /**
@@ -36,6 +43,8 @@ public interface NovelChapterService {
      * @return NovelChapter.class
      * </pre>
      */
+	@Modifying
+    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     NovelChapter save(Response response, String bookId);
 
     /**
@@ -44,6 +53,8 @@ public interface NovelChapterService {
      * @param chapterId
      * </pre>
      */
+	@Modifying
+    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     void delete(String chapterId);
 
     /**
@@ -53,6 +64,8 @@ public interface NovelChapterService {
      * @return NovelChapter.class
      * </pre>
      */
+	@Modifying
+    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     NovelChapter update(NovelChapter novelChapter);
 
     /**
@@ -62,6 +75,7 @@ public interface NovelChapterService {
      * @return NovelChapter.class
      * </pre>
      */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     NovelChapter findNovelChapterByChapterId(String chapterId);
 
     /**
@@ -71,6 +85,7 @@ public interface NovelChapterService {
      * @return NovelChapter.class
      * </pre>
      */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     NovelInfo findNovelInfoByChapterId(String chapterId);
 
     /**
@@ -79,6 +94,7 @@ public interface NovelChapterService {
      * @return NovelChapter.class
      * </pre>
      */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     List<NovelChapter> findAll(String bookId);
 
     /**
@@ -87,16 +103,31 @@ public interface NovelChapterService {
      * @return NovelChapter.class
      * </pre>
      */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     Page<NovelChapter> findAll(String bookId, Pageable pageable);
     
     /**
      * <pre>
-     * findChapterByChaperName方法的作用：根据章节标题查询章节信息
+     * findByChaperTitle方法的作用：根据章节标题查询章节信息
      * @author Jack
      * @param title
      * @return
      * @since JDK 1.8
      * </pre>
      */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     List<NovelChapter> findByChaperTitle(String title);
+    
+    /**
+     * <pre>
+     * findByChaperTitleAndBookId方法的作用：根据章节标题查询章节信息
+     * @author Jack
+     * @param title 小说章节名称
+     * @param bookId 小说id
+     * @return
+     * @since JDK 1.8
+     * </pre>
+     */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    NovelChapter findChaperByTitleAndBookId(String title, String bookId);
 }
