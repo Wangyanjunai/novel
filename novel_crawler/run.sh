@@ -16,7 +16,8 @@ echo '开始启动sell测试项目……'
 cd ./sell/target/
 echo '启动sell测试项目中……'
 kill -9 `pidof java`
-nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms500m -Xmx500m -Xmn250m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -jar novel_crawler.jar -verbose:class &
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms256m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -jar novel_crawler.jar --spring.profiles.active=dev1 -verbose:class &
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms256m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -jar novel_crawler.jar --spring.profiles.active=prod1 -verbose:class &
 echo '结束启动sell测试项目……'
 echo $?
 exit
