@@ -1,6 +1,6 @@
 package com.potato369.novel.controller;
 
-import com.potato369.novel.basic.dataobject.UserInfo;
+import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.enums.ResultEnum;
 import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.utils.ResultVOUtil;
@@ -46,9 +46,9 @@ public class BuyerUserInfoController {
 			if (log.isDebugEnabled()) {
 				log.debug("【买家前端数据】开始根据用户微信openid={}查找用户信息", openid);
 			}
-			UserInfo userInfo = userInfoService.findByOpenid(openid);
+			NovelUserInfo userInfo = userInfoService.findByOpenid(openid);
 	        UserInfoVO userInfoVO = new UserInfoVO();
-	        userInfoVO.setId(userInfo.getPrivatedId());
+	        //userInfoVO.setId(userInfo.getPrivatedId());
 	        userInfoVO.setBalance(userInfo.getBalance());
 	        userInfoVO.setUserAvatar(userInfo.getAvatarUrl());
 	        userInfoVO.setUserNickName(userInfo.getNickName());

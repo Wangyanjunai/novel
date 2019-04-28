@@ -1,6 +1,6 @@
 package com.potato369.novel.converter;
 
-import com.potato369.novel.basic.dataobject.UserInfo;
+import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.utils.JsonUtil;
 import com.potato369.novel.utils.UUIDUtil;
@@ -35,11 +35,11 @@ public class WxMpUser2UserInfoConverter {
      * @return List<UserInfo>对象
      * </pre>
      */
-    public static List<UserInfo> WxMpUserList2UserInfoListConvert(UserInfoService userInfoService, List<WxMpUser> wxMpUserList) {
-        List<UserInfo> userInfoList = new ArrayList<UserInfo>();
+    public static List<NovelUserInfo> WxMpUserList2UserInfoListConvert(UserInfoService userInfoService, List<WxMpUser> wxMpUserList) {
+        List<NovelUserInfo> userInfoList = new ArrayList<NovelUserInfo>();
         try {
             for (WxMpUser wxMpUser : wxMpUserList) {
-                UserInfo userInfo = userInfoService.findByOpenid(wxMpUser.getOpenId());
+            	NovelUserInfo userInfo = userInfoService.findByOpenid(wxMpUser.getOpenId());
                 if (userInfo == null) {
                     userInfo = WxMpUser2UserInfoConvert(wxMpUser);
                     userInfoList.add(userInfo);
@@ -59,20 +59,20 @@ public class WxMpUser2UserInfoConverter {
      * @return UserInfo对象
      * </pre>
      */
-    public static UserInfo WxMpUser2UserInfoConvert(WxMpUser wxMpUser) {
-        UserInfo userInfo = UserInfo.builder().build();
+    public static NovelUserInfo WxMpUser2UserInfoConvert(WxMpUser wxMpUser) {
+    	NovelUserInfo userInfo = NovelUserInfo.builder().build();
         userInfo.setId(UUIDUtil.gen32UUID());
         userInfo.setCountry(wxMpUser.getCountry());
         userInfo.setProvince(wxMpUser.getProvince());
         userInfo.setCity(wxMpUser.getCity());
         userInfo.setLang(wxMpUser.getLanguage());
         userInfo.setGender(wxMpUser.getSex());
-        userInfo.setSubscribe(getSubscribeValue(wxMpUser.getSubscribe()));
+//        userInfo.setSubscribe(getSubscribeValue(wxMpUser.getSubscribe()));
         userInfo.setOpenid(wxMpUser.getOpenId());
         userInfo.setNickName(String.valueOf(wxMpUser.getNickname()));
-        userInfo.setUnionId(wxMpUser.getUnionId());
+//        userInfo.setUnionId(wxMpUser.getUnionId());
         userInfo.setAvatarUrl(wxMpUser.getHeadImgUrl());
-        userInfo.setSubscribeTime(new Date(wxMpUser.getSubscribeTime() * 1000L));
+//        userInfo.setSubscribeTime(new Date(wxMpUser.getSubscribeTime() * 1000L));
         userInfo.setBalance(BigDecimal.ZERO);
         if (log.isDebugEnabled()) {
         	log.debug("userInfo={}", JsonUtil.toJson(userInfo));

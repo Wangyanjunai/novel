@@ -3,7 +3,7 @@ package com.potato369.novel.basic.service.impl;
 import com.potato369.novel.basic.dataobject.OrderDetail;
 import com.potato369.novel.basic.dataobject.OrderMaster;
 import com.potato369.novel.basic.dataobject.ProductInfo;
-import com.potato369.novel.basic.dataobject.UserInfo;
+import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.enums.OrderStatusEnum;
 import com.potato369.novel.basic.enums.PayStatusEnum;
 import com.potato369.novel.basic.enums.ResultEnum;
@@ -231,14 +231,14 @@ public class OrderServiceImpl implements OrderService {
                 orderDetail.setEndTime(now);
             }
             /**给对应的用户发放书币*/
-            UserInfo userInfo = userInfoRepository.findUserInfoByOpenid(orderMaster.getBuyerOpenid());
+            NovelUserInfo userInfo = userInfoRepository.findUserInfoByOpenid(orderMaster.getBuyerOpenid());
             if (userInfo == null) {
                 log.error("【微信公众号支付更新订单】给对应的用户发放书币失败，用户微信openid={}", orderMaster.getBuyerOpenid());
                 throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
             }
             BigDecimal balance = userInfo.getBalance().add(orderDetail.getProductQuantity()).add(orderDetail.getProductGiveQuantity());
             userInfo.setBalance(balance);
-            UserInfo userInfoUpdateResult =  userInfoRepository.save(userInfo);
+            NovelUserInfo userInfoUpdateResult =  userInfoRepository.save(userInfo);
             if (userInfoUpdateResult == null) {
                 log.error("【微信公众号支付更新订单】给对应的用户发放书币失败，用户信息={}", userInfo);
                 throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());

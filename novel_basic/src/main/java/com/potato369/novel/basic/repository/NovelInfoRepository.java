@@ -2,6 +2,7 @@ package com.potato369.novel.basic.repository;
 
 import com.potato369.novel.basic.dataobject.NovelInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -24,4 +25,9 @@ public interface NovelInfoRepository extends JpaRepository<NovelInfo, String> {
     List<NovelInfo> findNovelInfoByCategoryType(Integer categoryType);
     
     NovelInfo findNovelInfoByTitleAndCategoryCNText(String title, String categoryCNText);
+    
+    List<NovelInfo> findByCategoryENText(String categoryENText);
+    
+    @Query(countName="count", countQuery="select count(1) from `novel_info` where `category_en_text`=?")
+    Integer findCountByCategoryENText(String categoryENText);
 }

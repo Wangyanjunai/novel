@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import com.potato369.novel.basic.dataobject.UserInfo;
+import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.repository.UserInfoRepository;
 import com.potato369.novel.basic.service.UserInfoService;
 
@@ -35,7 +35,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public UserInfo save(UserInfo userInfo) throws Exception{
+    public NovelUserInfo save(NovelUserInfo userInfo) throws Exception{
         return repository.save(userInfo);
     }
 
@@ -46,7 +46,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public List<UserInfo> save(List<UserInfo> userInfoList) throws Exception{
+    public List<NovelUserInfo> save(List<NovelUserInfo> userInfoList) throws Exception{
         return repository.save(userInfoList);
     }
 
@@ -68,7 +68,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public UserInfo update(UserInfo userInfo) throws Exception{
+    public NovelUserInfo update(NovelUserInfo userInfo) throws Exception{
         return repository.saveAndFlush(userInfo);
     }
 
@@ -79,7 +79,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public UserInfo findById(String id) throws Exception{
+    public NovelUserInfo findById(String id) throws Exception{
         return repository.findOne(id);
     }
 
@@ -90,7 +90,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public UserInfo findByOpenid(String openid) throws Exception{
+    public NovelUserInfo findByOpenid(String openid) throws Exception{
         return repository.findUserInfoByOpenid(openid);
     }
 
@@ -100,7 +100,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public List<UserInfo> findAll() throws Exception{
+    public List<NovelUserInfo> findAll() throws Exception{
         return repository.findAll();
     }
 
@@ -111,7 +111,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public List<UserInfo> findBySex(String gender) throws Exception{
+    public List<NovelUserInfo> findBySex(String gender) throws Exception{
         return repository.findUserInfosByGender(gender);
     }
 
@@ -122,7 +122,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public Page<UserInfo> findAll(Pageable pageable) {
+    public Page<NovelUserInfo> findAll(Pageable pageable) {
         return repository.findAll(pageable);
     }
 }

@@ -83,7 +83,7 @@ public class NovelChapter implements Serializable {
     
     /**
      * <pre>
-     * @serialField url：章节url
+     * @serialField url：章节网页路径URL
      * </pre>
      */
     @Column(name = "chapter_url", nullable = true, length = 1024)

@@ -84,7 +84,7 @@ public interface CategoryService {
 	 * </pre>
 	 */
     @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-	NovelCategory findByParentCategoryId(String parentCategoryId);
+	List<NovelCategory> findByParentCategoryId(String parentCategoryId);
 
 	/**
 	 * <pre>

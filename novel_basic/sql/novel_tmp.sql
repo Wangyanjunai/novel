@@ -9,20 +9,6 @@ Date: 2019/4/22 15:21:48
 
 SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
--- Table structure for blog
--- ----------------------------
-DROP TABLE IF EXISTS `blog`;
-CREATE TABLE `blog` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '章节id',
-  `title` varchar(512) DEFAULT NULL COMMENT '节章标题（名称）',
-  `content` mediumtext COMMENT '章节内容',
-  `url` varchar(1024) DEFAULT NULL COMMENT '章节路径URL',
-  `startUrl` varchar(1024) DEFAULT NULL COMMENT '爬取数据开始路径URL',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='小说章节信息记录表';
-
--- ----------------------------
 -- Table structure for novel_advertisement
 -- ----------------------------
 DROP TABLE IF EXISTS `novel_advertisement`;
@@ -78,7 +64,7 @@ DROP TABLE IF EXISTS `novel_comment`;
 CREATE TABLE `novel_comment` (
   `comment_id` varchar(32) NOT NULL COMMENT '主键，评论id。',
   `user_id` varchar(32) NOT NULL COMMENT '用户id。',
-  `novel_id` int(11) NOT NULL COMMENT '小说id',
+  `novel_id` varchar(32) NOT NULL COMMENT '小说id',
   `chapter_id` varchar(32) DEFAULT NULL COMMENT '章节id',
   `comment_title` varchar(512) DEFAULT NULL COMMENT '评论标题。',
   `comment_content` text DEFAULT NULL COMMENT '评论内容。',

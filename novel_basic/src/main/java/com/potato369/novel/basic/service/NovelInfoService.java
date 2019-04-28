@@ -3,10 +3,12 @@ package com.potato369.novel.basic.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.potato369.novel.basic.dataobject.NovelCategory;
 import com.potato369.novel.basic.dataobject.NovelInfo;
 
 import java.util.List;
@@ -83,7 +85,29 @@ public interface NovelInfoService {
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     List<NovelInfo> findAll();
-
+    
+    /**
+     * 
+     * <pre>
+     * getCategoryCount方法的作用：
+     * 描述方法适用条件：
+     * 描述方法的执行流程：
+     * 描述方法的使用方法：
+     * 描述方法的注意事项：
+     *
+     * @author Jack
+     * @param category_en_text
+     * @return
+     * @since JDK 1.6
+     * </pre>
+     */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    @Query(countQuery="select count(1) from `novel_info` where `category_en_text`=?")
+    Integer getCategoryCount(String category_en_text);
+    
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    List<NovelInfo> findByCategoryEnText(String categoryENText);
+    
     /**
      * 查找小说分页列表
      * @param pageable

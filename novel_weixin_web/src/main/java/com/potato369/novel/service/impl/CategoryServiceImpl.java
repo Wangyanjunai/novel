@@ -102,7 +102,8 @@ public class CategoryServiceImpl implements CategoryService {
 	 */
 	@Override
 	public CategoryDTO findByParentCategoryId(String parentCategoryId) {
-		return NovelCategory2CategoryDTOConverter.convert(novelCategoryRepository.findNovelCategoryByParentCategoryId(parentCategoryId));
+//		return NovelCategory2CategoryDTOConverter.convert(novelCategoryRepository.findNovelCategoryByParentCategoryId(parentCategoryId));
+		return null;
 	}
 
 	/**

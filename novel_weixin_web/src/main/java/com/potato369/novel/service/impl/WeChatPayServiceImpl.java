@@ -8,8 +8,9 @@ import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.bean.result.WxPayOrderCloseResult;
 import com.github.binarywang.wxpay.constant.WxPayConstants;
 import com.github.binarywang.wxpay.service.WxPayService;
+import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.dataobject.ProductInfo;
-import com.potato369.novel.basic.dataobject.UserInfo;
+import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.enums.ResultEnum;
 import com.potato369.novel.conf.prop.WeChatPayProperties;
 import com.potato369.novel.dto.OrderDTO;
@@ -156,7 +157,7 @@ public class WeChatPayServiceImpl implements WeChatPayService {
     		//退款
 			wxPayService.refund(request);
     		//减去已经加上的书币
-            UserInfo userInfo = userInfoService.findByOpenid(orderDTO.getBuyerOpenid());
+            NovelUserInfo userInfo = userInfoService.findByOpenid(orderDTO.getBuyerOpenid());
             if (userInfo == null) {
                 log.error("【微信公众号支付退款】给对应的用户减去书币失败，用户微信openid={}，用户信息不存在", orderDTO.getBuyerOpenid());
                 throw new NovelOrderException(ResultEnum.ORDER_UPDATE_FAIL);
@@ -168,7 +169,7 @@ public class WeChatPayServiceImpl implements WeChatPayService {
             }
             BigDecimal balance = userInfo.getBalance().subtract(quantity);
             userInfo.setBalance(balance);
-            UserInfo result =  userInfoService.save(userInfo);
+            NovelUserInfo result =  userInfoService.save(userInfo);
             if (result == null) {
                 log.error("【微信公众号支付退款】给对应的用户去书币失败，用户信息={}", JsonUtil.toJson(userInfo));
                 throw new NovelOrderException(ResultEnum.ORDER_UPDATE_FAIL);

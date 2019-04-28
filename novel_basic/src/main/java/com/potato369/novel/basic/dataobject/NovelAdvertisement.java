@@ -34,7 +34,7 @@ public class NovelAdvertisement implements Serializable{
 
 	/**
 	 * <pre>
-	 * @serialField serialVersionUID：序列号
+	 * @serialField serialVersionUID：序列号。
 	 * </pre>
 	 */
 	private static final long serialVersionUID = -7773745504940953409L;

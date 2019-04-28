@@ -1,8 +1,8 @@
 package com.potato369.novel.controller;
 
+import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.dataobject.OrderDetail;
 import com.potato369.novel.basic.dataobject.ProductInfo;
-import com.potato369.novel.basic.dataobject.UserInfo;
 import com.potato369.novel.basic.enums.ProductInfoEnum;
 import com.potato369.novel.basic.enums.ResultEnum;
 import com.potato369.novel.dto.OrderDTO;
@@ -103,7 +103,7 @@ public class BuyerPayController {
         BeanUtils.copyProperties(productInfo, orderDTO);
         orderDTO.setCreateTime(null);
         orderDTO.setUpdateTime(null);
-        UserInfo userInfo = null;
+        NovelUserInfo userInfo = null;
 		try {
 			userInfo = userInfoService.findByOpenid(openid);
 		} catch (Exception e) {

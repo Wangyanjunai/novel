@@ -1,6 +1,6 @@
 package com.potato369.novel.controller;
 
-import com.potato369.novel.basic.dataobject.UserInfo;
+import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.enums.ResultEnum;
 import com.potato369.novel.conf.prop.ProjectUrlProperties;
 import com.potato369.novel.constant.CookieConstant;
@@ -241,9 +241,9 @@ public class BuyerWeChatController {
         //第三步、根据用户openid获取用户信息
         try {
 			WxMpUser mpUser = wxMpService.getUserService().userInfo(openid);
-			UserInfo userInfo = userInfoService.findByOpenid(mpUser.getOpenId());
+			NovelUserInfo userInfo = userInfoService.findByOpenid(mpUser.getOpenId());
 			if (userInfo == null) {
-				userInfo = WxMpUser2UserInfoConverter.WxMpUser2UserInfoConvert(mpUser);
+//				userInfo = WxMpUser2UserInfoConverter.WxMpUser2UserInfoConvert(mpUser);
 			} else {
 				String id = userInfo.getId();
 				BeanUtils.copyProperties(mpUser, userInfo);

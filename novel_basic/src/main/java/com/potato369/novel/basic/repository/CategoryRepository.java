@@ -50,7 +50,7 @@ public interface CategoryRepository extends JpaRepository<NovelCategory, String>
      * @return NovelCategory
      * </pre>
      */
-    NovelCategory findNovelCategoryByParentCategoryId(String parentCategoryId);
+    List<NovelCategory> findNovelCategoryByParentCategoryId(String parentCategoryId);
 
     /**
      * <pre>

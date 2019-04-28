@@ -3,7 +3,7 @@ package com.potato369.novel.service.impl;
 import com.potato369.novel.basic.dataobject.OrderDetail;
 import com.potato369.novel.basic.dataobject.OrderMaster;
 import com.potato369.novel.basic.dataobject.ProductInfo;
-import com.potato369.novel.basic.dataobject.UserInfo;
+import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.enums.OrderStatusEnum;
 import com.potato369.novel.basic.enums.PayStatusEnum;
 import com.potato369.novel.basic.enums.ResultEnum;
@@ -281,7 +281,7 @@ public class OrderServiceImpl implements OrderService {
                 orderDetail.setEndTime(now);
             }
             /**给对应的用户发放书币*/
-            UserInfo userInfo = null;
+            NovelUserInfo userInfo = null;
 			try {
 				userInfo = userInfoService.findByOpenid(orderDTO.getBuyerOpenid());
 			} catch (Exception e) {
@@ -294,7 +294,7 @@ public class OrderServiceImpl implements OrderService {
             }
             BigDecimal balance = userInfo.getBalance().add(orderDetail.getProductQuantity()).add(orderDetail.getProductGiveQuantity());
             userInfo.setBalance(balance);
-            UserInfo userInfoUpdateResult = null;
+            NovelUserInfo userInfoUpdateResult = null;
 			try {
 				userInfoUpdateResult = userInfoService.save(userInfo);
 			} catch (Exception e) {

@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.potato369.novel.basic.dataobject.UserInfo;
+import com.potato369.novel.basic.dataobject.NovelUserInfo;
 
 /**
  * <pre>
@@ -31,7 +31,7 @@ public interface UserInfoService {
      * @return
      */
     @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    UserInfo save(UserInfo userInfo) throws Exception;
+    NovelUserInfo save(NovelUserInfo userInfo) throws Exception;
 
     /**
      * 保存用户信息列表
@@ -39,7 +39,7 @@ public interface UserInfoService {
      * @return
      */
     @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    List<UserInfo> save(List<UserInfo> userInfoList) throws Exception;
+    List<NovelUserInfo> save(List<NovelUserInfo> userInfoList) throws Exception;
 
     /**
      * 删除用户信息
@@ -57,7 +57,7 @@ public interface UserInfoService {
      */
     @Modifying
     @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    UserInfo update(UserInfo userInfo) throws Exception;
+    NovelUserInfo update(NovelUserInfo userInfo) throws Exception;
 
     /**
      * 根据id查找用户信息
@@ -65,7 +65,7 @@ public interface UserInfoService {
      * @return
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    UserInfo findById(String id) throws Exception;
+    NovelUserInfo findById(String id) throws Exception;
 
     /**
      * 根据openid查找用户信息
@@ -73,14 +73,14 @@ public interface UserInfoService {
      * @return
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    UserInfo findByOpenid(String openid) throws Exception;
+    NovelUserInfo findByOpenid(String openid) throws Exception;
 
     /**
      * 查询所有用户信息
      * @return
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    List<UserInfo> findAll() throws Exception;
+    List<NovelUserInfo> findAll() throws Exception;
 
     /**
      * 根据性别查询所有的用户信息
@@ -88,7 +88,7 @@ public interface UserInfoService {
      * @return
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    List<UserInfo> findBySex(String sex) throws Exception;
+    List<NovelUserInfo> findBySex(String sex) throws Exception;
 
     /**
      * 分页查询所有的用户信息
@@ -96,5 +96,5 @@ public interface UserInfoService {
      * @return
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    Page<UserInfo> findAll(Pageable pageable) throws Exception;
+    Page<NovelUserInfo> findAll(Pageable pageable) throws Exception;
 }

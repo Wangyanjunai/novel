@@ -93,7 +93,7 @@ public class CategoryServiceImpl implements CategoryService {
 	 * </pre>
 	 */
 	@Override
-	public NovelCategory findByParentCategoryId(String parentCategoryId) {
+	public List<NovelCategory> findByParentCategoryId(String parentCategoryId) {
 		return repository.findNovelCategoryByParentCategoryId(parentCategoryId);
 	}
 

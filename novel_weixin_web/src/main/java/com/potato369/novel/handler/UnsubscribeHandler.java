@@ -1,6 +1,6 @@
 package com.potato369.novel.handler;
 
-import com.potato369.novel.basic.dataobject.UserInfo;
+import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.service.UserInfoService;
 
 import me.chanjar.weixin.common.session.WxSessionManager;
@@ -26,9 +26,9 @@ public class UnsubscribeHandler extends AbstractHandler {
     String openId = wxMessage.getFromUser();
     this.logger.info("取消关注用户 OPENID: " + openId);
     try {
-      UserInfo userInfo = userInfoService.findByOpenid(openId);
+      NovelUserInfo userInfo = userInfoService.findByOpenid(openId);
       if (userInfo != null) {
-        userInfo.setSubscribe(0);
+//        userInfo.setSubscribe(0);
       }
       userInfoService.save(userInfo);
     } catch (Exception e) {

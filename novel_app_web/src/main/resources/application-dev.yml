@@ -3,10 +3,10 @@ spring:
     #################################################################################### Druid连接池的配置信息 ####################################################################
     druid:
       async-init: true                                        #有initialSize数量较多时，打开会加快应用启动时间
-      url: jdbc:mysql://127.0.0.1:3306/novel?useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&useOldAliasMetadataBehavior=true&serverTimezone=GMT%2B8  #数据库连接URL
+      url: jdbc:mysql://139.159.210.42:3306/novel_tmp?useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&useOldAliasMetadataBehavior=true&serverTimezone=GMT%2B8  #数据库连接URL
       driver-class-name: com.mysql.jdbc.Driver                #数据库连接驱动类名称
       username: root                                          #数据库连接用户名
-      password: MyNewPassword4!@#                             #数据库连接密码
+      password: MyNewPassword4!                               #数据库连接密码
       keep-alive: true                                        #保持连接状态
       initial-size: 5                                         #数据库初始化连接大小
       min-idle: 5                                             #数据库最小连接池数量
@@ -35,14 +35,14 @@ spring:
     show-sql: true
     generate-ddl: true
   redis:
-    host: 127.0.0.1
+    host: 139.159.210.42
     port: 6379
     password: foobared123!@#
 logging:
   level:
     org.springframework.web: debug
-    com.potato369.novel.weixin.web: debug
-    com.potato369.novel.weixin.web.dataobject.mapper: trace
+    com.potato369.novel.basic: debug
+    com.potato369.novel.app.web: debug
 projectUrl:  
   projectName: /novel
   domainUrl: http://potato369.mynatapp.cc

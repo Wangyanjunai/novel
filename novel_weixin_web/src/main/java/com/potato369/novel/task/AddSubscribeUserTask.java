@@ -1,6 +1,6 @@
 package com.potato369.novel.task;
 
-import com.potato369.novel.basic.dataobject.UserInfo;
+import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.converter.WxMpUser2UserInfoConverter;
 import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.utils.DateUtil;
@@ -40,7 +40,7 @@ public class AddSubscribeUserTask {
             }
             WxMpUserList wxMpUserList = wxMpService.getUserService().userList(null);
             for (String openid:wxMpUserList.getOpenids()) {
-                UserInfo userInfo = userInfoService.findByOpenid(openid);
+                NovelUserInfo userInfo = userInfoService.findByOpenid(openid);
                 if (userInfo == null) {
                     WxMpUser wxMpUser = wxMpService.getUserService().userInfo(openid);
                     userInfoService.save(WxMpUser2UserInfoConverter.WxMpUser2UserInfoConvert(wxMpUser));

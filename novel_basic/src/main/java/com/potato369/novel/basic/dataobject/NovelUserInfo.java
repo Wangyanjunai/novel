@@ -28,10 +28,10 @@ import java.util.Date;
 @Builder
 @DynamicUpdate
 @Data
-@Entity(name = "UserInfo")
+@Entity(name = "NovelUserInfo")
 @NoArgsConstructor
-@Table(name = "user_info")
-public class UserInfo implements Serializable {
+@Table(name = "novel_user_info")
+public class NovelUserInfo implements Serializable {
 
     /**
      * @serialField serialVersionUID : 序列号
@@ -44,18 +44,6 @@ public class UserInfo implements Serializable {
     @Id
     @Column(name = "id", nullable = false, length = 32)
     private String id;
-
-    /**
-     * @serialField uid：标识
-     */
-    @Column(name = "uid", nullable = true, length = 32)
-    private Integer uid;
-
-    /**
-     * @serialField privatedId：私密阅读id
-     */
-    @Column(name = "privated_id", nullable = true, length = 32)
-    private String privatedId;
 
     /**
      * @serialField openid：微信openid
@@ -74,12 +62,6 @@ public class UserInfo implements Serializable {
      */
     @Column(name = "gender", nullable = false, length = 4)
     private Integer gender;
-
-    /**
-     * @serialField subscribe：是否关注公众号，0-未关注，1-已关注
-     */
-    @Column(name = "subscribe", nullable = false, length = 4)
-    private Integer subscribe;
 
     /**
      * @serialField userName：用户名
@@ -126,43 +108,32 @@ public class UserInfo implements Serializable {
     /**
      * @serialField avatarUrl：微信头像URL
      */
-    @Column(name = "avatar_url", nullable = true, length = 255)
+    @Column(name = "avatar_url", nullable = true, length = 1024)
     private String avatarUrl;
-
-    /**
-     * @serialField ip：客户端IP
-     */
-    @Column(name = "ip", nullable = true, length = 25)
-    private String ip;
 
     /**
      * @serialField balance：书币余额，1元人民币=100书币
      */
+    @Column(name = "balance", nullable = true, length = 10)
     private BigDecimal balance;
-
+    
     /**
-     * @serialField unionId：联合id
+     * @serialField chargeAmount：总充值金额（元）
      */
-    @Column(name = "union_id", nullable = true, length = 64)
-    private String unionId;
-
+    @Column(name = "charge_amount", nullable = true, length = 10)
+    private BigDecimal chargeAmount;
+    
     /**
-     * @serialField watermarkTimestamp：水印时间戳
+     * @serialField shelfAmount：书架小说总数量
      */
-    @Column(name = "watermark_timestamp", nullable = true, length = 64)
-    private String watermarkTimestamp;
-
+    @Column(name = "shelf_amount", nullable = true, length = 11)
+    private Integer shelfAmount;
+    
     /**
-     * @serialField watermarkTimestamp：水印时间戳
+     * @serialField ip：客户端ip
      */
-    @Column(name = "watermark_app_id", nullable = true, length = 64)
-    private String watermarkAppId;
-
-    /**
-     * @serialField subscribeTime：关注时间
-     */
-    @Column(name = "subscribe_time", nullable = true, length = 64)
-    private Date subscribeTime;
+    @Column(name = "ip", nullable = true, length = 25)
+    private String ip;
 
     /**
      * @serialField createTime：创建时间
