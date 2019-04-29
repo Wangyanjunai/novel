@@ -3,6 +3,7 @@ package com.potato369.novel.app.web.controller;
 import com.potato369.novel.basic.dataobject.NovelAdvertisement;
 import com.potato369.novel.basic.service.AdvertisementService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,8 +73,12 @@ public class LoadingController {
             }
             Sort sort = new Sort(Sort.Direction.DESC, "createTime", "updateTime");
             List<NovelAdvertisement> advertisementList = advertisementService.findAll(sort);
-            if (advertisementList != null && advertisementList.size() > 0) {
+            if (advertisementList != null && !advertisementList.isEmpty() && advertisementList.size() > 0) {
                 NovelAdvertisement advertisement = advertisementList.get(0);
+                if (advertisement != null) {
+                    BeanUtils.copyProperties(advertisement, loadingDataVO);
+                    loadingDataVO.setId(advertisement.getAdId());
+                }
             }
         } catch (Exception e) {
             log.error("【急速追书后台APP接口】查找首页初始加载的广告信息出现错误", e);

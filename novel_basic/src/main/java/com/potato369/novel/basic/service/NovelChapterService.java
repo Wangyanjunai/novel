@@ -6,6 +6,7 @@ import cn.wanghaomiao.seimi.struct.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -130,4 +131,7 @@ public interface NovelChapterService {
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     NovelChapter findChaperByTitleAndBookId(String title, String bookId);
+
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    List<NovelChapter> selectByNovelId(String novelId);
 }

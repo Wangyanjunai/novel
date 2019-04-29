@@ -1,6 +1,8 @@
 package com.potato369.novel.basic.repository;
 
 import com.potato369.novel.basic.dataobject.NovelInfo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -23,11 +25,12 @@ public interface NovelInfoRepository extends JpaRepository<NovelInfo, String> {
     List<NovelInfo> findNovelInfoByNovelStatus(Integer novelStatus);
 
     List<NovelInfo> findNovelInfoByCategoryType(Integer categoryType);
+
+    Page<NovelInfo> findNovelInfoByCategoryType(Pageable pageable, Integer type);
     
     NovelInfo findNovelInfoByTitleAndCategoryCNText(String title, String categoryCNText);
     
     List<NovelInfo> findByCategoryENText(String categoryENText);
-    
-    @Query(countName="count", countQuery="select count(1) from `novel_info` where `category_en_text`=?")
+
     Integer findCountByCategoryENText(String categoryENText);
 }

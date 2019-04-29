@@ -38,8 +38,6 @@ weChat:
   open:
     appId: wx3c2ae24f69ea4121
     appSecret: 0a355cb0843b9b21f9c079f2ca7a72e5
-mybatis:
-  mapper-locations: classpath:mapper/*
 xfYun: 
   appId: 5c0f3f67
   apiKey: b727bcf8859657dcd191c885935c4569

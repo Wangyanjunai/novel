@@ -51,7 +51,7 @@ public class NovelInfoServiceImpl implements NovelInfoService {
     /**
      * 修改
      *
-     * @param novelInfoDTO
+     * @param novelInfo
      * @return
      */
     @Override
@@ -134,4 +134,14 @@ public class NovelInfoServiceImpl implements NovelInfoService {
 	public List<NovelInfo> findByCategoryEnText(String categoryENText) {
 		return repository.findByCategoryENText(categoryENText);
 	}
+
+    @Override
+    public List<NovelInfo> findByCategoryType(Integer type) {
+        return repository.findNovelInfoByCategoryType(type);
+    }
+
+    @Override
+    public Page<NovelInfo> findByCategoryType(Pageable pageable, Integer type) {
+        return repository.findNovelInfoByCategoryType(pageable ,type);
+    }
 }

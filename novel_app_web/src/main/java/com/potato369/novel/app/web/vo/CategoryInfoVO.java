@@ -18,7 +18,13 @@ import lombok.Data;
  */
 @Data
 public class CategoryInfoVO {
-	
+
+	@JsonProperty(value = "id")
+	public String id;
+
+	@JsonProperty(value = "parentId")
+	public String parentId;
+
 	@JsonProperty(value = "title")
 	public String name;
 	

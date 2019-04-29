@@ -2,6 +2,7 @@ package com.potato369.novel.basic.service.impl;
 
 import com.potato369.novel.basic.dataobject.NovelChapter;
 import com.potato369.novel.basic.dataobject.NovelInfo;
+import com.potato369.novel.basic.dataobject.mapper.ChapterMapper;
 import com.potato369.novel.basic.repository.NovelChapterRepository;
 import com.potato369.novel.basic.repository.NovelInfoRepository;
 import com.potato369.novel.basic.service.NovelChapterService;
@@ -33,6 +34,9 @@ public class NovelChapterServiceImpl implements NovelChapterService {
     
     @Autowired
     private NovelInfoRepository novelInfoRepository;
+
+    @Autowired
+    private ChapterMapper chapterMapper;
 
     /**
      * <pre>
@@ -164,8 +168,8 @@ public class NovelChapterServiceImpl implements NovelChapterService {
 	/**
 	 * <pre>
 	 * 描述该方法的实现功能：根据小说章节标题，查询小说信息列表
-	 * @param 章节标题（名称）
-	 * @see com.potato369.novel.basic.service.NovelChapterService#findChapterByChaperName(java.lang.String)
+	 * @param title 章节标题（名称）
+	 * @see com.potato369.novel.basic.service.NovelChapterService#findByChaperTitle(java.lang.String)
 	 * </pre>
 	 */
 	@Override
@@ -178,7 +182,7 @@ public class NovelChapterServiceImpl implements NovelChapterService {
 	/**
 	 * <pre>
 	 * 描述该方法的实现功能：
-	 * @see com.potato369.novel.basic.service.NovelChapterService#findByChaperTitleAndBookId(java.lang.String, java.lang.String)
+	 * @see com.potato369.novel.basic.service.NovelChapterService#findChaperByTitleAndBookId(java.lang.String, java.lang.String)
 	 * </pre>
 	 */
 		
@@ -187,4 +191,9 @@ public class NovelChapterServiceImpl implements NovelChapterService {
 		Sort sort = new Sort(Direction.ASC, "createTime", "updateTime");
 		return repository.findByTitleAndBookId(title, bookId, sort);
 	}
+
+    @Override
+    public List<NovelChapter> selectByNovelId(String novelId) {
+        return chapterMapper.selectByNovelId(novelId);
+    }
 }

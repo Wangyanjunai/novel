@@ -3,10 +3,14 @@ package com.potato369.novel.app.web.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.potato369.novel.app.web.utils.ResultVOUtil;
+import com.potato369.novel.app.web.vo.NovelInfoVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.*;
 
 import com.potato369.novel.app.web.vo.CategoryInfoVO;
 import com.potato369.novel.app.web.vo.CategoryVO;
@@ -65,11 +69,14 @@ public class CategoryController {
 					CategoryVO categoryVO = new CategoryVO();
 					categoryVO.setCategoryName(novelCategory.getCategoryENText());
 					String categoryId = novelCategory.getCategoryId();
+					categoryVO.setId(categoryId);
 					List<CategoryInfoVO> categoryInfoVOs = new ArrayList<CategoryInfoVO>();
 					List<NovelCategory> subCategories = categoryService.findByParentCategoryId(categoryId);
 					for (NovelCategory novelCategory2 : subCategories) {
 						CategoryInfoVO categoryInfoVO = new CategoryInfoVO();
 						categoryInfoVO.setName(novelCategory2.getCategoryCNText());
+						categoryInfoVO.setId(novelCategory2.getCategoryId());
+						categoryInfoVO.setParentId(novelCategory2.getParentCategoryId());
 						List<NovelInfo> novelInfos = novelInfoService.findByCategoryEnText(novelCategory2.getCategoryENText());
 						if (novelInfos != null && !novelInfos.isEmpty() && novelInfos.size() > 0) {
 							categoryInfoVO.setBookCount(novelInfos.size());
@@ -93,15 +100,56 @@ public class CategoryController {
 			}
 			return resultVO;
 		} catch (Exception e) {
-			resultVO.setData(null);
-			resultVO.setCode(1);
-			resultVO.setMsg("获取数据失败");
 			log.error("【急速追书后台管理】获取获取所有的分类出现错误", e);
-			return resultVO;
+			return ResultVOUtil.error(-1, "获取数据失败");
 		} finally {
 			if (log.isDebugEnabled()) {
 				log.debug("【急速追书后台管理】end====================获取所有的分类====================end");
 			}			
+		}
+	}
+
+	@GetMapping(value = "/statistics/{categoryId}/{page}/{size}")
+	public ResultVO<List<NovelInfoVO>> getCategories(@PathVariable(name = "categoryId") String categoryId,
+													 @PathVariable(name = "page") Integer page,
+													 @PathVariable(name = "size") Integer size) {
+		ResultVO<List<NovelInfoVO>> resultVO = new ResultVO<>();
+		try {
+			if (log.isDebugEnabled()) {
+				log.debug("【按照类别查询小说分类】查询小说分类categoryId={}, page={}, size={}", categoryId, page, size);
+			}
+			NovelCategory category = categoryService.findOne(categoryId);
+			if (category != null) {
+				Integer type = category.getCategoryType();
+				Sort sort = new Sort(Sort.Direction.DESC, "clickNumber", "readers", "recentReaders", "retention", "createTime", "updateTime");
+				PageRequest pageRequest = new PageRequest(page-1, size, sort);
+				Page<NovelInfo> novelInfoPage = novelInfoService.findByCategoryType(pageRequest, type);
+				List<NovelInfo> novelInfoList = novelInfoPage.getContent();
+				List<NovelInfoVO> novelInfoVOList = new ArrayList<>();
+				if (novelInfoList != null && !novelInfoList.isEmpty() && novelInfoList.size() > 0) {
+					for (NovelInfo novelInfo:novelInfoList) {
+						NovelInfoVO novelInfoVO = NovelInfoVO.builder().build();
+						BeanUtils.copyProperties(novelInfo, novelInfoVO);
+						novelInfoVOList.add(novelInfoVO);
+					}
+				}
+				resultVO.setData(novelInfoVOList);
+				resultVO.setCode(0);
+				resultVO.setMsg("获取数据成功");
+				return resultVO;
+			} else {
+				resultVO.setCode(-2);
+				resultVO.setMsg("获取此分类的小说不存在");
+				resultVO.setData(null);
+				return resultVO;
+			}
+		} catch (Exception e) {
+			log.error("【按照类别查询小说分类】查询小说分类出现错误", e);
+			return ResultVOUtil.error(-1, "获取数据失败");
+		} finally {
+			if (log.isDebugEnabled()) {
+				log.debug("【按照类别查询小说分类】查询小说分类categoryId={}, page={}, size={}", categoryId, page, size);
+			}
 		}
 	}
 }

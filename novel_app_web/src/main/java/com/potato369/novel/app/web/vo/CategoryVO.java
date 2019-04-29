@@ -20,7 +20,10 @@ import lombok.Data;
  */
 @Data
 public class CategoryVO {
-	
+
+	@JsonProperty(value = "id")
+	public String id;
+
 	@JsonProperty(value = "name")
 	public String categoryName;
 	

@@ -102,11 +102,18 @@ public interface NovelInfoService {
      * </pre>
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    @Query(countQuery="select count(1) from `novel_info` where `category_en_text`=?")
     Integer getCategoryCount(String category_en_text);
     
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     List<NovelInfo> findByCategoryEnText(String categoryENText);
+
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    List<NovelInfo> findByCategoryType(Integer type);
+
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    Page<NovelInfo> findByCategoryType(Pageable pageable, Integer type);
+
+
     
     /**
      * 查找小说分页列表

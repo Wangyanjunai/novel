@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.potato369.novel.basic.dataobject.mapper.ChapterMapper" >
+
+    <resultMap id="BaseResultMap" type="com.potato369.novel.basic.dataobject.NovelChapter">
+        <id column="chapter_id" property="id" javaType="sting" jdbcType="VARCHAR" />
+        <id column="book_id" property="bookId" javaType="sting" jdbcType="VARCHAR" />
+        <id column="chapter_index" property="index" javaType="int" jdbcType="INTEGER" />
+        <id column="chapter_title" property="title" javaType="" jdbcType="VARCHAR" />
+        <id column="newest_chapter_title" property="newestChapterTitle" javaType="sting" jdbcType="VARCHAR" />
+        <id column="chapter_url" property="url" javaType="sting" jdbcType="VARCHAR" />
+        <id column="create_time" property="createTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+        <id column="update_time" property="updateTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <resultMap id="AllResultMap" type="com.potato369.novel.basic.dataobject.NovelChapter">
+        <id column="chapter_id" property="id" javaType="sting" jdbcType="VARCHAR" />
+        <id column="book_id" property="bookId" javaType="sting" jdbcType="VARCHAR" />
+        <id column="chapter_index" property="index" javaType="int" jdbcType="INTEGER" />
+        <id column="chapter_title" property="title" javaType="" jdbcType="VARCHAR" />
+        <id column="newest_chapter_title" property="newestChapterTitle" javaType="sting" jdbcType="VARCHAR" />
+        <id column="chapter_url" property="url" javaType="sting" jdbcType="VARCHAR" />
+        <id column="chapter_content" property="content" javaType="sting" jdbcType="VARCHAR" />
+        <id column="create_time" property="createTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+        <id column="update_time" property="updateTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <select id="selectByNovelId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select chapter_id, book_id, chapter_index, chapter_title, newest_chapter_title,chapter_url, create_time, update_time
+        from novel_chapter
+        where book_id = #{novelId, jdbcType=VARCHAR}
+    </select>
+</mapper>

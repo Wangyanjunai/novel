@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.potato369.novel.basic.dataobject.NovelChapter;
+import org.springframework.data.jpa.repository.Query;
+
 /**
  * <pre>
  * 类名: NovelChapterRepository
