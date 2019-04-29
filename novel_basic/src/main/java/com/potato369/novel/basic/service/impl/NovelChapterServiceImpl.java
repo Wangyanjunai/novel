@@ -35,8 +35,8 @@ public class NovelChapterServiceImpl implements NovelChapterService {
     @Autowired
     private NovelInfoRepository novelInfoRepository;
 
-    @Autowired
-    private ChapterMapper chapterMapper;
+   // @Autowired
+   // private ChapterMapper chapterMapper;
 
     /**
      * <pre>
@@ -194,6 +194,7 @@ public class NovelChapterServiceImpl implements NovelChapterService {
 
     @Override
     public List<NovelChapter> selectByNovelId(String novelId) {
-        return chapterMapper.selectByNovelId(novelId);
+//        return chapterMapper.selectByNovelId(novelId);
+        return repository.findByBookId(novelId);
     }
 }
