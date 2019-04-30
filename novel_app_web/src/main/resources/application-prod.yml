@@ -42,6 +42,7 @@ logging:
   level:
     org.springframework.web: error
     com.potato369.novel.weixin.web: error
+    com.alibaba.druid: error
     com.potato369.novel.weixin.web.dataobject.mapper: trace
 projectUrl:  
   projectName: /novel

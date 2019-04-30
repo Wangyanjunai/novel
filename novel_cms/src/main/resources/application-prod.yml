@@ -42,6 +42,7 @@ logging:
   level:
     org.springframework.web: error
     com.potato369.novel: error
+    com.alibaba.druid: error
     com.potato369.novel.dataobject.mapper: trace
 projectUrl:  
   projectName: /novel

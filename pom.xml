@@ -8,7 +8,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>novel_master</name>
 	<packaging>pom</packaging>
-	<description>Novel master project for Spring Boot</description>
+	<description>novel master project for Spring Boot</description>
 	<modules>
 		<module>novel_basic</module><!--急速追书小说数据库基础模块-->
 		<module>novel_app_web</module><!--急速追书小说APP后端接口模块-->
@@ -16,4 +16,7 @@
 		<module>novel_crawler</module><!--急速追书小说爬虫模块-->
 		<module>novel_weixin_web</module><!--急速追书小说微信公众号接口模块-->
 	</modules>
+	<build>
+		<finalName>novel_master</finalName>
+	</build>
 </project>

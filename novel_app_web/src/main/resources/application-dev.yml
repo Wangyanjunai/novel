@@ -43,6 +43,7 @@ logging:
     org.springframework.web: debug
     com.potato369.novel.basic: debug
     com.potato369.novel.app.web: debug
+    com.alibaba.druid: debug
 projectUrl:  
   projectName: /novel
   domainUrl: http://potato369.mynatapp.cc
