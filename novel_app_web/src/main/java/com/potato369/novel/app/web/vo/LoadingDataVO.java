@@ -34,11 +34,19 @@ public class LoadingDataVO {
 
 	/**
 	 * <pre>
-	 * tag:标识
+	 * tag1：tag1：标识广告是应用类广告还是初始页面跳转广告，0-跳转广告，1-应用内广告。
 	 * </pre>
 	 */
-	@JsonProperty(value="tag", required=true)
-	private Integer tag;
+	@JsonProperty(value="tag1", required=true)
+	private Integer tag1;
+	
+	/**
+	 * <pre>
+	 * tag2：标识广告是否可以跳转，0-可以跳转，1-不可以跳转。
+	 * </pre>
+	 */
+	@JsonProperty(value="tag2", required=true)
+	private Integer tag2;
 
 	/**
 	 * <pre>

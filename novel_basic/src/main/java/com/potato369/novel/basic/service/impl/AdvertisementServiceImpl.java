@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.potato369.novel.basic.dataobject.NovelAdvertisement;
+import com.potato369.novel.basic.dataobject.mapper.AdvertisementMapper;
 import com.potato369.novel.basic.service.AdvertisementService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,9 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Autowired
 	private AdvertisementRepository repository;
+    
+    @Autowired
+    private AdvertisementMapper mapper;
 
 	/**
 	 * <pre>
@@ -105,5 +109,18 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 	@Override
 	public Page<NovelAdvertisement> findAll(Pageable pageable) {
 		return repository.findAll(pageable);
+	}
+
+	
+	/**
+	 * <pre>
+	 * 描述该方法的实现功能：
+	 * @see com.potato369.novel.basic.service.AdvertisementService#findByTaglimitSize(java.lang.Integer, java.lang.Integer, java.lang.Integer)
+	 * </pre>
+	 */
+		
+	@Override
+	public List<NovelAdvertisement> findByTaglimitSize(Integer tag1, Integer tag2, Integer size) {
+		return mapper.selectAllByTag1AndTag2(tag1, tag2, size);
 	}
 }

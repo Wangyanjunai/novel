@@ -35,8 +35,8 @@ public class NovelChapterServiceImpl implements NovelChapterService {
     @Autowired
     private NovelInfoRepository novelInfoRepository;
 
-   // @Autowired
-   // private ChapterMapper chapterMapper;
+    @Autowired
+    private ChapterMapper chapterMapper;
 
     /**
      * <pre>
@@ -194,7 +194,20 @@ public class NovelChapterServiceImpl implements NovelChapterService {
 
     @Override
     public List<NovelChapter> selectByNovelId(String novelId) {
-//        return chapterMapper.selectByNovelId(novelId);
-        return repository.findByBookId(novelId);
+        return chapterMapper.selectByNovelId(novelId);
+//        return repository.findByBookId(novelId);
     }
+
+	
+	/**
+	 * <pre>
+	 * 描述该方法的实现功能：
+	 * @see com.potato369.novel.basic.service.NovelChapterService#selectByNovelIdAndChapterId(java.lang.String, java.lang.String)
+	 * </pre>
+	 */
+		
+	@Override
+	public NovelChapter selectByNovelIdAndChapterId(String novelId, String chapterId) {
+		return chapterMapper.selectByNovelIdAndChapterId(novelId, chapterId);
+	}
 }

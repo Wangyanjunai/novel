@@ -2,6 +2,7 @@ package com.potato369.novel.app.web.controller;
 
 import com.potato369.novel.app.web.utils.ResultVOUtil;
 import com.potato369.novel.app.web.vo.NovelChapterInfoVO;
+import com.potato369.novel.app.web.vo.NovelChapterTitleAndContentVO;
 import com.potato369.novel.app.web.vo.NovelInfoVO;
 import com.potato369.novel.app.web.vo.ResultVO;
 import com.potato369.novel.basic.dataobject.NovelChapter;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +47,7 @@ public class NovelController {
         ResultVO<NovelInfoVO> infoVOResultVO = new ResultVO<NovelInfoVO>();
         try {
            if (log.isDebugEnabled()) {
-               log.debug("【后台小说接口】开始获取小说详情数据");
+               log.debug("【后台小说接口】start====================获取小说详情数据====================start");
            }
            NovelInfo novelInfo = novelInfoService.find(novelId);
            NovelInfoVO novelInfoVO = NovelInfoVO.builder().build();
@@ -69,8 +69,35 @@ public class NovelController {
             return ResultVOUtil.error(-1, "返回数据失败");
         } finally {
             if (log.isDebugEnabled()) {
-                log.debug("【后台小说接口】结束获取小说详情数据");
+                log.debug("【后台小说接口】end====================获取小说详情数据====================end");
             }
         }
+    }
+    
+    @GetMapping(value ="/content/{novelId}/{chapterId}")
+    public ResultVO<NovelChapterTitleAndContentVO> content(
+    		@PathVariable(name = "novelId") String novelId,
+    		@PathVariable(name = "chapterId") String chapterId) {
+    	ResultVO<NovelChapterTitleAndContentVO> resultVO = new ResultVO<NovelChapterTitleAndContentVO>();
+    	try {
+			if (log.isDebugEnabled()) {
+				log.debug("【后台小说接口】start====================获取小说内容数据====================start");
+			}
+			NovelChapter NovelChapter = novelChapterService.selectByNovelIdAndChapterId(novelId, chapterId);
+			NovelChapterTitleAndContentVO contentVO = NovelChapterTitleAndContentVO.builder().build();
+			contentVO.setTitle(NovelChapter.getTitle());
+			contentVO.setContent(NovelChapter.getContent());
+			resultVO.setCode(0);
+			resultVO.setData(contentVO);
+			resultVO.setMsg("返回数据成功");
+    		return resultVO;
+		} catch (Exception e) {
+			log.error("【后台小说接口】获取小说内容数据失败", e);
+			return ResultVOUtil.error(-1, "返回数据失败");
+		} finally {
+			if (log.isDebugEnabled()) {
+				log.debug("【后台小说接口】end====================获取小说内容数据====================end");
+			}
+		}
     }
 }

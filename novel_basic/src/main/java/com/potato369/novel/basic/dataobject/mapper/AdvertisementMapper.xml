@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.potato369.novel.basic.dataobject.mapper.AdvertisementMapper" >
+
+    <resultMap id="AllResultMap" type="com.potato369.novel.basic.dataobject.NovelAdvertisement">
+        <id column="ad_id" property="adId" javaType="string" jdbcType="VARCHAR" />
+        <id column="tag1" property="tag1" javaType="int" jdbcType="INTEGER" />
+        <id column="tag2" property="tag2" javaType="int" jdbcType="INTEGER" />
+        <id column="image_url" property="imageUrl" javaType="string" jdbcType="VARCHAR" />
+        <id column="link_url" property="linkUrl" javaType="string" jdbcType="VARCHAR" />
+        <id column="create_time" property="createTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+        <id column="update_time" property="updateTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <select id="selectAllByTag1AndTag2" resultMap="AllResultMap" parameterType="java.lang.Integer">
+        SELECT n.ad_id, n.tag1, n.tag2, n.image_url, n.link_url, n.create_time, n.update_time
+        FROM novel_advertisement n
+        WHERE n.tag1=#{tag1, jdbcType=INTEGER} AND n.tag2=#{tag2, jdbcType=INTEGER}
+        ORDER BY n.create_time ASC, n.update_time ASC 
+        limit 0, #{size, jdbcType=INTEGER}
+    </select>
+</mapper>

@@ -14,7 +14,8 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `novel_advertisement`;
 CREATE TABLE `novel_advertisement` (
   `ad_id` varchar(32) NOT NULL COMMENT '主键，广告id。',
-  `tag` tinyint(4) NOT NULL COMMENT '标识广告是否可以跳转，0-可以跳转，1-不可以跳转。',
+  `tag1` tinyint(4) NOT NULL DEFAULT '0' COMMENT '标识广告是应用类广告还是初始页面跳转广告，0-跳转广告，1-应用内广告。',
+  `tag2` tinyint(4) NOT NULL DEFAULT '0' COMMENT '标识广告是否可以跳转，0-可以跳转，1-不可以跳转。',
   `image_url` varchar(1024) DEFAULT NULL COMMENT '广告图片链接绝对路径URL。',
   `link_url` varchar(1024) DEFAULT NULL COMMENT '广告跳转链接绝对路径URL。',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -375,3 +376,12 @@ INSERT INTO `product_info` VALUES ('80edd2c1503249debecd2ce523f1fa12', '季度�
 INSERT INTO `product_info` VALUES ('b6a51d414ca742cb81f94b69b0423a7c', '5,000书币', '0', '0.01', '5000', '50.00', '3000', '新人专享', '充值5,000书币', '2019-01-08 17:10:30', '2019-01-11 16:08:44');
 INSERT INTO `product_info` VALUES ('e23b37ef6f874d1ca7ea107c1d0c338a', '3,000书币', '0', '0.01', '3000', '30.00', '0', '多而不贵', '充值3,000书币', '2019-01-08 17:07:25', '2019-01-11 16:08:40');
 INSERT INTO `seller_info` VALUES ('0ed2ba762e364ce790661d86e59b162b', 'Jack', 'b814b812ec4b322e19fae7bb78d4d330', 'oSkiNv4fBXYxidv0wU_U0UDHNP4M', '2019-01-21 17:24:17', '183.14.30.126', '2017-12-17 21:18:22', '2019-01-21 17:24:17');
+
+
+ALTER TABLE `novel_tmp`.`novel_chapter` 
+ADD UNIQUE INDEX `key_chapter_id`(`chapter_id`) USING HASH COMMENT '主键唯一索引。',
+ADD INDEX `idx_chapter_index`(`chapter_index`) USING HASH COMMENT '目录普通索引。',
+ADD INDEX `idx_chapter_title`(`chapter_title`) USING HASH COMMENT '章节标题索引。',
+ADD INDEX `normal_chapter_bookId`(`book_id`) USING HASH COMMENT '所属小说索引。',
+ADD INDEX `normal_create_time`(`create_time`) USING HASH COMMENT '创建时间普通索引。',
+ADD INDEX `normal_update_time`(`update_time`) USING HASH COMMENT '更新时间普通索引。';

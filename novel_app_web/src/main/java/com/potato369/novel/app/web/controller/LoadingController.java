@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.potato369.novel.app.web.utils.ResultVOUtil;
@@ -64,15 +65,16 @@ public class LoadingController {
      *                    	"data":null
      *                    }                 
      */
-    @GetMapping(value = "/getData")
-    public ResultVO<LoadingDataVO> getData() {
+    @GetMapping(value = "/getData/{tag1}/{tag2}/{size}")
+    public ResultVO<LoadingDataVO> getData(@PathVariable(name="tag1") Integer tag1,
+    			@PathVariable(name="tag2") Integer tag2,
+    			@PathVariable(name="size") Integer size) {
         LoadingDataVO loadingDataVO = LoadingDataVO.builder().build();
         try {
             if (log.isDebugEnabled()) {
                 log.debug("【急速追书后台APP接口】开始查找首页初始加载的广告信息");
             }
-            Sort sort = new Sort(Sort.Direction.DESC, "createTime", "updateTime");
-            List<NovelAdvertisement> advertisementList = advertisementService.findAll(sort);
+            List<NovelAdvertisement> advertisementList = advertisementService.findByTaglimitSize(tag1, tag2, size);
             if (advertisementList != null && !advertisementList.isEmpty() && advertisementList.size() > 0) {
                 NovelAdvertisement advertisement = advertisementList.get(0);
                 if (advertisement != null) {

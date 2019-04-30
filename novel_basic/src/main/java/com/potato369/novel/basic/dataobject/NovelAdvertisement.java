@@ -50,18 +50,26 @@ public class NovelAdvertisement implements Serializable{
 	
 	/**
 	 * <pre>
-	 * @serialField tag：标识广告是否可以跳转，0-可以跳转，1-不可以跳转。
+	 * @serialField tag1：标识广告是应用类广告还是初始页面跳转广告，0-跳转广告，1-应用内广告。
 	 * </pre>
 	 */
-	@Column(name = "tag", nullable = false, length = 32)
-	private Integer tag;
+	@Column(name = "tag1", nullable = false, length = 4)
+	private Integer tag1;
+	
+	/**
+	 * <pre>
+	 * @serialField tag2：标识广告是否可以跳转，0-可以跳转，1-不可以跳转。
+	 * </pre>
+	 */
+	@Column(name = "tag2", nullable = false, length = 4)
+	private Integer tag2;
 	
 	/**
 	 * <pre>
 	 * @serialField imageUrl：广告图片链接地址。
 	 * </pre>
 	 */
-	@Column(name = "image_url", nullable = true, length = 1256)
+	@Column(name = "image_url", nullable = true, length = 1024)
 	private String imageUrl;
 	
 	/**
@@ -69,7 +77,7 @@ public class NovelAdvertisement implements Serializable{
 	 * @serialField linkUrl：广告跳转链接地址。
 	 * </pre>
 	 */
-	@Column(name = "link_url", nullable = true, length = 1256)
+	@Column(name = "link_url", nullable = true, length = 1024)
 	private String linkUrl;
 	
 	/**

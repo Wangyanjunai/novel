@@ -19,4 +19,6 @@ import java.util.List;
 public interface ChapterMapper {
 
     List<NovelChapter> selectByNovelId(String novelId);
+    
+    NovelChapter selectByNovelIdAndChapterId(String novelId, String chapterId);
 }

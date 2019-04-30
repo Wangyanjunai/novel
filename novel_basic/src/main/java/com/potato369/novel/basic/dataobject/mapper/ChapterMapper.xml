@@ -12,6 +12,11 @@
         <id column="create_time" property="createTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
         <id column="update_time" property="updateTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </resultMap>
+    
+    <resultMap id="ContentResultMap" type="com.potato369.novel.basic.dataobject.NovelChapter">
+        <id column="chapter_title" property="title" javaType="string" jdbcType="VARCHAR" />
+        <id column="chapter_content" property="content" javaType="string" jdbcType="VARCHAR" />
+    </resultMap>
 
     <resultMap id="AllResultMap" type="com.potato369.novel.basic.dataobject.NovelChapter">
         <id column="chapter_id" property="id" javaType="string" jdbcType="VARCHAR" />
@@ -26,8 +31,14 @@
     </resultMap>
 
     <select id="selectByNovelId" resultMap="BaseResultMap" parameterType="java.lang.String">
-        select n.chapter_id, n.book_id, n.chapter_index, n.chapter_title, n.newest_chapter_title, n.chapter_url, n.create_time, n.update_time
-        from novel_chapter n
-        where n.book_id = #{novelId, jdbcType=VARCHAR}
+        SELECT n.chapter_id, n.book_id, n.chapter_index, n.chapter_title, n.newest_chapter_title, n.chapter_url, n.create_time, n.update_time
+        FROM novel_chapter n
+        WHERE n.book_id = #{novelId, jdbcType=VARCHAR}
+        ORDER BY n.chapter_index ASC, n.create_time ASC, n.update_time ASC
+    </select>
+    <select id="selectByNovelIdAndChapterId" resultMap="ContentResultMap" parameterType="java.lang.String">
+        SELECT n.chapter_title, n.chapter_content
+        FROM novel_chapter n
+        WHERE n.book_id = #{novelId, jdbcType=VARCHAR} AND n.chapter_id = #{chapterId, jdbcType=VARCHAR}
     </select>
 </mapper>

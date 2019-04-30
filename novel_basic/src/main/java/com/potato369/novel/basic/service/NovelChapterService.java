@@ -6,11 +6,9 @@ import cn.wanghaomiao.seimi.struct.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 /**
  * <pre>
@@ -134,4 +132,23 @@ public interface NovelChapterService {
 
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     List<NovelChapter> selectByNovelId(String novelId);
+    
+    /**
+     * 
+     * <pre>
+     * selectByNovelIdAndChapterId方法的作用：根据小说id和章节id获取小说内容
+     * 描述方法适用条件：
+     * 描述方法的执行流程：
+     * 描述方法的使用方法：
+     * 描述方法的注意事项：
+     *
+     * @author Jack
+     * @param novelId
+     * @param chapterId
+     * @return
+     * @since JDK 1.6
+     * </pre>
+     */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    NovelChapter selectByNovelIdAndChapterId(String novelId, String chapterId);
 }
