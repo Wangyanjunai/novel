@@ -68,7 +68,7 @@ weChat:
 management:
   security:
     enabled: false          #关掉安全认证
-  port: 8081                #管理端口调整成8080
+  port: 8080                #管理端口调整成8080
   context-path: /monitor    #actuator的访问路径
 info:
   app:
@@ -85,7 +85,7 @@ endpoints:
   enabled: true
 server:
   context-path: /novel
-  port: 8091
+  port: 8090
   error:
     path: /error
   session:
@@ -96,5 +96,5 @@ server:
 seimi:
   crawler:
     enabled: true
-    names: 88dush1
+    names: 88dush0
     ##names: dindian,biquyun,23us,sbiquge,gxwztv,00ksw,xbiquge,xbxwx,bxwx,zhuishushenqi,88dush  

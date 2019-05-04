@@ -11,7 +11,6 @@ import com.potato369.novel.basic.service.NovelInfoService;
 import com.potato369.novel.basic.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.seimicrawler.xpath.JXDocument;
-import org.seimicrawler.xpath.JXNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.math.BigDecimal;
 import java.util.List;
@@ -97,53 +96,15 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
             JXDocument document = response.document();
 			BusinessConstants.threadPoolBook.execute(()->{
 				BusinessConstants.lock.lock();
-				NovelInfo novelInfo = NovelInfo.builder().build();
-				novelInfo.setId(UUIDUtil.gen32UUID());//1、设置小说id
 				Object categoryCNTextObj = document.selOne("//body/div[@class='booklist']/h1/text()");
-				String categoryCNTextStr2 = null;
+				String categoryCNTextStr = null;
 				if (categoryCNTextObj != null) {
-					categoryCNTextStr2 = categoryCNTextObj.toString();
+					categoryCNTextStr = categoryCNTextObj.toString();
 				}
 				if (log.isDebugEnabled()) {
-					log.debug("【后台爬虫系统爬取数据】每页小说分类中文名称信息转换为字符串data=={}", categoryCNTextStr2);
+					log.debug("【后台爬虫系统爬取数据】小说分类中文名称data=={}", categoryCNTextStr);
 				}
-				novelInfo.setCategoryCNText(categoryCNTextStr2);//9、设置小说分类中文名称
-				if ("玄幻魔法".equals(categoryCNTextStr2)) {
-					novelInfo.setCategoryType(CategoryEnum.XUANHUANQIHUAN.getCode());//2、设置小说分类类型type
-					novelInfo.setCategoryENText(CategoryEnum.XUANHUANQIHUAN.getMessage());//3、设置小说分类英文名称
-				}
-				if ("武侠修真".equals(categoryCNTextStr2)) {
-					novelInfo.setCategoryType(CategoryEnum.XIANXIAWUXIA.getCode());//2、设置小说分类类型type
-					novelInfo.setCategoryENText(CategoryEnum.XIANXIAWUXIA.getMessage());//3、设置小说分类英文名称
-				}
-				if ("都市言情".equals(categoryCNTextStr2)) {
-					novelInfo.setCategoryType(CategoryEnum.DUSHIQINGGAN.getCode());//2、设置小说分类类型type
-					novelInfo.setCategoryENText(CategoryEnum.DUSHIQINGGAN.getMessage());//3、设置小说分类英文名称
-				}
-				if ("历史穿越".equals(categoryCNTextStr2)) {
-					novelInfo.setCategoryType(CategoryEnum.CHUANGYUECHONGSHENG.getCode());//2、设置小说分类类型type
-					novelInfo.setCategoryENText(CategoryEnum.CHUANGYUECHONGSHENG.getMessage());//3、设置小说分类英文名称
-				}
-				if ("恐怖悬疑".equals(categoryCNTextStr2)) {
-					novelInfo.setCategoryType(CategoryEnum.XUANYILINGYI.getCode());//2、设置小说分类类型type
-					novelInfo.setCategoryENText(CategoryEnum.XUANYILINGYI.getMessage());//3、设置小说分类英文名称
-				}
-				if ("游戏竞技".equals(categoryCNTextStr2)) {
-					novelInfo.setCategoryType(CategoryEnum.YOUXIJINGJI.getCode());//2、设置小说分类类型type
-					novelInfo.setCategoryENText(CategoryEnum.YOUXIJINGJI.getMessage());//3、设置小说分类英文名称
-				}
-				if ("军事科幻".equals(categoryCNTextStr2)) {
-					novelInfo.setCategoryType(CategoryEnum.LISHIJUNSHI.getCode());//2、设置小说分类类型type
-					novelInfo.setCategoryENText(CategoryEnum.LISHIJUNSHI.getMessage());//3、设置小说分类英文名称
-				}
-				if ("女生频道".equals(categoryCNTextStr2)) {
-					novelInfo.setCategoryType(CategoryEnum.DUSHISHENGHUO.getCode());//2、设置小说分类类型type
-					novelInfo.setCategoryENText(CategoryEnum.DUSHISHENGHUO.getMessage());//3、设置小说分类英文名称
-				}
-				if ("综合类型".equals(categoryCNTextStr2)) {
-					novelInfo.setCategoryType(CategoryEnum.QITALEIBIE.getCode());//2、设置小说分类类型type
-					novelInfo.setCategoryENText(CategoryEnum.QITALEIBIE.getMessage());//3、设置小说分类英文名称
-				}
+				
 				List<Object> dlObjList = document.sel("//body/div[@class='fengtui']/dl");
 				if (dlObjList == null || dlObjList.isEmpty() || dlObjList.size() < 1) {
 					return;
@@ -153,6 +114,44 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 					for (Object dl:dlObjList) {
 						log.debug("【后台爬虫系统爬取数据】每页dl元素转换为字符串data=={}", dl.toString());
 						JXDocument dlJxDocument = JXDocument.create(dl.toString());
+						NovelInfo novelInfo = NovelInfo.builder().build();//初始化对象
+						novelInfo.setId(UUIDUtil.gen32UUID());//1、设置小说id
+						if ("玄幻魔法".equals(categoryCNTextStr)) {
+							novelInfo.setCategoryType(CategoryEnum.XUANHUANQIHUAN.getCode());//2、设置小说分类类型type
+							novelInfo.setCategoryENText(CategoryEnum.XUANHUANQIHUAN.getMessage());//3、设置小说分类英文名称
+						}
+						if ("武侠修真".equals(categoryCNTextStr)) {
+							novelInfo.setCategoryType(CategoryEnum.XIANXIAWUXIA.getCode());//2、设置小说分类类型type
+							novelInfo.setCategoryENText(CategoryEnum.XIANXIAWUXIA.getMessage());//3、设置小说分类英文名称
+						}
+						if ("都市言情".equals(categoryCNTextStr)) {
+							novelInfo.setCategoryType(CategoryEnum.DUSHIQINGGAN.getCode());//2、设置小说分类类型type
+							novelInfo.setCategoryENText(CategoryEnum.DUSHIQINGGAN.getMessage());//3、设置小说分类英文名称
+						}
+						if ("历史穿越".equals(categoryCNTextStr)) {
+							novelInfo.setCategoryType(CategoryEnum.CHUANGYUECHONGSHENG.getCode());//2、设置小说分类类型type
+							novelInfo.setCategoryENText(CategoryEnum.CHUANGYUECHONGSHENG.getMessage());//3、设置小说分类英文名称
+						}
+						if ("恐怖悬疑".equals(categoryCNTextStr)) {
+							novelInfo.setCategoryType(CategoryEnum.XUANYILINGYI.getCode());//2、设置小说分类类型type
+							novelInfo.setCategoryENText(CategoryEnum.XUANYILINGYI.getMessage());//3、设置小说分类英文名称
+						}
+						if ("游戏竞技".equals(categoryCNTextStr)) {
+							novelInfo.setCategoryType(CategoryEnum.YOUXIJINGJI.getCode());//2、设置小说分类类型type
+							novelInfo.setCategoryENText(CategoryEnum.YOUXIJINGJI.getMessage());//3、设置小说分类英文名称
+						}
+						if ("军事科幻".equals(categoryCNTextStr)) {
+							novelInfo.setCategoryType(CategoryEnum.LISHIJUNSHI.getCode());//2、设置小说分类类型type
+							novelInfo.setCategoryENText(CategoryEnum.LISHIJUNSHI.getMessage());//3、设置小说分类英文名称
+						}
+						if ("女生频道".equals(categoryCNTextStr)) {
+							novelInfo.setCategoryType(CategoryEnum.DUSHISHENGHUO.getCode());//2、设置小说分类类型type
+							novelInfo.setCategoryENText(CategoryEnum.DUSHISHENGHUO.getMessage());//3、设置小说分类英文名称
+						}
+						if ("综合类型".equals(categoryCNTextStr)) {
+							novelInfo.setCategoryType(CategoryEnum.QITALEIBIE.getCode());//2、设置小说分类类型type
+							novelInfo.setCategoryENText(CategoryEnum.QITALEIBIE.getMessage());//3、设置小说分类英文名称
+						}
 						Object coverImageObj = dlJxDocument.selOne("//dl/dt/a/img/@src");//获取封面图片路径
 						String coverImageUrlStr = null;
 						if (coverImageObj != null) {
@@ -181,55 +180,31 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 						if (novelAuthorObj != null) {
 							novelAuthorStr = novelAuthorObj.toString();
 						}
-						log.debug("【后台爬虫系统爬取数据】每页小说作者信息数据转换为字符串data=={}", novelAuthorStr);
+						log.debug("【后台爬虫系统爬取数据】小说作者data=={}", novelAuthorStr);
 						novelInfo.setAuthor(novelAuthorStr);//6、设置小说作者
 						Object novelIntroductionObj = dlJxDocument.selNOne("//dl/dd/p/text()");//获取小说简介
 						String novelIntroductionStr = null;
 						if (novelIntroductionObj != null) {
 							novelIntroductionStr = novelIntroductionObj.toString();
 						}
-						log.debug("【后台爬虫系统爬取数据】每页小说简介信息数据转换为字符串data=={}", novelIntroductionStr);
+						log.debug("【后台爬虫系统爬取数据】小说简介data=={}", novelIntroductionStr);
 						novelInfo.setIntroduction(novelIntroductionStr);//7、设置小说简介
 						novelInfo.setNovelStatus(1);//8、设置小说更新状态
-						novelInfo.setClickNumber(BigDecimal.ZERO);//10
-						if (log.isDebugEnabled()) {
-							log.debug("【后台爬虫系统爬取数据】开始爬取11、小说点击数data={}", novelInfo.getClickNumber());
-						}
-						novelInfo.setPublisher("八八读书网（88dush.com）");
-						if (log.isDebugEnabled()) {
-							log.debug("【后台爬虫系统爬取数据】开始爬取12、小说出版社或爬取网站名称data={}", novelInfo.getPublisher());
-						}
-						novelInfo.setTotalWords(BigDecimal.ZERO);
-						if (log.isDebugEnabled()) {
-							log.debug("【后台爬虫系统爬取数据】开始爬取13、小说总字数data={}", novelInfo.getTotalWords());
-						}
-						novelInfo.setTotalChapters(0);
-						if (log.isDebugEnabled()) {
-							log.debug("【后台爬虫系统爬取数据】开始爬取14、小说总章节数data={}", novelInfo.getTotalChapters());
-						}
-						novelInfo.setReaders(BigDecimal.ZERO);
-						if (log.isDebugEnabled()) {
-							log.debug("【后台爬虫系统爬取数据】开始爬取15、小说阅读人数data={}", novelInfo.getReaders());
-						}
-						novelInfo.setRecentReaders(BigDecimal.ZERO);
-						if (log.isDebugEnabled()) {
-							log.debug("【后台爬虫系统爬取数据】开始爬取16、小说跟随阅读人数data={}", novelInfo.getRecentReaders());
-						}
-						novelInfo.setRetention(0);
-						if (log.isDebugEnabled()) {
-							log.debug("【后台爬虫系统爬取数据】开始爬取17、小说留存率data={}", novelInfo.getRetention());
+						novelInfo.setCategoryCNText(categoryCNTextStr);//9、设置小说分类中文名称
+						novelInfo.setClickNumber(BigDecimal.ZERO);//10、设置小说阅读（点击）次数
+						novelInfo.setPublisher("八八读书网（88dush.com）");//11、设置小说出版社名称或者爬取的网站名称
+						novelInfo.setTotalWords(BigDecimal.ZERO);//12、设置小说总字数
+						novelInfo.setTotalChapters(0);//13、设置小说总章节数
+						novelInfo.setReaders(BigDecimal.ZERO);//14、设置小说阅读人数
+						novelInfo.setRecentReaders(BigDecimal.ZERO);//15、设置小说最近跟随阅读（或关注）人数
+						novelInfo.setRetention(0);//16、设置小说留存率
+						NovelInfo novelInfoTmp = novelInfoService.findByTitleAndCategoryTextAndAuthor(novelInfo.getTitle(), novelInfo.getCategoryCNText(), novelInfo.getAuthor());
+						if (novelInfoTmp == null) {
+							novelInfoService.save(novelInfo);
+							log.debug("【后台爬虫系统爬取数据】保存到数据库小说data=={}", novelInfo);
 						}
 					}
 				}
-				NovelInfo novelInfoTmp = novelInfoService.findByTitleAndCategoryTextAndAuthor(novelInfo.getTitle(), novelInfo.getCategoryCNText(), novelInfo.getAuthor());
-				if (novelInfoTmp == null) {
-					novelInfoService.save(novelInfo);
-					if (log.isDebugEnabled()) {
-						log.debug("【后台爬虫系统爬取数据】每页小说信息数据data=={}", novelInfo);
-					}
-				}
-				NovelInfo novelInfo1 = NovelInfo.builder().build();
-				novelInfo1.setId(UUIDUtil.gen32UUID());//1、设置小说id
 				List<Object> liObjList = document.sel("//body/div[@class='booklist']/ul/li[@class!='t']");
 				if (liObjList == null || liObjList.isEmpty() || liObjList.size() < 1) {
 					return;
@@ -250,6 +225,8 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 						 *     <span class="fs">8人</span>
 						 * </li>
 						 */
+						NovelInfo novelInfo = NovelInfo.builder().build();
+						novelInfo.setId(UUIDUtil.gen32UUID());//1、设置小说id
 						Object novelGetDataObj = dlJxDocument.selNOne("//li/span[@class='sm']/a/@href");//获取小说信息数据路径
 						String novelGetDataUrlStr = null;
 						if (novelGetDataObj != null) {
@@ -264,29 +241,32 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 						if (novelTitleObj != null) {
 							novelTitleStr = novelTitleObj.toString();
 						}
-						log.debug("【后台爬虫系统爬取数据】每页小说名称信息数据转换为字符串data=={}", novelTitleStr);
-						novelInfo1.setTitle(novelTitleStr);//2、设置小说名称
+						log.debug("【后台爬虫系统爬取数据】每页小说名称data=={}", novelTitleStr);
+						novelInfo.setTitle(novelTitleStr);//2、设置小说名称
 						Object novelNewestChapterTitleObj = dlJxDocument.selNOne("//li/span[@class='zj']/a/text()");//获取小说最新章节标题
 						String novelNewestChapterTitleStr = null;
 						if (novelNewestChapterTitleObj != null) {
 							novelNewestChapterTitleStr = novelNewestChapterTitleObj.toString();
 						}
-						log.debug("【后台爬虫系统爬取数据】每页小说最新章节标题信息数据转换为字符串data=={}", novelNewestChapterTitleStr);
-						novelInfo1.setNewestChapterTitle(novelNewestChapterTitleStr);//3、设置小说最新章节
+						log.debug("【后台爬虫系统爬取数据】每页小说最新章节标题data=={}", novelNewestChapterTitleStr);
+						novelInfo.setNewestChapterTitle(novelNewestChapterTitleStr);//3、设置小说最新章节
 						Object novelAuthorObj = dlJxDocument.selNOne("//li/span[@class='zz']/text()");//获取小说作者
 						String novelAuthorStr = null;
 						if (novelAuthorObj != null) {
 							novelAuthorStr = novelAuthorObj.toString();
 						}
-						log.debug("【后台爬虫系统爬取数据】每页小说作者信息数据转换为字符串data=={}", novelAuthorStr);
-						novelInfo1.setAuthor(novelAuthorStr);//4、设置小说最新章节
+						log.debug("【后台爬虫系统爬取数据】每页小说作者data=={}", novelAuthorStr);
+						novelInfo.setAuthor(novelAuthorStr);//4、设置小说作者
 						Object novelTotalWordsObj = dlJxDocument.selNOne("//li/span[@class='zs']/num()");//获取小说字数
-						BigDecimal novelTotalWordsDecimal = null;
-						if (novelTotalWordsObj != null && ((JXNode) novelAuthorObj).isNumber()) {
-							novelTotalWordsDecimal = BigDecimal.valueOf(Long.valueOf(novelAuthorStr));
+						String novelTotalWordsStr = null;
+						BigDecimal novelTotalWordsDecimal = BigDecimal.ZERO;
+						if (novelTotalWordsObj != null) {
+							novelTotalWordsStr = novelTotalWordsObj.toString();
+							log.debug("【后台爬虫系统爬取数据】每页小说总字数data=={}", novelTotalWordsStr);
+							novelTotalWordsDecimal = new BigDecimal(novelTotalWordsStr);
 						}
-						log.debug("【后台爬虫系统爬取数据】每页小说作者信息数据转换为字符串data=={}", novelTotalWordsDecimal);
-						novelInfo1.setTotalWords(novelTotalWordsDecimal);//5、设置小说总字数
+						log.debug("【后台爬虫系统爬取数据】每页小说总字数 BigDecimal data=={}", novelTotalWordsDecimal);
+						novelInfo.setTotalWords(novelTotalWordsDecimal);//5、设置小说总字数
 						Object novelStatusObj = dlJxDocument.selNOne("//li/span[@class='zt']/text()");//获取小说状态
 						String novelStatusStr = null;
 						if (novelStatusObj != null) {
@@ -294,90 +274,68 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 						}
 						log.debug("【后台爬虫系统爬取数据】每页小说状态信息数据转换为字符串data=={}", novelStatusStr);
 						if ("连载中".equals(novelStatusStr)) {
-							novelInfo1.setNovelStatus(1);
+							novelInfo.setNovelStatus(1);//6、设置小说更新状态
 						} else if ("已完结".equals(novelStatusStr)) {
-							novelInfo1.setNovelStatus(0);//6、设置小说总字数
+							novelInfo.setNovelStatus(0);//6、设置小说更新状态
 						} else {
-							novelInfo1.setNovelStatus(1);//6、设置小说总字数
+							novelInfo.setNovelStatus(1);//6、设置更新状态
 						}
 						Object novelRedersObj = dlJxDocument.selNOne("//li/span[@class='fs']/num()");//获取小说阅读数
-						BigDecimal novelRedersDecimal = null;
-						if (novelAuthorObj != null && ((JXNode) novelAuthorObj).isNumber()) {
-							novelRedersDecimal = BigDecimal.valueOf(Long.valueOf(novelRedersObj.toString()));
+						String novelRedersStr = null;
+						BigDecimal novelRedersDecimal = BigDecimal.ZERO;
+						if (novelRedersObj != null) {
+							novelRedersStr = novelRedersObj.toString();
+							log.debug("【后台爬虫系统爬取数据】每页小说阅读人数信息数据转换为字符串data=={}", novelRedersStr);
+							novelRedersDecimal = new BigDecimal(novelRedersStr);
 						}
-						log.debug("【后台爬虫系统爬取数据】每页小说阅读人数信息数据转换为字符串data=={}", novelRedersDecimal);
-						novelInfo1.setReaders(novelRedersDecimal);//7、设置小说阅读人数
-						novelInfo1.setClickNumber(BigDecimal.ZERO);//10
-						if (log.isDebugEnabled()) {
-							log.debug("【后台爬虫系统爬取数据】开始爬取11、小说点击数data={}", novelInfo.getClickNumber());
+						log.debug("【后台爬虫系统爬取数据】每页小说阅读人数信息数据转换为BigDecimaldata=={}", novelRedersDecimal);
+						novelInfo.setReaders(novelRedersDecimal);//7、设置小说阅读人数
+						novelInfo.setClickNumber(BigDecimal.ZERO);//8、设置小说点击（阅读）次数
+						novelInfo.setPublisher("八八读书网（88dush.com）");//9、设置小说出版社或者爬取的网站名称
+						novelInfo.setTotalChapters(0);//10、设置小说总章节数
+						novelInfo.setRecentReaders(BigDecimal.ZERO);//11、设置小说跟随阅读人数
+						novelInfo.setRetention(0);//12、设置小说留存率
+						novelInfo.setCategoryCNText(categoryCNTextStr);//13、设置小说分类中文名称
+						if ("玄幻魔法".equals(categoryCNTextStr)) {
+							novelInfo.setCategoryType(CategoryEnum.XUANHUANQIHUAN.getCode());//14、设置小说分类类型type
+							novelInfo.setCategoryENText(CategoryEnum.XUANHUANQIHUAN.getMessage());//15、设置小说分类英文名称
 						}
-						novelInfo1.setPublisher("八八读书网（88dush.com）");
-						if (log.isDebugEnabled()) {
-							log.debug("【后台爬虫系统爬取数据】开始爬取12、小说出版社或爬取网站名称data={}", novelInfo.getPublisher());
+						if ("武侠修真".equals(categoryCNTextStr)) {
+							novelInfo.setCategoryType(CategoryEnum.XIANXIAWUXIA.getCode());//14、设置小说分类类型type
+							novelInfo.setCategoryENText(CategoryEnum.XIANXIAWUXIA.getMessage());//15、设置小说分类英文名称
 						}
-						novelInfo1.setTotalChapters(0);
-						if (log.isDebugEnabled()) {
-							log.debug("【后台爬虫系统爬取数据】开始爬取14、小说总章节数data={}", novelInfo.getTotalChapters());
+						if ("都市言情".equals(categoryCNTextStr)) {
+							novelInfo.setCategoryType(CategoryEnum.DUSHIQINGGAN.getCode());//14、设置小说分类类型type
+							novelInfo.setCategoryENText(CategoryEnum.DUSHIQINGGAN.getMessage());//15、设置小说分类英文名称
 						}
-						novelInfo1.setRecentReaders(BigDecimal.ZERO);
-						if (log.isDebugEnabled()) {
-							log.debug("【后台爬虫系统爬取数据】开始爬取16、小说跟随阅读人数data={}", novelInfo.getRecentReaders());
+						if ("历史穿越".equals(categoryCNTextStr)) {
+							novelInfo.setCategoryType(CategoryEnum.CHUANGYUECHONGSHENG.getCode());//14、设置小说分类类型type
+							novelInfo.setCategoryENText(CategoryEnum.CHUANGYUECHONGSHENG.getMessage());//15、设置小说分类英文名称
 						}
-						novelInfo1.setRetention(0);
-						if (log.isDebugEnabled()) {
-							log.debug("【后台爬虫系统爬取数据】开始爬取17、小说留存率data={}", novelInfo.getRetention());
+						if ("恐怖悬疑".equals(categoryCNTextStr)) {
+							novelInfo.setCategoryType(CategoryEnum.XUANYILINGYI.getCode());//14、设置小说分类类型type
+							novelInfo.setCategoryENText(CategoryEnum.XUANYILINGYI.getMessage());//15、设置小说分类英文名称
 						}
-						Object categoryCNTextObj1 = document.selOne("//body/div[@class='booklist']/h1/text()");
-						String categoryCNTextStr1 = null;
-						if (categoryCNTextObj1 != null) {
-							categoryCNTextStr1 = categoryCNTextObj1.toString();
+						if ("游戏竞技".equals(categoryCNTextStr)) {
+							novelInfo.setCategoryType(CategoryEnum.YOUXIJINGJI.getCode());//14、设置小说分类类型type
+							novelInfo.setCategoryENText(CategoryEnum.YOUXIJINGJI.getMessage());//15、设置小说分类英文名称
 						}
-						if (log.isDebugEnabled()) {
-							log.debug("【后台爬虫系统爬取数据】每页小说分类中文名称信息转换为字符串data=={}", categoryCNTextStr1);
+						if ("军事科幻".equals(categoryCNTextStr)) {
+							novelInfo.setCategoryType(CategoryEnum.LISHIJUNSHI.getCode());//14、设置小说分类类型type
+							novelInfo.setCategoryENText(CategoryEnum.LISHIJUNSHI.getMessage());//15、设置小说分类英文名称
 						}
-						novelInfo1.setCategoryCNText(categoryCNTextStr1);//9、设置小说分类中文名称
-						if ("玄幻魔法".equals(categoryCNTextStr1)) {
-							novelInfo1.setCategoryType(CategoryEnum.XUANHUANQIHUAN.getCode());//2、设置小说分类类型type
-							novelInfo1.setCategoryENText(CategoryEnum.XUANHUANQIHUAN.getMessage());//3、设置小说分类英文名称
+						if ("女生频道".equals(categoryCNTextStr)) {
+							novelInfo.setCategoryType(CategoryEnum.DUSHISHENGHUO.getCode());//14、设置小说分类类型type
+							novelInfo.setCategoryENText(CategoryEnum.DUSHISHENGHUO.getMessage());//15、设置小说分类英文名称
 						}
-						if ("武侠修真".equals(categoryCNTextStr1)) {
-							novelInfo1.setCategoryType(CategoryEnum.XIANXIAWUXIA.getCode());//2、设置小说分类类型type
-							novelInfo1.setCategoryENText(CategoryEnum.XIANXIAWUXIA.getMessage());//3、设置小说分类英文名称
+						if ("综合类型".equals(categoryCNTextStr)) {
+							novelInfo.setCategoryType(CategoryEnum.QITALEIBIE.getCode());//14、设置小说分类类型type
+							novelInfo.setCategoryENText(CategoryEnum.QITALEIBIE.getMessage());//15、设置小说分类英文名称
 						}
-						if ("都市言情".equals(categoryCNTextStr1)) {
-							novelInfo1.setCategoryType(CategoryEnum.DUSHIQINGGAN.getCode());//2、设置小说分类类型type
-							novelInfo1.setCategoryENText(CategoryEnum.DUSHIQINGGAN.getMessage());//3、设置小说分类英文名称
-						}
-						if ("历史穿越".equals(categoryCNTextStr1)) {
-							novelInfo1.setCategoryType(CategoryEnum.CHUANGYUECHONGSHENG.getCode());//2、设置小说分类类型type
-							novelInfo1.setCategoryENText(CategoryEnum.CHUANGYUECHONGSHENG.getMessage());//3、设置小说分类英文名称
-						}
-						if ("恐怖悬疑".equals(categoryCNTextStr1)) {
-							novelInfo1.setCategoryType(CategoryEnum.XUANYILINGYI.getCode());//2、设置小说分类类型type
-							novelInfo1.setCategoryENText(CategoryEnum.XUANYILINGYI.getMessage());//3、设置小说分类英文名称
-						}
-						if ("游戏竞技".equals(categoryCNTextStr1)) {
-							novelInfo1.setCategoryType(CategoryEnum.YOUXIJINGJI.getCode());//2、设置小说分类类型type
-							novelInfo1.setCategoryENText(CategoryEnum.YOUXIJINGJI.getMessage());//3、设置小说分类英文名称
-						}
-						if ("军事科幻".equals(categoryCNTextStr1)) {
-							novelInfo1.setCategoryType(CategoryEnum.LISHIJUNSHI.getCode());//2、设置小说分类类型type
-							novelInfo1.setCategoryENText(CategoryEnum.LISHIJUNSHI.getMessage());//3、设置小说分类英文名称
-						}
-						if ("女生频道".equals(categoryCNTextStr1)) {
-							novelInfo1.setCategoryType(CategoryEnum.DUSHISHENGHUO.getCode());//2、设置小说分类类型type
-							novelInfo1.setCategoryENText(CategoryEnum.DUSHISHENGHUO.getMessage());//3、设置小说分类英文名称
-						}
-						if ("综合类型".equals(categoryCNTextStr1)) {
-							novelInfo1.setCategoryType(CategoryEnum.QITALEIBIE.getCode());//2、设置小说分类类型type
-							novelInfo1.setCategoryENText(CategoryEnum.QITALEIBIE.getMessage());//3、设置小说分类英文名称
-						}
-						NovelInfo novelInfoTmp1 = novelInfoService.findByTitleAndCategoryTextAndAuthor(novelInfo1.getTitle(), novelInfo1.getCategoryCNText(), novelInfo1.getAuthor());
-						if (novelInfoTmp1 == null) {
-							novelInfoService.save(novelInfo1);
-							if (log.isDebugEnabled()) {
-								log.debug("【后台爬虫系统爬取数据】每页小说信息数据data=={}", novelInfo1);
-							}
+						NovelInfo novelInfoTmp = novelInfoService.findByTitleAndCategoryTextAndAuthor(novelTitleStr, categoryCNTextStr, novelAuthorStr);
+						if (novelInfoTmp == null) {
+							novelInfoService.save(novelInfo);
+							log.debug("【后台爬虫系统爬取数据】保存到数据库小说信息数据data=={}", novelInfo);
 						}
 					}
 				}
