@@ -4,8 +4,6 @@ import com.potato369.novel.basic.dataobject.NovelInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
 import java.util.List;
 
 /**
@@ -29,6 +27,8 @@ public interface NovelInfoRepository extends JpaRepository<NovelInfo, String> {
     Page<NovelInfo> findNovelInfoByCategoryType(Pageable pageable, Integer type);
     
     NovelInfo findNovelInfoByTitleAndCategoryCNText(String title, String categoryCNText);
+    
+    NovelInfo findNovelInfoByTitleAndCategoryCNTextAndAuthor(String title, String categoryCNText, String author);
     
     List<NovelInfo> findByCategoryENText(String categoryENText);
 

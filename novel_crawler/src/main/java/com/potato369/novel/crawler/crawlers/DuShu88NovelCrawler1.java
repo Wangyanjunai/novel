@@ -34,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since JDK 1.8
  * </pre>
  */
-@Crawler(name = "88dush1", useUnrepeated = true) 
+@Crawler(name = "88dush1")
 @Slf4j
 public class DuShu88NovelCrawler1 extends BaseSeimiCrawler{
 

@@ -9,6 +9,8 @@
  */
 package com.potato369.novel.basic.dataobject;
 
+import com.potato369.novel.basic.enums.CategoryEnum;
+import com.potato369.novel.basic.utils.UUIDUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -178,5 +180,47 @@ public class NovelInfo implements Serializable {
      */
     @Column(name = "update_time", nullable = false, length = 64)
     private Date updateTime;
+
+    public NovelInfo (String categoryCNText) {
+        NovelInfo novelInfo = NovelInfo.builder().build();
+        novelInfo.setId(UUIDUtil.gen32UUID());//1、设置小说id
+        novelInfo.setCategoryCNText(categoryCNText);//2、设置小说分类中文名称
+        if ("玄幻魔法".equals(categoryCNText)) {
+            novelInfo.setCategoryType(CategoryEnum.XUANHUANQIHUAN.getCode());//3、设置小说分类类型type
+            novelInfo.setCategoryENText(CategoryEnum.XUANHUANQIHUAN.getMessage());//4、设置小说分类英文名称
+        }
+        if ("武侠修真".equals(categoryCNText)) {
+            novelInfo.setCategoryType(CategoryEnum.XIANXIAWUXIA.getCode());//3、设置小说分类类型type
+            novelInfo.setCategoryENText(CategoryEnum.XIANXIAWUXIA.getMessage());//3、设置小说分类英文名称
+        }
+        if ("都市言情".equals(categoryCNText)) {
+            novelInfo.setCategoryType(CategoryEnum.DUSHIQINGGAN.getCode());//3、设置小说分类类型type
+            novelInfo.setCategoryENText(CategoryEnum.DUSHIQINGGAN.getMessage());//4、设置小说分类英文名称
+        }
+        if ("历史穿越".equals(categoryCNText)) {
+            novelInfo.setCategoryType(CategoryEnum.CHUANGYUECHONGSHENG.getCode());//3、设置小说分类类型type
+            novelInfo.setCategoryENText(CategoryEnum.CHUANGYUECHONGSHENG.getMessage());//4、设置小说分类英文名称
+        }
+        if ("恐怖悬疑".equals(categoryCNText)) {
+            novelInfo.setCategoryType(CategoryEnum.XUANYILINGYI.getCode());//3、设置小说分类类型type
+            novelInfo.setCategoryENText(CategoryEnum.XUANYILINGYI.getMessage());//4、设置小说分类英文名称
+        }
+        if ("游戏竞技".equals(categoryCNText)) {
+            novelInfo.setCategoryType(CategoryEnum.YOUXIJINGJI.getCode());//3、设置小说分类类型type
+            novelInfo.setCategoryENText(CategoryEnum.YOUXIJINGJI.getMessage());//4、设置小说分类英文名称
+        }
+        if ("军事科幻".equals(categoryCNText)) {
+            novelInfo.setCategoryType(CategoryEnum.LISHIJUNSHI.getCode());//3、设置小说分类类型type
+            novelInfo.setCategoryENText(CategoryEnum.LISHIJUNSHI.getMessage());//4、设置小说分类英文名称
+        }
+        if ("女生频道".equals(categoryCNText)) {
+            novelInfo.setCategoryType(CategoryEnum.DUSHISHENGHUO.getCode());//3、设置小说分类类型type
+            novelInfo.setCategoryENText(CategoryEnum.DUSHISHENGHUO.getMessage());//4、设置小说分类英文名称
+        }
+        if ("综合类型".equals(categoryCNText)) {
+            novelInfo.setCategoryType(CategoryEnum.QITALEIBIE.getCode());//3、设置小说分类类型type
+            novelInfo.setCategoryENText(CategoryEnum.QITALEIBIE.getMessage());//4、设置小说分类英文名称
+        }
+    }
 }
 

@@ -1,6 +1,5 @@
 package com.potato369.novel.basic.service.impl;
 
-import com.potato369.novel.basic.dataobject.NovelCategory;
 import com.potato369.novel.basic.dataobject.NovelInfo;
 import com.potato369.novel.basic.repository.NovelInfoRepository;
 import com.potato369.novel.basic.service.NovelInfoService;
@@ -106,10 +105,7 @@ public class NovelInfoServiceImpl implements NovelInfoService {
 	public NovelInfo findByTitleAndCategoryText(String title, String categoryText) {
 		return repository.findNovelInfoByTitleAndCategoryCNText(title, categoryText);
 	}
-	
-	
 
-	
 	/**
 	 * <pre>
 	 * 描述该方法的实现功能：
@@ -122,7 +118,6 @@ public class NovelInfoServiceImpl implements NovelInfoService {
 		return repository.findCountByCategoryENText(category_en_text);
 	}
 
-	
 	/**
 	 * <pre>
 	 * 描述该方法的实现功能：
@@ -144,4 +139,9 @@ public class NovelInfoServiceImpl implements NovelInfoService {
     public Page<NovelInfo> findByCategoryType(Pageable pageable, Integer type) {
         return repository.findNovelInfoByCategoryType(pageable ,type);
     }
+
+	@Override
+	public NovelInfo findByTitleAndCategoryTextAndAuthor(String title, String categoryText, String author) {
+		return repository.findNovelInfoByTitleAndCategoryCNTextAndAuthor(title, categoryText, author);
+	}
 }

@@ -52,7 +52,7 @@ public class BusinessConstants {
     public static ExecutorService threadPoolBook = Executors.newFixedThreadPool(10);
 
     //存放执行的线程
-    public static Map<String,Thread> threadMap = new ConcurrentHashMap<String,Thread>();
+    public static Map<String,Thread> threadMap = new ConcurrentHashMap<String, Thread>();
     
     //线程锁
     public static Lock lock = new ReentrantLock();
