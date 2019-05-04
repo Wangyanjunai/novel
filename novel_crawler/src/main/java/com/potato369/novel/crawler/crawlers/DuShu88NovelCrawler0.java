@@ -114,43 +114,8 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 						log.debug("【后台爬虫系统爬取数据】每页dl元素转换为字符串data=={}", dl.toString());
 						JXDocument dlJxDocument = JXDocument.create(dl.toString());
 						NovelInfo novelInfo = NovelInfo.builder().build();//初始化对象
+						novelInfo = novelInfo.compasByCategoryCNText(novelInfo, categoryCNTextStr);
 						novelInfo.setId(UUIDUtil.gen32UUID());//1、设置小说id
-						if ("玄幻魔法".equals(categoryCNTextStr)) {
-							novelInfo.setCategoryType(CategoryEnum.XUANHUANQIHUAN.getCode());//2、设置小说分类类型type
-							novelInfo.setCategoryENText(CategoryEnum.XUANHUANQIHUAN.getMessage());//3、设置小说分类英文名称
-						}
-						if ("武侠修真".equals(categoryCNTextStr)) {
-							novelInfo.setCategoryType(CategoryEnum.XIANXIAWUXIA.getCode());//2、设置小说分类类型type
-							novelInfo.setCategoryENText(CategoryEnum.XIANXIAWUXIA.getMessage());//3、设置小说分类英文名称
-						}
-						if ("都市言情".equals(categoryCNTextStr)) {
-							novelInfo.setCategoryType(CategoryEnum.DUSHIQINGGAN.getCode());//2、设置小说分类类型type
-							novelInfo.setCategoryENText(CategoryEnum.DUSHIQINGGAN.getMessage());//3、设置小说分类英文名称
-						}
-						if ("历史穿越".equals(categoryCNTextStr)) {
-							novelInfo.setCategoryType(CategoryEnum.CHUANGYUECHONGSHENG.getCode());//2、设置小说分类类型type
-							novelInfo.setCategoryENText(CategoryEnum.CHUANGYUECHONGSHENG.getMessage());//3、设置小说分类英文名称
-						}
-						if ("恐怖悬疑".equals(categoryCNTextStr)) {
-							novelInfo.setCategoryType(CategoryEnum.XUANYILINGYI.getCode());//2、设置小说分类类型type
-							novelInfo.setCategoryENText(CategoryEnum.XUANYILINGYI.getMessage());//3、设置小说分类英文名称
-						}
-						if ("游戏竞技".equals(categoryCNTextStr)) {
-							novelInfo.setCategoryType(CategoryEnum.YOUXIJINGJI.getCode());//2、设置小说分类类型type
-							novelInfo.setCategoryENText(CategoryEnum.YOUXIJINGJI.getMessage());//3、设置小说分类英文名称
-						}
-						if ("军事科幻".equals(categoryCNTextStr)) {
-							novelInfo.setCategoryType(CategoryEnum.LISHIJUNSHI.getCode());//2、设置小说分类类型type
-							novelInfo.setCategoryENText(CategoryEnum.LISHIJUNSHI.getMessage());//3、设置小说分类英文名称
-						}
-						if ("女生频道".equals(categoryCNTextStr)) {
-							novelInfo.setCategoryType(CategoryEnum.DUSHISHENGHUO.getCode());//2、设置小说分类类型type
-							novelInfo.setCategoryENText(CategoryEnum.DUSHISHENGHUO.getMessage());//3、设置小说分类英文名称
-						}
-						if ("综合类型".equals(categoryCNTextStr)) {
-							novelInfo.setCategoryType(CategoryEnum.QITALEIBIE.getCode());//2、设置小说分类类型type
-							novelInfo.setCategoryENText(CategoryEnum.QITALEIBIE.getMessage());//3、设置小说分类英文名称
-						}
 						Object coverImageObj = dlJxDocument.selOne("//dl/dt/a/img/@src");//获取封面图片路径
 						String coverImageUrlStr = null;
 						if (coverImageObj != null) {
@@ -295,42 +260,7 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 						novelInfo.setRecentReaders(BigDecimal.ZERO);//11、设置小说跟随阅读人数
 						novelInfo.setRetention(0);//12、设置小说留存率
 						novelInfo.setCategoryCNText(categoryCNTextStr);//13、设置小说分类中文名称
-						if ("玄幻魔法".equals(categoryCNTextStr)) {
-							novelInfo.setCategoryType(CategoryEnum.XUANHUANQIHUAN.getCode());//14、设置小说分类类型type
-							novelInfo.setCategoryENText(CategoryEnum.XUANHUANQIHUAN.getMessage());//15、设置小说分类英文名称
-						}
-						if ("武侠修真".equals(categoryCNTextStr)) {
-							novelInfo.setCategoryType(CategoryEnum.XIANXIAWUXIA.getCode());//14、设置小说分类类型type
-							novelInfo.setCategoryENText(CategoryEnum.XIANXIAWUXIA.getMessage());//15、设置小说分类英文名称
-						}
-						if ("都市言情".equals(categoryCNTextStr)) {
-							novelInfo.setCategoryType(CategoryEnum.DUSHIQINGGAN.getCode());//14、设置小说分类类型type
-							novelInfo.setCategoryENText(CategoryEnum.DUSHIQINGGAN.getMessage());//15、设置小说分类英文名称
-						}
-						if ("历史穿越".equals(categoryCNTextStr)) {
-							novelInfo.setCategoryType(CategoryEnum.CHUANGYUECHONGSHENG.getCode());//14、设置小说分类类型type
-							novelInfo.setCategoryENText(CategoryEnum.CHUANGYUECHONGSHENG.getMessage());//15、设置小说分类英文名称
-						}
-						if ("恐怖悬疑".equals(categoryCNTextStr)) {
-							novelInfo.setCategoryType(CategoryEnum.XUANYILINGYI.getCode());//14、设置小说分类类型type
-							novelInfo.setCategoryENText(CategoryEnum.XUANYILINGYI.getMessage());//15、设置小说分类英文名称
-						}
-						if ("游戏竞技".equals(categoryCNTextStr)) {
-							novelInfo.setCategoryType(CategoryEnum.YOUXIJINGJI.getCode());//14、设置小说分类类型type
-							novelInfo.setCategoryENText(CategoryEnum.YOUXIJINGJI.getMessage());//15、设置小说分类英文名称
-						}
-						if ("军事科幻".equals(categoryCNTextStr)) {
-							novelInfo.setCategoryType(CategoryEnum.LISHIJUNSHI.getCode());//14、设置小说分类类型type
-							novelInfo.setCategoryENText(CategoryEnum.LISHIJUNSHI.getMessage());//15、设置小说分类英文名称
-						}
-						if ("女生频道".equals(categoryCNTextStr)) {
-							novelInfo.setCategoryType(CategoryEnum.DUSHISHENGHUO.getCode());//14、设置小说分类类型type
-							novelInfo.setCategoryENText(CategoryEnum.DUSHISHENGHUO.getMessage());//15、设置小说分类英文名称
-						}
-						if ("综合类型".equals(categoryCNTextStr)) {
-							novelInfo.setCategoryType(CategoryEnum.QITALEIBIE.getCode());//14、设置小说分类类型type
-							novelInfo.setCategoryENText(CategoryEnum.QITALEIBIE.getMessage());//15、设置小说分类英文名称
-						}
+						novelInfo = novelInfo.compasByCategoryCNText(novelInfo, categoryCNTextStr);
 						NovelInfo novelInfoTmp = novelInfoService.findByTitleAndCategoryTextAndAuthor(novelTitleStr, categoryCNTextStr, novelAuthorStr);
 						if (novelInfoTmp == null) {
 							novelInfoService.save(novelInfo);

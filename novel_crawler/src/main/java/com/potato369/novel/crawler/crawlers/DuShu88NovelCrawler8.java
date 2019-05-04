@@ -223,42 +223,7 @@ public class DuShu88NovelCrawler8 extends BaseSeimiCrawler{
             if (log.isDebugEnabled()) {
         		log.debug("【后台爬虫系统爬取数据】开始爬取1、小说分类中文名称data={}", novelInfo.getCategoryCNText());
 			}
-            if ("玄幻魔法".equals(categoryText)) {
-            	novelInfo.setCategoryType(CategoryEnum.XUANHUANQIHUAN.getCode());//2、小说分类类型type
-            	novelInfo.setCategoryENText(CategoryEnum.XUANHUANQIHUAN.getMessage());//3、小说分类英文名称
-			}
-            if ("武侠修真".equals(categoryText)) {
-            	novelInfo.setCategoryType(CategoryEnum.XIANXIAWUXIA.getCode());//2、小说分类类型type
-            	novelInfo.setCategoryENText(CategoryEnum.XIANXIAWUXIA.getMessage());//3、小说分类英文名称
-			}
-            if ("都市言情".equals(categoryText)) {
-            	novelInfo.setCategoryType(CategoryEnum.DUSHIQINGGAN.getCode());//2、小说分类类型type
-            	novelInfo.setCategoryENText(CategoryEnum.DUSHIQINGGAN.getMessage());//3、小说分类英文名称
-			}
-            if ("历史穿越".equals(categoryText)) {
-            	novelInfo.setCategoryType(CategoryEnum.CHUANGYUECHONGSHENG.getCode());//2、小说分类类型type
-            	novelInfo.setCategoryENText(CategoryEnum.CHUANGYUECHONGSHENG.getMessage());//3、小说分类英文名称
-			}
-            if ("恐怖悬疑".equals(categoryText)) {
-            	novelInfo.setCategoryType(CategoryEnum.XUANYILINGYI.getCode());//2、小说分类类型type
-            	novelInfo.setCategoryENText(CategoryEnum.XUANYILINGYI.getMessage());//3、小说分类英文名称
-			}
-            if ("游戏竞技".equals(categoryText)) {
-            	novelInfo.setCategoryType(CategoryEnum.YOUXIJINGJI.getCode());//2、小说分类类型type
-            	novelInfo.setCategoryENText(CategoryEnum.YOUXIJINGJI.getMessage());//3、小说分类英文名称
-			}
-            if ("军事科幻".equals(categoryText)) {
-            	novelInfo.setCategoryType(CategoryEnum.LISHIJUNSHI.getCode());//2、小说分类类型type
-            	novelInfo.setCategoryENText(CategoryEnum.LISHIJUNSHI.getMessage());//3、小说分类英文名称
-			}
-            if ("女生频道".equals(categoryText)) {
-            	novelInfo.setCategoryType(CategoryEnum.DUSHISHENGHUO.getCode());//2、小说分类类型type
-            	novelInfo.setCategoryENText(CategoryEnum.DUSHISHENGHUO.getMessage());//3、小说分类英文名称
-			}
-            if ("综合类型".equals(categoryText)) {
-            	novelInfo.setCategoryType(CategoryEnum.QITALEIBIE.getCode());//2、小说分类类型type
-            	novelInfo.setCategoryENText(CategoryEnum.QITALEIBIE.getMessage());//3、小说分类英文名称
-			}
+            novelInfo = novelInfo.compasByCategoryCNText(novelInfo, categoryText);
             if (log.isDebugEnabled()) {
         		log.debug("【后台爬虫系统爬取数据】开始爬取2、小说分类类型type data={}", novelInfo.getCategoryType());
         		log.debug("【后台爬虫系统爬取数据】开始爬取3、小说分类英文名称data={}", novelInfo.getCategoryENText());
