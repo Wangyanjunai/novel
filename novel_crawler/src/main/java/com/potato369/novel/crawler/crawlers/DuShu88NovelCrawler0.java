@@ -104,7 +104,6 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 				if (log.isDebugEnabled()) {
 					log.debug("【后台爬虫系统爬取数据】小说分类中文名称data=={}", categoryCNTextStr);
 				}
-				
 				List<Object> dlObjList = document.sel("//body/div[@class='fengtui']/dl");
 				if (dlObjList == null || dlObjList.isEmpty() || dlObjList.size() < 1) {
 					return;
