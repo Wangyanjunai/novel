@@ -51,6 +51,8 @@ public class BusinessConstants {
     //静态线程池
     public static ExecutorService threadPoolBook = Executors.newFixedThreadPool(10);
 
+    //
+
     //存放执行的线程
     public static Map<String,Thread> threadMap = new ConcurrentHashMap<String, Thread>();
     
