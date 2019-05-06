@@ -1,12 +1,16 @@
 package com.potato369.novel.app.web.controller;
 
 import com.potato369.novel.app.web.utils.ResultVOUtil;
+import com.potato369.novel.app.web.vo.HomeDataVO;
 import com.potato369.novel.app.web.vo.NovelChapterInfoVO;
 import com.potato369.novel.app.web.vo.NovelChapterTitleAndContentVO;
 import com.potato369.novel.app.web.vo.NovelInfoVO;
 import com.potato369.novel.app.web.vo.ResultVO;
+import com.potato369.novel.basic.dataobject.NovelAdvertisement;
 import com.potato369.novel.basic.dataobject.NovelChapter;
 import com.potato369.novel.basic.dataobject.NovelInfo;
+import com.potato369.novel.basic.enums.AdvertisementEnum;
+import com.potato369.novel.basic.service.AdvertisementService;
 import com.potato369.novel.basic.service.NovelChapterService;
 import com.potato369.novel.basic.service.NovelInfoService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +37,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping(value = "/novel/lv2")
+@RequestMapping(value = "/lv2")
 public class NovelController {
 
     @Autowired
@@ -41,6 +45,33 @@ public class NovelController {
     
     @Autowired
     private NovelChapterService novelChapterService;
+    
+    @Autowired
+    private AdvertisementService advertisementService;
+    
+    //推荐页面首页接口
+    @GetMapping(value = "/recommend/{tag1}/{tag2}/{parentCategoryId}/{size}")
+    public ResultVO<HomeDataVO> recommend(
+    		@PathVariable(name = "tag1", required=true) Integer tag1,
+    		@PathVariable(name = "tag2", required=true) Integer tag2,
+    		@PathVariable(name = "parentCategoryId", required=false) String parentCategoryId,
+    		@PathVariable(name = "size", required=true) Integer size) {
+    	ResultVO<HomeDataVO> recommendResultVO = new ResultVO<HomeDataVO>();
+    	try {
+    		if (log.isDebugEnabled()) {
+                log.debug("【后台小说接口】start==================获取推荐页面数据=====================start");
+            }
+    		advertisementService.findByTagAndParentTypeIdLimitSize(tag1, tag2, size, parentCategoryId);
+    		return recommendResultVO;
+		} catch (Exception e) {
+			log.error("", e);
+			return ResultVOUtil.error(-1, "返回数据失败");
+		} finally {
+			if (log.isDebugEnabled()) {
+	               log.debug("【后台小说接口】end===================获取推荐页面数据======================end");
+	           }
+		}
+	}
 
     @GetMapping(value = "/detail/{novelId}")
     public ResultVO<NovelInfoVO> detail(@PathVariable(name = "novelId") String novelId) {

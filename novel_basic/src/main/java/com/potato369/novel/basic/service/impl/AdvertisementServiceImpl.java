@@ -1,6 +1,8 @@
 package com.potato369.novel.basic.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.potato369.novel.basic.repository.AdvertisementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,6 +123,29 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 		
 	@Override
 	public List<NovelAdvertisement> findByTaglimitSize(Integer tag1, Integer tag2, Integer size) {
-		return mapper.selectAllByTag1AndTag2(tag1, tag2, size);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("tag1", tag1);
+		map.put("tag2", tag2);
+		map.put("size", size);
+		return mapper.selectAllByTag1AndTag2(map);
+	}
+
+	
+	/**
+	 * <pre>
+	 * 描述该方法的实现功能：
+	 * @see com.potato369.novel.basic.service.AdvertisementService#findByTagAndParentTypeIdLimitSize(java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.String)
+	 * </pre>
+	 */
+		
+	@Override
+	public List<NovelAdvertisement> findByTagAndParentTypeIdLimitSize(Integer tag1, Integer tag2, Integer size,
+			String parentTypeId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("tag1", tag1);
+		map.put("tag2", tag2);
+		map.put("size", size);
+		map.put("parentTypeId", parentTypeId);
+		return mapper.selectAllByTag1AndTag2AndParentTypeId(map);
 	}
 }

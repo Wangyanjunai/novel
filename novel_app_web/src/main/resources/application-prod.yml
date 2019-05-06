@@ -40,9 +40,9 @@ spring:
     password: foobared123!@#
 logging:
   level:
-    org.springframework.web: error
-    com.potato369.novel.weixin.web: error
-    com.alibaba.druid: error
+    org.springframework.web: debug
+    com.potato369.novel.weixin.web: debug
+    com.alibaba.druid: debug
     com.potato369.novel.weixin.web.dataobject.mapper: trace
 projectUrl:  
   projectName: /novel

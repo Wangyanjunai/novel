@@ -82,6 +82,22 @@ public class NovelAdvertisement implements Serializable{
 	
 	/**
 	 * <pre>
+	 * @serialField novelId：小说id。
+	 * </pre>
+	 */
+	@Column(name = "novel_id", nullable = true, length = 32)
+	private String novelId;
+	
+	/**
+	 * <pre>
+	 * @serialField novelParentCategoryId：小说分类所属父级id。
+	 * </pre>
+	 */
+	@Column(name = "novel_parent_category_id", nullable = true, length = 32)
+	private String novelParentCategoryId;
+	
+	/**
+	 * <pre>
 	 * @serialField createTime：创建时间。
 	 * </pre>
 	 */

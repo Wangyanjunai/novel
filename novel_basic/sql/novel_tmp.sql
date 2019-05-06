@@ -18,6 +18,8 @@ CREATE TABLE `novel_advertisement` (
   `tag2` tinyint(4) NOT NULL DEFAULT '0' COMMENT '标识广告是否可以跳转，0-可以跳转，1-不可以跳转。',
   `image_url` varchar(1024) DEFAULT NULL COMMENT '广告图片链接绝对路径URL。',
   `link_url` varchar(1024) DEFAULT NULL COMMENT '广告跳转链接绝对路径URL。',
+  `novel_id` varchar(32) DEFAULT NULL COMMENT '小说id。',
+  `novel_parent_category_id` varchar(32) NULL DEFAULT NULL COMMENT '小说分类所属父级id',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`ad_id`) USING BTREE

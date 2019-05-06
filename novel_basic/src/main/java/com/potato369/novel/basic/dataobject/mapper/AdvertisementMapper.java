@@ -1,6 +1,7 @@
 package com.potato369.novel.basic.dataobject.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.potato369.novel.basic.dataobject.NovelAdvertisement;
 
@@ -19,5 +20,7 @@ import com.potato369.novel.basic.dataobject.NovelAdvertisement;
 
 public interface AdvertisementMapper {
 
-	List<NovelAdvertisement> selectAllByTag1AndTag2(Integer tag1, Integer tag2, Integer size);
+	List<NovelAdvertisement> selectAllByTag1AndTag2(Map<String, Object> map);
+	
+	List<NovelAdvertisement> selectAllByTag1AndTag2AndParentTypeId(Map<String, Object> map);
 }

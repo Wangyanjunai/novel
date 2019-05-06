@@ -100,6 +100,23 @@ public interface AdvertisementService {
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     List<NovelAdvertisement> findByTaglimitSize(Integer tag1, Integer tag2, Integer size);
+    
+    /**
+     * 
+     * <pre>
+     * findByTaglimitSize方法的作用：
+     * 描述方法适用条件：
+     * 描述方法的执行流程：
+     * 描述方法的使用方法：
+     * 描述方法的注意事项：
+     *
+     * @author Jack
+     * @return
+     * @since JDK 1.6
+     * </pre>
+     */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    List<NovelAdvertisement> findByTagAndParentTypeIdLimitSize(Integer tag1, Integer tag2, Integer size, String parentTypeId);
 
     /**
      * <pre>

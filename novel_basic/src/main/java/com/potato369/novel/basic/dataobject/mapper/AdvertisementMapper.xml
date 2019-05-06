@@ -8,15 +8,24 @@
         <id column="tag2" property="tag2" javaType="int" jdbcType="INTEGER" />
         <id column="image_url" property="imageUrl" javaType="string" jdbcType="VARCHAR" />
         <id column="link_url" property="linkUrl" javaType="string" jdbcType="VARCHAR" />
+        <id column="novel_id" property="novelId" javaType="string" jdbcType="VARCHAR" />
+        <id column="novel_parent_category_id" property="novelParentCategoryId" javaType="string" jdbcType="VARCHAR" />
         <id column="create_time" property="createTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
         <id column="update_time" property="updateTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </resultMap>
 
-    <select id="selectAllByTag1AndTag2" resultMap="AllResultMap" parameterType="java.lang.Integer">
-        SELECT n.ad_id, n.tag1, n.tag2, n.image_url, n.link_url, n.create_time, n.update_time
+    <select id="selectAllByTag1AndTag2" resultMap="AllResultMap" parameterType="java.util.Map">
+        SELECT n.ad_id, n.tag1, n.tag2, n.image_url, n.link_url, n.novel_id, n.novel_parent_category_id, n.create_time, n.update_time
         FROM novel_advertisement n
         WHERE n.tag1=#{tag1, jdbcType=INTEGER} AND n.tag2=#{tag2, jdbcType=INTEGER}
         ORDER BY n.create_time ASC, n.update_time ASC 
         limit 0, #{size, jdbcType=INTEGER}
     </select>
+    <select id="selectAllByTag1AndTag2AndParentTypeId" resultMap="AllResultMap" parameterType="java.util.Map">
+        SELECT n.ad_id, n.tag1, n.tag2, n.image_url, n.link_url, n.novel_id, n.novel_parent_category_id, n.create_time, n.update_time
+        FROM novel_advertisement n
+        WHERE n.tag1=#{tag1, jdbcType=INTEGER} AND n.tag2=#{tag2, jdbcType=INTEGER} AND novel_parent_category_id=#{parentTypeId, jdbcType=VARCHAR}
+        ORDER BY n.create_time ASC, n.update_time ASC
+        limit 0, #{size, jdbcType=INTEGER}
+    </select> 
 </mapper>

@@ -63,4 +63,20 @@ public class LoadingDataVO {
 	 */
 	@JsonProperty(value="linkUrl", required=false)
 	private String linkUrl;
+	
+	/**
+	 * <pre>
+	 * novelId:应用类推荐的小说id，不须是应用内广告，才必须，否则为空
+	 * </pre>
+	 */
+	@JsonProperty(value="novelId", required=false)
+	private String novelId;
+	
+	/**
+	 * <pre>
+	 * novelParentCategoryId:应用类推荐的小说父类类型id，不须是应用内广告，才必须，否则为空
+	 * </pre>
+	 */
+	@JsonProperty(value="novelParentCategoryId", required=false)
+	private String novelParentCategoryId;
 }

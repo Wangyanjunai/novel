@@ -7,6 +7,7 @@ import cn.wanghaomiao.seimi.struct.Response;
 import com.potato369.novel.basic.constants.BusinessConstants;
 import com.potato369.novel.basic.dataobject.NovelInfo;
 import com.potato369.novel.basic.service.NovelInfoService;
+import com.potato369.novel.basic.utils.DateUtil;
 import com.potato369.novel.basic.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -168,12 +169,12 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 							novelInfo.setRetention(0);//16、设置小说留存率
 							NovelInfo novelInfoTmp = novelInfoService.findByTitleAndCategoryTextAndAuthor(novelInfo.getTitle(), novelInfo.getCategoryCNText(), novelInfo.getAuthor());
 							if (novelInfoTmp == null) {
-								novelInfoService.save(novelInfo);
-								log.debug("【后台爬虫系统爬取数据】保存到数据库小说data=={}", novelInfo);
+								NovelInfo novelInfoSaveResult = novelInfoService.save(novelInfo);
+								log.debug("【后台爬虫系统爬取数据】保存到数据库小说data=={}", novelInfoSaveResult);
 							} else {
-								copy(novelInfoTmp, novelInfo);
-								novelInfoService.save(novelInfo);
-								log.debug("【后台爬虫系统爬取数据】更新到数据库小说信息数据data=={}", novelInfo);
+								NovelInfo novelInfoUpdate = copy(novelInfoTmp, novelInfo);
+								NovelInfo novelInfoUpdateResult = novelInfoService.save(novelInfoUpdate);
+								log.debug("【后台爬虫系统爬取数据】更新到数据库小说信息数据data=={}", novelInfoUpdateResult);
 							}
 						}
 					}
@@ -294,12 +295,12 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 							novelInfo = novelInfo.compasByCategoryCNText(novelInfo, categoryCNTextStr);
 							NovelInfo novelInfoTmp = novelInfoService.findByTitleAndCategoryTextAndAuthor(novelTitleStr, categoryCNTextStr, novelAuthorStr);
 							if (novelInfoTmp == null) {
-								novelInfoService.save(novelInfo);
-								log.debug("【后台爬虫系统爬取数据】保存到数据库小说信息数据data=={}", novelInfo);
+								NovelInfo novelInfoSaveResult = novelInfoService.save(novelInfo);
+								log.debug("【后台爬虫系统爬取数据】保存到数据库小说data=={}", novelInfoSaveResult);
 							} else {
-								copy(novelInfoTmp, novelInfo);
-								novelInfoService.save(novelInfo);
-								log.debug("【后台爬虫系统爬取数据】更新到数据库小说信息数据data=={}", novelInfo);
+								NovelInfo novelInfoUpdate = copy(novelInfoTmp, novelInfo);
+								NovelInfo novelInfoUpdateResult = novelInfoService.save(novelInfoUpdate);
+								log.debug("【后台爬虫系统爬取数据】更新到数据库小说信息数据data=={}", novelInfoUpdateResult);
 							}
 						}
 					}
@@ -350,21 +351,62 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 			}
 		}
 	}
-	private NovelInfo copy(NovelInfo source, NovelInfo target) {
+    public static void main(String[] args) {
+    	NovelInfo source = NovelInfo.builder().build();
+    	source.setId("0057cd19e7ee45c4872c686b5425d697");
+    	source.setCoverURL("https://fm.88dush.com/97/97182/97182s.jpg");
+    	source.setTitle("九转帝尊");
+    	source.setAuthor("忘情至尊");
+    	source.setPublisher("八八读书网（88dush.com）");
+    	source.setTotalWords(BigDecimal.ZERO);
+    	source.setNovelStatus(1);
+    	source.setCategoryType(101);
+    	source.setCategoryCNText("玄幻魔法");
+    	source.setCategoryENText("xuanhuanqihuan");
+    	source.setIntroduction("修炼号称十死无生的《九世轮回诀》，楚尘终于迎来了第九世。这一世，他要铸就无敌的传说。他是神道中的帝王，亦是武道中的至尊。九世轮回诀，九纹轮回眼，九转大神通，九天十地，唯我帝尊！");
+    	source.setReaders(BigDecimal.ZERO);
+    	source.setRecentReaders(BigDecimal.ZERO);
+    	source.setClickNumber(BigDecimal.ZERO);
+    	source.setNewestChapterId("3ba0587c40b142a686f6779edcddc376");
+    	source.setNewestChapterTitle("第1329章 帝尊归来");
+    	source.setTotalChapters(1326);
+    	source.setRetention(0);
+    	source.setCreateTime(DateUtil.dateFormat("yyyy-MM-DD HH:mm:ss", "2019-05-04 12:42:50"));
+    	source.setUpdateTime(DateUtil.dateFormat("yyyy-MM-DD HH:mm:ss", "2019-05-04 13:13:15"));
+    	
+    	NovelInfo target = NovelInfo.builder().build();
+    	target.setId(UUIDUtil.gen32UUID());
+//    	target.setCoverURL("https://fm.88dush.com/97/97182/97182s.jpg");
+    	target.setTitle("九转帝尊");
+    	target.setAuthor("忘情至尊");
+    	target.setPublisher("八八读书网（88dush.com）");
+    	target.setTotalWords(new BigDecimal(852492.0));
+    	target.setNovelStatus(1);
+    	target.setCategoryType(101);
+    	target.setCategoryCNText("玄幻魔法");
+    	target.setCategoryENText("xuanhuanqihuan");
+//    	target.setIntroduction("修炼号称十死无生的《九世轮回诀》，楚尘终于迎来了第九世。这一世，他要铸就无敌的传说。他是神道中的帝王，亦是武道中的至尊。九世轮回诀，九纹轮回眼，九转大神通，九天十地，唯我帝尊！");
+    	target.setReaders(new BigDecimal(85.0));
+    	target.setRecentReaders(new BigDecimal(17.0));
+    	target.setClickNumber(new BigDecimal(1722.0));
+//    	target.setNewestChapterId("3ba0587c40b142a686f6779edcddc376");
+    	target.setNewestChapterTitle("第1329章 帝尊归来");
+//    	target.setTotalChapters(1326);
+    	target.setRetention(0);
+    	target.setCreateTime(DateUtil.dateFormat("yyyy-MM-DD HH:mm:ss", "2019-05-04 15:42:50"));
+    	target.setUpdateTime(DateUtil.dateFormat("yyyy-MM-DD HH:mm:ss", "2019-05-04 18:13:15"));
+    	NovelInfo novelInfo = copy(source, target);
+    	log.info("novel info copy={}", novelInfo);
+	}
+	private static NovelInfo copy(NovelInfo source, NovelInfo target) {
 		if (source != null && target != null) {
 			if (StringUtils.isNotEmpty(source.getId())) {
 				target.setId(source.getId());
 			}
-			if (StringUtils.isNotEmpty(source.getNewestChapterTitle())) {
-				target.setNewestChapterTitle(source.getNewestChapterTitle());
-			}
-			if (StringUtils.isNotEmpty(source.getNewestChapterId())) {
-				target.setNewestChapterId(source.getNewestChapterId());
-			}
 			if (StringUtils.isNotEmpty(source.getCoverURL())) {
 				target.setCoverURL(source.getCoverURL());
 			}
-			if (target.getCategoryType()!= null) {
+			if (source.getCategoryType()!= null) {
 				target.setCategoryType(source.getCategoryType());
 			}
 			if (StringUtils.isNotEmpty(source.getCategoryENText())) {
@@ -382,31 +424,28 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 			if (StringUtils.isNotEmpty(source.getIntroduction())) {
 				target.setIntroduction(source.getIntroduction());
 			}
-			if (StringUtils.isNotEmpty(source.getPublisher())) {
-				target.setNewestChapterTitle(source.getNewestChapterTitle());
+			if (StringUtils.isNotEmpty(source.getNewestChapterId())) {
+				target.setNewestChapterId(source.getNewestChapterId());
 			}
 			if (StringUtils.isNotEmpty(source.getNewestChapterTitle())) {
-				target.setPublisher(source.getPublisher());
+				target.setNewestChapterTitle(source.getNewestChapterTitle());
 			}
-			if (source.getClickNumber() != null && source.getClickNumber() != BigDecimal.ZERO) {
-				target.setClickNumber(source.getClickNumber());
-			}
-			if (source.getNovelStatus() != null) {
-				target.setNovelStatus(source.getNovelStatus());
-			}
-			if (source.getReaders() != null && source.getReaders() != BigDecimal.ZERO) {
-				target.setReaders(source.getReaders());
-			}
-			if (source.getRecentReaders()!=null && source.getRecentReaders() != BigDecimal.ZERO) {
-				target.setRecentReaders(source.getRecentReaders());
-			}
-			if (source.getRetention() != null) {
+			if (source.getRetention() != null && !Integer.valueOf(0).equals(source.getRetention())) {//留存率，现在只是保存数字，显示的时候加上百分比
 				target.setRetention(source.getRetention());
 			}
-			if (source.getTotalChapters() != null) {
+			if (source.getTotalChapters() != null && !Integer.valueOf(0).equals(source.getTotalChapters())) {//章节总数
 				target.setTotalChapters(source.getTotalChapters());
 			}
-			if (source.getTotalWords() != null && source.getTotalWords() != BigDecimal.ZERO) {
+			if (source.getClickNumber() != null && !BigDecimal.ZERO.equals(source.getClickNumber())) {//点击次数
+				target.setClickNumber(source.getClickNumber());
+			}
+			if (source.getReaders() != null && !BigDecimal.ZERO.equals(source.getReaders())) {//阅读（点击）用户数；默认“0-阅读（点击）用户数”
+				target.setReaders(source.getReaders());
+			}
+			if (source.getRecentReaders()!=null &&  !BigDecimal.ZERO.equals(source.getRecentReaders())) {//最近跟随阅读（点击）用户数；默认“0-最近跟随阅读（点击）用户数”
+				target.setRecentReaders(source.getRecentReaders());
+			}
+			if (source.getTotalWords() != null && !BigDecimal.ZERO.equals(source.getTotalWords())) {//总字数
 				target.setTotalWords(source.getTotalWords());
 			}
 			if (source.getCreateTime() != null) {
