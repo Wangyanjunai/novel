@@ -55,9 +55,9 @@ public enum NovelInfoEnum implements CodeEnum<Object> {
 
     HAVE_READ(1, Boolean.TRUE, "是"),
 
-    NOVEL_STATUS_UPDATING(0, Boolean.FALSE, "连载中"),
+    NOVEL_STATUS_UPDATING(1, Boolean.FALSE, "连载中"),
 
-    NOVEL_STATUS_FINISHED(0, Boolean.TRUE, "完结"),
+    NOVEL_STATUS_FINISHED(0, Boolean.TRUE, "已完成"),
 
     ;
 

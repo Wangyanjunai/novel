@@ -6,6 +6,7 @@ import cn.wanghaomiao.seimi.struct.Request;
 import cn.wanghaomiao.seimi.struct.Response;
 import com.potato369.novel.basic.constants.BusinessConstants;
 import com.potato369.novel.basic.dataobject.NovelInfo;
+import com.potato369.novel.basic.enums.NovelInfoEnum;
 import com.potato369.novel.basic.service.NovelInfoService;
 import com.potato369.novel.basic.utils.DateUtil;
 import com.potato369.novel.basic.utils.UUIDUtil;
@@ -158,7 +159,7 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 							}
 							log.debug("【后台爬虫系统爬取数据】小说简介data=={}", novelIntroductionStr);
 							novelInfo.setIntroduction(novelIntroductionStr);//7、设置小说简介
-							novelInfo.setNovelStatus(1);//8、设置小说更新状态
+							novelInfo.setNovelStatus(NovelInfoEnum.NOVEL_STATUS_UPDATING.getCode());//8、设置小说更新状态为连载中
 							novelInfo.setCategoryCNText(categoryCNTextStr);//9、设置小说分类中文名称
 							novelInfo.setClickNumber(BigDecimal.ZERO);//10、设置小说阅读（点击）次数
 							novelInfo.setPublisher("八八读书网（88dush.com）");//11、设置小说出版社名称或者爬取的网站名称
@@ -270,12 +271,10 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 								novelStatusStr = novelStatusObj.toString();
 							}
 							log.debug("【后台爬虫系统爬取数据】每页小说状态信息数据转换为字符串data=={}", novelStatusStr);
-							if ("连载中".equals(novelStatusStr)) {
-								novelInfo.setNovelStatus(1);//6、设置小说更新状态
-							} else if ("已完结".equals(novelStatusStr)) {
-								novelInfo.setNovelStatus(0);//6、设置小说更新状态
-							}else {
-								novelInfo.setNovelStatus(1);//6、设置小说更新状态
+							if (NovelInfoEnum.NOVEL_STATUS_UPDATING.getMessage().equals(novelStatusStr)) {
+								novelInfo.setNovelStatus(NovelInfoEnum.NOVEL_STATUS_UPDATING.getCode());//6、设置小说更新状态为连载中
+							} else if (NovelInfoEnum.NOVEL_STATUS_FINISHED.getMessage().equals(novelStatusStr)) {
+								novelInfo.setNovelStatus(NovelInfoEnum.NOVEL_STATUS_FINISHED.getCode());//6、设置小说更新状态为已完成
 							}
 							Object novelRedersObj = dlJxDocument.selNOne("//li/span[@class='fs']/num()");//获取小说阅读数
 							String novelRedersStr = null;

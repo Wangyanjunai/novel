@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+
+import com.potato369.novel.basic.enums.NovelInfoEnum;
 import com.potato369.novel.basic.utils.UUIDUtil;
 import com.potato369.novel.crawler.domain.Chapter;
 import com.vladsch.flexmark.convert.html.FlexmarkHtmlParser;
@@ -256,17 +258,15 @@ public class DuShu88NovelCrawler3 extends BaseSeimiCrawler{
             	log.debug("【后台爬虫系统爬取数据】开始爬取6、小说作者信息data={}", novelInfo.getAuthor());
             }
             List<Object> novelstatusList = document.sel("//div[@class='jieshao']/div[@class='rt']/div[@class='msg']/em[2]/text()");
-            String status = "";//6、小说更新状态数据
+            String status = null;//6、小说更新状态数据
             for (Object object : novelstatusList) {
             	status = object.toString().split("：")[1];
 			}
-            if ("连载中".equals(status)) {
-            	novelInfo.setNovelStatus(1);
-			} else if ("已完结".equals(status)) {
-            	novelInfo.setNovelStatus(0);
-			} else {
-				novelInfo.setNovelStatus(1);
-			}
+            if (NovelInfoEnum.NOVEL_STATUS_UPDATING.getMessage().equals(status)) {
+                novelInfo.setNovelStatus(NovelInfoEnum.NOVEL_STATUS_UPDATING.getCode());//6、设置小说更新状态为连载中
+            } else if (NovelInfoEnum.NOVEL_STATUS_FINISHED.getMessage().equals(status)) {
+                novelInfo.setNovelStatus(NovelInfoEnum.NOVEL_STATUS_FINISHED.getCode());//6、设置小说更新状态为已完成
+            }
             if (log.isDebugEnabled()) {
             	log.debug("【后台爬虫系统爬取数据】开始爬取7、小说更新状态data={}", novelInfo.getNovelStatus());
             }
