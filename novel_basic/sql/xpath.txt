@@ -1,0 +1,82 @@
+小说分类url："div[@class='nav']/div[@class='main']/ul[@class='nav_l']/li/a/@href|//div[@class='tuijian']/ul/li/h2/a/@href"
+小说分类："div[@class='nav']/div[@class='main']/ul[@class='nav_l']/li/a/text()|div[@class='nav']/div[@class='main']/ul[@class='nav_l']/li/a/allText()|//div[@class='booklist']/h1/allText()|//div[@class='booklist']/h1/text()"
+小说名称："//div[@class='booklist']/li/span[@class='sm']/a/b/allText()|//div[@class='booklist']/li/span[@class='sm']/a/b/text()"
+小说跳转url："//div[@class='booklist']/li/span[@class='sm']/a/@href"
+小说简介："/div[@class='jieshao']/div[@class='rt']/div[@class='intro']/allText()|/div[@class='jieshao']/div[@class='rt']/div[@class='intro']/text()"
+作者："//div[@class='booklist']/li/span[@class='zz']/a/allText()|//div[@class='booklist']/li/span[@class='zz']/a/text()"
+字数："//div[@class='booklist']/li/span[@class='zs']/a/allText()|//div[@class='booklist']/li/span[@class='zs']/a/text()"
+时间："//div[@class='booklist']/li/span[@class='sj']/a/allText()|//div[@class='booklist']/li/span[@class='sj']/a/text()"
+状态："//div[@class='booklist']/li/span[@class='zt']/a/allText()|//div[@class='booklist']/li/span[@class='zt']/a/text()"
+状态："//div[@class='booklist']/li/span[@class='gz']/a/allText()|//div[@class='booklist']/li/span[@class='gz']/a/text()"
+
+章节名称："//div[@class='mulu']/ul/li/a/allText()|//div[@class='mulu']/ul/li/a/text()|div[@class='novel']/h1/text()|div[@class='novel']/h1/allText()"
+章节url："//div[@class='mulu']/ul/li/a/@href"
+章节内容："//div[@class='yd_text2']/allText()|//div[@class='yd_text2']/text()|//div[@class='yd_text2']/allText()|//div[@class='yd_text2']/allText()"
+最新章节url："//div[@class='booklist']/li/span[@class='zj']/a/@href|//div[@class='jieshao']/div[@class='rt']/div[@class='msg']/em/a/@href"
+最新章节名称："//div[@class='booklist']/li/span[@class='zj']/a/allText()|//div[@class='booklist']/li/span[@class='zj']/a/text()|//div[@class='jieshao']/div[@class='rt']/div[@class='msg']/em/a/text()|//div[@class='jieshao']/div[@class='rt']/div[@class='msg']/em/a/allText()"
+
+
+
+https://guobinhit.blog.csdn.net/article/details/89040919
+
+
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms128m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -XX:PermSize=64m -XX:MaxPermSize=256m -jar novel_crawler.jar --spring.profiles.active=prod1 -verbose:class &
+
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms128m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -XX:PermSize=64m -XX:MaxPermSize=256m -jar novel_crawler.jar --spring.profiles.active=prod2 -verbose:class &
+
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms128m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -XX:PermSize=64m -XX:MaxPermSize=256m -jar novel_crawler.jar --spring.profiles.active=prod3 -verbose:class &
+
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms128m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -XX:PermSize=64m -XX:MaxPermSize=256m -jar novel_crawler.jar --spring.profiles.active=prod4 -verbose:class &
+
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms128m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -XX:PermSize=64m -XX:MaxPermSize=256m -jar novel_crawler.jar --spring.profiles.active=prod5 -verbose:class &
+
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms128m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -XX:PermSize=64m -XX:MaxPermSize=256m -jar novel_crawler.jar --spring.profiles.active=prod6 -verbose:class &
+
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms128m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -XX:PermSize=64m -XX:MaxPermSize=256m -jar novel_crawler.jar --spring.profiles.active=prod7 -verbose:class &
+
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms128m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -XX:PermSize=64m -XX:MaxPermSize=256m -jar novel_crawler.jar --spring.profiles.active=prod8 -verbose:class &
+
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms128m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -XX:PermSize=64m -XX:MaxPermSize=256m -jar novel_crawler.jar --spring.profiles.active=prod9 -verbose:class &
+
+select `category_type`, count(`category_type`) from `novel_info` group by `category_type`;
+
+https://fm.88dush.com/43/43504/43504s.jpg
+
+
+
+UPDATE `novel_info`  SET `category_type`=102,`category_cn_text`='修仙修真',`category_en_text`='xiuxianxiuzhen'  WHERE `category_type`=103 ORDER BY id ASC LIMIT 2320 ; 
+
+UPDATE `novel_info`  SET `category_type`=105,`category_cn_text`='都市异能',`category_en_text`='dushiyineng'  WHERE `category_type`=104 ORDER BY id ASC LIMIT 5320 ; 
+
+UPDATE `novel_info`  SET `category_type`=107,`category_cn_text`='科幻末世',`category_en_text`='kehuanmoshi'  WHERE `category_type`=108 ORDER BY id ASC LIMIT 1028 ;
+
+UPDATE `novel_info`  SET `category_type`=201,`category_cn_text`='幻想言情',`category_en_text`='huanxiangyanqing'  WHERE `category_type`=203 ORDER BY id ASC LIMIT 1028 ;
+
+UPDATE `novel_info`  SET `category_type`=202,`category_cn_text`='古代言情',`category_en_text`='gudaiyanqing'  WHERE `category_type`=203 ORDER BY id ASC LIMIT 2098 ;
+
+UPDATE `novel_info`  SET `category_type`=205,`category_cn_text`='总裁豪门',`category_en_text`='zongcaihaomen'  WHERE `category_type`=207 ORDER BY id ASC LIMIT 1098 ;
+
+UPDATE `novel_info`  SET `category_type`=206,`category_cn_text`='悬疑灵异',`category_en_text`='xuanyilingyi'  WHERE `category_type`=105 ORDER BY id ASC LIMIT 2398 ;
+
+UPDATE `novel_info`  SET `category_type`=204,`category_cn_text`='青春校园',`category_en_text`='qingchunxiaoyuan'  WHERE `category_type`=104 ORDER BY id ASC LIMIT 2678 ;
+
+
+
+
+
+
+UPDATE `novel_info`  SET `category_type`=102,`category_cn_text`='修仙修真',`category_en_text`='xiuxianxiuzhen'  WHERE `category_type`=103 ORDER BY id ASC LIMIT 23 ; 
+
+UPDATE `novel_info`  SET `category_type`=105,`category_cn_text`='都市异能',`category_en_text`='dushiyineng'  WHERE `category_type`=104 ORDER BY id ASC LIMIT 20 ; 
+
+UPDATE `novel_info`  SET `category_type`=107,`category_cn_text`='科幻末世',`category_en_text`='kehuanmoshi'  WHERE `category_type`=108 ORDER BY id ASC LIMIT 12 ;
+
+UPDATE `novel_info`  SET `category_type`=201,`category_cn_text`='幻想言情',`category_en_text`='huanxiangyanqing'  WHERE `category_type`=203 ORDER BY id ASC LIMIT 28 ;
+
+UPDATE `novel_info`  SET `category_type`=202,`category_cn_text`='古代言情',`category_en_text`='gudaiyanqing'  WHERE `category_type`=203 ORDER BY id ASC LIMIT 8 ;
+
+UPDATE `novel_info`  SET `category_type`=205,`category_cn_text`='总裁豪门',`category_en_text`='zongcaihaomen'  WHERE `category_type`=207 ORDER BY id ASC LIMIT 19;
+
+UPDATE `novel_info`  SET `category_type`=206,`category_cn_text`='悬疑灵异',`category_en_text`='xuanyilingyi'  WHERE `category_type`=105 ORDER BY id ASC LIMIT 2398 ;
+
+UPDATE `novel_info`  SET `category_type`=204,`category_cn_text`='青春校园',`category_en_text`='qingchunxiaoyuan'  WHERE `category_type`=104 ORDER BY id ASC LIMIT 8 ;
