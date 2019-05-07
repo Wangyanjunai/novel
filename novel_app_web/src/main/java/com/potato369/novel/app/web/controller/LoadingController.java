@@ -91,4 +91,29 @@ public class LoadingController {
         }
     	return ResultVOUtil.success(loadingDataVO);
     }
+    
+    @GetMapping(value = "/getData")
+    public ResultVO<LoadingDataVO> getData() {
+        LoadingDataVO loadingDataVO = LoadingDataVO.builder().build();
+        try {
+            if (log.isDebugEnabled()) {
+                log.debug("【急速追书后台APP接口】开始查找首页初始加载的广告信息");
+            }
+            List<NovelAdvertisement> advertisementList = advertisementService.findByTaglimitSize(0, 1, 1);
+            if (advertisementList != null && !advertisementList.isEmpty() && advertisementList.size() > 0) {
+                NovelAdvertisement advertisement = advertisementList.get(0);
+                if (advertisement != null) {
+                    BeanUtils.copyProperties(advertisement, loadingDataVO);
+                    loadingDataVO.setId(advertisement.getAdId());
+                }
+            }
+        } catch (Exception e) {
+            log.error("【急速追书后台APP接口】查找首页初始加载的广告信息出现错误", e);
+        } finally {
+            if (log.isDebugEnabled()) {
+                log.debug("【急速追书后台APP接口】结束查找首页初始加载的广告信息");
+            }
+        }
+    	return ResultVOUtil.success(loadingDataVO);
+    }
 }

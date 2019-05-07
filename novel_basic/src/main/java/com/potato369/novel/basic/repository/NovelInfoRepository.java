@@ -26,6 +26,8 @@ public interface NovelInfoRepository extends JpaRepository<NovelInfo, String> {
 
     Page<NovelInfo> findNovelInfoByCategoryType(Pageable pageable, Integer type);
     
+    Page<NovelInfo> findNovelInfoByCategoryTypeInOrderByRetention(Pageable pageable, List<String> categoryTypes);
+    
     NovelInfo findNovelInfoByTitleAndCategoryCNText(String title, String categoryCNText);
     
     NovelInfo findNovelInfoByTitleAndCategoryCNTextAndAuthor(String title, String categoryCNText, String author);

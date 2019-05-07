@@ -2,7 +2,6 @@ package com.potato369.novel.app.web.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.potato369.novel.app.web.utils.ResultVOUtil;
 import com.potato369.novel.app.web.vo.NovelInfoVO;
 import org.springframework.beans.BeanUtils;
@@ -11,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
-
 import com.potato369.novel.app.web.vo.CategoryInfoVO;
 import com.potato369.novel.app.web.vo.CategoryVO;
 import com.potato369.novel.app.web.vo.ResultVO;
@@ -19,7 +17,6 @@ import com.potato369.novel.basic.dataobject.NovelCategory;
 import com.potato369.novel.basic.dataobject.NovelInfo;
 import com.potato369.novel.basic.service.CategoryService;
 import com.potato369.novel.basic.service.NovelInfoService;
-
 import lombok.extern.slf4j.Slf4j;
 /**
  * <pre>

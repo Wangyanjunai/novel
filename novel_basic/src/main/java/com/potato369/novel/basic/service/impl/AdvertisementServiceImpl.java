@@ -112,7 +112,6 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 	public Page<NovelAdvertisement> findAll(Pageable pageable) {
 		return repository.findAll(pageable);
 	}
-
 	
 	/**
 	 * <pre>
@@ -120,7 +119,6 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 	 * @see com.potato369.novel.basic.service.AdvertisementService#findByTaglimitSize(java.lang.Integer, java.lang.Integer, java.lang.Integer)
 	 * </pre>
 	 */
-		
 	@Override
 	public List<NovelAdvertisement> findByTaglimitSize(Integer tag1, Integer tag2, Integer size) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -130,17 +128,14 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 		return mapper.selectAllByTag1AndTag2(map);
 	}
 
-	
 	/**
 	 * <pre>
 	 * 描述该方法的实现功能：
 	 * @see com.potato369.novel.basic.service.AdvertisementService#findByTagAndParentTypeIdLimitSize(java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.String)
 	 * </pre>
 	 */
-		
 	@Override
-	public List<NovelAdvertisement> findByTagAndParentTypeIdLimitSize(Integer tag1, Integer tag2, Integer size,
-			String parentTypeId) {
+	public List<NovelAdvertisement> findByTagAndParentTypeIdLimitSize(Integer tag1, Integer tag2, Integer size, String parentTypeId) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("tag1", tag1);
 		map.put("tag2", tag2);
