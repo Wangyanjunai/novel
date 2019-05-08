@@ -1,4 +1,4 @@
-package com.potato369.novel.basic.dataobject.mapper;
+package com.potato369.novel.basic.repository.mapper;
 
 import java.util.List;
 import java.util.Map;

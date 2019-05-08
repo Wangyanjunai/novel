@@ -143,12 +143,11 @@ public interface NovelChapterService {
      * 描述方法的注意事项：
      *
      * @author Jack
-     * @param novelId
      * @param chapterId
      * @return
      * @since JDK 1.6
      * </pre>
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    NovelChapter selectByNovelIdAndChapterId(String novelId, String chapterId);
+    NovelChapter selectByChapterId(String chapterId);
 }

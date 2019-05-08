@@ -1,18 +1,15 @@
 package com.potato369.novel.app.web.controller;
 
 import com.potato369.novel.app.web.utils.ResultVOUtil;
-import com.potato369.novel.app.web.vo.HomeDataVO;
-import com.potato369.novel.app.web.vo.LoadingDataVO;
-import com.potato369.novel.app.web.vo.NovelChapterInfoVO;
-import com.potato369.novel.app.web.vo.NovelChapterTitleAndContentVO;
-import com.potato369.novel.app.web.vo.NovelInfoVO;
-import com.potato369.novel.app.web.vo.ResultVO;
+import com.potato369.novel.app.web.vo.*;
 import com.potato369.novel.basic.dataobject.NovelAdvertisement;
+import com.potato369.novel.basic.dataobject.NovelCategory;
 import com.potato369.novel.basic.dataobject.NovelChapter;
 import com.potato369.novel.basic.dataobject.NovelInfo;
 import com.potato369.novel.basic.enums.AdvertisementEnum;
 import com.potato369.novel.basic.enums.TypeEnum;
 import com.potato369.novel.basic.service.AdvertisementService;
+import com.potato369.novel.basic.service.CategoryService;
 import com.potato369.novel.basic.service.NovelChapterService;
 import com.potato369.novel.basic.service.NovelInfoService;
 
@@ -22,7 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,6 +55,9 @@ public class NovelController {
     
     @Autowired
     private AdvertisementService advertisementService;
+
+    @Autowired
+    private CategoryService categoryService;
     
     //推荐页面首页接口
     /**
@@ -97,7 +100,7 @@ public class NovelController {
     			String novelIdString = novelAdvertisement.getNovelId();
     			loadingDataVO.setId(adIdString);
     			loadingDataVO.setImageUrl(imageUrlString);
-    			loadingDataVO.setLinkUrl(new StringBuffer().append(linkUrlString).append("/detail/").append(novelIdString).toString());
+    			loadingDataVO.setLinkUrl(linkUrlString);
     			loadingDataVO.setNovelId(novelIdString);
     			loadingDataVO.setNovelParentCategoryId(parentCategoryId);
     			loadingDataVO.setTag1(tag1);
@@ -121,7 +124,9 @@ public class NovelController {
     @GetMapping(value = "/home/{categoryType}")
     public ResultVO<HomeDataVO> home(
     		@PathVariable(name="categoryType", required=true) String categoryType, 
-    		@RequestParam(name = "type", required=true, defaultValue="all") String type) {
+    		@RequestParam(name = "type", required=true, defaultValue="all") String type,
+			@RequestParam(name="page", required=true, defaultValue="1") Integer page,
+			@RequestParam(name="size", required=true, defaultValue="6") Integer size) {
     	ResultVO<HomeDataVO> recommendResultVO = new ResultVO<HomeDataVO>();
     	try {
     		if (log.isDebugEnabled()) {
@@ -134,23 +139,36 @@ public class NovelController {
     		if (StringUtils.isNotEmpty(categoryType)) {
 				if (TypeEnum.MALE.getCn().equals(categoryType) || TypeEnum.MALE.getEn().equals(categoryType)) {
 					//如果是男生首页
-					String id = TypeEnum.MALE.getId();
+					String categoryTypeIdStr = TypeEnum.MALE.getId();
 					if (StringUtils.isNotEmpty(type)) {
 						if (TypeEnum.DEFAULT.getCn().equals(type) || TypeEnum.DEFAULT.getEn().equals(type)) {//显示所有默认加载首页推荐数据
-							List<LoadingDataVO> bannerAdDataVOs = getBannerAdDataVOs(id);//应用内广告轮播图数据
-							List<NovelInfoVO> hotYouLikeData = getData(id, TypeEnum.HOT.getEn(), null);//近期热门数据
-							List<NovelInfoVO> editorRecommendData = getData(id, TypeEnum.EDIT.getEn(), null);//主编推荐数据
-							List<NovelInfoVO> newestData = getData(id, TypeEnum.NEWEST.getEn(), null);//最近更新数据
+
+							List<LoadingDataVO> bannerAdDataVOs = getBannerAdDataVOs(categoryTypeIdStr);//应用内广告轮播图数据
+
+							Sort sort1 = new Sort(Sort.Direction.DESC, "retention");
+							PageRequest pageRequest1 = new PageRequest(page-1, size, sort1);
+							List<NovelInfoVO> hotYouLikeData = getData(categoryTypeIdStr, pageRequest1);//近期热门数据
+
+							Sort sort2 = new Sort(Sort.Direction.DESC, "readers");
+							PageRequest pageRequest2 = new PageRequest(page-1, size-3, sort2);
+							List<NovelInfoVO> editorRecommendData = getData(categoryTypeIdStr, pageRequest2);//主编推荐数据
+
+							Sort sort3 = new Sort(Sort.Direction.DESC, "updateTime");
+							PageRequest pageRequest3 = new PageRequest(page-1, size-4, sort3);
+							List<NovelInfoVO> newestData = getData(categoryTypeIdStr, pageRequest3);//最近更新数据
+
 							NovelInfoVO featuredData = new NovelInfoVO();//爽文推荐数据
+
+
 							homeDataVO.setBannerAdDataVOs(bannerAdDataVOs);
-							homeDataVO.setHotYouLikeData(hotYouLikeData);
+							homeDataVO.setHotRecommendData(hotYouLikeData);
 							homeDataVO.setEditorRecommendData(editorRecommendData);
 							homeDataVO.setNewestData(newestData);
 							homeDataVO.setFeaturedData(featuredData);
 						}
 						if (TypeEnum.HOT.getCn().equals(type) || TypeEnum.HOT.getEn().equals(type)) {//显示加载近期热门数据
 							List<NovelInfoVO> hotYouLikeData = new ArrayList<>();//近期热门数据
-							homeDataVO.setHotYouLikeData(hotYouLikeData);
+							homeDataVO.setHotRecommendData(hotYouLikeData);
 						}
 						if (TypeEnum.EDIT.getCn().equals(type) || TypeEnum.EDIT.getEn().equals(type)) {//显示加载主编推荐数据
 							List<NovelInfoVO> editorRecommendData = new ArrayList<>();//主编推荐数据
@@ -177,14 +195,14 @@ public class NovelController {
 							List<NovelInfoVO> newestData = new ArrayList<>();//最近更新数据
 							NovelInfoVO featuredData = new NovelInfoVO();//爽文推荐数据
 							homeDataVO.setBannerAdDataVOs(bannerAdDataVOs);
-							homeDataVO.setHotYouLikeData(hotYouLikeData);
+							homeDataVO.setHotRecommendData(hotYouLikeData);
 							homeDataVO.setEditorRecommendData(editorRecommendData);
 							homeDataVO.setNewestData(newestData);
 							homeDataVO.setFeaturedData(featuredData);
 						}
 						if (TypeEnum.HOT.getCn().equals(type) || TypeEnum.HOT.getEn().equals(type)) {//显示加载近期热门推荐数据
 							List<NovelInfoVO> hotYouLikeData = new ArrayList<>();//近期热门数据
-							homeDataVO.setHotYouLikeData(hotYouLikeData);
+							homeDataVO.setHotRecommendData(hotYouLikeData);
 						}
 						if (TypeEnum.EDIT.getCn().equals(type) || TypeEnum.EDIT.getEn().equals(type)) {//显示加载近期热门推荐数据
 							List<NovelInfoVO> editorRecommendData = new ArrayList<>();//主编推荐数据
@@ -236,8 +254,8 @@ public class NovelController {
 		}
 	}
 
-    @GetMapping(value = "/detail/{novelId}")
-    public ResultVO<NovelInfoVO> detail(@PathVariable(name = "novelId") String novelId) {
+    @GetMapping(value = "/novelInfo/detail/{novelId}")//小说详情
+    public ResultVO<NovelInfoVO> novelDetail(@PathVariable(name = "novelId") String novelId) {
         ResultVO<NovelInfoVO> infoVOResultVO = new ResultVO<NovelInfoVO>();
         try {
            if (log.isDebugEnabled()) {
@@ -246,14 +264,6 @@ public class NovelController {
            NovelInfo novelInfo = novelInfoService.find(novelId);
            NovelInfoVO novelInfoVO = NovelInfoVO.builder().build();
            BeanUtils.copyProperties(novelInfo, novelInfoVO);
-           List<NovelChapter> chapterList = novelChapterService.selectByNovelId(novelId);
-           List<NovelChapterInfoVO> novelChapterInfoVOList = new ArrayList<>();
-           for (NovelChapter novelChapter:chapterList) {
-               NovelChapterInfoVO novelChapterInfoVO =  NovelChapterInfoVO.builder().build();
-               BeanUtils.copyProperties(novelChapter, novelChapterInfoVO);
-               novelChapterInfoVOList.add(novelChapterInfoVO);
-           }
-           novelInfoVO.setChapters(novelChapterInfoVOList);
            infoVOResultVO.setMsg("返回数据成功");
            infoVOResultVO.setCode(0);
            infoVOResultVO.setData(novelInfoVO);
@@ -267,17 +277,45 @@ public class NovelController {
             }
         }
     }
+	@GetMapping(value = "/chapter/detail/{novelId}")//小说章节列表
+	public ResultVO<NovelChapterVO> chapterDetail(@PathVariable(name = "novelId") String novelId) {
+		ResultVO<NovelChapterVO> infoVOResultVO = new ResultVO<NovelChapterVO>();
+		try {
+			if (log.isDebugEnabled()) {
+				log.debug("【后台小说接口】start====================获取小说详情数据====================start");
+			}
+			NovelChapterVO chapterVO = NovelChapterVO.builder().build();
+			List<NovelChapter> chapterList = novelChapterService.selectByNovelId(novelId);
+			List<NovelChapterInfoVO> novelChapterInfoVOList = new ArrayList<>();
+			for (NovelChapter novelChapter:chapterList) {
+				NovelChapterInfoVO novelChapterInfoVO =  NovelChapterInfoVO.builder().build();
+				BeanUtils.copyProperties(novelChapter, novelChapterInfoVO);
+				novelChapterInfoVOList.add(novelChapterInfoVO);
+			}
+			chapterVO.setNovelChapterInfoVOList(novelChapterInfoVOList);
+			infoVOResultVO.setMsg("返回数据成功");
+			infoVOResultVO.setCode(0);
+			infoVOResultVO.setData(chapterVO);
+			return infoVOResultVO;
+		} catch (Exception e) {
+			log.error("【后台小说接口】获取小说详情数据失败", e);
+			return ResultVOUtil.error(-1, "返回数据失败");
+		} finally {
+			if (log.isDebugEnabled()) {
+				log.debug("【后台小说接口】end====================获取小说详情数据====================end");
+			}
+		}
+	}
     
-    @GetMapping(value ="/content/{novelId}/{chapterId}")
+    @GetMapping(value ="/content/{chapterId}")
     public ResultVO<NovelChapterTitleAndContentVO> content(
-    		@PathVariable(name = "novelId") String novelId,
     		@PathVariable(name = "chapterId") String chapterId) {
     	ResultVO<NovelChapterTitleAndContentVO> resultVO = new ResultVO<NovelChapterTitleAndContentVO>();
     	try {
 			if (log.isDebugEnabled()) {
 				log.debug("【后台小说接口】start====================获取小说内容数据====================start");
 			}
-			NovelChapter NovelChapter = novelChapterService.selectByNovelIdAndChapterId(novelId, chapterId);
+			NovelChapter NovelChapter = novelChapterService.selectByChapterId(chapterId);
 			NovelChapterTitleAndContentVO contentVO = NovelChapterTitleAndContentVO.builder().build();
 			contentVO.setTitle(NovelChapter.getTitle());
 			contentVO.setContent(NovelChapter.getContent());
@@ -302,7 +340,7 @@ public class NovelController {
     		LoadingDataVO loadingDataVO = LoadingDataVO.builder().build();
     		loadingDataVO.setId(novelAdvertisement.getAdId());
     		loadingDataVO.setImageUrl(novelAdvertisement.getImageUrl());
-    		loadingDataVO.setLinkUrl(new StringBuffer().append(novelAdvertisement.getLinkUrl()).append("/detail/").append(novelAdvertisement.getNovelId()).toString());
+    		loadingDataVO.setLinkUrl(novelAdvertisement.getLinkUrl());
     		loadingDataVO.setNovelId(novelAdvertisement.getNovelId());
     		loadingDataVO.setNovelParentCategoryId(novelAdvertisement.getNovelParentCategoryId());
     		loadingDataVO.setTag1(novelAdvertisement.getTag1());
@@ -312,10 +350,20 @@ public class NovelController {
     	return bannerAdDataVOs;
 	}
     
-    private List<NovelInfoVO> getData(String typeId, String type, Pageable pageable) {
+    private List<NovelInfoVO> getData(String typeId, PageRequest pageRequest) {
     	List<NovelInfoVO> data = new ArrayList<>();
-    	if (StringUtils.isNotEmpty(typeId) && StringUtils.isNotEmpty(type)) {
-			
+    	List<Integer> categoryTypeList = new ArrayList<>();
+    	if (StringUtils.isNotEmpty(typeId)) {
+			List<NovelCategory> categoryList = categoryService.findByParentCategoryId(typeId);
+			for (NovelCategory c:categoryList) {
+				categoryTypeList.add(c.getCategoryType());
+			}
+			Page<NovelInfo> novelInfoPage = novelInfoService.findNovelInfoByCategoryTypeIn(pageRequest, categoryTypeList);
+			for (NovelInfo novelInfo: novelInfoPage.getContent()) {
+				NovelInfoVO novelInfoVO = NovelInfoVO.builder().build();
+				BeanUtils.copyProperties(novelInfo, novelInfoVO);
+				data.add(novelInfoVO);
+			}
 		}
     	return data;
     }

@@ -10,7 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.potato369.novel.basic.dataobject.NovelAdvertisement;
-import com.potato369.novel.basic.dataobject.mapper.AdvertisementMapper;
+import com.potato369.novel.basic.repository.mapper.AdvertisementMapper;
 import com.potato369.novel.basic.service.AdvertisementService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

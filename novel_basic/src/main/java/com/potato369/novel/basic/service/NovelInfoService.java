@@ -133,5 +133,5 @@ public interface NovelInfoService {
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     Page<NovelInfo> findAll(Pageable pageable);
     
-    Page<NovelInfo> findNovelInfoByCategoryTypeInOrderByRetention(Pageable pageable, List<String> categoryTypes);
+    Page<NovelInfo> findNovelInfoByCategoryTypeIn(Pageable pageable, List<Integer> categoryTypes);
 }

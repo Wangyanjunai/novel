@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.potato369.novel.basic.dataobject.mapper.ChapterMapper" >
+<mapper namespace="com.potato369.novel.basic.repository.mapper.ChapterMapper">
 
     <resultMap id="BaseResultMap" type="com.potato369.novel.basic.dataobject.NovelChapter">
         <id column="chapter_id" property="id" javaType="string" jdbcType="VARCHAR" />
@@ -36,9 +36,11 @@
         WHERE n.book_id = #{novelId, jdbcType=VARCHAR}
         ORDER BY n.chapter_index ASC, n.create_time ASC, n.update_time ASC
     </select>
-    <select id="selectByNovelIdAndChapterId" resultMap="ContentResultMap" parameterType="java.lang.String">
+
+    <select id="selectByChapterId" resultMap="ContentResultMap" parameterType="java.lang.String">
         SELECT n.chapter_title, n.chapter_content
         FROM novel_chapter n
-        WHERE n.book_id = #{novelId, jdbcType=VARCHAR} AND n.chapter_id = #{chapterId, jdbcType=VARCHAR}
+        WHERE n.chapter_id = #{chapterId, jdbcType=VARCHAR}
     </select>
+    
 </mapper>

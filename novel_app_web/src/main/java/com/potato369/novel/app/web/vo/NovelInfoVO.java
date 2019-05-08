@@ -66,14 +66,6 @@ public class NovelInfoVO {
 
     /**
      * <pre>
-     * @jsonField publisher：出版社，或者爬取的网站名称。
-     * </pre>
-     */
-    @JsonProperty(value = "publisher")
-    private String publisher;
-
-    /**
-     * <pre>
      * @jsonField totalWords：总字数。
      * </pre>
      */
@@ -97,12 +89,6 @@ public class NovelInfoVO {
      */
     @JsonProperty(value = "cn_text")
     private String categoryCNText;
-
-    /**
-     * @jsonField categoryEnText：类目类型英文名称
-     */
-    @JsonProperty(value = "en_text")
-    private String categoryENText;
 
     /**
      * @jsonField introduction：小说简介
@@ -145,9 +131,6 @@ public class NovelInfoVO {
      */
     @JsonProperty(value = "total_chapters")
     private Integer totalChapters;
-
-    @JsonProperty(value = "chapters")
-    private List<NovelChapterInfoVO> chapters;
 
     /**
      * @jsonField retention：留存率，现在只是保存数字，显示的时候加上百分比

@@ -2,7 +2,7 @@ spring:
   profiles:
     active: dev
 #  jackson:
-#    default-property-inclusion: non_default
+#    default-property-inclusion: non_null
   freemarker:
     allow-request-override: false
     allow-session-override: false
@@ -62,3 +62,6 @@ server:
   tomcat:
    max-threads: 20000
    uri-encoding: utf-8
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.potato369.novel.basic.dataobject

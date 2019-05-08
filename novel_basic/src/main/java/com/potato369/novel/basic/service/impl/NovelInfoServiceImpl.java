@@ -149,12 +149,12 @@ public class NovelInfoServiceImpl implements NovelInfoService {
 	/**
 	 * <pre>
 	 * 描述该方法的实现功能：
-	 * @see com.potato369.novel.basic.service.NovelInfoService#findNovelInfoByCategoryTypeInOrderByRetention(org.springframework.data.domain.Pageable, java.util.List)
+	 * @see com.potato369.novel.basic.service.NovelInfoService#findNovelInfoByCategoryTypeIn(org.springframework.data.domain.Pageable, java.util.List)
 	 * </pre>
 	 */
 		
 	@Override
-	public Page<NovelInfo> findNovelInfoByCategoryTypeInOrderByRetention(Pageable pageable, List<String> categoryTypes) {
-		return repository.findNovelInfoByCategoryTypeInOrderByRetention(pageable, categoryTypes);
+	public Page<NovelInfo> findNovelInfoByCategoryTypeIn(Pageable pageable, List<Integer> categoryTypes) {
+		return repository.findNovelInfoByCategoryTypeIn(pageable, categoryTypes);
 	}
 }

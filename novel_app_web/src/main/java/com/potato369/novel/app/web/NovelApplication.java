@@ -1,5 +1,6 @@
 package com.potato369.novel.app.web;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,7 +12,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScan(basePackages = {"com.potato369.novel.basic.service", "com.potato369.novel.app.web.controller"})
 @EnableJpaRepositories(basePackages = "com.potato369.novel.basic.repository")
 @EntityScan(basePackages = "com.potato369.novel.basic.dataobject")
-@MapperScan(basePackages = "com.potato369.novel.basic.dataobject.mapper")
+@MapperScan(basePackages = "com.potato369.novel.basic.repository.mapper")
 public class NovelApplication {
 
 	public static void main(String[] args) {

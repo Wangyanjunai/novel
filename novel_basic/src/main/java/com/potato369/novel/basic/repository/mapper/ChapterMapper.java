@@ -1,4 +1,4 @@
-package com.potato369.novel.basic.dataobject.mapper;
+package com.potato369.novel.basic.repository.mapper;
 
 import com.potato369.novel.basic.dataobject.NovelChapter;
 
@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * <pre>
- * @PackageName com.potato369.novel.basic.dataobject.mapper
+ * @PackageName com.potato369.novel.basic.repository.mapper
  * @ClassName ChapterMapper
  * @Desc mapper
  * @WebSite https://www.potato369.com
@@ -20,5 +20,5 @@ public interface ChapterMapper {
 
     List<NovelChapter> selectByNovelId(String novelId);
     
-    NovelChapter selectByNovelIdAndChapterId(String novelId, String chapterId);
+    NovelChapter selectByChapterId(String chapterId);
 }

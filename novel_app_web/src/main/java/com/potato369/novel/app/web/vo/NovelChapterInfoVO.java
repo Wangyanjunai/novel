@@ -44,14 +44,6 @@ public class NovelChapterInfoVO {
 
     /**
      * <pre>
-     * @jsonField bookId：章节所属小说id。
-     * </pre>
-     */
-    @JsonProperty(value = "novel_id")
-    private String bookId;
-
-    /**
-     * <pre>
      * @jsonField chapterIndex：章节索引。
      * </pre>
      */
@@ -65,38 +57,4 @@ public class NovelChapterInfoVO {
      */
     @JsonProperty(value = "title")
     private String title;
-
-    /**
-     * <pre>
-     * @jsonField newestChapterTitle：最新章节标题（名称）。
-     * </pre>
-     */
-    @JsonProperty(value = "newest_chapter_title")
-    private String newestChapterTitle;
-
-    /**
-     * <pre>
-     * @jsonField url：章节网页路径URL
-     * </pre>
-     */
-    @JsonProperty(value = "url")
-    private String url;
-
-    /**
-     * <pre>
-     * @jsonField createTime：创建时间。
-     * </pre>
-     */
-    @JsonProperty(value = "create_time")
-    @JsonSerialize(using = Date2LongSerializer.class)
-    private Date createTime;
-
-    /**
-     * <pre>
-     * @jsonField updateTime：更新时间。
-     * </pre>
-     */
-    @JsonProperty(value = "update_time")
-    @JsonSerialize(using = Date2LongSerializer.class)
-    private Date updateTime;    
 }

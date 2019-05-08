@@ -2,7 +2,7 @@ package com.potato369.novel.basic.service.impl;
 
 import com.potato369.novel.basic.dataobject.NovelChapter;
 import com.potato369.novel.basic.dataobject.NovelInfo;
-import com.potato369.novel.basic.dataobject.mapper.ChapterMapper;
+import com.potato369.novel.basic.repository.mapper.ChapterMapper;
 import com.potato369.novel.basic.repository.NovelChapterRepository;
 import com.potato369.novel.basic.repository.NovelInfoRepository;
 import com.potato369.novel.basic.service.NovelChapterService;
@@ -202,12 +202,12 @@ public class NovelChapterServiceImpl implements NovelChapterService {
 	/**
 	 * <pre>
 	 * 描述该方法的实现功能：
-	 * @see com.potato369.novel.basic.service.NovelChapterService#selectByNovelIdAndChapterId(java.lang.String, java.lang.String)
+	 * @see com.potato369.novel.basic.service.NovelChapterService#selectByChapterId(java.lang.String)
 	 * </pre>
 	 */
 		
 	@Override
-	public NovelChapter selectByNovelIdAndChapterId(String novelId, String chapterId) {
-		return chapterMapper.selectByNovelIdAndChapterId(novelId, chapterId);
+	public NovelChapter selectByChapterId(String chapterId) {
+		return chapterMapper.selectByChapterId(chapterId);
 	}
 }

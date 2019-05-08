@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScan(basePackages = {"com.potato369.novel.basic.service"})
 @EnableJpaRepositories(basePackages = "com.potato369.novel.basic.repository")
 @EntityScan(basePackages = "com.potato369.novel.basic.dataobject")
-@MapperScan(basePackages = "com.potato369.novel.basic.dataobject.mapper")
+@MapperScan(basePackages = "com.potato369.novel.basic.repository.mapper")
 public class NovelApplication {
 	public static void main(String[] args) {
 		System.setProperty("https.protocols", "TLSv1.2");

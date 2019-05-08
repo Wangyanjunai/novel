@@ -92,14 +92,14 @@ public class LoadingController {
     	return ResultVOUtil.success(loadingDataVO);
     }
     
-    @GetMapping(value = "/getData")
-    public ResultVO<LoadingDataVO> getData() {
+    @GetMapping(value = "/getData/{tag1}")
+    public ResultVO<LoadingDataVO> getData(@PathVariable(name = "tag1", required = true) Integer tag1) {
         LoadingDataVO loadingDataVO = LoadingDataVO.builder().build();
         try {
             if (log.isDebugEnabled()) {
                 log.debug("【急速追书后台APP接口】开始查找首页初始加载的广告信息");
             }
-            List<NovelAdvertisement> advertisementList = advertisementService.findByTaglimitSize(0, 1, 1);
+            List<NovelAdvertisement> advertisementList = advertisementService.findByTaglimitSize(tag1, 1, 1);
             if (advertisementList != null && !advertisementList.isEmpty() && advertisementList.size() > 0) {
                 NovelAdvertisement advertisement = advertisementList.get(0);
                 if (advertisement != null) {

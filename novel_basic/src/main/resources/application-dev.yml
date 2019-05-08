@@ -34,3 +34,6 @@ spring:
       ddl-auto: update
     show-sql: true
     generate-ddl: true
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.potato369.novel.basic.dataobject
