@@ -136,6 +136,7 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 								if (!novelGetDataUrlStr.startsWith(DOMAIN_URL) && !novelGetDataUrlStr.contains(DOMAIN_URL)) {
 									novelGetDataUrlStr = new StringBuffer().append(DOMAIN_URL).append(novelGetDataUrlStr).toString();
 								}
+								novelInfo.setDataURL(novelGetDataUrlStr);
 							}
 							log.debug("【后台爬虫系统爬取数据】每页小说内容信息数据路径url转换为字符串data=={}", novelGetDataUrlStr);
 							Object novelTitleObj = dlJxDocument.selNOne("//dl/dd/h3/a/text()");//获取小说名称
@@ -233,6 +234,7 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 								if (!novelGetDataUrlStr.startsWith(DOMAIN_URL) && !novelGetDataUrlStr.contains(DOMAIN_URL)) {
 									novelGetDataUrlStr = new StringBuffer().append(DOMAIN_URL).append(novelGetDataUrlStr).toString();
 								}
+								novelInfo.setDataURL(novelGetDataUrlStr);
 							}
 							log.debug("【后台爬虫系统爬取数据】每页小说内容信息数据路径url转换为字符串data=={}", novelGetDataUrlStr);
 							Object novelTitleObj = dlJxDocument.selNOne("//li/span[@class='sm']/a/b/text()");//获取小说名称
@@ -406,6 +408,9 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 			}
 			if (StringUtils.isNotEmpty(source.getCoverURL())) {
 				target.setCoverURL(source.getCoverURL());//设置小说封面图片路径url
+			}
+			if (StringUtils.isNotEmpty(source.getDataURL())) {
+				target.setDataURL(source.getDataURL());//获取数据url
 			}
 			if (source.getCategoryType()!= null) {
 				target.setCategoryType(source.getCategoryType());//设置小说分类类型type

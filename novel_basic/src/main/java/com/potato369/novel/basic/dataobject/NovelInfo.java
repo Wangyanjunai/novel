@@ -67,6 +67,14 @@ public class NovelInfo implements Serializable {
 
     /**
      * <pre>
+     * @serialField coverURL：小说路径。
+     * </pre>
+     */
+    @Column(name = "data_url", nullable = true, length = 1024)
+    private String dataURL;
+
+    /**
+     * <pre>
      * @serialField title：小说名标题（名称）。
      * </pre>
      */
