@@ -83,6 +83,7 @@ DROP TABLE IF EXISTS `novel_info`;
 CREATE TABLE `novel_info` (
   `id` varchar(32) NOT NULL COMMENT 'id，主键id',
   `cover_url` varchar(1024) NULL DEFAULT NULL COMMENT '封面图片绝对路径URL',
+  `data_url` varchar(1024) NULL DEFAULT NULL COMMENT '小说数据绝对路径URL',
   `title` varchar(256) NULL DEFAULT NULL COMMENT '标题，小说的名称。',
   `author` varchar(256) NULL DEFAULT NULL COMMENT '作者',
   `publisher` varchar(128) NULL DEFAULT NULL COMMENT '出版社或爬取的网站名称。',
