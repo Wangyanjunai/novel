@@ -53,7 +53,7 @@ xfYun:
   engineType: intp65
   textType: text
 server:
-  context-path: /novel
+  context-path: /novelapp
   port: 8080
   error:
     path: /error

@@ -40,12 +40,12 @@ spring:
     password: foobared123!@#
 logging:
   level:
-    org.springframework.web: debug
-    com.potato369.novel.weixin.web: debug
-    com.alibaba.druid: debug
+    org.springframework.web: error
+    com.potato369.novel.weixin.web: error
+    com.alibaba.druid: error
     com.potato369.novel.weixin.web.dataobject.mapper: trace
 projectUrl:  
-  projectName: /novel
+  projectName: /novelapp
   domainUrl: https://www.potato369.com
   weChatMpAuthorizeUrl: /wechat/authorize
   weChatMpAuthorizeUrlUserInfo: /wechat/userInfo

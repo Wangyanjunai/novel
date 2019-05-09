@@ -236,9 +236,9 @@ public class NovelController {
 			}
 		}
 		homeDataVO.setList(data);
-    	homeDataVO.setTotal(total);
+//    	homeDataVO.setTotal(total);
 		homeDataVO.setTotalPage(totalPage);
-		homeDataVO.setCurrentPage(currentPage);
+//		homeDataVO.setCurrentPage(currentPage);
     	return homeDataVO;
     }
 

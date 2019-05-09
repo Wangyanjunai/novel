@@ -26,12 +26,12 @@ public class HomeDataVO {
 
 	@JsonProperty(value = "DataList")//小说数据列表
 	private List<NovelInfoVO> list;
-
-	@JsonProperty(value = "CurrentPage")//小说当前页
-	private BigDecimal currentPage;
-
-	@JsonProperty(value = "Total")//小说列表总条数
-	private BigDecimal total;
+//
+//	@JsonProperty(value = "CurrentPage")//小说当前页
+//	private BigDecimal currentPage;
+//
+//	@JsonProperty(value = "Total")//小说列表总条数
+//	private BigDecimal total;
 
 	@JsonProperty(value = "TotalPage")//小说总页数
 	private BigDecimal totalPage;
