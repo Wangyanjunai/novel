@@ -1,18 +1,16 @@
 package com.potato369.novel.app.web.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import com.potato369.novel.app.web.utils.ResultVOUtil;
-import com.potato369.novel.app.web.vo.NovelInfoVO;
+import com.potato369.novel.app.web.vo.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
-import com.potato369.novel.app.web.vo.CategoryInfoVO;
-import com.potato369.novel.app.web.vo.CategoryVO;
-import com.potato369.novel.app.web.vo.ResultVO;
 import com.potato369.novel.basic.dataobject.NovelCategory;
 import com.potato369.novel.basic.dataobject.NovelInfo;
 import com.potato369.novel.basic.service.CategoryService;
@@ -106,16 +104,24 @@ public class CategoryController {
 		}
 	}
 
-	@GetMapping(value = "/statistics/{categoryId}/{page}/{size}")
-	public ResultVO<List<NovelInfoVO>> getCategories(@PathVariable(name = "categoryId") String categoryId,
-													 @PathVariable(name = "page") Integer page,
-													 @PathVariable(name = "size") Integer size) {
-		ResultVO<List<NovelInfoVO>> resultVO = new ResultVO<>();
+	/**
+	 * @Api
+	 * @param categoryId
+	 * @param page
+	 * @param size
+	 * @return
+	 */
+	@GetMapping(value = "/statistics/{categoryId}")
+	public ResultVO<CategoryBookVO> getCategories(@PathVariable(name = "categoryId") String categoryId,
+													 @RequestParam(name = "page", defaultValue = "1") Integer page,
+													 @RequestParam(name = "size", defaultValue = "10") Integer size) {
+		ResultVO<CategoryBookVO> resultVO = new ResultVO<CategoryBookVO>();
 		try {
 			if (log.isDebugEnabled()) {
 				log.debug("【按照类别查询小说分类】查询小说分类categoryId={}, page={}, size={}", categoryId, page, size);
 			}
 			NovelCategory category = categoryService.findOne(categoryId);
+			CategoryBookVO categoryBookVO = CategoryBookVO.builder().build();
 			if (category != null) {
 				Integer type = category.getCategoryType();
 				Sort sort = new Sort(Sort.Direction.DESC, "clickNumber", "readers", "recentReaders", "retention", "createTime", "updateTime");
@@ -130,7 +136,9 @@ public class CategoryController {
 						novelInfoVOList.add(novelInfoVO);
 					}
 				}
-				resultVO.setData(novelInfoVOList);
+				categoryBookVO.setBooks(novelInfoVOList);
+				categoryBookVO.setTotalPage(new BigDecimal(novelInfoPage.getTotalPages()));
+				resultVO.setData(categoryBookVO);
 				resultVO.setCode(0);
 				resultVO.setMsg("获取数据成功");
 				return resultVO;

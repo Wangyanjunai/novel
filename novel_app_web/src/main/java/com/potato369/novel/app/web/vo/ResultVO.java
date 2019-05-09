@@ -20,12 +20,12 @@ public class ResultVO<T> implements Serializable {
 
 	private static final long serialVersionUID = -1221897281371574516L;
 
-    @JsonProperty(value = "code")
+    @JsonProperty(value = "Code")
 	private Integer code;
 
-    @JsonProperty(value = "msg")
+    @JsonProperty(value = "Msg")
     private String msg;
 
-    @JsonProperty(value = "data")
+    @JsonProperty(value = "Data")
     private T data;
 }

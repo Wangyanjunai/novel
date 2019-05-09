@@ -1,5 +1,6 @@
 package com.potato369.novel.app.web.vo;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,18 +24,15 @@ import lombok.Data;
 @Builder
 public class HomeDataVO {
 
-	@JsonProperty(value = "bannerAds")//轮播图广告
-	private List<LoadingDataVO> bannerAdDataVOs;
-	
-	@JsonProperty(value = "hotRecommends")//近期热门
-	private List<NovelInfoVO> hotRecommendData;
-	
-	@JsonProperty(value = "editorRecommends")//主编推荐
-	private List<NovelInfoVO> editorRecommendData;
-	
-	@JsonProperty(value = "newestRecommends")//新书推荐
-	private List<NovelInfoVO> newestData;
-	
-	@JsonProperty(value = "featured")//爽文推荐
-	private NovelInfoVO featuredData;
+	@JsonProperty(value = "DataList")//小说数据列表
+	private List<NovelInfoVO> list;
+
+	@JsonProperty(value = "CurrentPage")//小说当前页
+	private BigDecimal currentPage;
+
+	@JsonProperty(value = "Total")//小说列表总条数
+	private BigDecimal total;
+
+	@JsonProperty(value = "TotalPage")//小说总页数
+	private BigDecimal totalPage;
 }

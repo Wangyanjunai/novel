@@ -2,32 +2,26 @@ package com.potato369.novel.app.web.controller;
 
 import com.potato369.novel.app.web.utils.ResultVOUtil;
 import com.potato369.novel.app.web.vo.*;
-import com.potato369.novel.basic.dataobject.NovelAdvertisement;
 import com.potato369.novel.basic.dataobject.NovelCategory;
 import com.potato369.novel.basic.dataobject.NovelChapter;
 import com.potato369.novel.basic.dataobject.NovelInfo;
-import com.potato369.novel.basic.enums.AdvertisementEnum;
 import com.potato369.novel.basic.enums.TypeEnum;
-import com.potato369.novel.basic.service.AdvertisementService;
 import com.potato369.novel.basic.service.CategoryService;
 import com.potato369.novel.basic.service.NovelChapterService;
 import com.potato369.novel.basic.service.NovelInfoService;
-
-import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -52,209 +46,95 @@ public class NovelController {
     
     @Autowired
     private NovelChapterService novelChapterService;
-    
-    @Autowired
-    private AdvertisementService advertisementService;
 
     @Autowired
     private CategoryService categoryService;
-    
-    //推荐页面首页接口
-    /**
-     * 
-     * <pre>
-     * recommend方法的作用：
-     * 描述方法适用条件：
-     * 描述方法的执行流程：
-     * 描述方法的使用方法：
-     * 描述方法的注意事项：
-     *
-     * @author Jack
-     * @param tag1
-     * @param tag2
-     * @param parentCategoryId
-     * @param size
-     * @return
-     * @since JDK 1.6
-     * </pre>
-     */
-    @GetMapping(value = "/recommend/{tag1}/{tag2}/{parentCategoryId}/{size}")
-    public ResultVO<HomeDataVO> recommend(
-    		@PathVariable(name = "tag1", required=true) Integer tag1,
-    		@PathVariable(name = "tag2", required=true) Integer tag2,
-    		@PathVariable(name = "parentCategoryId", required=false) String parentCategoryId,
-    		@PathVariable(name = "size", required=true) Integer size) {
-    	ResultVO<HomeDataVO> recommendResultVO = new ResultVO<HomeDataVO>();
+
+    @GetMapping(value = "/home/hot/{categoryType}")//近期热门
+    public ResultVO<HomeDataVO> homeHot(
+    		@PathVariable(name="categoryType") String categoryType,
+			@RequestParam(name="page", defaultValue="1") Integer page,
+			@RequestParam(name="size", defaultValue="6") Integer size) {
     	try {
     		if (log.isDebugEnabled()) {
                 log.debug("【后台小说接口】start==================获取推荐页面数据=====================start");
+				log.debug("【后台小说接口】获取推荐页面categoryType={}", categoryType);
             }
-    		HomeDataVO homeDataVO = HomeDataVO.builder().build();
-    		List<NovelAdvertisement> advertisements = advertisementService.findByTagAndParentTypeIdLimitSize(tag1, tag2, size, parentCategoryId);
-    		List<LoadingDataVO> bannerAdDataVOs = new ArrayList<LoadingDataVO>();
-    		for (NovelAdvertisement novelAdvertisement : advertisements) {
-    			LoadingDataVO loadingDataVO = LoadingDataVO.builder().build();
-    			String adIdString = novelAdvertisement.getAdId();
-    			String imageUrlString = novelAdvertisement.getImageUrl();
-    			String linkUrlString = novelAdvertisement.getLinkUrl();
-    			String novelIdString = novelAdvertisement.getNovelId();
-    			loadingDataVO.setId(adIdString);
-    			loadingDataVO.setImageUrl(imageUrlString);
-    			loadingDataVO.setLinkUrl(linkUrlString);
-    			loadingDataVO.setNovelId(novelIdString);
-    			loadingDataVO.setNovelParentCategoryId(parentCategoryId);
-    			loadingDataVO.setTag1(tag1);
-    			loadingDataVO.setTag2(tag2);
-    			bannerAdDataVOs.add(loadingDataVO);
-			}
-    		homeDataVO.setBannerAdDataVOs(bannerAdDataVOs);
-    		recommendResultVO.setData(homeDataVO);
-    		recommendResultVO.setCode(0);
-    		recommendResultVO.setMsg("返回数据成功");
-    		return recommendResultVO;
+    		return ResultVOUtil.success(getData(getId(categoryType), new PageRequest(page-1, size, new Sort(Sort.Direction.DESC, "retention")), page));
 		} catch (Exception e) {
-			log.error("", e);
+			log.error("获取推荐首页页面数据失败", e);
 			return ResultVOUtil.error(-1, "返回数据失败");
 		} finally {
 			if (log.isDebugEnabled()) {
-	              log.debug("【后台小说接口】end===================获取推荐页面数据======================end");
-	        }
-		}
-	}
-    @GetMapping(value = "/home/{categoryType}")
-    public ResultVO<HomeDataVO> home(
-    		@PathVariable(name="categoryType", required=true) String categoryType, 
-    		@RequestParam(name = "type", required=true, defaultValue="all") String type,
-			@RequestParam(name="page", required=true, defaultValue="1") Integer page,
-			@RequestParam(name="size", required=true, defaultValue="6") Integer size) {
-    	ResultVO<HomeDataVO> recommendResultVO = new ResultVO<HomeDataVO>();
-    	try {
-    		if (log.isDebugEnabled()) {
-                log.debug("【后台小说接口】start==================获取推荐页面数据=====================start");
-            }
-    		if (log.isDebugEnabled()) {
-    			log.debug("【后台小说接口】获取推荐页面categoryType={}, 数据类型type={}", categoryType, type);
-			}
-    		HomeDataVO homeDataVO = HomeDataVO.builder().build();
-    		if (StringUtils.isNotEmpty(categoryType)) {
-				if (TypeEnum.MALE.getCn().equals(categoryType) || TypeEnum.MALE.getEn().equals(categoryType)) {
-					//如果是男生首页
-					String categoryTypeIdStr = TypeEnum.MALE.getId();
-					if (StringUtils.isNotEmpty(type)) {
-						if (TypeEnum.DEFAULT.getCn().equals(type) || TypeEnum.DEFAULT.getEn().equals(type)) {//显示所有默认加载首页推荐数据
-
-							List<LoadingDataVO> bannerAdDataVOs = getBannerAdDataVOs(categoryTypeIdStr);//应用内广告轮播图数据
-
-							Sort sort1 = new Sort(Sort.Direction.DESC, "retention");
-							PageRequest pageRequest1 = new PageRequest(page-1, size, sort1);
-							List<NovelInfoVO> hotYouLikeData = getData(categoryTypeIdStr, pageRequest1);//近期热门数据
-
-							Sort sort2 = new Sort(Sort.Direction.DESC, "readers");
-							PageRequest pageRequest2 = new PageRequest(page-1, size-3, sort2);
-							List<NovelInfoVO> editorRecommendData = getData(categoryTypeIdStr, pageRequest2);//主编推荐数据
-
-							Sort sort3 = new Sort(Sort.Direction.DESC, "updateTime");
-							PageRequest pageRequest3 = new PageRequest(page-1, size-4, sort3);
-							List<NovelInfoVO> newestData = getData(categoryTypeIdStr, pageRequest3);//最近更新数据
-
-							NovelInfoVO featuredData = new NovelInfoVO();//爽文推荐数据
-
-
-							homeDataVO.setBannerAdDataVOs(bannerAdDataVOs);
-							homeDataVO.setHotRecommendData(hotYouLikeData);
-							homeDataVO.setEditorRecommendData(editorRecommendData);
-							homeDataVO.setNewestData(newestData);
-							homeDataVO.setFeaturedData(featuredData);
-						}
-						if (TypeEnum.HOT.getCn().equals(type) || TypeEnum.HOT.getEn().equals(type)) {//显示加载近期热门数据
-							List<NovelInfoVO> hotYouLikeData = new ArrayList<>();//近期热门数据
-							homeDataVO.setHotRecommendData(hotYouLikeData);
-						}
-						if (TypeEnum.EDIT.getCn().equals(type) || TypeEnum.EDIT.getEn().equals(type)) {//显示加载主编推荐数据
-							List<NovelInfoVO> editorRecommendData = new ArrayList<>();//主编推荐数据
-							homeDataVO.setEditorRecommendData(editorRecommendData);
-						}
-						if (TypeEnum.NEWEST.getCn().equals(type) || TypeEnum.NEWEST.getEn().equals(type)) {//显示加载最近更新数据
-							List<NovelInfoVO> newestData = new ArrayList<>();//最近更新数据
-							homeDataVO.setNewestData(newestData);
-						}
-						if (TypeEnum.HANDSOME.getCn().equals(type) || TypeEnum.HANDSOME.getEn().equals(type)) {//显示加载爽文推荐数据
-							NovelInfoVO featuredData = new NovelInfoVO();//爽文推荐数据
-							homeDataVO.setFeaturedData(featuredData);
-						}
-					}
-				}
-				if (TypeEnum.FEMALE.getCn().equals(categoryType) || TypeEnum.FEMALE.getEn().equals(categoryType)) {
-					//如果是女生首页
-					String id = TypeEnum.FEMALE.getId();
-					if (StringUtils.isNotEmpty(type)) {
-						if (TypeEnum.DEFAULT.getCn().equals(type) || TypeEnum.DEFAULT.getEn().equals(type)) {//显示所有默认加载首页推荐数据
-							List<LoadingDataVO> bannerAdDataVOs = new ArrayList<>();//应用内广告轮播图数据
-							List<NovelInfoVO> hotYouLikeData = new ArrayList<>();//近期热门数据
-							List<NovelInfoVO> editorRecommendData = new ArrayList<>();//主编推荐数据
-							List<NovelInfoVO> newestData = new ArrayList<>();//最近更新数据
-							NovelInfoVO featuredData = new NovelInfoVO();//爽文推荐数据
-							homeDataVO.setBannerAdDataVOs(bannerAdDataVOs);
-							homeDataVO.setHotRecommendData(hotYouLikeData);
-							homeDataVO.setEditorRecommendData(editorRecommendData);
-							homeDataVO.setNewestData(newestData);
-							homeDataVO.setFeaturedData(featuredData);
-						}
-						if (TypeEnum.HOT.getCn().equals(type) || TypeEnum.HOT.getEn().equals(type)) {//显示加载近期热门推荐数据
-							List<NovelInfoVO> hotYouLikeData = new ArrayList<>();//近期热门数据
-							homeDataVO.setHotRecommendData(hotYouLikeData);
-						}
-						if (TypeEnum.EDIT.getCn().equals(type) || TypeEnum.EDIT.getEn().equals(type)) {//显示加载近期热门推荐数据
-							List<NovelInfoVO> editorRecommendData = new ArrayList<>();//主编推荐数据
-							homeDataVO.setEditorRecommendData(editorRecommendData);
-						}
-						if (TypeEnum.NEWEST.getCn().equals(type) || TypeEnum.NEWEST.getEn().equals(type)) {//显示加载近期热门推荐数据
-							List<NovelInfoVO> newestData = new ArrayList<>();//最近更新数据
-							homeDataVO.setNewestData(newestData);
-						}
-						if (TypeEnum.HANDSOME.getCn().equals(type) || TypeEnum.HANDSOME.getEn().equals(type)) {//显示加载近期热门推荐数据
-							NovelInfoVO featuredData = new NovelInfoVO();//爽文推荐数据
-							homeDataVO.setFeaturedData(featuredData);
-						}
-					}
-				}
-				if (TypeEnum.PICTURE.getCn().equals(categoryType) || TypeEnum.PICTURE.getEn().equals(categoryType)) {
-					//TODO 一期不做漫画首页
-					String id = TypeEnum.PICTURE.getId();
-					if (StringUtils.isNotEmpty(type)) {
-						if (TypeEnum.DEFAULT.getCn().equals(type) || TypeEnum.DEFAULT.getEn().equals(type)) {//显示所有默认加载首页推荐数据
-							
-						}
-						if (TypeEnum.HOT.getCn().equals(type) || TypeEnum.HOT.getEn().equals(type)) {//显示加载近期热门推荐数据
-							
-						}
-						if (TypeEnum.EDIT.getCn().equals(type) || TypeEnum.EDIT.getEn().equals(type)) {//显示加载近期热门推荐数据
-							
-						}
-						if (TypeEnum.NEWEST.getCn().equals(type) || TypeEnum.NEWEST.getEn().equals(type)) {//显示加载近期热门推荐数据
-							
-						}
-						if (TypeEnum.HANDSOME.getCn().equals(type) || TypeEnum.HANDSOME.getEn().equals(type)) {//显示加载近期热门推荐数据
-							
-						}
-					}
-				}
-			}
-    		recommendResultVO.setData(homeDataVO);
-    		recommendResultVO.setCode(0);
-    		recommendResultVO.setMsg("返回数据成功");
-    		return recommendResultVO;
-		} catch (Exception e) {
-			log.error("", e);
-			return ResultVOUtil.error(-1, "返回数据失败");
-		} finally {
-			if (log.isDebugEnabled()) {
-	             log.debug("【后台小说接口】end===================获取推荐页面数据======================end");
+	             log.debug("【后台小说接口】end===================获取推荐首页页面数据======================end");
 	        }
 		}
 	}
 
-    @GetMapping(value = "/novelInfo/detail/{novelId}")//小说详情
+	@GetMapping(value = "/home/editor/{categoryType}")//主编推荐
+	public ResultVO<HomeDataVO> homeEditor(
+			@PathVariable(name="categoryType") String categoryType,
+			@RequestParam(name="page", defaultValue="1") Integer page,
+			@RequestParam(name="size", defaultValue="3") Integer size) {
+		try {
+			if (log.isDebugEnabled()) {
+				log.debug("【后台小说接口】start==================获取主页主编推荐数据=====================start");
+				log.debug("【后台小说接口】获取推荐页面categoryType={}", categoryType);
+			}
+			return ResultVOUtil.success(getData(getId(categoryType), new PageRequest(page-1, size, new Sort(Sort.Direction.DESC, "clickNumber")), page));
+		} catch (Exception e) {
+			log.error("获取主页主编推荐数据失败", e);
+			return ResultVOUtil.error(-1, "返回数据失败");
+		} finally {
+			if (log.isDebugEnabled()) {
+				log.debug("【后台小说接口】end===================获取主页主编推荐数据======================end");
+			}
+		}
+	}
+
+	@GetMapping(value = "/home/newest/{categoryType}")//新书推荐
+	public ResultVO<HomeDataVO> homeNewest(
+			@PathVariable(name="categoryType", required=true) String categoryType,
+			@RequestParam(name="page", defaultValue="1") Integer page,
+			@RequestParam(name="size", defaultValue="2") Integer size) {
+		try {
+			if (log.isDebugEnabled()) {
+				log.debug("【后台小说接口】start==================获取主页最近更新推荐页面数据=====================start");
+				log.debug("【后台小说接口】获取推荐页面categoryType={}", categoryType);
+			}
+			return ResultVOUtil.success(getData(getId(categoryType), new PageRequest(page-1, size, new Sort(Sort.Direction.DESC, "updateTime")), page));
+		} catch (Exception e) {
+			log.error("获取主页最近更新推荐页面数据失败", e);
+			return ResultVOUtil.error(-1, "返回数据失败");
+		} finally {
+			if (log.isDebugEnabled()) {
+				log.debug("【后台小说接口】end===================获取主页最近更新推荐页面数据======================end");
+			}
+		}
+	}
+
+	@GetMapping(value = "/home/featured/{categoryType}")//爽文推荐
+	public ResultVO<HomeDataVO> homeFeatured(
+			@PathVariable(name="categoryType") String categoryType,
+			@RequestParam(name="page", defaultValue="1") Integer page,
+			@RequestParam(name="size", defaultValue="4") Integer size) {
+		try {
+			if (log.isDebugEnabled()) {
+				log.debug("【后台小说接口】start==================获取主页爽文推荐页面数据=====================start");
+				log.debug("【后台小说接口】获取推荐页面categoryType={}", categoryType);
+			}
+			return ResultVOUtil.success(getData(getId(categoryType), new PageRequest(page-1, size, new Sort(Sort.Direction.DESC, "recentReaders")), page));
+		} catch (Exception e) {
+			log.error("获取主页爽文推荐页面数据失败", e);
+			return ResultVOUtil.error(-1, "返回数据失败");
+		} finally {
+			if (log.isDebugEnabled()) {
+				log.debug("【后台小说接口】end===================获取主页爽文推荐页面数据======================end");
+			}
+		}
+	}
+
+    @GetMapping(value = "/info/detail/{novelId}")//小说详情
     public ResultVO<NovelInfoVO> novelDetail(@PathVariable(name = "novelId") String novelId) {
         ResultVO<NovelInfoVO> infoVOResultVO = new ResultVO<NovelInfoVO>();
         try {
@@ -277,7 +157,8 @@ public class NovelController {
             }
         }
     }
-	@GetMapping(value = "/chapter/detail/{novelId}")//小说章节列表
+
+    @GetMapping(value = "/info/chapter/{novelId}")//小说章节列表
 	public ResultVO<NovelChapterVO> chapterDetail(@PathVariable(name = "novelId") String novelId) {
 		ResultVO<NovelChapterVO> infoVOResultVO = new ResultVO<NovelChapterVO>();
 		try {
@@ -307,9 +188,8 @@ public class NovelController {
 		}
 	}
     
-    @GetMapping(value ="/content/{chapterId}")
-    public ResultVO<NovelChapterTitleAndContentVO> content(
-    		@PathVariable(name = "chapterId") String chapterId) {
+    @GetMapping(value ="/chapter/content/{chapterId}")//小说章节内容
+    public ResultVO<NovelChapterTitleAndContentVO> content(@PathVariable(name = "chapterId") String chapterId) {
     	ResultVO<NovelChapterTitleAndContentVO> resultVO = new ResultVO<NovelChapterTitleAndContentVO>();
     	try {
 			if (log.isDebugEnabled()) {
@@ -333,38 +213,49 @@ public class NovelController {
 		}
     }
     
-    private List<LoadingDataVO> getBannerAdDataVOs(String typeId) {
-    	List<LoadingDataVO> bannerAdDataVOs = new ArrayList<>();
-    	List<NovelAdvertisement> advertisements = advertisementService.findByTagAndParentTypeIdLimitSize(AdvertisementEnum.TAG1_APPLICATION.getCode(), AdvertisementEnum.TAG2_TIAOZHUANG.getCode(), 5, typeId);
-    	for (NovelAdvertisement novelAdvertisement : advertisements) {
-    		LoadingDataVO loadingDataVO = LoadingDataVO.builder().build();
-    		loadingDataVO.setId(novelAdvertisement.getAdId());
-    		loadingDataVO.setImageUrl(novelAdvertisement.getImageUrl());
-    		loadingDataVO.setLinkUrl(novelAdvertisement.getLinkUrl());
-    		loadingDataVO.setNovelId(novelAdvertisement.getNovelId());
-    		loadingDataVO.setNovelParentCategoryId(novelAdvertisement.getNovelParentCategoryId());
-    		loadingDataVO.setTag1(novelAdvertisement.getTag1());
-    		loadingDataVO.setTag2(novelAdvertisement.getTag2());
-    		bannerAdDataVOs.add(loadingDataVO);
-		}
-    	return bannerAdDataVOs;
-	}
-    
-    private List<NovelInfoVO> getData(String typeId, PageRequest pageRequest) {
+    private HomeDataVO getData(String typeId, PageRequest pageRequest, Integer page) {
+		HomeDataVO homeDataVO = HomeDataVO.builder().build();
     	List<NovelInfoVO> data = new ArrayList<>();
     	List<Integer> categoryTypeList = new ArrayList<>();
+		BigDecimal total = BigDecimal.ZERO;
+		BigDecimal totalPage = BigDecimal.ZERO;
+		BigDecimal currentPage = BigDecimal.ZERO;
     	if (StringUtils.isNotEmpty(typeId)) {
 			List<NovelCategory> categoryList = categoryService.findByParentCategoryId(typeId);
 			for (NovelCategory c:categoryList) {
 				categoryTypeList.add(c.getCategoryType());
 			}
 			Page<NovelInfo> novelInfoPage = novelInfoService.findNovelInfoByCategoryTypeIn(pageRequest, categoryTypeList);
+			total = new BigDecimal(novelInfoPage.getTotalElements());
+			totalPage = new BigDecimal(novelInfoPage.getTotalPages());
+			currentPage = new BigDecimal(page);
 			for (NovelInfo novelInfo: novelInfoPage.getContent()) {
 				NovelInfoVO novelInfoVO = NovelInfoVO.builder().build();
 				BeanUtils.copyProperties(novelInfo, novelInfoVO);
 				data.add(novelInfoVO);
 			}
 		}
-    	return data;
+		homeDataVO.setList(data);
+    	homeDataVO.setTotal(total);
+		homeDataVO.setTotalPage(totalPage);
+		homeDataVO.setCurrentPage(currentPage);
+    	return homeDataVO;
     }
+
+    private String getId(String categoryType) {
+    	String id = null;
+		//如果是男生首页
+		if (TypeEnum.MALE.getCn().equals(categoryType) || TypeEnum.MALE.getEn().equals(categoryType)) {
+			id = TypeEnum.MALE.getId();
+		}
+		//如果是女生首页
+		if (TypeEnum.FEMALE.getCn().equals(categoryType) || TypeEnum.FEMALE.getEn().equals(categoryType)) {
+			id = TypeEnum.FEMALE.getId();
+		}
+		//如果是漫画首页
+		if (TypeEnum.PICTURE.getCn().equals(categoryType) || TypeEnum.PICTURE.getEn().equals(categoryType)) {
+			id = TypeEnum.PICTURE.getId();
+		}
+    	return id;
+	}
 }

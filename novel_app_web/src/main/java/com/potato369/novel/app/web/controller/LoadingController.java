@@ -1,6 +1,8 @@
 package com.potato369.novel.app.web.controller;
 
 import com.potato369.novel.basic.dataobject.NovelAdvertisement;
+import com.potato369.novel.basic.enums.AdvertisementEnum;
+import com.potato369.novel.basic.enums.TypeEnum;
 import com.potato369.novel.basic.service.AdvertisementService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -14,6 +16,7 @@ import com.potato369.novel.app.web.utils.ResultVOUtil;
 import com.potato369.novel.app.web.vo.LoadingDataVO;
 import com.potato369.novel.app.web.vo.ResultVO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,8 +39,35 @@ public class LoadingController {
     @Autowired
     private AdvertisementService advertisementService;
 
+    @GetMapping(value = "/getData/init")
+    public ResultVO<LoadingDataVO> getData() {
+        LoadingDataVO loadingDataVO = LoadingDataVO.builder().build();
+        try {
+            if (log.isDebugEnabled()) {
+                log.debug("【急速追书后台APP接口】开始查找首页初始加载的广告信息");
+            }
+            List<LoadingDataVO> loadingDataVOS = getBannerAdDataVOs(AdvertisementEnum.TAG1_TIAOZHUANG.getCode(), AdvertisementEnum.TAG2_NO_TIAOZHUANG.getCode(), 1, "");
+            if (loadingDataVOS != null && !loadingDataVOS.isEmpty() && loadingDataVOS.size() > 0) {
+                loadingDataVO = loadingDataVOS.get(0);
+                if (loadingDataVO != null) {
+                    if ("".equals(loadingDataVO.getNovelParentCategoryId())) {
+                        loadingDataVO.setNovelParentCategoryId(null);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            ResultVOUtil.error(-1, "返回数据失败");
+            log.error("【急速追书后台APP接口】查找首页初始加载的广告信息出现错误", e);
+        } finally {
+            if (log.isDebugEnabled()) {
+                log.debug("【急速追书后台APP接口】结束查找首页初始加载的广告信息");
+            }
+        }
+        return ResultVOUtil.success(loadingDataVO);
+    }
+
     /**
-     * @api {GET} /loading/getData 加载广告图片
+     * @api {GET} /loading/getData 加载应用内广告图片
      * @apiVersion 0.0.1
      * @apiGroup Init
      * @apiDescription 急速追书小说APP初始页面加载广告图片接口
@@ -65,23 +95,24 @@ public class LoadingController {
      *                    	"data":null
      *                    }                 
      */
-    @GetMapping(value = "/getData/{tag1}/{tag2}/{size}")
-    public ResultVO<LoadingDataVO> getData(@PathVariable(name="tag1") Integer tag1,
-    			@PathVariable(name="tag2") Integer tag2,
-    			@PathVariable(name="size") Integer size) {
-        LoadingDataVO loadingDataVO = LoadingDataVO.builder().build();
+    @GetMapping(value = "/getData/app/{categoryType}")
+    public ResultVO<LoadingDataVO> getData(@PathVariable(name = "categoryType") String categoryType) {
+        List<LoadingDataVO> loadingDataVOs = new ArrayList<>();
         try {
             if (log.isDebugEnabled()) {
                 log.debug("【急速追书后台APP接口】开始查找首页初始加载的广告信息");
             }
-            List<NovelAdvertisement> advertisementList = advertisementService.findByTaglimitSize(tag1, tag2, size);
-            if (advertisementList != null && !advertisementList.isEmpty() && advertisementList.size() > 0) {
-                NovelAdvertisement advertisement = advertisementList.get(0);
-                if (advertisement != null) {
-                    BeanUtils.copyProperties(advertisement, loadingDataVO);
-                    loadingDataVO.setId(advertisement.getAdId());
-                }
+            String categoryId = null;
+            if (TypeEnum.MALE.getCn().equals(categoryType) || TypeEnum.MALE.getEn().equals(categoryType)) {
+                categoryId = TypeEnum.MALE.getId();
             }
+            if (TypeEnum.FEMALE.getCn().equals(categoryType) || TypeEnum.FEMALE.getEn().equals(categoryType)) {
+                categoryId = TypeEnum.FEMALE.getId();
+            }
+            if (TypeEnum.PICTURE.getCn().equals(categoryType) || TypeEnum.PICTURE.getEn().equals(categoryType)) {
+                categoryId = TypeEnum.PICTURE.getId();
+            }
+            loadingDataVOs = getBannerAdDataVOs(AdvertisementEnum.TAG1_APPLICATION.getCode(), AdvertisementEnum.TAG2_TIAOZHUANG.getCode(), 5, categoryId);
         } catch (Exception e) {
             log.error("【急速追书后台APP接口】查找首页初始加载的广告信息出现错误", e);
         } finally {
@@ -89,31 +120,23 @@ public class LoadingController {
                 log.debug("【急速追书后台APP接口】结束查找首页初始加载的广告信息");
             }
         }
-    	return ResultVOUtil.success(loadingDataVO);
+    	return ResultVOUtil.success(loadingDataVOs);
     }
-    
-    @GetMapping(value = "/getData/{tag1}")
-    public ResultVO<LoadingDataVO> getData(@PathVariable(name = "tag1", required = true) Integer tag1) {
-        LoadingDataVO loadingDataVO = LoadingDataVO.builder().build();
-        try {
-            if (log.isDebugEnabled()) {
-                log.debug("【急速追书后台APP接口】开始查找首页初始加载的广告信息");
-            }
-            List<NovelAdvertisement> advertisementList = advertisementService.findByTaglimitSize(tag1, 1, 1);
-            if (advertisementList != null && !advertisementList.isEmpty() && advertisementList.size() > 0) {
-                NovelAdvertisement advertisement = advertisementList.get(0);
-                if (advertisement != null) {
-                    BeanUtils.copyProperties(advertisement, loadingDataVO);
-                    loadingDataVO.setId(advertisement.getAdId());
-                }
-            }
-        } catch (Exception e) {
-            log.error("【急速追书后台APP接口】查找首页初始加载的广告信息出现错误", e);
-        } finally {
-            if (log.isDebugEnabled()) {
-                log.debug("【急速追书后台APP接口】结束查找首页初始加载的广告信息");
-            }
+
+    private List<LoadingDataVO> getBannerAdDataVOs(Integer tag1, Integer tag2, Integer size, String typeId) {
+        List<LoadingDataVO> bannerAdDataVOs = new ArrayList<>();
+        List<NovelAdvertisement> advertisements = advertisementService.findByTagAndParentTypeIdLimitSize(tag1, tag2, size, typeId);
+        for (NovelAdvertisement novelAdvertisement : advertisements) {
+            LoadingDataVO loadingDataVO = LoadingDataVO.builder().build();
+            loadingDataVO.setId(novelAdvertisement.getAdId());
+            loadingDataVO.setImageUrl(novelAdvertisement.getImageUrl());
+            loadingDataVO.setLinkUrl(novelAdvertisement.getLinkUrl());
+            loadingDataVO.setNovelId(novelAdvertisement.getNovelId());
+            loadingDataVO.setNovelParentCategoryId(novelAdvertisement.getNovelParentCategoryId());
+            loadingDataVO.setTag1(novelAdvertisement.getTag1());
+            loadingDataVO.setTag2(novelAdvertisement.getTag2());
+            bannerAdDataVOs.add(loadingDataVO);
         }
-    	return ResultVOUtil.success(loadingDataVO);
+        return bannerAdDataVOs;
     }
 }
