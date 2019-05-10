@@ -22,21 +22,21 @@ public class CategoryInfoVO {
 	@JsonProperty(value = "id")
 	public String id;
 
-	@JsonProperty(value = "parentId")
-	public String parentId;
+//	@JsonProperty(value = "parentId")
+//	public String parentId;
 
 	@JsonProperty(value = "title")
 	public String name;
-	
-	@JsonProperty(value = "bookCount")
-	public Integer bookCount;
-	
-	@JsonProperty(value = "monthlyCount")
-	public Integer monthlyCount;
-	
-	@JsonProperty(value = "icon")
-	public String icon;
-	
-	@JsonProperty(value = "bookCover")
-	public String[] bookCover;
+//
+//	@JsonProperty(value = "bookCount")
+//	public Integer bookCount;
+//
+//	@JsonProperty(value = "monthlyCount")
+//	public Integer monthlyCount;
+//
+//	@JsonProperty(value = "icon")
+//	public String icon;
+//
+//	@JsonProperty(value = "bookCover")
+//	public String[] bookCover;
 }

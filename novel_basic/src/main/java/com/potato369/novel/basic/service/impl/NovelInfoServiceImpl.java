@@ -157,4 +157,9 @@ public class NovelInfoServiceImpl implements NovelInfoService {
 	public Page<NovelInfo> findNovelInfoByCategoryTypeIn(Pageable pageable, List<Integer> categoryTypes) {
 		return repository.findNovelInfoByCategoryTypeIn(pageable, categoryTypes);
 	}
+
+    @Override
+    public Page<NovelInfo> findAllByTitleLikeOrAuthorLike(Pageable pageable, String keyWords) {
+        return repository.findAllByTitleLikeOrAuthorLike(pageable, keyWords);
+    }
 }

@@ -1,5 +1,6 @@
 package com.potato369.novel.app.web.controller;
 
+import com.potato369.novel.app.web.converter.NovelInfo2NovelInfoVOConverter;
 import com.potato369.novel.app.web.utils.ResultVOUtil;
 import com.potato369.novel.app.web.vo.*;
 import com.potato369.novel.basic.dataobject.NovelCategory;
@@ -215,7 +216,37 @@ public class NovelController {
 			}
 		}
     }
-    
+
+    /**
+     * <pre>
+     *
+     * </pre>
+     */
+    @GetMapping(value = "/info/search/{keyWords}")
+    public ResultVO<List<NovelInfoVO>> search(@PathVariable(name = "keyWords") String keyWords,
+                                              @RequestParam(name = "page", defaultValue = "1") Integer page,
+                                              @RequestParam(name = "size", defaultValue = "10") Integer size) {//搜索接口
+        try {
+           List<NovelInfoVO> novelInfoVOList = new ArrayList<>();
+           if (log.isDebugEnabled()) {
+               log.debug("【后台小说接口】end====================获取搜索的小说内容数据====================end");
+               log.debug("搜索关键字keyWords={}", keyWords);
+           }
+           Sort sort = new Sort(Sort.Direction.DESC, "createTime","retention");
+           PageRequest pageRequest = new PageRequest(page-1, size, sort);
+           Page<NovelInfo> novelInfoPage = novelInfoService.findAllByTitleLikeOrAuthorLike(pageRequest, keyWords);
+           novelInfoVOList = NovelInfo2NovelInfoVOConverter.convertNovelInfoVOPage(novelInfoPage, pageRequest).getContent();
+           return ResultVOUtil.success(novelInfoVOList);
+        }catch (Exception e) {
+            log.error("获取搜索的小说内容数据出现错误", e);
+            return ResultVOUtil.error(-1, "返回数据错误");
+        } finally {
+            if (log.isDebugEnabled()) {
+                log.debug("【后台小说接口】end====================获取搜索的小说内容数据====================end");
+            }
+        }
+    }
+
     private HomeDataVO getData(String typeId, PageRequest pageRequest, Integer page) {
 		HomeDataVO homeDataVO = HomeDataVO.builder().build();
     	List<NovelInfoVO> data = new ArrayList<>();

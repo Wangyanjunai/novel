@@ -21,12 +21,12 @@ import lombok.Data;
 @Data
 public class CategoryVO {
 
-	@JsonProperty(value = "id")
-	public String id;
-
-	@JsonProperty(value = "name")
-	public String categoryName;
+//	@JsonProperty(value = "id")
+//	public String id;
+//
+//	@JsonProperty(value = "name")
+//	public String categoryName;
 	
-	@JsonProperty(value = "categories")
+	@JsonProperty(value = "DataList")
 	public List<CategoryInfoVO> categoryInfoVOs;
 }

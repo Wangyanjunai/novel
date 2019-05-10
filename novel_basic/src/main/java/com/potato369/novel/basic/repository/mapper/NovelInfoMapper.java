@@ -1,9 +1,5 @@
 package com.potato369.novel.basic.repository.mapper;
 
-import com.potato369.novel.basic.dataobject.NovelInfo;
-
-import java.util.List;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.repository.mapper
@@ -17,5 +13,4 @@ import java.util.List;
  * </pre>
  */
 public interface NovelInfoMapper {
-    List<NovelInfo> findAllDataUrl();
 }

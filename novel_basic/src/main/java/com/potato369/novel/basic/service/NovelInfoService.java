@@ -85,34 +85,12 @@ public interface NovelInfoService {
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     NovelInfo findByTitleAndCategoryTextAndAuthor(String title, String categoryText, String author);
 
-    /**
-     * 根据小说的状态查询小说信息列表
-     * @param novelStatus
-     * @return
-     */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     List<NovelInfo> findByNovelStatus(Integer novelStatus);
 
-    /**
-     * 查找小说列表
-     * @return
-     */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     List<NovelInfo> findAll();
-    
-    /**
-     * <pre>
-     * getCategoryCount方法的作用：
-     * 描述方法适用条件：
-     * 描述方法的执行流程：
-     * 描述方法的使用方法：
-     * 描述方法的注意事项：
-     * @author Jack
-     * @param category_en_text
-     * @return
-     * @since JDK 1.6
-     * </pre>
-     */
+
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     Integer getCategoryCount(String category_en_text);
     
@@ -124,14 +102,13 @@ public interface NovelInfoService {
 
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     Page<NovelInfo> findByCategoryType(Pageable pageable, Integer type);
-    
-    /**
-     * 查找小说分页列表
-     * @param pageable
-     * @return
-     */
+
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     Page<NovelInfo> findAll(Pageable pageable);
-    
+
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     Page<NovelInfo> findNovelInfoByCategoryTypeIn(Pageable pageable, List<Integer> categoryTypes);
+
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    Page<NovelInfo> findAllByTitleLikeOrAuthorLike(Pageable pageable, String keyWords);
 }
