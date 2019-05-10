@@ -188,17 +188,20 @@ public class NovelController {
 		}
 	}
     
-    @GetMapping(value ="/chapter/content/{chapterId}")//小说章节内容
-    public ResultVO<NovelChapterTitleAndContentVO> content(@PathVariable(name = "chapterId") String chapterId) {
+    @GetMapping(value ="/chapter/content/{novelId}/{index}")//小说章节内容
+    public ResultVO<NovelChapterTitleAndContentVO> content(@PathVariable(name = "novelId") String novelId,
+														   @PathVariable(name = "index") Integer index) {
     	ResultVO<NovelChapterTitleAndContentVO> resultVO = new ResultVO<NovelChapterTitleAndContentVO>();
     	try {
 			if (log.isDebugEnabled()) {
 				log.debug("【后台小说接口】start====================获取小说内容数据====================start");
 			}
-			NovelChapter NovelChapter = novelChapterService.selectByChapterId(chapterId);
+			NovelChapter NovelChapter = novelChapterService.selectByNovelIdAndIndex(novelId, index);
 			NovelChapterTitleAndContentVO contentVO = NovelChapterTitleAndContentVO.builder().build();
 			contentVO.setTitle(NovelChapter.getTitle());
 			contentVO.setContent(NovelChapter.getContent());
+			contentVO.setId(NovelChapter.getId());
+			contentVO.setIndex(NovelChapter.getIndex());
 			resultVO.setCode(0);
 			resultVO.setData(contentVO);
 			resultVO.setMsg("返回数据成功");

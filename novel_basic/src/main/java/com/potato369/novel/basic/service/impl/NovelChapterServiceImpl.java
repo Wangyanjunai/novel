@@ -13,7 +13,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.service.impl
@@ -202,12 +206,15 @@ public class NovelChapterServiceImpl implements NovelChapterService {
 	/**
 	 * <pre>
 	 * 描述该方法的实现功能：
-	 * @see com.potato369.novel.basic.service.NovelChapterService#selectByChapterId(java.lang.String)
+	 * @see com.potato369.novel.basic.service.NovelChapterService#selectByNovelIdAndIndex(java.lang.String, java.lang.Integer)
 	 * </pre>
 	 */
 		
 	@Override
-	public NovelChapter selectByChapterId(String chapterId) {
-		return chapterMapper.selectByChapterId(chapterId);
+	public NovelChapter selectByNovelIdAndIndex(String novelId, Integer index) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("novelId", novelId);
+        map.put("index", index);
+		return chapterMapper.selectByNovelIdAndIndex(map);
 	}
 }

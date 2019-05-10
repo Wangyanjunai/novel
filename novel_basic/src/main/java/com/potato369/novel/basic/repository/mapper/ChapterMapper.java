@@ -3,6 +3,7 @@ package com.potato369.novel.basic.repository.mapper;
 import com.potato369.novel.basic.dataobject.NovelChapter;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <pre>
@@ -20,5 +21,5 @@ public interface ChapterMapper {
 
     List<NovelChapter> selectByNovelId(String novelId);
     
-    NovelChapter selectByChapterId(String chapterId);
+    NovelChapter selectByNovelIdAndIndex(Map map);
 }

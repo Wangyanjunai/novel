@@ -16,6 +16,8 @@
     <resultMap id="ContentResultMap" type="com.potato369.novel.basic.dataobject.NovelChapter">
         <id column="chapter_title" property="title" javaType="string" jdbcType="VARCHAR" />
         <id column="chapter_content" property="content" javaType="string" jdbcType="VARCHAR" />
+        <id column="chapter_index" property="index" javaType="int" jdbcType="INTEGER" />
+        <id column="chapter_id" property="id" javaType="string" jdbcType="VARCHAR" />
     </resultMap>
 
     <resultMap id="AllResultMap" type="com.potato369.novel.basic.dataobject.NovelChapter">
@@ -37,10 +39,10 @@
         ORDER BY n.chapter_index ASC, n.create_time ASC, n.update_time ASC
     </select>
 
-    <select id="selectByChapterId" resultMap="ContentResultMap" parameterType="java.lang.String">
-        SELECT n.chapter_title, n.chapter_content
+    <select id="selectByNovelIdAndIndex" resultMap="ContentResultMap" parameterType="java.util.HashMap">
+        SELECT n.chapter_title, n.chapter_content, n.chapter_index, n.chapter_id
         FROM novel_chapter n
-        WHERE n.chapter_id = #{chapterId, jdbcType=VARCHAR}
+        WHERE n.book_id = #{novelId, jdbcType=VARCHAR} AND n.chapter_index=#{index, jdbcType=INTEGER}
     </select>
     
 </mapper>

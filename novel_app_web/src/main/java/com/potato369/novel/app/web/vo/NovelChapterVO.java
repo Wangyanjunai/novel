@@ -25,6 +25,6 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 public class NovelChapterVO {
-    @JsonProperty(value = "chapters")
+    @JsonProperty(value = "DataList")
     private List<NovelChapterInfoVO> novelChapterInfoVOList;
 }

@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: prod
+    active: dev
 #  jackson:
 #    default-property-inclusion: non_null
   freemarker:
@@ -53,7 +53,7 @@ xfYun:
   engineType: intp65
   textType: text
 server:
-  context-path: /novelapp
+  context-path: /novel
   port: 8080
   error:
     path: /error

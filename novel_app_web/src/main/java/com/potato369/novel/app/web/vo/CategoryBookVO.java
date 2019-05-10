@@ -23,10 +23,10 @@ import java.util.List;
 @Data
 public class CategoryBookVO {
 
-    @JsonProperty(value = "books")
+    @JsonProperty(value = "DataList")
     private List<NovelInfoVO> books;
 
-    @JsonProperty(value = "totalPage")
+    @JsonProperty(value = "TotalPage")
     private BigDecimal totalPage;
 
 }

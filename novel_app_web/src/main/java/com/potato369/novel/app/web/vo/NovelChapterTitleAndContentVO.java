@@ -34,5 +34,20 @@ public class NovelChapterTitleAndContentVO {
      */
     @JsonProperty(value = "content")
     private String content;
-   
+
+    /**
+     * <pre>
+     * @jsonField index：章节索引。
+     * </pre>
+     */
+    @JsonProperty(value = "index")
+    private Integer index;
+
+    /**
+     * <pre>
+     * @jsonField id：章节id。
+     * </pre>
+     */
+    @JsonProperty(value = "id")
+    private String id;
 }
