@@ -324,10 +324,7 @@ public class DuShu88NovelCrawler5 extends BaseSeimiCrawler{
             if (log.isDebugEnabled()) {
         		log.debug("【后台爬虫系统爬取数据】开始爬取每页小说信息数据={}", novelInfo);
 			}
-            NovelInfo novelInfo2 = novelInfoService.findByTitleAndCategoryText(title, categoryText);
-            if (novelInfo2 == null) {
-            	novelInfoService.save(novelInfo);
-			}
+            novelInfoService.save(novelInfo);
         } catch (Exception e) {
             log.error("【后台爬虫系统爬取数据】爬取每页小说的目录和内容数据出现错误", e);
             //当前有异常唤醒上一级

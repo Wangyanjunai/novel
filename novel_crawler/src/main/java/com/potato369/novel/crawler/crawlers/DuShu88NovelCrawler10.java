@@ -448,15 +448,7 @@ public class DuShu88NovelCrawler10 extends BaseSeimiCrawler{
             if (log.isDebugEnabled()) {
         		log.debug("【后台爬虫系统爬取数据】开始爬取每页小说信息数据={}", novelInfo);
 			}
-            NovelInfo novelInfoTmp = novelInfoService.findByTitleAndCategoryTextAndAuthor(title, categoryText, author);
-			if (novelInfoTmp == null) {
-				NovelInfo novelInfoSaveResult = novelInfoService.save(novelInfo);
-				log.debug("【后台爬虫系统爬取数据】保存到数据库小说data=={}", novelInfoSaveResult);
-			} else {
-				NovelInfo novelInfoUpdate = copy(novelInfoTmp, novelInfo);
-				NovelInfo novelInfoUpdateResult = novelInfoService.save(novelInfoUpdate);
-				log.debug("【后台爬虫系统爬取数据】更新到数据库小说信息数据data=={}", novelInfoUpdateResult);
-			}
+			novelInfoService.save(novelInfo);
 			List<Object> urlList = document.sel("//div[@class='mulu']/ul/li/a/@href");
 			BusinessConstants.CURRENT_TOTAL_CHAPTERS = urlList.size();
 			BusinessConstants.threadPoolBook.execute(()-> {

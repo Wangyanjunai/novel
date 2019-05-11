@@ -3,6 +3,8 @@ package com.potato369.novel.basic.service.impl;
 import com.potato369.novel.basic.dataobject.NovelInfo;
 import com.potato369.novel.basic.repository.NovelInfoRepository;
 import com.potato369.novel.basic.service.NovelInfoService;
+import com.potato369.novel.basic.utils.BeanUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +23,7 @@ import java.util.List;
  * </pre>
  */
 @Service
+@Slf4j
 public class NovelInfoServiceImpl implements NovelInfoService {
 
     @Autowired
@@ -34,7 +37,23 @@ public class NovelInfoServiceImpl implements NovelInfoService {
      */
     @Override
     public NovelInfo save(NovelInfo novelInfo) {
-        return repository.save(novelInfo);
+        NovelInfo novelInfoResult = null;
+        if (novelInfo != null) {
+            NovelInfo novelInfoTmp = repository.findNovelInfoByTitleAndCategoryCNTextAndAuthor(novelInfo.getTitle(), novelInfo.getCategoryCNText(), novelInfo.getAuthor());
+            if (novelInfoTmp == null) {
+                novelInfoResult = repository.save(novelInfo);
+                if (log.isDebugEnabled()) {
+                    log.debug("【后台爬虫系统爬取数据】保存到数据库小说data=={}", novelInfoResult);
+                }
+            } else {
+                NovelInfo novelInfoUpdate = BeanUtil.copy(novelInfoTmp, novelInfo);
+                novelInfoResult = repository.save(novelInfoUpdate);
+                if (log.isDebugEnabled()) {
+                    log.debug("【后台爬虫系统爬取数据】更新到数据库小说data=={}", novelInfoResult);
+                }
+            }
+        }
+        return novelInfoResult;
     }
 
     /**
