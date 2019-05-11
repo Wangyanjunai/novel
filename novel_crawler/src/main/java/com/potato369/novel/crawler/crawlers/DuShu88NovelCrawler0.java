@@ -187,135 +187,30 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 
 	private void saveDL(Object dl, String categoryCNText) {
 		if (dl != null) {
-			log.debug("【后台爬虫系统爬取数据】每页dl元素转换为字符串data=={}", dl.toString());
-			JXDocument dlJxDocument = JXDocument.create(dl.toString());
-			NovelInfo novelInfo = NovelInfo.builder().build();//初始化对象
-			novelInfo = novelInfo.compasByCategoryCNText(novelInfo, categoryCNText);
-			novelInfo.setId(UUIDUtil.gen32UUID());//1、设置小说id
-			Object coverImageObj = dlJxDocument.selOne("//dl/dt/a/img/@src");//获取封面图片路径
-			String coverImageUrlStr = null;
-			if (coverImageObj != null) {
-				coverImageUrlStr = coverImageObj.toString();
-			}
-			log.debug("【后台爬虫系统爬取数据】每页封面图片路径url转换为字符串data=={}", coverImageUrlStr);
-			novelInfo.setCoverURL(coverImageUrlStr);//4、设置小说封面图片路径
-			Object novelGetDataObj = dlJxDocument.selNOne("//dl/dd/h3/a/@href");//获取小说信息数据路径
-			String novelGetDataUrlStr = null;
-			if (novelGetDataObj != null) {
-				novelGetDataUrlStr = novelGetDataObj.toString();
-				if (!novelGetDataUrlStr.startsWith(DOMAIN_URL) && !novelGetDataUrlStr.contains(DOMAIN_URL)) {
-					novelGetDataUrlStr = new StringBuffer().append(DOMAIN_URL).append(novelGetDataUrlStr).toString();
-				}
-			}
-			novelInfo.setDataURL(novelGetDataUrlStr);
-			log.debug("【后台爬虫系统爬取数据】每页小说内容信息数据路径url转换为字符串data=={}", novelGetDataUrlStr);
-			Object novelTitleObj = dlJxDocument.selNOne("//dl/dd/h3/a/text()");//获取小说名称
-			String novelTitleStr = null;
-			if (novelTitleObj != null) {
-				novelTitleStr = novelTitleObj.toString();
-			}
-			log.debug("【后台爬虫系统爬取数据】每页小说名称信息数据转换为字符串data=={}", novelTitleStr);
-			novelInfo.setTitle(novelTitleStr);//5、设置小说名称
-			Object novelAuthorObj = dlJxDocument.selNOne("//dl/dd/span/text()");//获取小说作者
-			String novelAuthorStr = null;
-			if (novelAuthorObj != null) {
-				novelAuthorStr = novelAuthorObj.toString();
-			}
-			log.debug("【后台爬虫系统爬取数据】小说作者data=={}", novelAuthorStr);
-			novelInfo.setAuthor(novelAuthorStr);//6、设置小说作者
-			Object novelIntroductionObj = dlJxDocument.selNOne("//dl/dd/p/text()");//获取小说简介
-			String novelIntroductionStr = null;
-			if (novelIntroductionObj != null) {
-				novelIntroductionStr = novelIntroductionObj.toString();
-			}
-			log.debug("【后台爬虫系统爬取数据】小说简介data=={}", novelIntroductionStr);
-			novelInfo.setIntroduction(novelIntroductionStr);//7、设置小说简介
-			novelInfo.setNovelStatus(NovelInfoEnum.NOVEL_STATUS_UPDATING.getCode());//8、设置小说更新状态为连载中
-			novelInfo.setCategoryCNText(categoryCNText);//9、设置小说分类中文名称
-			novelInfo.setClickNumber(BigDecimal.ZERO);//10、设置小说阅读（点击）次数
-			novelInfo.setPublisher("八八读书网（88dush.com）");//11、设置小说出版社名称或者爬取的网站名称
-			novelInfo.setTotalWords(BigDecimal.ZERO);//12、设置小说总字数
-			novelInfo.setTotalChapters(0);//13、设置小说总章节数
-			novelInfo.setReaders(BigDecimal.ZERO);//14、设置小说阅读人数
-			novelInfo.setRecentReaders(BigDecimal.ZERO);//15、设置小说最近跟随阅读（或关注）人数
-			novelInfo.setRetention(0);//16、设置小说留存率
+//			log.debug("【后台爬虫系统爬取数据】每页dl元素转换为字符串data=={}", dl.toString());
+			JXDocument doc = JXDocument.create(dl.toString());
+			Object coverImageObj = doc.selOne("//dl/dt/a/img/@src");//1、获取封面图片路径
+			Object novelGetDataObj = doc.selNOne("//dl/dd/h3/a/@href");//2、获取小说信息数据路径
+			Object novelTitleObj = doc.selNOne("//dl/dd/h3/a/text()");//3、获取小说名称
+			Object novelAuthorObj = doc.selNOne("//dl/dd/span/text()");//4、获取小说作者
+			Object novelIntroductionObj = doc.selNOne("//dl/dd/p/text()");//5、获取小说简介
+			NovelInfo novelInfo = pan(categoryCNText, coverImageObj, novelGetDataObj, novelTitleObj, null, novelAuthorObj, null, null, null, novelIntroductionObj);
 			save(novelInfo);
 		}
 	}
 
 	private void saveLI(Object li, String categoryCNText){
 		if (li != null) {
-			log.debug("【后台爬虫系统爬取数据】每页li元素转换为字符串data=={}", li.toString());
-			JXDocument dlJxDocument = JXDocument.create(li.toString());
-			NovelInfo novelInfo = NovelInfo.builder().build();
-			novelInfo.setId(UUIDUtil.gen32UUID());//1、设置小说id
-			Object novelGetDataObj = dlJxDocument.selNOne("//li/span[@class='sm']/a/@href");//获取小说信息数据路径
-			String novelGetDataUrlStr = null;
-			if (novelGetDataObj != null) {
-				novelGetDataUrlStr = novelGetDataObj.toString();
-				if (!novelGetDataUrlStr.startsWith(DOMAIN_URL) && !novelGetDataUrlStr.contains(DOMAIN_URL)) {
-					novelGetDataUrlStr = new StringBuffer().append(DOMAIN_URL).append(novelGetDataUrlStr).toString();
-				}
-			}
-			novelInfo.setDataURL(novelGetDataUrlStr);
-			log.debug("【后台爬虫系统爬取数据】每页小说内容信息数据路径url转换为字符串data=={}", novelGetDataUrlStr);
-			Object novelTitleObj = dlJxDocument.selNOne("//li/span[@class='sm']/a/b/text()");//获取小说名称
-			String novelTitleStr = null;
-			if (novelTitleObj != null) {
-				novelTitleStr = novelTitleObj.toString();
-			}
-			log.debug("【后台爬虫系统爬取数据】每页小说名称data=={}", novelTitleStr);
-			novelInfo.setTitle(novelTitleStr);//2、设置小说名称
-			Object novelNewestChapterTitleObj = dlJxDocument.selNOne("//li/span[@class='zj']/a/text()");//获取小说最新章节标题
-			String novelNewestChapterTitleStr = null;
-			if (novelNewestChapterTitleObj != null) {
-				novelNewestChapterTitleStr = novelNewestChapterTitleObj.toString();
-			}
-			log.debug("【后台爬虫系统爬取数据】每页小说最新章节标题data=={}", novelNewestChapterTitleStr);
-			novelInfo.setNewestChapterTitle(novelNewestChapterTitleStr);//3、设置小说最新章节
-			Object novelAuthorObj = dlJxDocument.selNOne("//li/span[@class='zz']/text()");//获取小说作者
-			String novelAuthorStr = null;
-			if (novelAuthorObj != null) {
-				novelAuthorStr = novelAuthorObj.toString();
-			}
-			log.debug("【后台爬虫系统爬取数据】每页小说作者data=={}", novelAuthorStr);
-			novelInfo.setAuthor(novelAuthorStr);//4、设置小说作者
-			Object novelTotalWordsObj = dlJxDocument.selNOne("//li/span[@class='zs']/num()");//获取小说字数
-			String novelTotalWordsStr = null;
-			BigDecimal novelTotalWordsDecimal = BigDecimal.ZERO;
-			if (novelTotalWordsObj != null) {
-				novelTotalWordsStr = novelTotalWordsObj.toString();
-				novelTotalWordsDecimal = new BigDecimal(novelTotalWordsStr);
-			}
-			log.debug("【后台爬虫系统爬取数据】每页小说总字数 BigDecimal data=={}", novelTotalWordsDecimal);
-			novelInfo.setTotalWords(novelTotalWordsDecimal);//5、设置小说总字数
-			Object novelStatusObj = dlJxDocument.selNOne("//li/span[@class='zt']/text()");//获取小说状态
-			String novelStatusStr = null;
-			if (novelStatusObj != null) {
-				novelStatusStr = novelStatusObj.toString();
-			}
-			log.debug("【后台爬虫系统爬取数据】每页小说状态信息数据转换为字符串data=={}", novelStatusStr);
-			if (NovelInfoEnum.NOVEL_STATUS_UPDATING.getMessage().equals(novelStatusStr)) {
-				novelInfo.setNovelStatus(NovelInfoEnum.NOVEL_STATUS_UPDATING.getCode());//6、设置小说更新状态为连载中
-			} else if (NovelInfoEnum.NOVEL_STATUS_FINISHED.getMessage().equals(novelStatusStr)) {
-				novelInfo.setNovelStatus(NovelInfoEnum.NOVEL_STATUS_FINISHED.getCode());//6、设置小说更新状态为已完成
-			}
-			Object novelRedersObj = dlJxDocument.selNOne("//li/span[@class='fs']/num()");//获取小说阅读数
-			String novelRedersStr = null;
-			BigDecimal novelRedersDecimal = BigDecimal.ZERO;
-			if (novelRedersObj != null) {
-				novelRedersStr = novelRedersObj.toString();
-				novelRedersDecimal = new BigDecimal(novelRedersStr);
-			}
-			log.debug("【后台爬虫系统爬取数据】每页小说阅读人数信息数据转换为BigDecimaldata=={}", novelRedersDecimal);
-			novelInfo.setReaders(novelRedersDecimal);//7、设置小说阅读人数
-			novelInfo.setClickNumber(BigDecimal.ZERO);//8、设置小说点击（阅读）次数
-			novelInfo.setPublisher("八八读书网（88dush.com）");//9、设置小说出版社或者爬取的网站名称
-			novelInfo.setTotalChapters(0);//10、设置小说总章节数
-			novelInfo.setRecentReaders(BigDecimal.ZERO);//11、设置小说跟随阅读人数
-			novelInfo.setRetention(0);//12、设置小说留存率
-			novelInfo.setCategoryCNText(categoryCNText);//13、设置小说分类中文名称
-			novelInfo = novelInfo.compasByCategoryCNText(novelInfo, categoryCNText);
+//			log.debug("【后台爬虫系统爬取数据】每页li元素转换为字符串data=={}", li.toString());
+			JXDocument doc = JXDocument.create(li.toString());
+			Object novelTitleObj = doc.selNOne("//li/span[@class='sm']/a/b/text()");//1、获取小说名称
+			Object novelNewestChapterTitleObj = doc.selNOne("//li/span[@class='zj']/a/text()");//2、获取小说最新章节标题
+			Object novelAuthorObj = doc.selNOne("//li/span[@class='zz']/text()");//3、获取小说作者
+			Object novelTotalWordsObj = doc.selNOne("//li/span[@class='zs']/num()");//4、获取小说字数
+			Object novelStatusObj = doc.selNOne("//li/span[@class='zt']/text()");//5、获取小说更新状态
+			Object novelReadersObj = doc.selNOne("//li/span[@class='fs']/num()");//6、获取小说阅读数
+			Object novelGetDataObj = doc.selNOne("//li/span[@class='sm']/a/@href");//7、获取小说信息数据路径
+			NovelInfo novelInfo = pan(categoryCNText, null, novelGetDataObj, novelTitleObj, novelNewestChapterTitleObj, novelAuthorObj, novelTotalWordsObj, novelStatusObj, novelReadersObj, null);
 			save(novelInfo);
 		}
 	}
@@ -324,29 +219,110 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 		if (novelInfo != null) {
 			NovelInfo novelInfoTmp = novelInfoService.findByTitleAndCategoryTextAndAuthor(novelInfo.getTitle(), novelInfo.getCategoryCNText(), novelInfo.getAuthor());
 			if (novelInfoTmp == null) {
-				NovelInfo novelInfoSaveResult = novelInfoService.save(novelInfo);
+				NovelInfo saveResult = novelInfoService.save(novelInfo);
 				if (log.isDebugEnabled()) {
-					log.debug("【后台爬虫系统爬取数据】保存到数据库小说data=={}", novelInfoSaveResult);
+					log.debug("【后台爬虫系统爬取数据】保存到数据库小说data=={}", saveResult);
 				}
 			} else {
 				NovelInfo novelInfoUpdate = copy(novelInfoTmp, novelInfo);
-				NovelInfo novelInfoUpdateResult = novelInfoService.save(novelInfoUpdate);
+				NovelInfo updateResult = novelInfoService.save(novelInfoUpdate);
 				if (log.isDebugEnabled()) {
-					log.debug("【后台爬虫系统爬取数据】更新到数据库小说信息数据data=={}", novelInfoUpdateResult);
+					log.debug("【后台爬虫系统爬取数据】更新到数据库小说data=={}", updateResult);
 				}
 			}
 		}
 	}
 
 	private String pan(Object categoryCNTextObj) {
-		String categoryCNTextStr = null;
+		String categoryCNText = null;
 		if (categoryCNTextObj != null) {
-			categoryCNTextStr = categoryCNTextObj.toString();
+			categoryCNText = categoryCNTextObj.toString();
 		}
-		if (log.isDebugEnabled()) {
-			log.debug("【后台爬虫系统爬取数据】小说分类中文名称data=={}", categoryCNTextStr);
+		return categoryCNText;
+	}
+
+	private NovelInfo pan(String categoryCNText,
+						  Object coverImageObj,
+						  Object getDataObj,
+						  Object titleObj,
+						  Object newestChapterTitleObj,
+						  Object authorObj,
+						  Object totalWordsObj,
+						  Object statusObj,
+						  Object readersObj,
+						  Object novelIntroductionObj) {
+		NovelInfo novelInfo = NovelInfo.builder().build();
+		novelInfo.setId(UUIDUtil.gen32UUID());//1、设置小说id
+		String novelTitleStr = null;
+		if (titleObj != null) {
+			novelTitleStr = titleObj.toString();
 		}
-		return categoryCNTextStr;
+		log.debug("【后台爬虫系统爬取数据】每页小说名称data=={}", novelTitleStr);
+		novelInfo.setTitle(novelTitleStr);//2、设置小说名称
+
+		String novelNewestChapterTitleStr = null;
+		if (newestChapterTitleObj != null) {
+			novelNewestChapterTitleStr = newestChapterTitleObj.toString();
+		}
+		log.debug("【后台爬虫系统爬取数据】每页小说最新章节标题data=={}", novelNewestChapterTitleStr);
+		novelInfo.setNewestChapterTitle(novelNewestChapterTitleStr);//3、设置小说最新章节
+		String novelAuthorStr = null;
+		if (authorObj != null) {
+			novelAuthorStr = authorObj.toString();
+		}
+		log.debug("【后台爬虫系统爬取数据】每页小说作者data=={}", novelAuthorStr);
+		novelInfo.setAuthor(novelAuthorStr);//4、设置小说作者
+		BigDecimal novelTotalWordsDecimal = BigDecimal.ZERO;
+		if (totalWordsObj != null) {
+			novelTotalWordsDecimal = new BigDecimal(totalWordsObj.toString());
+		}
+		log.debug("【后台爬虫系统爬取数据】每页小说总字数 BigDecimal data=={}", novelTotalWordsDecimal);
+		novelInfo.setTotalWords(novelTotalWordsDecimal);//5、设置小说总字数
+		String novelStatusStr = null;
+		if (statusObj != null) {
+			novelStatusStr = statusObj.toString();
+		}
+		log.debug("【后台爬虫系统爬取数据】每页小说状态信息数据转换为字符串data=={}", novelStatusStr);
+		if (NovelInfoEnum.NOVEL_STATUS_UPDATING.getMessage().equals(novelStatusStr)) {
+			novelInfo.setNovelStatus(NovelInfoEnum.NOVEL_STATUS_UPDATING.getCode());//6、设置小说更新状态为连载中
+		} else if (NovelInfoEnum.NOVEL_STATUS_FINISHED.getMessage().equals(novelStatusStr)) {
+			novelInfo.setNovelStatus(NovelInfoEnum.NOVEL_STATUS_FINISHED.getCode());//6、设置小说更新状态为已完成
+		} else {
+			novelInfo.setNovelStatus(NovelInfoEnum.NOVEL_STATUS_UPDATING.getCode());//6、默认设置小说更新状态为连载中
+		}
+		BigDecimal novelReadersDecimal = BigDecimal.ZERO;
+		if (readersObj != null) {
+			novelReadersDecimal = new BigDecimal(readersObj.toString());
+		}
+		log.debug("【后台爬虫系统爬取数据】每页小说阅读人数信息数据转换为BigDecimaldata=={}", novelReadersDecimal);
+		novelInfo.setReaders(novelReadersDecimal.multiply(new BigDecimal(100L)));//7、设置小说阅读人数
+		novelInfo.setClickNumber(novelReadersDecimal.multiply(new BigDecimal(1000L)));//8、设置小说点击（阅读）次数
+		novelInfo.setPublisher("八八读书网（88dush.com）");//9、设置小说出版社或者爬取的网站名称
+		novelInfo.setTotalChapters(0);//10、设置小说总章节数
+		novelInfo.setRecentReaders(novelReadersDecimal);//11、设置小说跟随阅读人数
+		novelInfo.setRetention(0);//12、设置小说留存率
+		novelInfo.setCategoryCNText(categoryCNText);//13、设置小说分类中文名称
+		String coverImage = null;
+		if (coverImageObj != null) {
+			coverImage = coverImageObj.toString();
+		}
+		novelInfo.setCoverURL(coverImage);//14、设置小说封面图片路径
+		String introduction = null;
+		if (novelIntroductionObj != null) {
+			introduction = novelIntroductionObj.toString();
+		}
+		novelInfo.setIntroduction(introduction);//15、设置小说简介
+		novelInfo = novelInfo.compasByCategoryCNText(novelInfo, categoryCNText);
+		String novelGetDataUrlStr = null;
+		if (getDataObj != null) {
+			novelGetDataUrlStr = getDataObj.toString();
+			if (!novelGetDataUrlStr.startsWith(DOMAIN_URL) && !novelGetDataUrlStr.contains(DOMAIN_URL)) {
+				novelGetDataUrlStr = new StringBuffer().append(DOMAIN_URL).append(novelGetDataUrlStr).toString();
+			}
+		}
+		novelInfo.setDataURL(novelGetDataUrlStr);//16、设置小说获取数据路径
+		log.debug("【后台爬虫系统爬取数据】每页小说内容信息数据路径url转换为字符串data=={}", novelGetDataUrlStr);
+		return novelInfo;
 	}
 
 	private NovelInfo copy(NovelInfo source, NovelInfo target) {
@@ -360,7 +336,7 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 			if (StringUtils.isNotEmpty(source.getDataURL())) {
 				target.setDataURL(source.getDataURL());//获取数据url
 			}
-			if (source.getCategoryType()!= null) {
+			if (source.getCategoryType() != null) {
 				target.setCategoryType(source.getCategoryType());//设置小说分类类型type
 			}
 			if (StringUtils.isNotEmpty(source.getCategoryENText())) {
@@ -396,10 +372,10 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 			if (source.getReaders() != null && !BigDecimal.ZERO.equals(source.getReaders())) {//阅读（点击）用户数；默认“0-阅读（点击）用户数”
 				target.setReaders(source.getReaders());//设置小说阅读（点击）用户数；默认“0-阅读（点击）用户数”
 			}
-			if (source.getRecentReaders()!=null &&  !BigDecimal.ZERO.equals(source.getRecentReaders())) {//最近跟随阅读（点击）用户数；默认“0-最近跟随阅读（点击）用户数”
+			if (source.getRecentReaders() !=null && !BigDecimal.ZERO.equals(source.getRecentReaders())) {//最近跟随阅读（点击）用户数；默认“0-最近跟随阅读（点击）用户数”
 				target.setRecentReaders(source.getRecentReaders());//设置小说最近跟随阅读（点击）用户数；默认“0-最近跟随阅读（点击）用户数”
 			}
-			if (source.getTotalWords() != null && !BigDecimal.ZERO.equals(source.getTotalWords())) {//总字数
+			if (source.getTotalWords()!=null && !BigDecimal.ZERO.equals(source.getTotalWords())) {//总字数
 				target.setTotalWords(source.getTotalWords());//设置小说总字数
 			}
 			if (source.getCreateTime() != null) {
