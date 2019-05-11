@@ -6,6 +6,7 @@ import cn.wanghaomiao.seimi.struct.Request;
 import cn.wanghaomiao.seimi.struct.Response;
 import com.potato369.novel.basic.constants.BusinessConstants;
 import com.potato369.novel.basic.dataobject.NovelInfo;
+import com.potato369.novel.basic.enums.CategoryEnum;
 import com.potato369.novel.basic.enums.NovelInfoEnum;
 import com.potato369.novel.basic.service.NovelInfoService;
 import com.potato369.novel.basic.utils.UUIDUtil;
@@ -252,67 +253,86 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 						  Object readersObj,
 						  Object novelIntroductionObj) {
 		NovelInfo novelInfo = NovelInfo.builder().build();
-		novelInfo.setId(UUIDUtil.gen32UUID());//1、设置小说id
+		String id = UUIDUtil.gen32UUID();
+		novelInfo.setId(id);//1、设置小说id
+		log.debug("1、小说id=={}", id);
 		String novelTitleStr = null;
 		if (titleObj != null) {
 			novelTitleStr = titleObj.toString();
 		}
-		log.debug("【后台爬虫系统爬取数据】每页小说名称data=={}", novelTitleStr);
+		log.debug("2、小说名称=={}", novelTitleStr);
 		novelInfo.setTitle(novelTitleStr);//2、设置小说名称
 
 		String novelNewestChapterTitleStr = null;
 		if (newestChapterTitleObj != null) {
 			novelNewestChapterTitleStr = newestChapterTitleObj.toString();
 		}
-		log.debug("【后台爬虫系统爬取数据】每页小说最新章节标题data=={}", novelNewestChapterTitleStr);
-		novelInfo.setNewestChapterTitle(novelNewestChapterTitleStr);//3、设置小说最新章节
+		log.debug("3、小说最新章节标题=={}", novelNewestChapterTitleStr);
+		novelInfo.setNewestChapterTitle(novelNewestChapterTitleStr);//3、设置小说最新章节标题
 		String novelAuthorStr = null;
 		if (authorObj != null) {
 			novelAuthorStr = authorObj.toString();
 		}
-		log.debug("【后台爬虫系统爬取数据】每页小说作者data=={}", novelAuthorStr);
+		log.debug("4、小说作者=={}", novelAuthorStr);
 		novelInfo.setAuthor(novelAuthorStr);//4、设置小说作者
 		BigDecimal novelTotalWordsDecimal = BigDecimal.ZERO;
 		if (totalWordsObj != null) {
 			novelTotalWordsDecimal = new BigDecimal(totalWordsObj.toString());
 		}
-		log.debug("【后台爬虫系统爬取数据】每页小说总字数 BigDecimal data=={}", novelTotalWordsDecimal);
+		log.debug("5、小说总字数=={}", novelTotalWordsDecimal);
 		novelInfo.setTotalWords(novelTotalWordsDecimal);//5、设置小说总字数
-		String novelStatusStr = null;
+		String novelStatusStr = NovelInfoEnum.NOVEL_STATUS_UPDATING.getMessage();//默认：连载中
+		Integer status = NovelInfoEnum.NOVEL_STATUS_UPDATING.getCode();//默认：1，连载中
 		if (statusObj != null) {
 			novelStatusStr = statusObj.toString();
 		}
-		log.debug("【后台爬虫系统爬取数据】每页小说状态信息数据转换为字符串data=={}", novelStatusStr);
-		if (NovelInfoEnum.NOVEL_STATUS_UPDATING.getMessage().equals(novelStatusStr)) {
-			novelInfo.setNovelStatus(NovelInfoEnum.NOVEL_STATUS_UPDATING.getCode());//6、设置小说更新状态为连载中
-		} else if (NovelInfoEnum.NOVEL_STATUS_FINISHED.getMessage().equals(novelStatusStr)) {
-			novelInfo.setNovelStatus(NovelInfoEnum.NOVEL_STATUS_FINISHED.getCode());//6、设置小说更新状态为已完成
-		} else {
-			novelInfo.setNovelStatus(NovelInfoEnum.NOVEL_STATUS_UPDATING.getCode());//6、默认设置小说更新状态为连载中
+		if (NovelInfoEnum.NOVEL_STATUS_FINISHED.getMessage().equals(novelStatusStr)) {
+			novelStatusStr = NovelInfoEnum.NOVEL_STATUS_FINISHED.getMessage();
+			status = NovelInfoEnum.NOVEL_STATUS_FINISHED.getCode();//已完成
 		}
+		log.debug("6、小说状态=={}", novelStatusStr);
+		novelInfo.setNovelStatus(status);//6、设置小说更新状态
 		BigDecimal novelReadersDecimal = BigDecimal.ZERO;
 		if (readersObj != null) {
 			novelReadersDecimal = new BigDecimal(readersObj.toString());
 		}
-		log.debug("【后台爬虫系统爬取数据】每页小说阅读人数信息数据转换为BigDecimaldata=={}", novelReadersDecimal);
-		novelInfo.setReaders(novelReadersDecimal.multiply(new BigDecimal(100L)));//7、设置小说阅读人数
-		novelInfo.setClickNumber(novelReadersDecimal.multiply(new BigDecimal(1000L)));//8、设置小说点击（阅读）次数
-		novelInfo.setPublisher("八八读书网（88dush.com）");//9、设置小说出版社或者爬取的网站名称
-		novelInfo.setTotalChapters(0);//10、设置小说总章节数
+		BigDecimal readers = novelReadersDecimal.multiply(new BigDecimal(100L));
+		log.debug("7、小说阅读人数=={}", readers);
+		novelInfo.setReaders(readers);//7、设置小说阅读人数
+		BigDecimal clickNumber = novelReadersDecimal.multiply(new BigDecimal(1000L));
+		log.debug("8、小说点击（阅读）次数=={}", clickNumber);
+		novelInfo.setClickNumber(clickNumber);//8、设置小说点击（阅读）次数
+		String publisher = "八八读书网（88dush.com）";
+		log.debug("9、小说出版社或者爬取的网站名称=={}", publisher);
+		novelInfo.setPublisher(publisher);//9、设置小说出版社或者爬取的网站名称
+		Integer totalChapters = 0;
+		log.debug("10、小说总章节数=={}", totalChapters);
+		novelInfo.setTotalChapters(totalChapters);//10、设置小说总章节数
+		log.debug("11、小说跟随（关注）人数=={}", novelReadersDecimal);
 		novelInfo.setRecentReaders(novelReadersDecimal);//11、设置小说跟随阅读人数
-		novelInfo.setRetention(0);//12、设置小说留存率
-		novelInfo.setCategoryCNText(categoryCNText);//13、设置小说分类中文名称
+		Integer retention = 0;
+		log.debug("12、小说留存率=={}", retention);
+		novelInfo.setRetention(retention);//12、设置小说留存率
+		String cn_text = categoryCNText;
+		log.debug("13、小说分类中文名称=={}", cn_text);
+		novelInfo.setCategoryCNText(cn_text);//13、设置小说分类中文名称
 		String coverImage = null;
 		if (coverImageObj != null) {
 			coverImage = coverImageObj.toString();
 		}
+		log.debug("14、小说封面图片路径=={}", coverImage);
 		novelInfo.setCoverURL(coverImage);//14、设置小说封面图片路径
 		String introduction = null;
 		if (novelIntroductionObj != null) {
 			introduction = novelIntroductionObj.toString();
 		}
+		log.debug("15、小说简介=={}", introduction);
 		novelInfo.setIntroduction(introduction);//15、设置小说简介
 		novelInfo = novelInfo.compasByCategoryCNText(novelInfo, categoryCNText);
+		Integer categoryType = novelInfo.getCategoryType();
+		log.debug("16、小说分类类型type=={}", categoryType);
+		String en_text = novelInfo.getCategoryENText();
+		log.debug("17、小说分类英文名称=={}", en_text);
 		String novelGetDataUrlStr = null;
 		if (getDataObj != null) {
 			novelGetDataUrlStr = getDataObj.toString();
@@ -320,8 +340,8 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 				novelGetDataUrlStr = new StringBuffer().append(DOMAIN_URL).append(novelGetDataUrlStr).toString();
 			}
 		}
-		novelInfo.setDataURL(novelGetDataUrlStr);//16、设置小说获取数据路径
-		log.debug("【后台爬虫系统爬取数据】每页小说内容信息数据路径url转换为字符串data=={}", novelGetDataUrlStr);
+		log.debug("18、小说章节数据路径=={}", novelGetDataUrlStr);
+		novelInfo.setDataURL(novelGetDataUrlStr);//18、设置小说获取数据路径
 		return novelInfo;
 	}
 
