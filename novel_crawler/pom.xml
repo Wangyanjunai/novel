@@ -63,7 +63,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>novel_crawler</finalName>
+		<finalName>crawler</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

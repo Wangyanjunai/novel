@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: prod
 #  jackson:
 #    default-property-inclusion: non_default
   freemarker:
@@ -55,8 +55,8 @@ xfYun:
   engineType: intp65
   textType: text
 server:
-  context-path: /novel
-  port: 8080
+  context-path: /cms
+  port: 9980
   error:
     path: /error
   session:
@@ -64,3 +64,21 @@ server:
   tomcat:
    max-threads: 20000
    uri-encoding: utf-8
+management:
+  security:
+    enabled: false          #关掉安全认证
+  port: 8090                #管理端口调整成8090
+  context-path: /monitor    #actuator的访问路径
+info:
+  app:
+    name: development-novel-spring-boot-actuator
+    version: 1.0.0
+security:
+  user:
+    name: admin
+    password: wy1wj2yj3!@#
+  basic:
+    enabled: false
+    path: /**
+endpoints:
+  enabled: true

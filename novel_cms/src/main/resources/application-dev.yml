@@ -63,21 +63,3 @@ weChat:
   pay:
     keyPath: D:\Users\wangyanjun\workspace\novel\src\main\resources\cert\open.p12
     ##keyPath: /Users/mac/Documents/study/springboot-novel-ebook/src/main/resources/cert/open.p12
-management:
-  security:
-    enabled: false          #关掉安全认证
-  port: 8080                #管理端口调整成8080
-  context-path: /monitor    #actuator的访问路径
-info:
-  app:
-    name: development-novel-spring-boot-actuator
-    version: 1.0.0
-security:
-  user:
-    name: admin
-    password: wy1wj2yj3!@#
-  basic:
-    enabled: false
-    path: /**
-endpoints:
-  enabled: true

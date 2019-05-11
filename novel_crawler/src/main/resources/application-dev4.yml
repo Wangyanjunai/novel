@@ -68,7 +68,7 @@ weChat:
 management:
   security:
     enabled: false          #关掉安全认证
-  port: 8084                #管理端口调整成8080
+  port: 8914                #管理端口调整成8914
   context-path: /monitor    #actuator的访问路径
 info:
   app:
@@ -85,7 +85,7 @@ endpoints:
   enabled: true
 server:
   context-path: /novel
-  port: 8094
+  port: 8994
   error:
     path: /error
   session:

@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: prod
 #  jackson:
 #    default-property-inclusion: non_null
   freemarker:
@@ -53,8 +53,8 @@ xfYun:
   engineType: intp65
   textType: text
 server:
-  context-path: /novel
-  port: 8080
+  context-path: /app
+  port: 8980
   error:
     path: /error
   session:
@@ -65,3 +65,21 @@ server:
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.potato369.novel.basic.dataobject
+management:
+  security:
+    enabled: false          #关掉安全认证
+  port: 9080                #管理端口调整成9080
+  context-path: /monitor    #actuator的访问路径
+info:
+  app:
+    name: development-novel-spring-boot-actuator
+    version: 1.0.0
+security:
+  user:
+    name: admin
+    password: wy1wj2yj3!@#
+  basic:
+    enabled: false
+    path: /**
+endpoints:
+  enabled: true

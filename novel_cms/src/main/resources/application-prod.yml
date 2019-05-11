@@ -62,21 +62,3 @@ projectUrl:
 weChat: 
   pay:
     keyPath: /var/local/wechatPayKeyFilePath/cert/h5.p12
-management:
-  security:
-    enabled: false          #关掉安全认证
-  port: 8080                #管理端口调整成8080
-  context-path: /monitor    #actuator的访问路径
-info:
-  app:
-    name: novel-spring-boot-actuator
-    version: 1.0.0
-security:
-  user:
-    name: admin
-    password: wy1wj2yj3!@#
-  basic:
-    enabled: false
-    path: /**
-endpoints:
-  enabled: true
