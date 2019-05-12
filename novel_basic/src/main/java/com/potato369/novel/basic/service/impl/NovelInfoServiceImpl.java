@@ -47,7 +47,7 @@ public class NovelInfoServiceImpl implements NovelInfoService {
                 }
             } else {
                 NovelInfo novelInfoUpdate = BeanUtil.copy(novelInfoTmp, novelInfo);
-                novelInfoResult = repository.save(novelInfoUpdate);
+                novelInfoResult = repository.saveAndFlush(novelInfoUpdate);
                 if (log.isDebugEnabled()) {
                     log.debug("【后台爬虫系统爬取数据】更新到数据库小说data=={}", novelInfoResult);
                 }
