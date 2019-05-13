@@ -1,9 +1,12 @@
 package com.potato369.novel.app.web.vo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.app.web.vo
@@ -16,11 +19,33 @@ import java.util.List;
  * @Copyright Copyright (c) 2016 ~ 2020 版权所有 (C) 土豆互联科技(深圳)有限公司 https://www.potato369.com All Rights Reserved。
  * </pre>
  */
+@AllArgsConstructor
+@Builder
+@Data
+@NoArgsConstructor
 public class RankVO {
 
-    @JsonProperty(value = "Type")
-    private String type;
+    /**
+     * <pre>
+     * 排行的名字
+     * </pre>
+     */
+    @JsonProperty(value = "Title")
+    private String title;
 
-    @JsonProperty(value = "Ranks")
-    private List<RankInfoVO> ranks;
+    /**
+     * <pre>
+     * 排行的名字
+     * </pre>
+     */
+    @JsonProperty(value = "ShortTitle")
+    private String shortTitle;
+
+    /**
+     * <pre>
+     * 排行的数据
+     * </pre>
+     */
+    @JsonProperty(value = "DataList")
+    private List<NovelInfoVO> ranksData;
 }

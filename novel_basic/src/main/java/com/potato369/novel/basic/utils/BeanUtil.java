@@ -1,6 +1,7 @@
 package com.potato369.novel.basic.utils;
 
 import com.potato369.novel.basic.dataobject.NovelInfo;
+import com.potato369.novel.basic.enums.TypeEnum;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
@@ -79,5 +80,22 @@ public class BeanUtil {
             }
         }
         return target;
+    }
+
+    public static String getId(String categoryType) {
+        String id = null;
+        //如果是男生首页
+        if (TypeEnum.MALE.getCn().equals(categoryType) || TypeEnum.MALE.getEn().equals(categoryType)) {
+            id = TypeEnum.MALE.getId();
+        }
+        //如果是女生首页
+        if (TypeEnum.FEMALE.getCn().equals(categoryType) || TypeEnum.FEMALE.getEn().equals(categoryType)) {
+            id = TypeEnum.FEMALE.getId();
+        }
+        //如果是漫画首页
+        if (TypeEnum.PICTURE.getCn().equals(categoryType) || TypeEnum.PICTURE.getEn().equals(categoryType)) {
+            id = TypeEnum.PICTURE.getId();
+        }
+        return id;
     }
 }

@@ -151,4 +151,7 @@ public interface NovelChapterService {
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     NovelChapter selectByNovelIdAndIndex(String novelId, Integer index);
+
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    Page<NovelChapter> findAllByNovelId(String novelId, Pageable pageable);
 }

@@ -4,7 +4,10 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * <pre>
@@ -18,7 +21,10 @@ import lombok.Data;
  * @since JDK 1.6
  * </pre>
  */
+@AllArgsConstructor
+@Builder
 @Data
+@NoArgsConstructor
 public class CategoryVO {
 
 //	@JsonProperty(value = "id")

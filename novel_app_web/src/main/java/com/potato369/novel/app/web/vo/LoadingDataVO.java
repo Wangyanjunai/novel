@@ -19,8 +19,8 @@ import lombok.NoArgsConstructor;
  * </pre>
  */
 @AllArgsConstructor
-@Data
 @Builder
+@Data
 @NoArgsConstructor
 public class LoadingDataVO {
 

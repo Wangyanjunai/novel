@@ -21,10 +21,14 @@ import java.util.List;
  * </pre>
  */
 @AllArgsConstructor
-@Data
 @Builder
+@Data
 @NoArgsConstructor
 public class NovelChapterVO {
+
     @JsonProperty(value = "DataList")
     private List<NovelChapterInfoVO> novelChapterInfoVOList;
+
+    @JsonProperty(value = "TotalPage")
+    private Integer totalPage;
 }

@@ -217,4 +217,9 @@ public class NovelChapterServiceImpl implements NovelChapterService {
         map.put("index", index);
 		return chapterMapper.selectByNovelIdAndIndex(map);
 	}
+
+    @Override
+    public Page<NovelChapter> findAllByNovelId(String novelId, Pageable pageable) {
+        return repository.findAllByBookId(novelId, pageable);
+    }
 }

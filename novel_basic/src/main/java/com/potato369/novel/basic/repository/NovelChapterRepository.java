@@ -2,6 +2,8 @@ package com.potato369.novel.basic.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.potato369.novel.basic.dataobject.NovelChapter;
@@ -26,4 +28,6 @@ public interface NovelChapterRepository extends JpaRepository<NovelChapter, Stri
 	List<NovelChapter> findByTitle(String title, Sort sort);
 	
 	NovelChapter findByTitleAndBookId(String title, String bookId, Sort sort);
+
+	Page<NovelChapter> findAllByBookId(String bookId, Pageable pageable);
 }

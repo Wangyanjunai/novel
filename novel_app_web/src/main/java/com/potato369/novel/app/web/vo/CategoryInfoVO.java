@@ -2,7 +2,10 @@ package com.potato369.novel.app.web.vo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * <pre>
@@ -16,7 +19,10 @@ import lombok.Data;
  * @since JDK 1.6
  * </pre>
  */
+@AllArgsConstructor
+@Builder
 @Data
+@NoArgsConstructor
 public class CategoryInfoVO {
 
 	@JsonProperty(value = "id")

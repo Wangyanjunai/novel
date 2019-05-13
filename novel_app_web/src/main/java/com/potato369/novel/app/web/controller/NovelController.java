@@ -6,10 +6,10 @@ import com.potato369.novel.app.web.vo.*;
 import com.potato369.novel.basic.dataobject.NovelCategory;
 import com.potato369.novel.basic.dataobject.NovelChapter;
 import com.potato369.novel.basic.dataobject.NovelInfo;
-import com.potato369.novel.basic.enums.TypeEnum;
 import com.potato369.novel.basic.service.CategoryService;
 import com.potato369.novel.basic.service.NovelChapterService;
 import com.potato369.novel.basic.service.NovelInfoService;
+import com.potato369.novel.basic.utils.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -61,7 +61,7 @@ public class NovelController {
                 log.debug("【后台小说接口】start==================获取推荐页面数据=====================start");
 				log.debug("【后台小说接口】获取推荐页面categoryType={}", categoryType);
             }
-    		return ResultVOUtil.success(getData(getId(categoryType), new PageRequest(page-1, size, new Sort(Sort.Direction.DESC, "retention")), page));
+    		return ResultVOUtil.success(getData(BeanUtil.getId(categoryType), new PageRequest(page-1, size, new Sort(Sort.Direction.DESC, "retention")), page));
 		} catch (Exception e) {
 			log.error("获取推荐首页页面数据失败", e);
 			return ResultVOUtil.error(-1, "返回数据失败");
@@ -82,7 +82,7 @@ public class NovelController {
 				log.debug("【后台小说接口】start==================获取主页主编推荐数据=====================start");
 				log.debug("【后台小说接口】获取推荐页面categoryType={}", categoryType);
 			}
-			return ResultVOUtil.success(getData(getId(categoryType), new PageRequest(page-1, size, new Sort(Sort.Direction.DESC, "clickNumber")), page));
+			return ResultVOUtil.success(getData(BeanUtil.getId(categoryType), new PageRequest(page-1, size, new Sort(Sort.Direction.DESC, "clickNumber")), page));
 		} catch (Exception e) {
 			log.error("获取主页主编推荐数据失败", e);
 			return ResultVOUtil.error(-1, "返回数据失败");
@@ -103,7 +103,7 @@ public class NovelController {
 				log.debug("【后台小说接口】start==================获取主页最近更新推荐页面数据=====================start");
 				log.debug("【后台小说接口】获取推荐页面categoryType={}", categoryType);
 			}
-			return ResultVOUtil.success(getData(getId(categoryType), new PageRequest(page-1, size, new Sort(Sort.Direction.DESC, "updateTime")), page));
+			return ResultVOUtil.success(getData(BeanUtil.getId(categoryType), new PageRequest(page-1, size, new Sort(Sort.Direction.DESC, "updateTime")), page));
 		} catch (Exception e) {
 			log.error("获取主页最近更新推荐页面数据失败", e);
 			return ResultVOUtil.error(-1, "返回数据失败");
@@ -124,7 +124,7 @@ public class NovelController {
 				log.debug("【后台小说接口】start==================获取主页爽文推荐页面数据=====================start");
 				log.debug("【后台小说接口】获取推荐页面categoryType={}", categoryType);
 			}
-			return ResultVOUtil.success(getData(getId(categoryType), new PageRequest(page-1, size, new Sort(Sort.Direction.DESC, "recentReaders")), page));
+			return ResultVOUtil.success(getData(BeanUtil.getId(categoryType), new PageRequest(page-1, size, new Sort(Sort.Direction.DESC, "recentReaders")), page));
 		} catch (Exception e) {
 			log.error("获取主页爽文推荐页面数据失败", e);
 			return ResultVOUtil.error(-1, "返回数据失败");
@@ -159,15 +159,28 @@ public class NovelController {
         }
     }
 
-    @GetMapping(value = "/info/chapter/{novelId}")//小说章节列表
-	public ResultVO<NovelChapterVO> chapterDetail(@PathVariable(name = "novelId") String novelId) {
-		ResultVO<NovelChapterVO> infoVOResultVO = new ResultVO<NovelChapterVO>();
+    @GetMapping(value = "/info/chapter/{novelId}/{index}")//分页显示小说章节目录列表，默认按照索引正序，第一页，每页100条
+	public ResultVO<NovelChapterVO> chapterDetail(@PathVariable(name = "novelId") String novelId,//小说id
+                                                  @PathVariable(name="index") Integer index,//0-正序，1-倒序
+                                                  @RequestParam(name = "page", defaultValue = "1", required = true) Integer page,//页数
+                                                  @RequestParam(name = "size", defaultValue = "100", required = true) Integer size) {//每页条数
+		ResultVO<NovelChapterVO> infoVOResultVO = new ResultVO<>();
 		try {
 			if (log.isDebugEnabled()) {
-				log.debug("【后台小说接口】start====================获取小说详情数据====================start");
+				log.debug("【后台小说接口】start====================获取小说章节目录列表数据====================start");
 			}
 			NovelChapterVO chapterVO = NovelChapterVO.builder().build();
-			List<NovelChapter> chapterList = novelChapterService.selectByNovelId(novelId);
+			Sort sort = null;
+			if (index != null) {
+			    if (Integer.valueOf(0).equals(index)) {
+			        sort = new Sort(Sort.Direction.ASC, "index");
+                } else if (Integer.valueOf(1).equals(index)){
+                    sort = new Sort(Sort.Direction.DESC, "index");
+                }
+            }
+			PageRequest pageRequest = new PageRequest(page - 1, size, sort);
+            Page<NovelChapter> novelChapterPage = novelChapterService.findAllByNovelId(novelId, pageRequest);
+			List<NovelChapter> chapterList = novelChapterPage.getContent();
 			List<NovelChapterInfoVO> novelChapterInfoVOList = new ArrayList<>();
 			for (NovelChapter novelChapter:chapterList) {
 				NovelChapterInfoVO novelChapterInfoVO =  NovelChapterInfoVO.builder().build();
@@ -175,16 +188,17 @@ public class NovelController {
 				novelChapterInfoVOList.add(novelChapterInfoVO);
 			}
 			chapterVO.setNovelChapterInfoVOList(novelChapterInfoVOList);
+            chapterVO.setTotalPage(novelChapterPage.getTotalPages());
 			infoVOResultVO.setMsg("返回数据成功");
 			infoVOResultVO.setCode(0);
 			infoVOResultVO.setData(chapterVO);
 			return infoVOResultVO;
 		} catch (Exception e) {
-			log.error("【后台小说接口】获取小说详情数据失败", e);
+			log.error("【后台小说接口】获取小说章节目录列表数据失败", e);
 			return ResultVOUtil.error(-1, "返回数据失败");
 		} finally {
 			if (log.isDebugEnabled()) {
-				log.debug("【后台小说接口】end====================获取小说详情数据====================end");
+				log.debug("【后台小说接口】end====================获取小说章节目录列表数据====================end");
 			}
 		}
 	}
@@ -216,13 +230,12 @@ public class NovelController {
 			}
 		}
     }
-
     /**
      * <pre>
-     *
+     * 搜索接口
      * </pre>
      */
-    @GetMapping(value = "/info/search/{keyWords}")
+    @GetMapping(value = "/info/search/{keyWords}")//搜索接口
     public ResultVO<List<NovelInfoVO>> search(@PathVariable(name = "keyWords") String keyWords,
                                               @RequestParam(name = "page", defaultValue = "1") Integer page,
                                               @RequestParam(name = "size", defaultValue = "10") Integer size) {//搜索接口
@@ -275,21 +288,4 @@ public class NovelController {
 //		homeDataVO.setCurrentPage(currentPage);
     	return homeDataVO;
     }
-
-    private String getId(String categoryType) {
-    	String id = null;
-		//如果是男生首页
-		if (TypeEnum.MALE.getCn().equals(categoryType) || TypeEnum.MALE.getEn().equals(categoryType)) {
-			id = TypeEnum.MALE.getId();
-		}
-		//如果是女生首页
-		if (TypeEnum.FEMALE.getCn().equals(categoryType) || TypeEnum.FEMALE.getEn().equals(categoryType)) {
-			id = TypeEnum.FEMALE.getId();
-		}
-		//如果是漫画首页
-		if (TypeEnum.PICTURE.getCn().equals(categoryType) || TypeEnum.PICTURE.getEn().equals(categoryType)) {
-			id = TypeEnum.PICTURE.getId();
-		}
-    	return id;
-	}
 }
