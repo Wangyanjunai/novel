@@ -40,11 +40,11 @@ spring:
     password: foobared123!@#
 logging:
   level:
-    org.springframework.web: debug
-    com.potato369.novel: debug
-    com.potato369.novel.crawler: debug
-    com.potato369.novel.basic: debug
-    com.alibaba.druid: debug
+    org.springframework.web: error
+    com.potato369.novel: error
+    com.potato369.novel.crawler: error
+    com.potato369.novel.basic: error
+    com.alibaba.druid: error
     com.potato369.novel.basic.dataobject.mapper: trace
 projectUrl: 
   projectName: /novel

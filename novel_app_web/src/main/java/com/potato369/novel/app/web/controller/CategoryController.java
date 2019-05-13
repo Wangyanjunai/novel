@@ -51,15 +51,15 @@ public class CategoryController {
 	 * </pre>
 	 */
 	@GetMapping(value = "/statistics/{type}")//type：male, female,picture，查询分类信息
-	public ResultVO<CategoryVO> list(
+	public ResultVO<List<CategoryInfoVO>> list(
 			@PathVariable(name = "type") String type) {
-		ResultVO<CategoryVO> resultVO = new ResultVO<>();
+		ResultVO<List<CategoryInfoVO>> resultVO = new ResultVO<>();
 		try {
 			if (log.isDebugEnabled()) {
 				log.debug("【急速追书后台管理】start====================获取所有的分类====================start");
 			}
 			List<CategoryInfoVO> CategoryInfoVOs = new ArrayList<>();
-			CategoryVO categoryVO = new CategoryVO();
+//			CategoryVO categoryVO = new CategoryVO();
 			NovelCategory novelCategory = categoryService.findByCategoryEnName(type);
 			String categoryId = novelCategory.getCategoryId();
 			List<NovelCategory> subCategories = categoryService.findByParentCategoryId(categoryId);
@@ -69,8 +69,8 @@ public class CategoryController {
 				categoryInfoVO.setId(novelCategory2.getCategoryId());
 				CategoryInfoVOs.add(categoryInfoVO);
 			}
-			categoryVO.setCategoryInfoVOs(CategoryInfoVOs);
-			resultVO.setData(categoryVO);
+//			categoryVO.setCategoryInfoVOs(CategoryInfoVOs);
+			resultVO.setData(CategoryInfoVOs);
 			resultVO.setCode(0);
 			resultVO.setMsg("获取数据成功");
 			return resultVO;

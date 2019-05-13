@@ -25,7 +25,7 @@ public class CategoryInfoVO {
 //	@JsonProperty(value = "parentId")
 //	public String parentId;
 
-	@JsonProperty(value = "title")
+	@JsonProperty(value = "categoryName")
 	public String name;
 //
 //	@JsonProperty(value = "bookCount")
