@@ -40,12 +40,10 @@ spring:
     password: foobared123!@#
 logging:
   level:
-    org.springframework.web: debug
-    com.potato369.novel: debug
-    com.potato369.novel.crawler: debug
-    com.potato369.novel.basic: debug
-    com.alibaba.druid: debug
-    com.potato369.novel.basic.dataobject.mapper: trace
+    org.springframework: info
+    com.potato369.novel: info
+    com.alibaba.druid: info
+    cn.wanghaomiao: info
 projectUrl:   
   projectName: /novel
   domainUrl: http://potato369.mynatapp.cc

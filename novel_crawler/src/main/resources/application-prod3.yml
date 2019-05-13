@@ -40,12 +40,10 @@ spring:
     password: foobared123!@#
 logging:
   level:
-    org.springframework.web: error
+    org.springframework: error
     com.potato369.novel: error
-    com.potato369.novel.crawler: error
-    com.potato369.novel.basic: error
     com.alibaba.druid: error
-    com.potato369.novel.basic.dataobject.mapper: trace
+    cn.wanghaomiao: error
 projectUrl: 
   projectName: /novel
   domainUrl: https://www.potato369.com
