@@ -134,7 +134,8 @@ DROP TABLE IF EXISTS `novel_shelf`;
 CREATE TABLE `novel_shelf` (
   `user_id` varchar(32) NOT NULL COMMENT '用户id。',
   `novel_id` varchar(32) NOT NULL COMMENT '小说id。',
-  `chapter_id` varchar(32) NOT NULL COMMENT '已经阅读到的章节id。',
+  `chapter_id` varchar(32) NULL default  NULL COMMENT '已经阅读到的章节id。',
+  `chapter_index` smallint(6) unsigned NULL default  NULL COMMENT '已经阅读到的章节索引',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`user_id`,`novel_id`) USING BTREE
@@ -247,6 +248,22 @@ CREATE TABLE `seller_info` (
   PRIMARY KEY (`seller_id`) USING BTREE,
   KEY `key_openid` (`openid`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='卖家信息记录表';
+
+-- ----------------------------
+-- Table structure for hot_words_info
+-- ----------------------------
+DROP TABLE IF EXISTS `hot_words_info`;
+CREATE TABLE `hot_words_info` (
+  `word_id` varchar(32) NOT NULL COMMENT '搜索热词id，主键',
+  `word` varchar(256) NOT NULL COMMENT '搜索热词',
+  `times` decimal(16, 0) unsigned NOT NULL DEFAULT '0' COMMENT '搜索次数',
+  `is_new` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '是否是新创建的，0-新创建，1-已经有的',
+  `soaring` decimal(16, 0) NULL DEFAULT '0' COMMENT '增长值',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  PRIMARY KEY (`word_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='搜索热词信息记录表';
+
 
 -- ----------------------------
 -- Records 

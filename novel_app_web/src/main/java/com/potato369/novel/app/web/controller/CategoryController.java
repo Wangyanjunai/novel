@@ -3,8 +3,11 @@ package com.potato369.novel.app.web.controller;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.potato369.novel.app.web.converter.NovelInfo2NovelInfoVOConverter;
 import com.potato369.novel.app.web.utils.ResultVOUtil;
 import com.potato369.novel.app.web.vo.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -225,6 +228,33 @@ public class CategoryController {
 		} finally {
 			if (log.isDebugEnabled()) {
 				log.debug("【按照类别查询小说分类】查询小说分类page={}, size={}", page, size);
+			}
+		}
+	}
+
+	@GetMapping(value = "/statistics/featured/{categoryType}")//同类型书籍推荐接口
+	public ResultVO<CategoryBookVO> tongLeiFeatured(@PathVariable(name = "categoryType") Integer categoryType,
+													@RequestParam(name = "page", defaultValue = "1") Integer page,
+													@RequestParam(name="size", defaultValue = "6") Integer size) {
+		try {
+			if (log.isDebugEnabled()) {
+				log.debug("【后台小说接口】start====================查询同类推荐小说数据====================start");
+			}
+			CategoryBookVO categoryBookVO = CategoryBookVO.builder().build();
+			Sort sort = new Sort(Sort.Direction.ASC, "clickNumber", "readers", "updateTime");
+			PageRequest pageRequest = new PageRequest(page - 1, size, sort);
+			Page<NovelInfo> novelInfoPage = novelInfoService.findByCategoryType(pageRequest, categoryType);
+			if (novelInfoPage != null) {
+				categoryBookVO.setBooks(NovelInfo2NovelInfoVOConverter.convertTONovelInfoVOList(novelInfoPage.getContent()));
+				categoryBookVO.setTotalPage(new BigDecimal(novelInfoPage.getTotalPages()));
+			}
+			return ResultVOUtil.success(categoryBookVO);
+		} catch (Exception e) {
+			log.error("【后台小说接口】======================查询同类推荐小说数据======================失败", e);
+			return ResultVOUtil.error(-1, "返回数据失败");
+		} finally {
+			if (log.isDebugEnabled()) {
+				log.debug("【后台小说接口】end======================查询同类推荐小说数据======================end");
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 package com.potato369.novel.app.web.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.potato369.novel.app.web.utils.serializer.Date2LongSerializer;
@@ -61,4 +62,13 @@ public class NovelChapterInfoVO {
      */
     @JsonProperty(value = "title")
     private String title;
+
+    /**
+     * <pre>
+     * @jsonField title：章节创建时间。
+     * </pre>
+     */
+    @JsonProperty(value = "createTime")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
 }

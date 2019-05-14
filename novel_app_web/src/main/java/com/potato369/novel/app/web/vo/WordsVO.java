@@ -5,17 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.util.List;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.app.web.vo
- * @ClassName RankVO
- * @Desc RankVO
+ * @ClassName WordsVO
+ * @Desc wordsVO
  * @WebSite https://www.potato369.com
  * @Author Jack
- * @Date 2019/5/9 15:38
+ * @Date 2019/5/14 11:16
  * @CreateBy IntellJ IDEA 2019.1.1
  * @Copyright Copyright (c) 2016 ~ 2020 版权所有 (C) 土豆互联科技(深圳)有限公司 https://www.potato369.com All Rights Reserved。
  * </pre>
@@ -24,37 +24,11 @@ import java.util.List;
 @Builder
 @Data
 @NoArgsConstructor
-public class RankVO {
+public class WordsVO {
 
-    /**
-     * <pre>
-     * 排行的名字
-     * </pre>
-     */
-//    @JsonProperty(value = "Title")
-//    private String title;
-
-    /**
-     * <pre>
-     * 排行的名字
-     * </pre>
-     */
-//    @JsonProperty(value = "ShortTitle")
-//    private String shortTitle;
-
-    /**
-     * <pre>
-     * 排行的数据
-     * </pre>
-     */
     @JsonProperty(value = "DataList")
-    private List<NovelInfoVO> ranksData;
+    private List<HotWordsInfoVO> words;
 
-    /**
-     * <pre>
-     * 总页数
-     * </pre>
-     */
     @JsonProperty(value = "TotalPage")
     private BigDecimal totalPage;
 }

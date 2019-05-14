@@ -37,4 +37,6 @@ public interface NovelInfoRepository extends JpaRepository<NovelInfo, String> {
     Integer findCountByCategoryENText(String categoryENText);
 
     Page<NovelInfo> findAllByTitleLikeOrAuthorLike(Pageable pageable, String keyWords);
+
+    Page<NovelInfo> findByNovelStatusAndCategoryTypeIn(Integer novelStatus, Pageable pageable, List<Integer> categoryTypes);
 }

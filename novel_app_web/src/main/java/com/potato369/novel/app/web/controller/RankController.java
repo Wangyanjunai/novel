@@ -16,10 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,13 +47,15 @@ public class RankController {
 
     @GetMapping(value = "/{category}/{name}")
     public ResultVO<RankVO> getRanks(@PathVariable(name = "category") String category,
-                                     @PathVariable(name="name") String name) {
+                                     @PathVariable(name="name") String name,
+                                     @RequestParam(name = "page", defaultValue = "1") Integer page,
+                                     @RequestParam(name = "size", defaultValue = "100") Integer size) {
         ResultVO<RankVO> rankVOResultVO = new ResultVO<>();
         try {
             if (log.isDebugEnabled()) {
                 log.debug("start====================获取排行数据====================start");
             }
-            rankVOResultVO.setData(getData(category, name));
+            rankVOResultVO.setData(getData(category, name, page, size));
             rankVOResultVO.setCode(0);
             rankVOResultVO.setMsg("返回数据成功");
             return rankVOResultVO;
@@ -68,37 +69,37 @@ public class RankController {
         }
     }
 
-    public RankVO getData(String category, String name) {
+    public RankVO getData(String category, String name, Integer page, Integer size) {
         RankVO rankVO = RankVO.builder().build();
-        String title = null;
-        String shortTitle = null;
+//        String title = null;
+//        String shortTitle = null;
         Sort sort = null;
         List<Integer> categoryTypeList = new ArrayList<>();
         if (StringUtils.isNotEmpty(name)) {
             if ("hotTop100".equals(name)){
-                title = "追书最热榜 Top100";
-                shortTitle = "最热榜";
+//                title = "追书最热榜 Top100";
+//                shortTitle = "最热榜";
                 sort = new Sort(Sort.Direction.DESC, "readers");
             }
             if ("loveTop100".equals(name)){
-                title = "好评榜 Top100";
-                shortTitle = "好评榜";
+//                title = "好评榜 Top100";
+//                shortTitle = "好评榜";
                 sort = new Sort(Sort.Direction.DESC, "recentReaders");
             }
             if ("searchTop100".equals(name)){
-                title = "热搜榜 Top100";
-                shortTitle = "热搜榜";
+//                title = "热搜榜 Top100";
+//                shortTitle = "热搜榜";
                 sort = new Sort(Sort.Direction.DESC, "clickNumber");
             }
             if ("retentionTop100".equals(name)){
-                title = "读者留存率 Top100";
-                shortTitle = "最热榜";
+//                title = "读者留存率 Top100";
+//                shortTitle = "最热榜";
                 sort = new Sort(Sort.Direction.DESC, "retention");
             }
         }
-        rankVO.setTitle(title);
-        rankVO.setShortTitle(shortTitle);
-        PageRequest pageRequest = new PageRequest(0, 100, sort);
+//        rankVO.setTitle(title);
+//        rankVO.setShortTitle(shortTitle);
+        PageRequest pageRequest = new PageRequest(page - 1, size, sort);
         String typeId = null;
         if (StringUtils.isNotEmpty(category)) {
             typeId = BeanUtil.getId(category);
@@ -117,6 +118,7 @@ public class RankController {
             }
         }
         rankVO.setRanksData(novelInfoVOList);
+        rankVO.setTotalPage(new BigDecimal(novelInfoPage.getTotalPages()));
         return rankVO;
     }
 }

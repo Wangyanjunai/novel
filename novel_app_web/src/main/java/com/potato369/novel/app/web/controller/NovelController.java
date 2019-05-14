@@ -3,10 +3,13 @@ package com.potato369.novel.app.web.controller;
 import com.potato369.novel.app.web.converter.NovelInfo2NovelInfoVOConverter;
 import com.potato369.novel.app.web.utils.ResultVOUtil;
 import com.potato369.novel.app.web.vo.*;
+import com.potato369.novel.basic.dataobject.HotWordsInfo;
 import com.potato369.novel.basic.dataobject.NovelCategory;
 import com.potato369.novel.basic.dataobject.NovelChapter;
 import com.potato369.novel.basic.dataobject.NovelInfo;
+import com.potato369.novel.basic.enums.NovelInfoEnum;
 import com.potato369.novel.basic.service.CategoryService;
+import com.potato369.novel.basic.service.HotWordsInfoService;
 import com.potato369.novel.basic.service.NovelChapterService;
 import com.potato369.novel.basic.service.NovelInfoService;
 import com.potato369.novel.basic.utils.BeanUtil;
@@ -51,6 +54,9 @@ public class NovelController {
     @Autowired
     private CategoryService categoryService;
 
+	@Autowired
+    private HotWordsInfoService hotWordsInfoService;
+
     @GetMapping(value = "/home/hot/{categoryType}")//近期热门
     public ResultVO<HomeDataVO> homeHot(
     		@PathVariable(name="categoryType") String categoryType,
@@ -61,7 +67,7 @@ public class NovelController {
                 log.debug("【后台小说接口】start==================获取推荐页面数据=====================start");
 				log.debug("【后台小说接口】获取推荐页面categoryType={}", categoryType);
             }
-    		return ResultVOUtil.success(getData(BeanUtil.getId(categoryType), new PageRequest(page-1, size, new Sort(Sort.Direction.DESC, "retention")), page));
+    		return ResultVOUtil.success(getData(BeanUtil.getId(categoryType), new PageRequest(page-1, size, new Sort(Sort.Direction.DESC, "retention"))));
 		} catch (Exception e) {
 			log.error("获取推荐首页页面数据失败", e);
 			return ResultVOUtil.error(-1, "返回数据失败");
@@ -82,7 +88,7 @@ public class NovelController {
 				log.debug("【后台小说接口】start==================获取主页主编推荐数据=====================start");
 				log.debug("【后台小说接口】获取推荐页面categoryType={}", categoryType);
 			}
-			return ResultVOUtil.success(getData(BeanUtil.getId(categoryType), new PageRequest(page-1, size, new Sort(Sort.Direction.DESC, "clickNumber")), page));
+			return ResultVOUtil.success(getData(BeanUtil.getId(categoryType), new PageRequest(page-1, size, new Sort(Sort.Direction.DESC, "clickNumber"))));
 		} catch (Exception e) {
 			log.error("获取主页主编推荐数据失败", e);
 			return ResultVOUtil.error(-1, "返回数据失败");
@@ -103,7 +109,7 @@ public class NovelController {
 				log.debug("【后台小说接口】start==================获取主页最近更新推荐页面数据=====================start");
 				log.debug("【后台小说接口】获取推荐页面categoryType={}", categoryType);
 			}
-			return ResultVOUtil.success(getData(BeanUtil.getId(categoryType), new PageRequest(page-1, size, new Sort(Sort.Direction.DESC, "updateTime")), page));
+			return ResultVOUtil.success(getData(BeanUtil.getId(categoryType), new PageRequest(page-1, size, new Sort(Sort.Direction.DESC, "updateTime"))));
 		} catch (Exception e) {
 			log.error("获取主页最近更新推荐页面数据失败", e);
 			return ResultVOUtil.error(-1, "返回数据失败");
@@ -124,7 +130,7 @@ public class NovelController {
 				log.debug("【后台小说接口】start==================获取主页爽文推荐页面数据=====================start");
 				log.debug("【后台小说接口】获取推荐页面categoryType={}", categoryType);
 			}
-			return ResultVOUtil.success(getData(BeanUtil.getId(categoryType), new PageRequest(page-1, size, new Sort(Sort.Direction.DESC, "recentReaders")), page));
+			return ResultVOUtil.success(getData(BeanUtil.getId(categoryType), new PageRequest(page-1, size, new Sort(Sort.Direction.DESC, "recentReaders"))));
 		} catch (Exception e) {
 			log.error("获取主页爽文推荐页面数据失败", e);
 			return ResultVOUtil.error(-1, "返回数据失败");
@@ -230,13 +236,49 @@ public class NovelController {
 			}
 		}
     }
+
+
+    @GetMapping(value = "/book/hotWords-search")//热词搜索，大家都在搜
+    public ResultVO<WordsVO> hotWordsSearch(@RequestParam(name = "page", defaultValue = "1", required = true) Integer page,
+											@RequestParam(name = "size", defaultValue = "20", required = true) Integer size) {
+		ResultVO<WordsVO> wordsVOResultVO = new ResultVO<>();
+		WordsVO wordsVO = WordsVO.builder().build();
+		try {
+			if (log.isDebugEnabled()) {
+				log.debug("【后台小说接口】start==================获取搜索热词数据==================start");
+			}
+			Sort sort = new Sort(Sort.Direction.DESC, "times");
+			PageRequest request = new PageRequest(page - 1, size, sort);
+			Page<HotWordsInfo> hotWordsInfoPage = hotWordsInfoService.findAll(request);
+			wordsVO.setTotalPage(new BigDecimal(hotWordsInfoPage.getTotalPages()));
+			List<HotWordsInfoVO> hotWordsInfoVOList = new ArrayList<>();
+			for (HotWordsInfo hotWordsInfo:hotWordsInfoPage.getContent()) {
+				HotWordsInfoVO hotWordsInfoVO = HotWordsInfoVO.builder().build();
+				BeanUtils.copyProperties(hotWordsInfo, hotWordsInfoVO);
+				hotWordsInfoVOList.add(hotWordsInfoVO);
+			}
+			wordsVO.setWords(hotWordsInfoVOList);
+			wordsVOResultVO.setData(wordsVO);
+			wordsVOResultVO.setCode(0);
+			wordsVOResultVO.setMsg("返回数据成功");
+			return wordsVOResultVO;
+		} catch (Exception e) {
+			log.error("获取搜索热词数据出现错误", e);
+			return ResultVOUtil.error(-1, "返回数据失败");
+		} finally {
+			if (log.isDebugEnabled()) {
+				log.debug("【后台小说接口】end====================获取搜索热词数据====================end");
+			}
+		}
+	}
+
     /**
      * <pre>
      * 搜索接口
      * </pre>
      */
-    @GetMapping(value = "/info/search/{keyWords}")//搜索接口
-    public ResultVO<List<NovelInfoVO>> search(@PathVariable(name = "keyWords") String keyWords,
+    @GetMapping(value = "/book/fuzzy-search")//模糊搜索
+    public ResultVO<List<NovelInfoVO>> fuzzySearch(@PathVariable(name = "keyWords") String keyWords,
                                               @RequestParam(name = "page", defaultValue = "1") Integer page,
                                               @RequestParam(name = "size", defaultValue = "10") Integer size) {//搜索接口
         try {
@@ -260,22 +302,56 @@ public class NovelController {
         }
     }
 
-    private HomeDataVO getData(String typeId, PageRequest pageRequest, Integer page) {
+    @GetMapping(value = "/book/finshed/{categoryType}")
+	public ResultVO<HomeDataVO> finsh(@PathVariable(name = "categoryType") String categoryType,
+									  @RequestParam(name = "page", defaultValue = "1") Integer page,
+									  @RequestParam(name = "size", defaultValue = "40") Integer size) {
+		try {
+			if (log.isDebugEnabled()) {
+				log.debug("【小说后台接口】start====================查询小说状态为已完成的数据====================start");
+			}
+			return ResultVOUtil.success(getData1(NovelInfoEnum.NOVEL_STATUS_FINISHED.getCode(), BeanUtil.getId(categoryType), new PageRequest(page - 1, size, new Sort(Sort.Direction.DESC, "createTime", "retention"))));
+		} catch (Exception e) {
+			log.error("查询小说状态为已完成的数据失败", e);
+			return ResultVOUtil.error(-1, "返回数据失败");
+		} finally {
+			if (log.isDebugEnabled()) {
+				log.debug("【小说后台接口】end======================查询小说状态为已完成的数据======================end");
+			}
+		}
+	}
+
+	@GetMapping(value = "/book/update/{categoryType}")
+	public ResultVO<HomeDataVO> update(@PathVariable(name = "categoryType") String categoryType,
+									  @RequestParam(name = "page", defaultValue = "1") Integer page,
+									  @RequestParam(name = "size", defaultValue = "10") Integer size) {
+		try {
+			if (log.isDebugEnabled()) {
+				log.debug("【小说后台接口】start====================查询小说状态为已完成的数据====================start");
+			}
+			return ResultVOUtil.success(getData1(NovelInfoEnum.NOVEL_STATUS_UPDATING.getCode(), BeanUtil.getId(categoryType), new PageRequest(page - 1, size, new Sort(Sort.Direction.DESC, "updateTime",  "clickNumber"))));
+		} catch (Exception e) {
+			log.error("查询小说状态为已完成的数据失败", e);
+			return ResultVOUtil.error(-1, "返回数据失败");
+		} finally {
+			if (log.isDebugEnabled()) {
+				log.debug("【小说后台接口】end======================查询小说状态为已完成的数据======================end");
+			}
+		}
+	}
+
+    private HomeDataVO getData(String typeId, PageRequest pageRequest) {
 		HomeDataVO homeDataVO = HomeDataVO.builder().build();
     	List<NovelInfoVO> data = new ArrayList<>();
     	List<Integer> categoryTypeList = new ArrayList<>();
-		BigDecimal total = BigDecimal.ZERO;
 		BigDecimal totalPage = BigDecimal.ZERO;
-		BigDecimal currentPage = BigDecimal.ZERO;
     	if (StringUtils.isNotEmpty(typeId)) {
 			List<NovelCategory> categoryList = categoryService.findByParentCategoryId(typeId);
 			for (NovelCategory c:categoryList) {
 				categoryTypeList.add(c.getCategoryType());
 			}
 			Page<NovelInfo> novelInfoPage = novelInfoService.findNovelInfoByCategoryTypeIn(pageRequest, categoryTypeList);
-			total = new BigDecimal(novelInfoPage.getTotalElements());
 			totalPage = new BigDecimal(novelInfoPage.getTotalPages());
-			currentPage = new BigDecimal(page);
 			for (NovelInfo novelInfo: novelInfoPage.getContent()) {
 				NovelInfoVO novelInfoVO = NovelInfoVO.builder().build();
 				BeanUtils.copyProperties(novelInfo, novelInfoVO);
@@ -283,9 +359,30 @@ public class NovelController {
 			}
 		}
 		homeDataVO.setList(data);
-//    	homeDataVO.setTotal(total);
 		homeDataVO.setTotalPage(totalPage);
-//		homeDataVO.setCurrentPage(currentPage);
     	return homeDataVO;
     }
+
+	private HomeDataVO getData1(Integer status, String typeId, PageRequest pageRequest) {
+		HomeDataVO homeDataVO = HomeDataVO.builder().build();
+		List<NovelInfoVO> data = new ArrayList<>();
+		List<Integer> categoryTypeList = new ArrayList<>();
+		BigDecimal totalPage = BigDecimal.ZERO;
+		if (StringUtils.isNotEmpty(typeId)) {
+			List<NovelCategory> categoryList = categoryService.findByParentCategoryId(typeId);
+			for (NovelCategory c:categoryList) {
+				categoryTypeList.add(c.getCategoryType());
+			}
+			Page<NovelInfo> novelInfoPage = novelInfoService.findByNovelStatusAndCategoryTypeIn(status, pageRequest, categoryTypeList);
+			totalPage = new BigDecimal(novelInfoPage.getTotalPages());
+			for (NovelInfo novelInfo: novelInfoPage.getContent()) {
+				NovelInfoVO novelInfoVO = NovelInfoVO.builder().build();
+				BeanUtils.copyProperties(novelInfo, novelInfoVO);
+				data.add(novelInfoVO);
+			}
+		}
+		homeDataVO.setList(data);
+		homeDataVO.setTotalPage(totalPage);
+		return homeDataVO;
+	}
 }

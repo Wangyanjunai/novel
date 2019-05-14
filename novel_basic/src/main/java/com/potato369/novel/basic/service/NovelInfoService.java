@@ -111,4 +111,7 @@ public interface NovelInfoService {
 
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     Page<NovelInfo> findAllByTitleLikeOrAuthorLike(Pageable pageable, String keyWords);
+
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    Page<NovelInfo> findByNovelStatusAndCategoryTypeIn(Integer novelStatus, Pageable pageable, List<Integer> categoryTypes);
 }
