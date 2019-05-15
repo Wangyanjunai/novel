@@ -217,12 +217,11 @@ public class NovelController {
 			if (log.isDebugEnabled()) {
 				log.debug("【后台小说接口】start====================获取小说内容数据====================start");
 			}
-			NovelChapter NovelChapter = novelChapterService.selectByNovelIdAndIndex(novelId, index);
+			NovelChapter chapter = novelChapterService.selectByNovelIdAndIndex(novelId, index);
 			NovelChapterTitleAndContentVO contentVO = NovelChapterTitleAndContentVO.builder().build();
-			contentVO.setTitle(NovelChapter.getTitle());
-			contentVO.setContent(NovelChapter.getContent());
-			contentVO.setId(NovelChapter.getId());
-			contentVO.setIndex(NovelChapter.getIndex());
+			if (chapter != null) {
+				BeanUtils.copyProperties(chapter, contentVO);
+			}
 			resultVO.setCode(0);
 			resultVO.setData(contentVO);
 			resultVO.setMsg("返回数据成功");
@@ -236,7 +235,6 @@ public class NovelController {
 			}
 		}
     }
-
 
     @GetMapping(value = "/book/hotWords-search")//热词搜索，大家都在搜
     public ResultVO<WordsVO> hotWordsSearch(@RequestParam(name = "page", defaultValue = "1", required = true) Integer page,
