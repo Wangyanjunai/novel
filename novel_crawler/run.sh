@@ -16,7 +16,26 @@ echo '开始启动sell测试项目……'
 cd ./sell/target/
 echo '启动sell测试项目中……'
 kill -9 `pidof java`
-nohup java -Dhttps.protocols=TLSv1.2 -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms125m -Xmx250m -Xmn250m -Xss250k -server -XX:+HeapDumpOnOutOfMemoryError -XX:PermSize=64m -XX:MaxPermSize=256m -jar novel_crawler.jar --spring.profiles.active=prod1 -verbose:class &
+
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms128m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -jar crawler.jar --spring.profiles.active=prod0 -verbose:class &
+
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms128m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -jar crawler.jar --spring.profiles.active=prod1 -verbose:class &
+
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms128m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -jar crawler.jar --spring.profiles.active=prod2 -verbose:class &
+
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms128m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -jar crawler.jar --spring.profiles.active=prod3 -verbose:class &
+
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms128m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -jar crawler.jar --spring.profiles.active=prod4 -verbose:class &
+
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms128m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -jar crawler.jar --spring.profiles.active=prod5 -verbose:class &
+
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms128m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -jar crawler.jar --spring.profiles.active=prod6 -verbose:class &
+
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms128m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -jar crawler.jar --spring.profiles.active=prod7 -verbose:class &
+
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms128m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -jar crawler.jar --spring.profiles.active=prod8 -verbose:class &
+
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms128m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -jar crawler.jar --spring.profiles.active=prod9 -verbose:class &
 echo '结束启动sell测试项目……'
 echo $?
 exit

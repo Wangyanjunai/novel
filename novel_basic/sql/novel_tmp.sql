@@ -132,13 +132,13 @@ CREATE TABLE `novel_menu_info` (
 -- ----------------------------
 DROP TABLE IF EXISTS `novel_shelf`;
 CREATE TABLE `novel_shelf` (
-  `user_id` varchar(32) NOT NULL COMMENT '用户id。',
-  `novel_id` varchar(32) NOT NULL COMMENT '小说id。',
+  `user_id` varchar(32) NOT NULL COMMENT '用户id，联合主键。',
+  `novel_id` varchar(32) NOT NULL COMMENT '小说id，联合主键。',
   `chapter_id` varchar(32) NULL default  NULL COMMENT '已经阅读到的章节id。',
-  `chapter_index` smallint(6) unsigned NULL default  NULL COMMENT '已经阅读到的章节索引',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`user_id`,`novel_id`) USING BTREE
+  `chapter_index` smallint(6) unsigned NULL default  NULL COMMENT '已经阅读到的章节索引。',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间。',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间。',
+  PRIMARY KEY (`user_id`, `novel_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='小说用户书架信息数据记录表';
 
 -- ----------------------------

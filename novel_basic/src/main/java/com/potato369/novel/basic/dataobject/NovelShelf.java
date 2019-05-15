@@ -6,10 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.persistence.IdClass;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -40,6 +38,7 @@ public class NovelShelf implements Serializable {
      * @serialField menuId：主键，公众号自定义菜单id。
      * </pre>
      */
+    @Id
     @Column(name = "user_id", nullable = false, length = 32)
     private String userId;
 
@@ -48,6 +47,7 @@ public class NovelShelf implements Serializable {
      * @serialField novelId：小说id。
      * </pre>
      */
+    @Id
     @Column(name = "novel_id", nullable = false, length = 32)
     private String novelId;
 

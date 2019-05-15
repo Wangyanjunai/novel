@@ -272,26 +272,48 @@ public class NovelController {
 		}
 	}
 
+	@GetMapping(value = "/book/hotWords-add")//热词添加接口
+	public ResultVO<WordsVO> hotWordsAdd(@RequestParam(name = "hotWords", required = true) String hotWords) {
+		ResultVO<WordsVO> wordsVOResultVO = new ResultVO<>();
+		WordsVO wordsVO = WordsVO.builder().build();
+		try {
+			if (log.isDebugEnabled()) {
+				log.debug("【后台小说接口】start==================热词添加==================start");
+			}
+			return wordsVOResultVO;
+		} catch (Exception e) {
+			log.error("热词添加出现错误", e);
+			return ResultVOUtil.error(-1, "返回数据失败");
+		} finally {
+			if (log.isDebugEnabled()) {
+				log.debug("【后台小说接口】end====================热词添加====================end");
+			}
+		}
+	}
+
     /**
      * <pre>
      * 搜索接口
      * </pre>
      */
     @GetMapping(value = "/book/fuzzy-search")//模糊搜索
-    public ResultVO<List<NovelInfoVO>> fuzzySearch(@PathVariable(name = "keyWords") String keyWords,
+    public ResultVO<FuzzySearchVO> fuzzySearch(@RequestParam(name = "keyWords") String keyWords,
                                               @RequestParam(name = "page", defaultValue = "1") Integer page,
                                               @RequestParam(name = "size", defaultValue = "10") Integer size) {//搜索接口
         try {
-           List<NovelInfoVO> novelInfoVOList = new ArrayList<>();
+            List<NovelInfoVO> novelInfoVOList = new ArrayList<>();
+			FuzzySearchVO fuzzySearchVO = FuzzySearchVO.builder().build();
            if (log.isDebugEnabled()) {
                log.debug("【后台小说接口】end====================获取搜索的小说内容数据====================end");
                log.debug("搜索关键字keyWords={}", keyWords);
            }
-           Sort sort = new Sort(Sort.Direction.DESC, "createTime","retention");
-           PageRequest pageRequest = new PageRequest(page-1, size, sort);
-           Page<NovelInfo> novelInfoPage = novelInfoService.findAllByTitleLikeOrAuthorLike(pageRequest, keyWords);
+           Sort sort = new Sort(Sort.Direction.DESC, "title", "author", "retention", "createTime");
+           PageRequest pageRequest = new PageRequest(page - 1, size, sort);
+           Page<NovelInfo> novelInfoPage = novelInfoService.findByAuthorContainsOrTitleContains(keyWords, pageRequest);
            novelInfoVOList = NovelInfo2NovelInfoVOConverter.convertNovelInfoVOPage(novelInfoPage, pageRequest).getContent();
-           return ResultVOUtil.success(novelInfoVOList);
+			fuzzySearchVO.setNovelInfoVOList(novelInfoVOList);
+			fuzzySearchVO.setTotalPage(new BigDecimal(novelInfoPage.getTotalPages()));
+           return ResultVOUtil.success(fuzzySearchVO);
         }catch (Exception e) {
             log.error("获取搜索的小说内容数据出现错误", e);
             return ResultVOUtil.error(-1, "返回数据错误");

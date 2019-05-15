@@ -4,6 +4,8 @@ import com.potato369.novel.basic.dataobject.NovelInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
 import java.util.List;
 
 /**
@@ -36,7 +38,10 @@ public interface NovelInfoRepository extends JpaRepository<NovelInfo, String> {
 
     Integer findCountByCategoryENText(String categoryENText);
 
-    Page<NovelInfo> findAllByTitleLikeOrAuthorLike(Pageable pageable, String keyWords);
+    Page<NovelInfo> findByTitleLikeOrAuthorLike(Pageable pageable, String word);
 
     Page<NovelInfo> findByNovelStatusAndCategoryTypeIn(Integer novelStatus, Pageable pageable, List<Integer> categoryTypes);
+
+    @Query(value = "select n from NovelInfo n where 1 = 1 and n.title =?1 or n.author =?1 or (n.title like concat(concat('%', ?1), '%')) or (n.author like concat(concat('%', ?1), '%'))")
+    Page<NovelInfo> findByAuthorOrTitle(String words, Pageable pageable);
 }
