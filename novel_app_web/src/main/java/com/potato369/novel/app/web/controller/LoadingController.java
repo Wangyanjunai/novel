@@ -78,22 +78,22 @@ public class LoadingController {
      * @apiSuccess (200) {int} code 消息代码   0-代表无错误， 1-代表有错误 必须
      * @apiSuccess (200) {String} msg 信息
      * @apiSuccessExample {json} 正确返回样例:
-     *                    {
-     *                    	"code":"0", 
-     *                    	"msg":"返回数据成功", 
-     *                    	"data":{
-     *                    		"id":"123456",
-     *                    		"tag":"0",
-     *                    		"imageUrl":"https://encrypted-tbn2.gstatic.cn/shopping?q=tbn:ANd9GcQj-B2D8AM-Xyj-d2S8FwG2D5uv1q5-lKvsBEb0fA2ehzNeApn0zio&usqp=CAI",
-     *                    		"linkUrl":"https://www.googleadservices.com/pagead/aclk?sa=L&ai=CiTcEf9y3XNGxJsXgqAG7pZ9gnPXLm1amnrqQ_gWOmsjQlQIQASCfgc8mYJ0BoAHu7ND8A8gBCakCsGue910RhD6oAwHIA0qqBLgBT9DzkII6pz7jzyXsO4LcTNaBIV0xy-TamnaGNI8OeZZdoFha4AUp4QxRe-8dsFrYhOVNNREps-TPkJcKLpwAVnOAuBjbT6rCTRiZjaFt-bC9qSYzlln5RD_Qqyr-6M6cr-AHX-j9glgMX_d6Qa2wxTQjarrx4x_zULHDR0EyfETh6LG2xHwyH_jL5QXVpgLaUa0skeK0kVMp8tQZctlAZFIfJve6nu78g6PyWYCqGvUX3nKPkx-1a_oFBgglEAEYAKAGLoAH-pKvA6gHjs4bqAfg0xuoB9nLG6gHz8wbqAemvhvYBwDACAHSCAcIgGEQARgGgAoB2BMM&ae=1&num=1&cid=CAASEuRoArAhN__fu9CKZoCo0CkD5g&sig=AOD64_2aLRsq6uKaYpEQf5EfsTMuj7jXgw&client=ca-pub-1901018673541035&adurl=https://union-click.jd.com/sem.php%3Fsource%3Dgoogle-union%26unionId%3D262767352%26siteId%3Dgoogleunion_217522390047%26to%3Dhttps://re.jd.com/item/2853250.html%253Fre_dcp%3D22um2D2ZOw%26gclid%3DEAIaIQobChMIke2pgsjY4QIVRTAqCh270gcMEAEYASABEgJumPD_BwE"
-     *                    	}
-     *                    }
+     * {
+     * "code":"0",
+     * "msg":"返回数据成功",
+     * "data":{
+     * "id":"123456",
+     * "tag":"0",
+     * "imageUrl":"https://encrypted-tbn2.gstatic.cn/shopping?q=tbn:ANd9GcQj-B2D8AM-Xyj-d2S8FwG2D5uv1q5-lKvsBEb0fA2ehzNeApn0zio&usqp=CAI",
+     * "linkUrl":"https://www.googleadservices.com/pagead/aclk?sa=L&ai=CiTcEf9y3XNGxJsXgqAG7pZ9gnPXLm1amnrqQ_gWOmsjQlQIQASCfgc8mYJ0BoAHu7ND8A8gBCakCsGue910RhD6oAwHIA0qqBLgBT9DzkII6pz7jzyXsO4LcTNaBIV0xy-TamnaGNI8OeZZdoFha4AUp4QxRe-8dsFrYhOVNNREps-TPkJcKLpwAVnOAuBjbT6rCTRiZjaFt-bC9qSYzlln5RD_Qqyr-6M6cr-AHX-j9glgMX_d6Qa2wxTQjarrx4x_zULHDR0EyfETh6LG2xHwyH_jL5QXVpgLaUa0skeK0kVMp8tQZctlAZFIfJve6nu78g6PyWYCqGvUX3nKPkx-1a_oFBgglEAEYAKAGLoAH-pKvA6gHjs4bqAfg0xuoB9nLG6gHz8wbqAemvhvYBwDACAHSCAcIgGEQARgGgAoB2BMM&ae=1&num=1&cid=CAASEuRoArAhN__fu9CKZoCo0CkD5g&sig=AOD64_2aLRsq6uKaYpEQf5EfsTMuj7jXgw&client=ca-pub-1901018673541035&adurl=https://union-click.jd.com/sem.php%3Fsource%3Dgoogle-union%26unionId%3D262767352%26siteId%3Dgoogleunion_217522390047%26to%3Dhttps://re.jd.com/item/2853250.html%253Fre_dcp%3D22um2D2ZOw%26gclid%3DEAIaIQobChMIke2pgsjY4QIVRTAqCh270gcMEAEYASABEgJumPD_BwE"
+     * }
+     * }
      * @apiError {json} 错误返回样例:
-     *					  {
-     *                    	"code":"1", 
-     *                    	"msg":"返回数据失败，服务器故障", 
-     *                    	"data":null
-     *                    }                 
+     * {
+     * "code":"1",
+     * "msg":"返回数据失败，服务器故障",
+     * "data":null
+     * }
      */
     @GetMapping(value = "/getData/app/{categoryType}")
     public ResultVO<LoadingDataVO> getData(@PathVariable(name = "categoryType") String categoryType) {
@@ -120,7 +120,7 @@ public class LoadingController {
                 log.debug("【急速追书后台APP接口】结束查找首页初始加载的广告信息");
             }
         }
-    	return ResultVOUtil.success(loadingDataVOs);
+        return ResultVOUtil.success(loadingDataVOs);
     }
 
     private List<LoadingDataVO> getBannerAdDataVOs(Integer tag1, Integer tag2, Integer size, String typeId) {

@@ -30,4 +30,24 @@ public class HotWordsInfoServiceImpl implements HotWordsInfoService {
     public Page<HotWordsInfo> findAll(PageRequest pageRequest) {
         return repository.findAll(pageRequest);
     }
+
+    @Override
+    public String findByWord(String words) {
+        return repository.selectWord(words);
+    }
+
+    @Override
+    public HotWordsInfo findByWordId(String wordId) {
+        return repository.findOne(wordId);
+    }
+
+    @Override
+    public HotWordsInfo save(HotWordsInfo hotWordsInfo) {
+        return repository.save(hotWordsInfo);
+    }
+
+    @Override
+    public HotWordsInfo update(HotWordsInfo hotWordsInfo) {
+        return repository.saveAndFlush(hotWordsInfo);
+    }
 }

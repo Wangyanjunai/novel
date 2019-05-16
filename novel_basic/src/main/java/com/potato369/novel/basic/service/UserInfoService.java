@@ -2,6 +2,7 @@ package com.potato369.novel.basic.service;
 
 import java.util.List;
 
+import com.potato369.novel.basic.dataobject.NovelUserInfoIdClass;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
@@ -48,7 +49,7 @@ public interface UserInfoService {
      */
     @Modifying
     @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    void del(String id) throws Exception;
+    void del(NovelUserInfoIdClass id) throws Exception;
 
     /**
      * 修改用户信息
@@ -65,7 +66,7 @@ public interface UserInfoService {
      * @return
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    NovelUserInfo findById(String id) throws Exception;
+    NovelUserInfo findById(NovelUserInfoIdClass id) throws Exception;
 
     /**
      * 根据openid查找用户信息

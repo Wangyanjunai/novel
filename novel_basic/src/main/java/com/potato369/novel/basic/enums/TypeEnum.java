@@ -28,7 +28,9 @@ public enum TypeEnum implements CodeEnum<Object>{
 	EDIT("62ae83410ed64850bb3d334845d83bdb", 5, "edit", "主编推荐"),
 	NEWEST("62ae83410ed64850bb3d334845d83bdc", 6, "newest", "新书推荐"),
 	HANDSOME("62ae83410ed64850bb3d334845d83bde", 7, "handsome", "爽文推荐"),
-	DEFAULT("62ae83410ed64850bb3d334845d83bdf", 8, "all", "所有")
+	DEFAULT("62ae83410ed64850bb3d334845d83bdf", 8, "all", "所有"),
+	NOT_IS_NEW("82ae83410ed64850bb3d334845d83adf",1,"not is new","已有的搜索热词"),
+	IS_NEW("82ae83410ed64850bb3d334845d83adg",0,"is new","新建的搜索热词"),
 	;
 	
 	private String id;

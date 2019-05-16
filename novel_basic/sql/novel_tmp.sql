@@ -131,42 +131,80 @@ CREATE TABLE `novel_menu_info` (
 -- Table structure for novel_shelf
 -- ----------------------------
 DROP TABLE IF EXISTS `novel_shelf`;
-CREATE TABLE `novel_shelf` (
-  `user_id` varchar(32) NOT NULL COMMENT '用户id，联合主键。',
-  `novel_id` varchar(32) NOT NULL COMMENT '小说id，联合主键。',
-  `chapter_id` varchar(32) NULL default  NULL COMMENT '已经阅读到的章节id。',
-  `chapter_index` smallint(6) unsigned NULL default  NULL COMMENT '已经阅读到的章节索引。',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间。',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间。',
-  PRIMARY KEY (`user_id`, `novel_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='小说用户书架信息数据记录表';
+CREATE TABLE `novel_shelf`  (
+    `shelf_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '小说id，联合主键。',
+    `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户id，联合主键。',
+    `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间。',
+    `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间。',
+    PRIMARY KEY (`shelf_id`, `user_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '书架信息数据记录表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of novel_shelf
+-- ----------------------------
+INSERT INTO `novel_shelf` VALUES ('qda1adbab1214abda103fdc8fe97ed8a', '036a16dd9a8645f48dff1fd96af07877', '2019-05-16 17:46:25', '2019-05-16 17:46:25');
+INSERT INTO `novel_shelf` VALUES ('qda1adbab1214abda103fdc8fe97ed8d', '06cf9355f3e1470d8491db6d0dd64416', '2019-05-16 17:47:24', '2019-05-16 17:47:31');
+INSERT INTO `novel_shelf` VALUES ('qda1adbab1214abda103fdc8fe97ed8e', '060d7ffef8c945a09f6bfee10ca374bf', '2019-05-16 17:46:59', '2019-05-16 17:46:59');
+
+-- ----------------------------
+-- Table structure for novel_shelf_detail
+-- ----------------------------
+DROP TABLE IF EXISTS `novel_shelf_detail`;
+CREATE TABLE `novel_shelf_detail`  (
+   `shelf_detail_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '书架详情id，联合主键。',
+   `shelf_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '书架id，联合主键。',
+   `novel_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '小说id，联合主键。',
+   `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户id，联合主键。',
+   `chapter_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '已经阅读到的小说章节id。',
+   `chapter_index` smallint(6) UNSIGNED NULL DEFAULT NULL COMMENT '已经阅读到的小说章节索引。',
+   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间。',
+   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间。',
+   PRIMARY KEY (`shelf_detail_id`, `shelf_id`, `novel_id`, `user_id`) USING BTREE,
+   INDEX `key_shelf_id`(`shelf_id`) USING BTREE,
+   INDEX `key_novel_id`(`novel_id`) USING BTREE,
+   INDEX `key_user_id`(`user_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '书架详情记录表。' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of novel_shelf_detail
+-- ----------------------------
+INSERT INTO `novel_shelf_detail` VALUES ('161d7ffef8c945a09f6bfee10ca374bf', 'qda1adbab1214abda103fdc8fe97ed8a', '0057cd19e7ee45c4872c686b5425d697', '036a16dd9a8645f48dff1fd96af07877', '00478777aaa24970aa846363902e17dd', 299, '2019-05-16 17:50:44', '2019-05-16 17:50:44');
+
 
 -- ----------------------------
 -- Table structure for novel_user_info
 -- ----------------------------
 DROP TABLE IF EXISTS `novel_user_info`;
-CREATE TABLE `novel_user_info` (
-  `id` varchar(32) NOT NULL COMMENT '用户id',
-  `openid` varchar(64) DEFAULT '' COMMENT 'openid',
-  `nick_name` varchar(128) DEFAULT '' COMMENT '用户昵称',
-  `gender` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '性别，2-女；1-男；0-未知，默认：“0-未知“',
-  `user_name` varchar(128) DEFAULT '' COMMENT '用户名',
-  `signature` varchar(256) DEFAULT '' COMMENT '签名内容',
-  `alt` varchar(1024) DEFAULT '' COMMENT '个人主页URL',
-  `city` varchar(25) DEFAULT '' COMMENT '城市',
-  `province` varchar(25) DEFAULT '' COMMENT '省份',
-  `country` varchar(25) DEFAULT '' COMMENT '国家',
-  `avatar_url` varchar(1024) DEFAULT '' COMMENT '头像URL',
-  `balance` decimal(10,0) unsigned DEFAULT '0' COMMENT '土豆币余额',
-  `charge_amount` decimal(8,2) DEFAULT NULL COMMENT '充值总金额（元）',
-  `shelf_amount` int(11) DEFAULT '0' COMMENT '书架小说总数量',
-  `ip` varchar(25) DEFAULT '' COMMENT '客户端IP',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `login_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '登录时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `key_openid` (`openid`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='用户信息记录表';
+CREATE TABLE `novel_user_info`  (
+    `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '用户id，主键id。',
+    `openid` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '微信openid，或者登录微博账号id，QQ账号id。',
+    `nick_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户微信，QQ，微博昵称。',
+    `gender` tinyint(4) UNSIGNED NOT NULL DEFAULT 0 COMMENT '性别，2-女；1-男；0-未知，默认：“0-未知“。',
+    `user_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户名。',
+    `signature` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '签名内容。',
+    `alt` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '个人主页URL。',
+    `lang` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '语言。',
+    `city` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '城市。',
+    `province` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '省份。',
+    `country` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '国家。',
+    `avatar_url` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '头像URL。',
+    `balance` decimal(10, 0) UNSIGNED NULL DEFAULT 0 COMMENT '土豆币余额。',
+    `charge_amount` decimal(8, 2) NULL DEFAULT NULL COMMENT '充值总金额（元）。',
+    `shelf_amount` int(11) NULL DEFAULT 0 COMMENT '书架小说总数量。',
+    `ip` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '客户端IP。',
+    `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间。',
+    `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间。',
+    `login_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '登录时间。',
+    PRIMARY KEY (`id`) USING BTREE,
+    INDEX `key_openid`(`openid`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息记录表。' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of novel_user_info
+-- ----------------------------
+INSERT INTO `novel_user_info` VALUES ('036a16dd9a8645f48dff1fd96af07877', 'oSkiNvxBVnRuFYmGK88w6n_HP-Bo', '晴天°smile', 1, '晴天°smile', '', 'http://thirdwx.qlogo.cn/mmopen/uxaicsZZrWDQfvY3cEgCXwRuY9WkwuSAicdCC4yOLc8xg7GnPrOicz1tvnayFfCibNYACicwf7HgIA67IKQAA8I23a2ZMZR00EtBH/132', '', '', '', '卢森堡', 'http://thirdwx.qlogo.cn/mmopen/uxaicsZZrWDQfvY3cEgCXwRuY9WkwuSAicdCC4yOLc8xg7GnPrOicz1tvnayFfCibNYACicwf7HgIA67IKQAA8I23a2ZMZR00EtBH/132', 0, 0.00, 0, '183.15.207.190', '2019-05-16 17:38:18', '2019-05-16 17:42:27', '2019-05-16 17:42:27');
+INSERT INTO `novel_user_info` VALUES ('060d7ffef8c945a09f6bfee10ca374bf', 'oSkiNv59X9BMABt8oOW2-OvSvEQY', 'Jackwang', 1, 'Jackwang', '', 'http://thirdwx.qlogo.cn/mmopen/X79cK0ndqvckftHictH9Z03BS9iahsibweSXywMQz3fWM6TyticDmgF0amkuPnCoYHPcpTfJVYLs6dIXwapewPUicwcPuiaNzU5qPj/132', 'zh_CN', '深圳', '广东', '中国', 'http://thirdwx.qlogo.cn/mmopen/X79cK0ndqvckftHictH9Z03BS9iahsibweSXywMQz3fWM6TyticDmgF0amkuPnCoYHPcpTfJVYLs6dIXwapewPUicwcPuiaNzU5qPj/132', 0, 0.00, 0, '183.15.207.190', '2019-05-16 17:42:18', '2019-05-16 17:43:11', '2019-05-16 17:43:11');
+INSERT INTO `novel_user_info` VALUES ('06cf9355f3e1470d8491db6d0dd64416', 'oSkiNv_pLE0qCc6XcdH14_ndUnZs', 'freebird', 2, 'freebird', '', 'http://thirdwx.qlogo.cn/mmopen/VHU8bI7BOJCiaicFlQMcibdIOfl0Cib0HBwCdwNQr7libJpia5LicwFYUicdIrZgMp4YUHjQ0hr6pCLRtyiaerSHO4icozuMYMJaexD4y5/132', '', '深圳', '广东', '中国', 'http://thirdwx.qlogo.cn/mmopen/VHU8bI7BOJCiaicFlQMcibdIOfl0Cib0HBwCdwNQr7libJpia5LicwFYUicdIrZgMp4YUHjQ0hr6pCLRtyiaerSHO4icozuMYMJaexD4y5/132', 0, 0.00, 0, '183.15.207.190', '2019-05-16 17:44:44', '2019-05-16 17:44:48', '2019-05-16 17:44:48');
 
 -- ----------------------------
 -- Table structure for order_detail
@@ -398,7 +436,7 @@ INSERT INTO `product_info` VALUES ('e23b37ef6f874d1ca7ea107c1d0c338a', '3,000书
 INSERT INTO `seller_info` VALUES ('0ed2ba762e364ce790661d86e59b162b', 'Jack', 'b814b812ec4b322e19fae7bb78d4d330', 'oSkiNv4fBXYxidv0wU_U0UDHNP4M', '2019-01-21 17:24:17', '183.14.30.126', '2017-12-17 21:18:22', '2019-01-21 17:24:17');
 
 
-ALTER TABLE `novel_tmp`.`novel_chapter` 
+ALTER TABLE `novel_tmp`.`novel_chapter`
 ADD UNIQUE INDEX `key_chapter_id`(`chapter_id`) USING HASH COMMENT '主键唯一索引。',
 ADD INDEX `idx_chapter_index`(`chapter_index`) USING HASH COMMENT '目录普通索引。',
 ADD INDEX `idx_chapter_title`(`chapter_title`) USING HASH COMMENT '章节标题索引。',

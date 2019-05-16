@@ -19,4 +19,12 @@ import org.springframework.data.domain.PageRequest;
 public interface HotWordsInfoService {
 
     Page<HotWordsInfo> findAll(PageRequest pageRequest);
+
+    String findByWord(String words);
+
+    HotWordsInfo findByWordId(String wordId);
+
+    HotWordsInfo save(HotWordsInfo hotWordsInfo);
+
+    HotWordsInfo update(HotWordsInfo hotWordsInfo);
 }

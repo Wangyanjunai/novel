@@ -47,7 +47,7 @@ public class RankController {
 
     @GetMapping(value = "/{category}/{name}")
     public ResultVO<RankVO> getRanks(@PathVariable(name = "category") String category,
-                                     @PathVariable(name="name") String name,
+                                     @PathVariable(name = "name") String name,
                                      @RequestParam(name = "page", defaultValue = "1") Integer page,
                                      @RequestParam(name = "size", defaultValue = "100") Integer size) {
         ResultVO<RankVO> rankVOResultVO = new ResultVO<>();
@@ -76,22 +76,22 @@ public class RankController {
         Sort sort = null;
         List<Integer> categoryTypeList = new ArrayList<>();
         if (StringUtils.isNotEmpty(name)) {
-            if ("hotTop100".equals(name)){
+            if ("hotTop100".equals(name)) {
 //                title = "追书最热榜 Top100";
 //                shortTitle = "最热榜";
                 sort = new Sort(Sort.Direction.DESC, "readers");
             }
-            if ("loveTop100".equals(name)){
+            if ("loveTop100".equals(name)) {
 //                title = "好评榜 Top100";
 //                shortTitle = "好评榜";
                 sort = new Sort(Sort.Direction.DESC, "recentReaders");
             }
-            if ("searchTop100".equals(name)){
+            if ("searchTop100".equals(name)) {
 //                title = "热搜榜 Top100";
 //                shortTitle = "热搜榜";
                 sort = new Sort(Sort.Direction.DESC, "clickNumber");
             }
-            if ("retentionTop100".equals(name)){
+            if ("retentionTop100".equals(name)) {
 //                title = "读者留存率 Top100";
 //                shortTitle = "最热榜";
                 sort = new Sort(Sort.Direction.DESC, "retention");
@@ -105,13 +105,13 @@ public class RankController {
             typeId = BeanUtil.getId(category);
         }
         List<NovelCategory> categoryList = categoryService.findByParentCategoryId(typeId);
-        for (NovelCategory c:categoryList) {
+        for (NovelCategory c : categoryList) {
             categoryTypeList.add(c.getCategoryType());
         }
         Page<NovelInfo> novelInfoPage = novelInfoService.findNovelInfoByCategoryTypeIn(pageRequest, categoryTypeList);
         List<NovelInfoVO> novelInfoVOList = new ArrayList<>();
         if (novelInfoPage != null && novelInfoPage.getTotalElements() > 0) {
-            for(NovelInfo novelInfo:novelInfoPage.getContent()) {
+            for (NovelInfo novelInfo : novelInfoPage.getContent()) {
                 NovelInfoVO novelInfoVO = NovelInfoVO.builder().build();
                 BeanUtils.copyProperties(novelInfo, novelInfoVO);
                 novelInfoVOList.add(novelInfoVO);

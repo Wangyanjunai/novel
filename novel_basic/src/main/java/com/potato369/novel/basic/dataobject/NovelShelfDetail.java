@@ -5,13 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
-
 import javax.persistence.*;
-import javax.persistence.IdClass;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.dataobject
@@ -28,11 +24,20 @@ import java.util.List;
 @Builder
 @DynamicUpdate
 @Data
-@Entity(name = "NovelShelf")
+@Entity(name = "NovelShelfDetail")
 @NoArgsConstructor
-@Table(name = "novel_shelf")
-@IdClass(value = NovelShelfIdClass.class)
-public class NovelShelf implements Serializable {
+@Table(name = "novel_shelf_detail")
+@IdClass(value = NovelShelfDetailIdClass.class)
+public class NovelShelfDetail implements Serializable {
+
+    /**
+     * <pre>
+     * @serialField shelfDetailId：联合主键，书架详情id。
+     * </pre>
+     */
+    @Id
+    @Column(name = "shelf_detail_id", nullable = false, length = 32)
+    private String shelfDetailId;
 
     /**
      * <pre>
@@ -51,6 +56,31 @@ public class NovelShelf implements Serializable {
     @Id
     @Column(name = "user_id", nullable = false, length = 32)
     private String userId;
+
+    /**
+     * <pre>
+     * @serialField shelfId：联合主键，小说id。
+     * </pre>
+     */
+    @Id
+    @Column(name = "novel_id", nullable = false, length = 32)
+    private String novelId;
+
+    /**
+     * <pre>
+     * @serialField chapterId：已经阅读到的小说章节id。
+     * </pre>
+     */
+    @Column(name = "chapter_id", nullable = false, length = 32)
+    private String chapterId;
+
+    /**
+     * <pre>
+     * @serialField chapterIndex：已经阅读到的小说章节索引。
+     * </pre>
+     */
+    @Column(name = "chapter_index", nullable = false, length = 6)
+    private Integer chapterIndex;
 
     /**
      * <pre>

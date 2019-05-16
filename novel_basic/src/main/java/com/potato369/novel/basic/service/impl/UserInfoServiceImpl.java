@@ -2,6 +2,7 @@ package com.potato369.novel.basic.service.impl;
 
 import java.util.List;
 
+import com.potato369.novel.basic.dataobject.NovelUserInfoIdClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,7 +58,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public void del(String id) throws Exception{
+    public void del(NovelUserInfoIdClass id) throws Exception{
         repository.delete(id);
     }
 
@@ -79,7 +80,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public NovelUserInfo findById(String id) throws Exception{
+    public NovelUserInfo findById(NovelUserInfoIdClass id) throws Exception{
         return repository.findOne(id);
     }
 
