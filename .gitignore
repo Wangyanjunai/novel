@@ -32,3 +32,4 @@
 .vscode/
 /mvnw
 /mvnw.cmd
+.DS_Store

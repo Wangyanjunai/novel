@@ -15,7 +15,6 @@
 .idea
 .mvn
 .cmd
-.settings
 *.iws
 *.iml
 *.ipr
