@@ -1,6 +1,8 @@
 package com.potato369.novel.app.web.controller;
 
+import com.alibaba.druid.support.json.JSONUtils;
 import com.potato369.novel.app.web.converter.NovelInfo2NovelInfoVOConverter;
+import com.potato369.novel.app.web.dto.ShelfInfoDTO;
 import com.potato369.novel.app.web.vo.NovelInfoVO;
 import com.potato369.novel.app.web.vo.ResultVO;
 import com.potato369.novel.app.web.vo.ShelfDetailInfoVO;
@@ -15,10 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +55,7 @@ public class ShelfController {
      * </pre>
      */
     @GetMapping(value = "/get")
-    public ResultVO<ShelfInfoVO> getShelf(@RequestParam(name = "userId", required = true) String userId) {
+    public ResultVO<ShelfInfoVO> getShelf(@RequestParam(name = "userId") String userId) {
         ResultVO<ShelfInfoVO> shelfInfoVOResultVO = new ResultVO<ShelfInfoVO>();
         ShelfInfoVO shelfInfoVO = ShelfInfoVO.builder().build();
         try {
@@ -93,5 +92,22 @@ public class ShelfController {
 
         }
         return shelfInfoVOResultVO;
+    }
+
+    /**
+     * <pre>
+     * 将小说添加到书架
+     * 用户id，小说id，书架id，小说章节id，章节索引
+     * </pre>
+     */
+    @PostMapping(value = "/add")
+    public void addToShelf(@RequestParam(name = "shelfInfoJson") String shelfInfoJson) {
+        try {
+            ShelfInfoDTO shelf =  (ShelfInfoDTO)JSONUtils.parse(shelfInfoJson);
+        } catch (Exception e) {
+
+        } finally {
+
+        }
     }
 }
