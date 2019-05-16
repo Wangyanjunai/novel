@@ -34,6 +34,4 @@ public class NovelShelfDetailIdClass implements Serializable {
     private String novelId;
 
     private String userId;
-
-    private String chapterId;
 }
