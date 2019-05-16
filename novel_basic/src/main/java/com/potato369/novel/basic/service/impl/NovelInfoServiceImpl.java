@@ -84,7 +84,7 @@ public class NovelInfoServiceImpl implements NovelInfoService {
      * @return
      */
     @Override
-    public NovelInfo find(String id) {
+    public NovelInfo findById(String id) {
         return repository.findOne(id);
     }
 

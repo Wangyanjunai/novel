@@ -1,14 +1,18 @@
 package com.potato369.novel.app.web.controller;
 
+import com.potato369.novel.app.web.converter.NovelInfo2NovelInfoVOConverter;
+import com.potato369.novel.app.web.vo.NovelInfoVO;
 import com.potato369.novel.app.web.vo.ResultVO;
 import com.potato369.novel.app.web.vo.ShelfDetailInfoVO;
 import com.potato369.novel.app.web.vo.ShelfInfoVO;
+import com.potato369.novel.basic.dataobject.NovelInfo;
 import com.potato369.novel.basic.dataobject.NovelShelf;
 import com.potato369.novel.basic.dataobject.NovelShelfDetail;
+import com.potato369.novel.basic.service.NovelInfoService;
 import com.potato369.novel.basic.service.ShelfDetailService;
 import com.potato369.novel.basic.service.ShelfService;
-import com.potato369.novel.basic.utils.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +46,9 @@ public class ShelfController {
     @Autowired
     private ShelfDetailService detailService;
 
+    @Autowired
+    private NovelInfoService novelInfoService;
+
     /**
      * <pre>
      * 获取用户书架
@@ -65,6 +72,14 @@ public class ShelfController {
                 for (NovelShelfDetail shelfDetail : shelfDetailList) {
                     ShelfDetailInfoVO shelfDetailInfoVO = ShelfDetailInfoVO.builder().build();
                     BeanUtils.copyProperties(shelfDetail, shelfDetailInfoVO);
+                    String novelId = shelfDetail.getNovelId();
+                    if (StringUtils.isNotEmpty(novelId)) {
+                        NovelInfo novelInfo = novelInfoService.findById(novelId);
+                        if (novelInfo != null) {
+                            NovelInfoVO novelInfoVO = NovelInfo2NovelInfoVOConverter.convert(novelInfo);
+                            shelfDetailInfoVO.setNovelInfoVO(novelInfoVO);
+                        }
+                    }
                     shelfDetailInfoVOList.add(shelfDetailInfoVO);
                 }
             }

@@ -60,7 +60,7 @@ public interface NovelInfoService {
      * @return
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    NovelInfo find(String id);
+    NovelInfo findById(String id);
     
     /**
      * <pre>

@@ -12,7 +12,6 @@ import com.vladsch.flexmark.convert.html.FlexmarkHtmlParser;
 import com.potato369.novel.basic.constants.BusinessConstants;
 import com.potato369.novel.basic.dataobject.NovelChapter;
 import com.potato369.novel.basic.dataobject.NovelInfo;
-import com.potato369.novel.basic.enums.CategoryEnum;
 import com.potato369.novel.basic.service.NovelChapterService;
 import com.potato369.novel.basic.service.NovelInfoService;
 import org.apache.commons.lang3.StringUtils;
@@ -377,7 +376,7 @@ public class DuShu88NovelCrawler8 extends BaseSeimiCrawler{
                 					NovelChapter lastChapter = chapterList.get(0);
                 					String lastChapterId = lastChapter.getId();
                 					String bookId = lastChapter.getBookId();
-                					NovelInfo novelInfo2 = novelInfoService.find(bookId);
+                					NovelInfo novelInfo2 = novelInfoService.findById(bookId);
                 					if (novelInfo2 != null) {
                 						novelInfo2.setNewestChapterId(lastChapterId);
                 						novelInfoService.update(novelInfo2);

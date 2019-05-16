@@ -1,7 +1,7 @@
 package com.potato369.novel.basic.repository;
 
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
-import com.potato369.novel.basic.dataobject.NovelUserInfoIdClass;
+import com.potato369.novel.basic.dataobject.idClass.NovelUserInfoIdClass;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.potato369.novel.basic.dataobject;
+package com.potato369.novel.basic.dataobject.idClass;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,9 +25,15 @@ import java.io.Serializable;
 @DynamicUpdate
 @Data
 @NoArgsConstructor
-public class NovelShelfIdClass implements Serializable {
+public class NovelShelfDetailIdClass implements Serializable {
+
+    private String shelfDetailId;
 
     private String shelfId;
 
+    private String novelId;
+
     private String userId;
+
+    private String chapterId;
 }

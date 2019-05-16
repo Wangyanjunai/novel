@@ -150,7 +150,7 @@ public class NovelController {
             if (log.isDebugEnabled()) {
                 log.debug("【后台小说接口】start====================获取小说详情数据====================start");
             }
-            NovelInfo novelInfo = novelInfoService.find(novelId);
+            NovelInfo novelInfo = novelInfoService.findById(novelId);
             NovelInfoVO novelInfoVO = NovelInfoVO.builder().build();
             BeanUtils.copyProperties(novelInfo, novelInfoVO);
             infoVOResultVO.setMsg("返回数据成功");

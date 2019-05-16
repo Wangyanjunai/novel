@@ -1,7 +1,7 @@
 package com.potato369.novel.basic.repository;
 
 import com.potato369.novel.basic.dataobject.NovelShelfDetail;
-import com.potato369.novel.basic.dataobject.NovelShelfDetailIdClass;
+import com.potato369.novel.basic.dataobject.idClass.NovelShelfDetailIdClass;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

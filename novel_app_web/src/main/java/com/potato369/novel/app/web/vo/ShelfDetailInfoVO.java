@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * <pre>
@@ -36,8 +37,8 @@ public class ShelfDetailInfoVO {
     @JsonProperty(value = "userId")
     private String userId;
 
-    @JsonProperty(value = "novelId")
-    private String novelId;
+    @JsonProperty(value = "novel")
+    private NovelInfoVO novelInfoVO;
 
     @JsonProperty(value = "chapterId")
     private String chapterId;

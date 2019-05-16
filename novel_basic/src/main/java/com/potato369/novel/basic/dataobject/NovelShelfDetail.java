@@ -1,5 +1,6 @@
 package com.potato369.novel.basic.dataobject;
 
+import com.potato369.novel.basic.dataobject.idClass.NovelShelfDetailIdClass;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

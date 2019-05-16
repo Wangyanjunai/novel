@@ -1,5 +1,6 @@
 package com.potato369.novel.basic.dataobject;
 
+import com.potato369.novel.basic.dataobject.idClass.NovelShelfIdClass;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +11,6 @@ import javax.persistence.*;
 import javax.persistence.IdClass;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * <pre>

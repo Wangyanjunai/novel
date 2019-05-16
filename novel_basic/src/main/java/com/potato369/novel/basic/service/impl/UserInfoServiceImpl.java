@@ -2,7 +2,7 @@ package com.potato369.novel.basic.service.impl;
 
 import java.util.List;
 
-import com.potato369.novel.basic.dataobject.NovelUserInfoIdClass;
+import com.potato369.novel.basic.dataobject.idClass.NovelUserInfoIdClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
