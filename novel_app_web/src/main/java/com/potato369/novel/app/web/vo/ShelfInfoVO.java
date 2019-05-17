@@ -27,21 +27,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class ShelfInfoVO {
-
-    @JsonProperty(value = "shelfId")
-    private String shelfId;
-
-    @JsonProperty(value = "userId")
-    private String userId;
-
-    @JsonProperty(value = "createTime")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
-
-    @JsonProperty(value = "updateTime")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date updateTime;
-
     @JsonProperty(value = "details")
     private List<ShelfDetailInfoVO> shelfDetailInfoVOList;
 }

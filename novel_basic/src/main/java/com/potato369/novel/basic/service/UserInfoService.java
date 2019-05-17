@@ -32,7 +32,7 @@ public interface UserInfoService {
      * @return
      */
     @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    NovelUserInfo save(NovelUserInfo userInfo) throws Exception;
+    NovelUserInfo save(NovelUserInfo userInfo);
 
     /**
      * 保存用户信息列表
@@ -40,7 +40,7 @@ public interface UserInfoService {
      * @return
      */
     @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    List<NovelUserInfo> save(List<NovelUserInfo> userInfoList) throws Exception;
+    List<NovelUserInfo> save(List<NovelUserInfo> userInfoList);
 
     /**
      * 删除用户信息
@@ -49,7 +49,7 @@ public interface UserInfoService {
      */
     @Modifying
     @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    void del(NovelUserInfoIdClass id) throws Exception;
+    void del(NovelUserInfoIdClass id);
 
     /**
      * 修改用户信息
@@ -58,15 +58,24 @@ public interface UserInfoService {
      */
     @Modifying
     @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    NovelUserInfo update(NovelUserInfo userInfo) throws Exception;
+    NovelUserInfo update(NovelUserInfo userInfo);
 
     /**
-     * 根据id查找用户信息
-     * @param id
+     * 根据id class查找用户信息
+     * @param idClass
      * @return
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    NovelUserInfo findById(NovelUserInfoIdClass id) throws Exception;
+    NovelUserInfo findById(NovelUserInfoIdClass idClass);
+
+    /**
+     * 根据id查找用户信息
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    NovelUserInfo findByUserId(String userId);
 
     /**
      * 根据openid查找用户信息
@@ -74,14 +83,14 @@ public interface UserInfoService {
      * @return
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    NovelUserInfo findByOpenid(String openid) throws Exception;
+    NovelUserInfo findByOpenid(String openid);
 
     /**
      * 查询所有用户信息
      * @return
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    List<NovelUserInfo> findAll() throws Exception;
+    List<NovelUserInfo> findAll();
 
     /**
      * 根据性别查询所有的用户信息
@@ -89,7 +98,7 @@ public interface UserInfoService {
      * @return
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    List<NovelUserInfo> findBySex(String sex) throws Exception;
+    List<NovelUserInfo> findBySex(String sex);
 
     /**
      * 分页查询所有的用户信息
@@ -97,5 +106,5 @@ public interface UserInfoService {
      * @return
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    Page<NovelUserInfo> findAll(Pageable pageable) throws Exception;
+    Page<NovelUserInfo> findAll(Pageable pageable);
 }

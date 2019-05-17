@@ -36,7 +36,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public NovelUserInfo save(NovelUserInfo userInfo) throws Exception{
+    public NovelUserInfo save(NovelUserInfo userInfo){
         return repository.save(userInfo);
     }
 
@@ -47,7 +47,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public List<NovelUserInfo> save(List<NovelUserInfo> userInfoList) throws Exception{
+    public List<NovelUserInfo> save(List<NovelUserInfo> userInfoList){
         return repository.save(userInfoList);
     }
 
@@ -58,7 +58,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public void del(NovelUserInfoIdClass id) throws Exception{
+    public void del(NovelUserInfoIdClass id){
         repository.delete(id);
     }
 
@@ -69,7 +69,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public NovelUserInfo update(NovelUserInfo userInfo) throws Exception{
+    public NovelUserInfo update(NovelUserInfo userInfo){
         return repository.saveAndFlush(userInfo);
     }
 
@@ -80,8 +80,19 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public NovelUserInfo findById(NovelUserInfoIdClass id) throws Exception{
+    public NovelUserInfo findById(NovelUserInfoIdClass id){
         return repository.findOne(id);
+    }
+
+    /**
+     * 根据用户id查找用户信息
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public NovelUserInfo findByUserId(String userId) {
+        return repository.selectByUserId(userId);
     }
 
     /**
@@ -91,7 +102,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public NovelUserInfo findByOpenid(String openid) throws Exception{
+    public NovelUserInfo findByOpenid(String openid){
         return repository.findUserInfoByOpenid(openid);
     }
 
@@ -101,7 +112,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public List<NovelUserInfo> findAll() throws Exception{
+    public List<NovelUserInfo> findAll(){
         return repository.findAll();
     }
 
@@ -112,7 +123,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public List<NovelUserInfo> findBySex(String gender) throws Exception{
+    public List<NovelUserInfo> findBySex(String gender){
         return repository.findUserInfosByGender(gender);
     }
 

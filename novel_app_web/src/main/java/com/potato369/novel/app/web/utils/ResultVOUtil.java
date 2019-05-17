@@ -28,10 +28,32 @@ public class ResultVOUtil {
         return success(null);
     }
 
+    public static ResultVO success(Integer code, String msg){
+        ResultVO resultVO = new ResultVO();
+        resultVO.setCode(code);
+        resultVO.setMsg(msg);
+        return resultVO;
+    }
+
+    public static ResultVO error(Object object){
+        ResultVO resultVO = new ResultVO();
+        resultVO.setCode(-1);
+        resultVO.setMsg("返回数据失败");
+        resultVO.setData(object);
+        return resultVO;
+    }
+
+    public static ResultVO error(){
+        return error(null);
+    }
+
     public static ResultVO error(Integer code, String msg){
         ResultVO resultVO = new ResultVO();
         resultVO.setCode(code);
         resultVO.setMsg(msg);
         return resultVO;
     }
+
+
+
 }

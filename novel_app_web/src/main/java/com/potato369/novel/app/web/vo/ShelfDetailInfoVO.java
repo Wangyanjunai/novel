@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
 import java.util.Date;
 import java.util.List;
 
@@ -27,29 +29,94 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class ShelfDetailInfoVO {
-
-    @JsonProperty(value = "detailId")
-    private String shelfDetailId;
-
-    @JsonProperty(value = "shelfId")
-    private String shelfId;
-
-    @JsonProperty(value = "userId")
-    private String userId;
-
+    /**
+     * <pre>
+     * @serialField shelfId：联合主键，小说id。
+     * </pre>
+     */
     @JsonProperty(value = "novel")
-    private NovelInfoVO novelInfoVO;
+    private NovelInfoVO novel;
 
-    @JsonProperty(value = "chapterId")
-    private String chapterId;
+    /**
+     * <pre>
+     * @serialField lastReadChapterIndex：最后一次阅读的章节索引index。
+     * </pre>
+     */
+    @JsonProperty(value = "lastReadChapterIndex")
+    private Integer lastReadChapterIndex;
 
-    @JsonProperty(value = "index")
-    private Integer chapterIndex;
+    /**
+     * <pre>
+     * @serialField lastReadPage：最后一次阅读章节的页码。
+     * </pre>
+     */
+    @JsonProperty(value = "lastReadPage")
+    private Integer lastReadPage;
 
+    /**
+     * <pre>
+     * @serialField hasUpdate：书架的这本小说是否有新的章节更新，0-无更新，1-有更新，默认0。
+     * </pre>
+     */
+    @JsonProperty(value = "hasUpdate")
+    private Integer hasUpdate;
+
+    /**
+     * <pre>
+     * @serialField sort：保存自定义排序的顺序。
+     * </pre>
+     */
+    @JsonProperty(value = "sort")
+    private Integer sort;
+
+    /**
+     * <pre>
+     * @serialField isOrNotTop：书架的这本小说是否开启置顶，0-不开启，1-开启，默认0。
+     * </pre>
+     */
+    @JsonProperty(value = "isOrNotTop")
+    private Integer isOrNotTop;
+
+    /**
+     * <pre>
+     * @serialField isOrNotPush：书架的这本小说是否开启小说章节更新消息推送，0-不开启，1-开启，默认0。
+     * </pre>
+     */
+    @JsonProperty(value = "isOrNotPush")
+    private Integer isOrNotPush;
+
+    /**
+     * <pre>
+     * @serialField lastChapterUpdateTime：最新章节更新时间。
+     * </pre>
+     */
+    @JsonProperty(value = "lastChapterUpdateTime")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date lastChapterUpdateTime;
+
+    /**
+     * <pre>
+     * @serialField latestReadTime：最后一次阅读时间。
+     * </pre>
+     */
+    @JsonProperty(value = "lastReadTime")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date lastReadTime;
+
+    /**
+     * <pre>
+     * @serialField createTime：创建时间。
+     * </pre>
+     */
     @JsonProperty(value = "createTime")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
+    /**
+     * <pre>
+     * @serialField updateTime：更新时间。
+     * </pre>
+     */
     @JsonProperty(value = "updateTime")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;

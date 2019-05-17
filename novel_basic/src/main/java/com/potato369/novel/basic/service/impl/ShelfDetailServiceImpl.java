@@ -30,4 +30,9 @@ public class ShelfDetailServiceImpl implements ShelfDetailService {
     public List<NovelShelfDetail> selectByUserIdAndShelfId(String userId, String shelfId) {
         return detailRepository.selectByUserIdAndShelfId(userId, shelfId);
     }
+
+    @Override
+    public NovelShelfDetail save(NovelShelfDetail novelShelfDetail) {
+        return detailRepository.save(novelShelfDetail);
+    }
 }

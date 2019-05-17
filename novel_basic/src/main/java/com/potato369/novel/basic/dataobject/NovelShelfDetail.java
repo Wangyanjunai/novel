@@ -6,9 +6,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.dataobject
@@ -51,15 +53,6 @@ public class NovelShelfDetail implements Serializable {
 
     /**
      * <pre>
-     * @serialField userId：联合主键，用户id。
-     * </pre>
-     */
-    @Id
-    @Column(name = "user_id", nullable = false, length = 32)
-    private String userId;
-
-    /**
-     * <pre>
      * @serialField shelfId：联合主键，小说id。
      * </pre>
      */
@@ -69,19 +62,84 @@ public class NovelShelfDetail implements Serializable {
 
     /**
      * <pre>
-     * @serialField chapterId：已经阅读到的小说章节id。
+     * @serialField userId：联合主键，用户id。
      * </pre>
      */
-    @Column(name = "chapter_id", nullable = false, length = 32)
-    private String chapterId;
+    @Id
+    @Column(name = "user_id", nullable = false, length = 32)
+    private String userId;
 
     /**
      * <pre>
-     * @serialField chapterIndex：已经阅读到的小说章节索引。
+     * @serialField lastReadChapterId：最后一次阅读的章节的id(可能为空)。
      * </pre>
      */
-    @Column(name = "chapter_index", nullable = false, length = 6)
-    private Integer chapterIndex;
+    @Column(name = "last_read_chapter_id", length = 32)
+    private String lastReadChapterId;
+
+    /**
+     * <pre>
+     * @serialField lastReadChapterIndex：最后一次阅读的章节索引index。
+     * </pre>
+     */
+    @Column(name = "last_read_chapter_index", length = 6)
+    private Integer lastReadChapterIndex;
+
+    /**
+     * <pre>
+     * @serialField lastReadPage：最后一次阅读章节的页码。
+     * </pre>
+     */
+    @Column(name = "last_read_page", length = 6)
+    private Integer lastReadPage;
+
+    /**
+     * <pre>
+     * @serialField hasUpdate：书架的这本小说是否有新的章节更新，0-无更新，1-有更新，默认0。
+     * </pre>
+     */
+    @Column(name = "has_update", length = 1)
+    private Integer hasUpdate;
+
+    /**
+     * <pre>
+     * @serialField sort：保存自定义排序的顺序。
+     * </pre>
+     */
+    @Column(name = "sort", length = 6)
+    private Integer sort;
+
+    /**
+     * <pre>
+     * @serialField isOrNotTop：书架的这本小说是否开启置顶，0-不开启，1-开启，默认0。
+     * </pre>
+     */
+    @Column(name = "is_or_not_top", length = 1)
+    private Integer isOrNotTop;
+
+    /**
+     * <pre>
+     * @serialField isOrNotPush：书架的这本小说是否开启小说章节更新消息推送，0-不开启，1-开启，默认0。
+     * </pre>
+     */
+    @Column(name = "is_or_not_push", length = 1)
+    private Integer isOrNotPush;
+
+    /**
+     * <pre>
+     * @serialField lastChapterUpdateTime：最新章节更新时间。
+     * </pre>
+     */
+    @Column(name = "last_chapter_update_time", length = 64)
+    private Date lastChapterUpdateTime;
+
+    /**
+     * <pre>
+     * @serialField latestReadTime：最后一次阅读时间。
+     * </pre>
+     */
+    @Column(name = "last_read_time", length = 64)
+    private Date lastReadTime;
 
     /**
      * <pre>

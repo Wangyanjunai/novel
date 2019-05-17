@@ -3,6 +3,7 @@ package com.potato369.novel.basic.repository;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.dataobject.idClass.NovelUserInfoIdClass;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -19,6 +20,9 @@ import java.util.List;
  * </pre>
  */
 public interface UserInfoRepository extends JpaRepository<NovelUserInfo, NovelUserInfoIdClass> {
+
+    @Query(value = "select nu from NovelUserInfo nu where nu.id=?1", nativeQuery = false)
+    NovelUserInfo selectByUserId(String userId);
 
     NovelUserInfo findUserInfoByOpenid(String openid);
 

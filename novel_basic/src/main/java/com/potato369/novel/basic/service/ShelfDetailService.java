@@ -19,4 +19,6 @@ import java.util.List;
 public interface ShelfDetailService {
 
     List<NovelShelfDetail> selectByUserIdAndShelfId(String userId, String shelfId);
+
+    NovelShelfDetail save(NovelShelfDetail novelShelfDetail);
 }

@@ -24,27 +24,67 @@ import lombok.NoArgsConstructor;
 public class ShelfInfoDTO {
 
     /**
-     * 用户id
-     */
-    private String userId;
-
-    /**
-     * 书架id
-     */
-    private String shelfId;
-
-    /**
      * 小说id
      */
     private String novelId;
 
     /**
-     * 已经阅读到的章节id
+     * 用户id
      */
-    private String chapterId;
+    private String userId;
 
     /**
-     * 已经阅读到的章节索引
+     * 最后一次的阅读时间
      */
-    private Integer chapterIndex;
+    private String latestReadTime;
+
+    /**
+     * 最后一次阅读的章节index
+     */
+    private Integer latestReadSection;
+
+    /**
+     * 最后一次阅读的章节的id(可能为空)
+     */
+    private String latestReadSectionId;
+
+    /**
+     * 最后一次阅读章节的页码
+     */
+    private Integer latestReadPage;
+
+    /**
+     * 是否有新的章节更新，0-无更新，1-有更新
+     */
+    private Integer hasUpdate;
+
+    /**
+     * 保存自定义排序的顺序
+     */
+    private Integer sort;
+
+    /**
+     * 书架创建时间
+     */
+    private String createTime;
+
+    /**
+     * 书架更新时间
+     */
+    private String updateTime;
+
+    /**
+     *  最新章节更新时间
+     */
+    private String lastChapterUpdateTime;
+
+    /**
+     * 是否开启置顶，默认0-不开启，1-开启
+     */
+    private Integer isOrNotTop;
+
+    /**
+     * 是否开启更新消息推送，默认0-不开启，1-开启
+     */
+    private Integer isOrNotPush;
 }
