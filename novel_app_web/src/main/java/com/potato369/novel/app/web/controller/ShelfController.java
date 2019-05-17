@@ -1,9 +1,7 @@
 package com.potato369.novel.app.web.controller;
 
 import com.alibaba.druid.support.json.JSONUtils;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.potato369.novel.app.web.converter.NovelInfo2NovelInfoVOConverter;
-import com.potato369.novel.app.web.dto.ShelfInfoDTO;
 import com.potato369.novel.app.web.utils.ResultVOUtil;
 import com.potato369.novel.app.web.vo.NovelInfoVO;
 import com.potato369.novel.app.web.vo.ResultVO;
@@ -25,7 +23,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.*;
 
 /**
