@@ -151,6 +151,7 @@ public class NovelController {
                 log.debug("【后台小说接口】start====================获取小说详情数据====================start");
             }
             NovelInfo novelInfo = novelInfoService.findById(novelId);
+            updateClickNumber(novelInfo);
             NovelInfoVO novelInfoVO = NovelInfoVO.builder().build();
             BeanUtils.copyProperties(novelInfo, novelInfoVO);
             infoVOResultVO.setMsg("返回数据成功");
@@ -432,6 +433,13 @@ public class NovelController {
             if (log.isDebugEnabled()) {
                 log.debug("【后台小说】end====================搜索热词添加更新====================end");
             }
+        }
+    }
+    private synchronized void updateClickNumber(NovelInfo novelInfo) {
+        if (novelInfo != null) {
+            String novelId = novelInfo.getId();
+            BigDecimal clickNumber = novelInfo.getClickNumber().add(new BigDecimal(1));
+            novelInfoService.updateClickNumber(clickNumber, novelId);
         }
     }
 }

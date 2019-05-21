@@ -1,8 +1,12 @@
 package com.potato369.novel.basic.repository;
 
 import com.potato369.novel.basic.dataobject.NovelCategory;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -59,4 +63,18 @@ public interface CategoryRepository extends JpaRepository<NovelCategory, String>
      * </pre>
      */
     NovelCategory findByCategoryENText(String categoryENText);
+
+    /**
+     * <pre>
+     * 更新点击次数和阅读次数
+     * @param readingNumber 阅读次数
+     * @param clickNumber 点击次数
+     * @param categoryId 分类id
+     * </pre>
+     */
+    @Modifying
+    @Query(value = "update NovelCategory nc set nc.readingNumber=?1, nc.clickNumber=?2 where nc.categoryId=?3")
+    void updateReadingAndClickNumber(BigDecimal readingNumber, BigDecimal clickNumber, String categoryId);
+
+    NovelCategory findByCategoryType(Integer categoryType);
 }

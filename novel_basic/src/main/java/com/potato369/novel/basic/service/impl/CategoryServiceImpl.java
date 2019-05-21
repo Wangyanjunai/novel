@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 import java.util.List;
 /**
  * <pre>
@@ -21,6 +24,7 @@ import java.util.List;
  * </pre>
  */
 @Service
+@Transactional
 public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
@@ -36,6 +40,18 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public List<NovelCategory> findByCategoryTypeIn(List<Integer> categoryTypeList) {
 		return repository.findByCategoryTypeIn(categoryTypeList);
+	}
+
+	/**
+	 * <pre>
+	 * 根据类目categoryType列表查询对应的类目类型
+	 * @param categoryType
+	 * @return
+	 * </pre>
+	 */
+	@Override
+	public NovelCategory findByCategoryType(Integer categoryType) {
+		return repository.findByCategoryType(categoryType);
 	}
 
 	/**
@@ -71,6 +87,18 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public NovelCategory update(NovelCategory category) {
 		return repository.saveAndFlush(category);
+	}
+
+	/**
+	 * <pre>
+	 * 更新类目的阅读与点击次数
+	 * @param readingNumber
+	 * @param clickNumber
+	 * @param categoryId
+	 */
+	@Override
+	public void updateReadingAndClickNumber(BigDecimal readingNumber, BigDecimal clickNumber, String categoryId) {
+		repository.updateReadingAndClickNumber(readingNumber, clickNumber, categoryId);
 	}
 
 	/**

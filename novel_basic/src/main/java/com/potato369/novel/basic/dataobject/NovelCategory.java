@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 /**
  * <pre>
@@ -94,16 +95,16 @@ public class NovelCategory implements Serializable {
      * @serialField readingNumber：阅读（点击）用户数。
      * <pre>
      */
-    @Column(name = "reading_number", nullable = true, length = 11)
-    private Integer readingNumber;
+    @Column(name = "reading_number", nullable = true, length = 16)
+    private BigDecimal readingNumber;
 
     /**
      * <pre>
      * @serialField clickNumber：点击次数。
      * <pre>
      */
-    @Column(name = "click_number", nullable = true, length = 11)
-    private Integer clickNumber;
+    @Column(name = "click_number", nullable = true, length = 16)
+    private BigDecimal clickNumber;
 
     /**
      * <pre>

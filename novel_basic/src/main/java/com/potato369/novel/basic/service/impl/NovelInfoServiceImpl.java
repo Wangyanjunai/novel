@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 import java.util.List;
 /**
  * <pre>
@@ -24,6 +27,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
+@Transactional
 public class NovelInfoServiceImpl implements NovelInfoService {
 
     @Autowired
@@ -190,5 +194,10 @@ public class NovelInfoServiceImpl implements NovelInfoService {
     @Override
     public Page<NovelInfo> findByAuthorContainsOrTitleContains(String keyWords ,Pageable pageable) {
         return repository.findByAuthorOrTitle(keyWords, pageable);
+    }
+
+    @Override
+    public void updateClickNumber(BigDecimal clickNumber, String novelId) {
+        repository.updateClickNumber(clickNumber, novelId);
     }
 }

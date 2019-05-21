@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import com.potato369.novel.basic.dataobject.NovelInfo;
+
+import java.math.BigDecimal;
 import java.util.List;
 /**
  * <pre>
@@ -117,4 +119,7 @@ public interface NovelInfoService {
 
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     Page<NovelInfo> findByAuthorContainsOrTitleContains(String keyWords, Pageable pageable);
+
+    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    void updateClickNumber(BigDecimal clickNumber, String novelId);
 }

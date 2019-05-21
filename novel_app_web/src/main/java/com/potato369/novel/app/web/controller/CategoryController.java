@@ -63,17 +63,16 @@ public class CategoryController {
                 log.debug("【急速追书后台管理】start====================获取所有的分类====================start");
             }
             List<CategoryInfoVO> CategoryInfoVOs = new ArrayList<>();
-//			CategoryVO categoryVO = new CategoryVO();
             NovelCategory novelCategory = categoryService.findByCategoryEnName(type);
             String categoryId = novelCategory.getCategoryId();
             List<NovelCategory> subCategories = categoryService.findByParentCategoryId(categoryId);
-            for (NovelCategory novelCategory2 : subCategories) {
+            for (NovelCategory novelCategory2:subCategories) {
                 CategoryInfoVO categoryInfoVO = new CategoryInfoVO();
                 categoryInfoVO.setName(novelCategory2.getCategoryCNText());
                 categoryInfoVO.setId(novelCategory2.getCategoryId());
                 CategoryInfoVOs.add(categoryInfoVO);
             }
-//			categoryVO.setCategoryInfoVOs(CategoryInfoVOs);
+            updateNumber(novelCategory);
             resultVO.setData(CategoryInfoVOs);
             resultVO.setCode(0);
             resultVO.setMsg("获取数据成功");
@@ -116,12 +115,13 @@ public class CategoryController {
                 List<NovelInfo> novelInfoList = novelInfoPage.getContent();
                 List<NovelInfoVO> novelInfoVOList = new ArrayList<>();
                 if (novelInfoList != null && !novelInfoList.isEmpty() && novelInfoList.size() > 0) {
-                    for (NovelInfo novelInfo : novelInfoList) {
+                    for (NovelInfo novelInfo:novelInfoList) {
                         NovelInfoVO novelInfoVO = NovelInfoVO.builder().build();
                         BeanUtils.copyProperties(novelInfo, novelInfoVO);
                         novelInfoVOList.add(novelInfoVO);
                     }
                 }
+                updateNumber(category);
                 categoryBookVO.setBooks(novelInfoVOList);
                 categoryBookVO.setTotalPage(new BigDecimal(novelInfoPage.getTotalPages()));
                 resultVO.setData(categoryBookVO);
@@ -157,19 +157,19 @@ public class CategoryController {
     public ResultVO<CategoryBookVO> getAllCategory(@PathVariable(name = "categoryType") String categoryType,
                                                    @RequestParam(name = "page", defaultValue = "1") Integer page,
                                                    @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        ResultVO<CategoryBookVO> resultVO = new ResultVO<CategoryBookVO>();
+        ResultVO<CategoryBookVO> resultVO = new ResultVO<>();
         try {
             if (log.isDebugEnabled()) {
                 log.debug("【按照类别查询小说分类】查询小说分类, page={}, size={}", page, size);
             }
             NovelCategory parentNovelCategory = categoryService.findByCategoryEnName(categoryType);
-            String parentId = null;
             if (parentNovelCategory != null) {
-                parentId = parentNovelCategory.getCategoryId();
+                String parentId = parentNovelCategory.getCategoryId();
                 List<NovelCategory> categories = categoryService.findByParentCategoryId(parentId);
                 List<Integer> cateTypeList = new ArrayList<>();
-                for (NovelCategory category : categories) {
+                for (NovelCategory category:categories) {
                     cateTypeList.add(category.getCategoryType());
+                    updateNumber(category);
                 }
                 Sort sort = new Sort(Sort.Direction.DESC, "clickNumber", "readers", "recentReaders", "retention", "createTime", "updateTime");
                 PageRequest pageRequest = new PageRequest(page - 1, size, sort);
@@ -190,38 +190,6 @@ public class CategoryController {
                     resultVO.setMsg("获取数据成功");
                 }
             }
-//				log.info("size={}", categories.size());
-//				CategoryBookVO categoryBookVO = CategoryBookVO.builder().build();
-//				List<NovelInfoVO> novelInfoVOList = new ArrayList<>();
-//				if (categories != null && !categories.isEmpty() && categories.size() > 0) {
-//					for (NovelCategory category:categories) {
-//						Integer type = category.getCategoryType();
-//						Sort sort = new Sort(Sort.Direction.DESC, "clickNumber", "readers", "recentReaders", "retention", "createTime", "updateTime");
-//						PageRequest pageRequest = new PageRequest(page - 1, size, sort);
-//						Page<NovelInfo> novelInfoPage = novelInfoService.findByCategoryType(pageRequest, type);
-////						log.info("page size={}", novelInfoPage.getSize());
-//						List<NovelInfo> novelInfoList = novelInfoPage.getContent();
-//						if (novelInfoList != null && !novelInfoList.isEmpty() && novelInfoList.size() > 0) {
-//							for (NovelInfo novelInfo:novelInfoList) {
-//								NovelInfoVO novelInfoVO = NovelInfoVO.builder().build();
-//								BeanUtils.copyProperties(novelInfo, novelInfoVO);
-//								novelInfoVOList.add(novelInfoVO);
-//
-//							}
-//						}
-//						log.info("novelInfoList size={}", novelInfoList.size());
-//						categoryBookVO.setBooks(novelInfoVOList);
-//						categoryBookVO.setTotalPage(new BigDecimal(novelInfoPage.getTotalPages()));
-//					}
-//					resultVO.setData(categoryBookVO);
-//					resultVO.setCode(0);
-//					resultVO.setMsg("获取数据成功");
-//				}
-//			} else {
-//				resultVO.setCode(-2);
-//				resultVO.setMsg("获取此分类的小说不存在");
-//				resultVO.setData(null);
-//			}
             return resultVO;
         } catch (Exception e) {
             log.error("【按照类别查询小说分类】查询小说分类出现错误", e);
@@ -244,6 +212,8 @@ public class CategoryController {
             CategoryBookVO categoryBookVO = CategoryBookVO.builder().build();
             Sort sort = new Sort(Sort.Direction.ASC, "clickNumber", "readers", "updateTime");
             PageRequest pageRequest = new PageRequest(page - 1, size, sort);
+            NovelCategory novelCategory = categoryService.findByCategoryType(categoryType);
+            updateNumber(novelCategory);
             Page<NovelInfo> novelInfoPage = novelInfoService.findByCategoryType(pageRequest, categoryType);
             if (novelInfoPage != null) {
                 categoryBookVO.setBooks(NovelInfo2NovelInfoVOConverter.convertTONovelInfoVOList(novelInfoPage.getContent()));
@@ -257,6 +227,21 @@ public class CategoryController {
             if (log.isDebugEnabled()) {
                 log.debug("【后台小说接口】end======================查询同类推荐小说数据======================end");
             }
+        }
+    }
+
+    /**
+     * <pre>
+     * 修改阅读点击次数
+     * @param novelCategory
+     * </pre>
+     */
+    private synchronized void updateNumber(NovelCategory novelCategory) {
+        if (novelCategory != null) {
+            BigDecimal readingNumber = novelCategory.getClickNumber().add(new BigDecimal(1));
+            BigDecimal clickNumber = novelCategory.getClickNumber().add(new BigDecimal(1));
+            String categoryId = novelCategory.getCategoryId();
+            categoryService.updateReadingAndClickNumber(readingNumber, clickNumber, categoryId);
         }
     }
 }
