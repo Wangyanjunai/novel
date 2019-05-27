@@ -1,8 +1,6 @@
 spring:
   profiles:
     active: dev
-#  jackson:
-#    default-property-inclusion: non_null
   freemarker:
     allow-request-override: false
     allow-session-override: false
@@ -16,10 +14,10 @@ spring:
     suffix: .ftl
     charset: UTF-8
     template-loader-path: classpath:/templates/
-weChat: 
+weChat:
   mp:
-    appId: wx53762126dcb961f9                     #土豆互联公众号AppId
-    appSecret: 15b6fcb9cd933a561733a83e708f040a   #土豆互联公众号AppSecret
+    appId: wx53762126dcb961f9
+    appSecret: 15b6fcb9cd933a561733a83e708f040a
     token: potato369token
     aesKey: 8XSi84XgQJ1NE2Hh01FIzJxRVxUq7Eg4s8joHU2nq62
     templateId:
@@ -32,13 +30,13 @@ weChat:
     appId: wx53762126dcb961f9
     mchId: 1453416602
     mchKey: c6b8341c4d274189bee934112a369212
-    subAppId:
-    subMchId:
+    subAppId: null
+    subMchId: null
     notifyUrl: /pay/notify
   open:
     appId: wx3c2ae24f69ea4121
     appSecret: 0a355cb0843b9b21f9c079f2ca7a72e5
-xfYun: 
+xfYun:
   appId: 5c0f3f67
   apiKey: b727bcf8859657dcd191c885935c4569
   host: api.xfyun.cn
@@ -60,16 +58,16 @@ server:
   session:
     timeout: 2000
   tomcat:
-   max-threads: 20000
-   uri-encoding: utf-8
+    max-threads: 20000
+    uri-encoding: utf-8
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.potato369.novel.basic.dataobject
 management:
   security:
-    enabled: false          #关掉安全认证
-  port: 9080                #管理端口调整成9080
-  context-path: /monitor    #actuator的访问路径
+    enabled: false
+  port: 9080
+  context-path: /monitor
 info:
   app:
     name: development-novel-spring-boot-actuator
@@ -81,5 +79,5 @@ security:
   basic:
     enabled: false
     path: /**
-endpoints:
+endpoints: 
   enabled: true
