@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.hibernate.annotations.DynamicUpdate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,8 +27,8 @@ import lombok.NoArgsConstructor;
  */
 @AllArgsConstructor
 @Builder
-@DynamicUpdate
 @Data
+@DynamicUpdate
 @Entity(name = "NovelAdvertisement")
 @NoArgsConstructor
 @Table(name = "novel_advertisement")
@@ -37,6 +39,7 @@ public class NovelAdvertisement implements Serializable{
 	 * @serialField serialVersionUID：序列号。
 	 * </pre>
 	 */
+	@Transient
 	private static final long serialVersionUID = -7773745504940953409L;
 
 	/**

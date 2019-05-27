@@ -5,9 +5,7 @@ import com.potato369.novel.basic.enums.AdvertisementEnum;
 import com.potato369.novel.basic.enums.TypeEnum;
 import com.potato369.novel.basic.service.AdvertisementService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.potato369.novel.app.web.utils.ResultVOUtil;
 import com.potato369.novel.app.web.vo.LoadingDataVO;
 import com.potato369.novel.app.web.vo.ResultVO;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +31,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping(value = "/loading")
+@SuppressWarnings("unchecked")
 public class LoadingController {
 
     @Autowired

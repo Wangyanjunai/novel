@@ -1,9 +1,7 @@
 package com.potato369.novel.app.web.utils.serializer;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;

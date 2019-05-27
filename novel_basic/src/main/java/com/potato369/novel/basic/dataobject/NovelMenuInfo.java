@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import java.io.Serializable;
 /**
  * <pre>
@@ -24,16 +26,19 @@ import java.io.Serializable;
  */
 @AllArgsConstructor
 @Builder
-@DynamicUpdate
 @Data
+@DynamicUpdate
 @Entity(name = "NovelMenuInfo")
 @NoArgsConstructor
 @Table(name = "novel_menu_info")
 public class NovelMenuInfo implements Serializable {
 
     /**
+     * <pre>
      * @serialField serialVersionUID: 序列号。
+     * </pre>
      */
+	@Transient
     private static final long serialVersionUID = -8636503100980376529L;
 
     /**
@@ -94,7 +99,7 @@ public class NovelMenuInfo implements Serializable {
     /**
      * <pre>
      * @serialField appId：小程序的appid，
-     *      miniprogram类型必须
+     *      		miniprogram类型必须
      * </pre>
      */
     @Column(name = "app_id", nullable = true, length = 64)
@@ -103,7 +108,7 @@ public class NovelMenuInfo implements Serializable {
     /**
      * <pre>
      * @serialField pagePath：小程序的页面路径，
-     *          miniprogram类型必须
+     *              miniprogram 类型必须
      * </pre>
      */
     @Column(name = "page_path", nullable = true, length = 256)

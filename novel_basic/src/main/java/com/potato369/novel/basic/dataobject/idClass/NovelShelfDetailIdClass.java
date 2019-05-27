@@ -22,16 +22,43 @@ import java.io.Serializable;
  */
 @AllArgsConstructor
 @Builder
-@DynamicUpdate
 @Data
+@DynamicUpdate
 @NoArgsConstructor
 public class NovelShelfDetailIdClass implements Serializable {
 
-    private String shelfDetailId;
+	/**
+	 * <pre>
+	 * @serialField serialVersionUID：序列号。
+	 * </pre>
+	 */
+	private static final long serialVersionUID = -5091762923632258642L;
 
+	/**
+	 * <pre>
+	 * @serialField shelfId：小说书架id。
+	 * </pre>
+	 */
     private String shelfId;
-
+    
+	/**
+	 * <pre>
+	 * @serialField shelfDetailId：小说书架详情id。
+	 * </pre>
+	 */
+	private String shelfDetailId;
+	
+	/**
+	 * <pre>
+	 * @serialField novelId：小说id。
+	 * </pre>
+	 */
     private String novelId;
-
+    
+	/**
+	 * <pre>
+	 * @serialField userId：用户id。
+	 * </pre>
+	 */
     private String userId;
 }

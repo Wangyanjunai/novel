@@ -35,6 +35,15 @@ import java.util.Date;
 public class NovelShelf implements Serializable {
 
     /**
+	 * <pre>
+	 * serialVersionUID：序列号。
+	 * @since JDK 1.6
+	 * </pre>
+	 */
+	@Transient	
+	private static final long serialVersionUID = 7818526440474990984L;
+
+	/**
      * <pre>
      * @serialField shelfId：联合主键，书架id。
      * </pre>

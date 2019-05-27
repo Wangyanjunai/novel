@@ -37,6 +37,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping(value = "/ranking")
+@SuppressWarnings("unchecked")
 public class RankController {
 
     @Autowired

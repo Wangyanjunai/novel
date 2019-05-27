@@ -40,6 +40,7 @@ import java.util.*;
 @Slf4j
 @RestController
 @RequestMapping(value = "/shelf")
+@SuppressWarnings("unchecked")
 public class ShelfController {
 
     @Autowired
@@ -119,7 +120,8 @@ public class ShelfController {
      *      }
      * </pre>
      */
-    @PostMapping(value = "/add")
+    @SuppressWarnings("rawtypes")
+	@PostMapping(value = "/add")
     public ResultVO addToShelf(@RequestParam(name = "json") String shelfJson) {
         try {
             if (log.isDebugEnabled()) {

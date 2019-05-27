@@ -3,11 +3,9 @@ package com.potato369.novel.app.web.controller;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.potato369.novel.app.web.converter.NovelInfo2NovelInfoVOConverter;
 import com.potato369.novel.app.web.utils.ResultVOUtil;
 import com.potato369.novel.app.web.vo.*;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping(value = "/cats/lv2")
+@SuppressWarnings("unchecked")
 public class CategoryController {
 
     @Autowired
@@ -54,7 +53,7 @@ public class CategoryController {
      * @since JDK 1.6
      * </pre>
      */
-    @GetMapping(value = "/statistics/{type}")//type：male, female,picture，查询分类信息
+	@GetMapping(value = "/statistics/{type}")//type：male, female,picture，查询分类信息
     public ResultVO<List<CategoryInfoVO>> list(
             @PathVariable(name = "type") String type) {
         ResultVO<List<CategoryInfoVO>> resultVO = new ResultVO<>();
@@ -96,7 +95,7 @@ public class CategoryController {
      * @api
      * </pre>
      */
-    @GetMapping(value = "/statistics/category/{categoryId}")//查询每分类下的小说，传入分类id
+	@GetMapping(value = "/statistics/category/{categoryId}")//查询每分类下的小说，传入分类id
     public ResultVO<CategoryBookVO> getCategory(@PathVariable(name = "categoryId") String categoryId,
                                                 @RequestParam(name = "page", defaultValue = "1") Integer page,
                                                 @RequestParam(name = "size", defaultValue = "10") Integer size) {
@@ -153,7 +152,7 @@ public class CategoryController {
      * @api
      * </pre>
      */
-    @GetMapping(value = "/statistics/category/all/{categoryType}")//查询父级分类下的所有小说信息
+	@GetMapping(value = "/statistics/category/all/{categoryType}")//查询父级分类下的所有小说信息
     public ResultVO<CategoryBookVO> getAllCategory(@PathVariable(name = "categoryType") String categoryType,
                                                    @RequestParam(name = "page", defaultValue = "1") Integer page,
                                                    @RequestParam(name = "size", defaultValue = "10") Integer size) {
@@ -201,7 +200,7 @@ public class CategoryController {
         }
     }
 
-    @GetMapping(value = "/statistics/featured/{categoryType}")//同类型书籍推荐接口
+	@GetMapping(value = "/statistics/featured/{categoryType}")//同类型书籍推荐接口
     public ResultVO<CategoryBookVO> tongLeiFeatured(@PathVariable(name = "categoryType") Integer categoryType,
                                                     @RequestParam(name = "page", defaultValue = "1") Integer page,
                                                     @RequestParam(name = "size", defaultValue = "6") Integer size) {

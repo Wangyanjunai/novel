@@ -45,6 +45,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping(value = "/lv2")
+@SuppressWarnings("unchecked")
 public class NovelController {
 
     @Autowired

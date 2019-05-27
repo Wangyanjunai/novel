@@ -2,16 +2,10 @@ package com.potato369.novel.app.web.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.potato369.novel.app.web.utils.serializer.Date2LongSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.nustaq.serialization.annotations.Serialize;
-
-import javax.persistence.Column;
-import javax.persistence.Id;
 import java.util.Date;
 
 /**
@@ -31,13 +25,6 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 public class NovelChapterInfoVO {
-
-    /**
-     * <pre>
-     * @jsonField serialVersionUID：序列号。
-     * </pre>
-     */
-    private static final long serialVersionUID = -2729952944003350231L;
 
     /**
      * <pre>

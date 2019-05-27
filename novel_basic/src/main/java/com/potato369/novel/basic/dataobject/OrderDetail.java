@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -26,93 +27,122 @@ import java.util.Date;
  */
 @AllArgsConstructor
 @Builder
-@DynamicUpdate
 @Data
+@DynamicUpdate
 @Entity(name = "OrderDetail")
 @NoArgsConstructor
 @Table(name = "order_detail")
 public class OrderDetail implements Serializable {
 
     /**
-     * @serialField serialVersionUID：序列号
+     * <pre>
+     * @serialField serialVersionUID：序列号。
+     * </pre>
      */
+	@Transient
     private static final long serialVersionUID = -2922952467636846483L;
 
     /**
-     * @serialField detailId：详情id，主键
+     * <pre>
+     * @serialField detailId：详情id，主键。
+     * </pre>
      */
     @Id
     @Column(name = "detail_id", nullable = false, length = 32)
     private String detailId;
 
     /**
-     * @serialField orderId：订单id，外键
+     * <pre>
+     * @serialField orderId：订单id，外键。
+     * </pre>
      */
     @Column(name = "order_id", nullable = false, length = 32)
     private String orderId;
 
     /**
-     * @serialField productId：产品id，外键
+     * <pre>
+     * @serialField productId：产品id，外键。
+     * </pre>
      */
     @Column(name = "product_id", nullable = false, length = 32)
     private String productId;
 
     /**
-     * @serialField buyerOpenid：买家微信openid，外键
+     * <pre>
+     * @serialField buyerOpenid：买家微信openid，外键。
+     * </pre>
      */
     @Column(name = "buyer_openid", nullable = false, length = 64)
     private String buyerOpenid;
 
     /**
-     * @serialField productName：产品名称
+     * <pre>
+     * @serialField productName：产品名称。
+     * </pre>
      */
     @Column(name = "product_name", nullable = false, length = 64)
     private String productName;
 
     /**
-     * @serialField productPrice：产品单价
+     * <pre>
+     * @serialField productPrice：产品单价。
+     * </pre>
      */
     @Column(name = "product_price", nullable = false, length = 8)
     private BigDecimal productPrice;
 
     /**
-     * @serialField productQuantity：购买数量
+     * <pre>
+     * @serialField productQuantity：购买数量。
+     * </pre>
      */
     @Column(name = "product_quantity", nullable = false, length = 11)
     private BigDecimal productQuantity;
 
     /**
-     * @serialField productGiveQuantity：赠送数量
+     * <pre>
+     * @serialField productGiveQuantity：赠送数量。
+     * </pre>
      */
     @Column(name = "product_give_quantity", nullable = false, length = 8)
     private BigDecimal productGiveQuantity;
 
     /**
-     * @serialField productDescription：书币产品描述
+     * <pre>
+     * @serialField productDescription：书币产品描述。
+     * </pre>
      */
     @Column(name = "product_description", nullable = true, length = 1024)
     private String productDescription;
 
     /**
-     * @serialField payTime：会员支付时间
+     * <pre>
+     * @serialField payTime：会员支付时间。
+     * </pre>
      */
     @Column(name = "pay_time", nullable = true, length = 64)
     private Date payTime;
 
     /**
-     * @serialField endTime：会员结束时间
+     * <pre>
+     * @serialField endTime：会员结束时间。
+     * </pre>
      */
     @Column(name = "end_time", nullable = true, length = 64)
     private Date endTime;
 
     /**
-     * @serialField createTime：创建时间
+     * <pre>
+     * @serialField createTime：创建时间。
+     * </pre>
      */
     @Column(name = "create_time", nullable = false, length = 64)
     private Date createTime;
 
     /**
-     * @serialField updateTime：更新时间
+     * <pre>
+     * @serialField updateTime：更新时间。
+     * </pre>
      */
     @Column(name = "update_time", nullable = false, length = 64)
     private Date updateTime;

@@ -27,8 +27,8 @@ import java.util.Date;
  */
 @AllArgsConstructor
 @Builder
-@DynamicUpdate
 @Data
+@DynamicUpdate
 @Entity(name = "NovelCategory")
 @NoArgsConstructor
 @Table(name = "novel_category")
@@ -39,6 +39,7 @@ public class NovelCategory implements Serializable {
      * @serialField serialVersionUID: 序列号。
      * <pre>
      */
+	@Transient
     private static final long serialVersionUID = -8639503100980376589L;
 
     /**

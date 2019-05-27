@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -26,27 +27,34 @@ import java.util.Date;
  */
 @AllArgsConstructor
 @Builder
-@DynamicUpdate
 @Data
+@DynamicUpdate
 @Entity(name = "ProductInfo")
 @NoArgsConstructor
 @Table(name = "product_info")
 public class ProductInfo implements Serializable {
 
     /**
-     * @serialField serialVersionUID: 序列号
+     * <pre>
+     * @serialField serialVersionUID: 序列号。
+     * </pre>
      */
+	@Transient
     private static final long serialVersionUID = -8639503600980373589L;
 
     /**
-     * @serialField productId：书币产品id，主键
+     * <pre>
+     * @serialField productId：书币产品id，主键。
+     * </pre>
      */
     @Id
     @Column(name = "product_id", nullable = false, length = 32)
     private String productId;
 
     /**
-     * @serialField productName：书币产品名称
+     * <pre>
+     * @serialField productName：书币产品名称。
+     * </pre>
      */
     @Column(name = "product_name", nullable = false, length = 64)
     private String productName;
@@ -58,49 +66,65 @@ public class ProductInfo implements Serializable {
     private Integer productType;
 
     /**
-     * @serialField productPrice：书币产品单价
+     * <pre>
+     * @serialField productPrice：书币产品单价。
+     * </pre>
      */
     @Column(name = "product_price", nullable = false, length = 10)
     private BigDecimal productPrice;
 
     /**
-     * @serialField productQuantity：产品数量
+     * <pre>
+     * @serialField productQuantity：产品数量。
+     * </pre>
      */
     @Column(name = "product_quantity", nullable = true, length = 8)
     private BigDecimal productQuantity;
 
     /**
-     * @serialField productAmount：产品总价
+     * <pre>
+     * @serialField productAmount：产品总价。
+     * </pre>
      */
     @Column(name = "product_amount", nullable = true, length = 10)
     private BigDecimal productAmount;
 
     /**
-     * @serialField productGiveQuantity：赠送数量
+     * <pre>
+     * @serialField productGiveQuantity：赠送数量。
+     * </pre>
      */
     @Column(name = "product_give_quantity", nullable = true, length = 8)
     private BigDecimal productGiveQuantity;
 
     /**
-     * @serialField productRank：排行
+     * <pre>
+     * @serialField productRank：排行。
+     * </pre>
      */
     @Column(name = "product_rank", nullable = true, length = 64)
     private String productRank;
 
     /**
-     * @serialField productDescription：书币产品描述
+     * <pre>
+     * @serialField productDescription：书币产品描述。
+     * </pre>
      */
     @Column(name = "product_description", nullable = true, length = 1024)
     private String productDescription;
 
     /**
-     * @serialField createTime：创建时间
+     * <pre>
+     * @serialField createTime：创建时间。
+     * </pre>
      */
     @Column(name = "create_time", nullable = false, length = 64)
     private Date createTime;
 
     /**
-     * @serialField updateTime：更新时间
+     * <pre>
+     * @serialField updateTime：更新时间。
+     * </pre>
      */
     @Column(name = "update_time", nullable = false, length = 64)
     private Date updateTime;

@@ -30,6 +30,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/android/releases")
 @Slf4j
+@SuppressWarnings("unchecked")
 public class VersionController {
 
     @Autowired

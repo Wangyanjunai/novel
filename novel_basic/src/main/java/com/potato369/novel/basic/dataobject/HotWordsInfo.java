@@ -10,6 +10,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -28,14 +30,22 @@ import java.util.Date;
  */
 @AllArgsConstructor
 @Builder
-@DynamicUpdate
 @Data
+@DynamicUpdate
 @Entity(name = "HotWordsInfo")
 @NoArgsConstructor
 @Table(name = "hot_words_info")
 public class HotWordsInfo implements Serializable {
 
     /**
+	 * <pre>
+	 * serialVersionUID：序列号。
+	 * </pre>
+	 */
+	@Transient
+	private static final long serialVersionUID = -5083836642166628301L;
+
+	/**
      * <pre>
      * @serialField wordsId：搜索热词id，主键。
      * </pre>

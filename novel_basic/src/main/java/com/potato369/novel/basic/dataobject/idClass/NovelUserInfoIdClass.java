@@ -20,12 +20,29 @@ import java.io.Serializable;
  */
 @AllArgsConstructor
 @Builder
-@DynamicUpdate
 @Data
+@DynamicUpdate
 @NoArgsConstructor
 public class NovelUserInfoIdClass implements Serializable {
+	
+	/**
+	 * <pre>
+	 * @serialField serialVersionUID：序列号。
+	 * </pre>
+	 */	
+	private static final long serialVersionUID = -8166540112953823633L;
 
-    private String id;
+	/**
+	 * <pre>
+	 * @serialField id：用户id。
+	 * </pre>
+	 */
+	private String id;
 
+	/**
+	 * <pre>
+	 * @serialField openid：开放平台获取的id。
+	 * </pre>
+	 */
     private String openid;
 }

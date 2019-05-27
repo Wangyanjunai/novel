@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import java.io.Serializable;
 import java.util.Date;
 /**
@@ -25,63 +27,82 @@ import java.util.Date;
  */
 @AllArgsConstructor
 @Builder
-@DynamicUpdate
 @Data
+@DynamicUpdate
 @Entity(name = "SellerInfo")
 @NoArgsConstructor
 @Table(name = "seller_info")
 public class SellerInfo implements Serializable {
 
     /**
-     * @serialField serialVersionUID: 序列号
+     * <pre>
+     * @serialField serialVersionUID： 序列号。
+     * </pre>
      */
+	@Transient
     private static final long serialVersionUID = -8639503600988373589L;
 
     /**
-     * @serialField sellerId：卖家id
+     * <pre>
+     * @serialField sellerId：卖家id。
+     * </pre>
      */
     @Id
     @Column(name = "seller_id", nullable = false, length = 32)
     private String sellerId;
 
     /**
-     * @serialField sellerName：卖家名字
+     * <pre>
+     * @serialField sellerName：卖家名字。
+     * </pre>
      */
     @Column(name = "seller_name", nullable = false, length = 64)
     private String sellerName;
 
     /**
-     * @serialField password：登录密码
+     * <pre>
+     * @serialField password：登录密码。
+     * </pre>
      */
     @Column(name = "password", nullable = false, length = 64)
     private String password;
 
     /**
-     * @serialField openid：微信openid
+     * <pre>
+     * @serialField openid：微信openid。
+     * </pre>
      */
     @Column(name = "openid", nullable = false, length = 64)
     private String openid;
 
     /**
-     * @serialField loginTime：登录时间
+     * <pre>
+     * @serialField loginTime：登录时间。
+     * </pre>
      */
     @Column(name = "login_time", nullable = true, length = 64)
     private Date loginTime;
 
     /**
-     * @serialField loginIp：登录终端ip
+     * <pre>
+     * @serialField loginIp：登录终端ip。
+     * </pre>
      */
     @Column(name = "login_ip", nullable = true, length = 32)
     private String loginIp;
 
     /**
-     * @serialField createTime：创建时间
+     * <pre>
+     * @serialField createTime：创建时间。
+     * </pre>
      */
     @Column(name = "create_time", nullable = false, length = 64)
     private Date createTime;
 
     /**
-     * @serialField updateTime：更新时间
+     * <pre>
+     * @serialField updateTime：更新时间。
+     * </pre>
      */
     @Column(name = "update_time", nullable = false, length = 64)
     private Date updateTime;

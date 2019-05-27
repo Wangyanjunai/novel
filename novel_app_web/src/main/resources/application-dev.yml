@@ -46,7 +46,7 @@ logging:
     com.alibaba.druid: debug
     com.potato369.novel.basic.dataobject.mapper: trace
 projectUrl:  
-  projectName: /novelapp
+  projectName: /novel
   domainUrl: http://potato369.mynatapp.cc
   weChatMpAuthorizeUrl: /wechat/authorize
   weChatMpAuthorizeUrlUserInfo: /wechat/userInfo

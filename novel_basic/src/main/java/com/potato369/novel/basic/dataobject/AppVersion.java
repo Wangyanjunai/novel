@@ -10,6 +10,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -27,16 +29,24 @@ import java.util.Date;
  */
 @AllArgsConstructor
 @Builder
-@DynamicUpdate
 @Data
+@DynamicUpdate
 @Entity(name = "AppVersion")
 @NoArgsConstructor
 @Table(name = "app_version")
 public class AppVersion implements Serializable {
 
     /**
+	 * <pre>
+	 * @serialField serialVersionUID：序列号。
+	 * </pre>
+	 */
+	@Transient	
+	private static final long serialVersionUID = -9194913387697676310L;
+
+	/**
      * <pre>
-     *  版本id
+     * @serialField id：版本id。
      * </pre>
      */
     @Id
@@ -45,7 +55,7 @@ public class AppVersion implements Serializable {
 
     /**
      * <pre>
-     * versionCode：版本代码
+     * @serialField versionCode：版本代码。
      * </pre>
      */
     @Column(name = "version_code", nullable = false, length = 11)
@@ -53,7 +63,7 @@ public class AppVersion implements Serializable {
 
     /**
      * <pre>
-     * versionName：版本名称
+     * @serialField versionName：版本名称。
      * </pre>
      */
     @Column(name = "version_name", nullable = false, length = 128)
@@ -61,7 +71,7 @@ public class AppVersion implements Serializable {
 
     /**
      * <pre>
-     * releaseNotes：更新版本说明
+     * @serialField releaseNotes：更新版本说明。
      * </pre>
      */
     @Column(name = "release_notes", nullable = true, length = 128)
@@ -69,7 +79,7 @@ public class AppVersion implements Serializable {
 
     /**
      * <pre>
-     * app包下载资源地址
+     * @serialField sourceFileUrl：app包下载资源地址。
      * </pre>
      */
     @Column(name = "source_file_url", nullable = false, length = 255)
@@ -77,9 +87,9 @@ public class AppVersion implements Serializable {
 
     /**
      * <pre>
-     * publishTime：发布更新时间
+     * @serialField publishTime：发布更新时间。
      * </pre>
      */
-    @Column(name = "publish_time", nullable = false, length = 255)
+    @Column(name = "publish_time", nullable = false, length = 64)
     private Date publishTime;
 }
