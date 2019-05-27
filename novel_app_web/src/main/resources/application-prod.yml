@@ -43,7 +43,7 @@ logging:
     com.alibaba.druid: error
     com.potato369.novel.weixin.web.dataobject.mapper: trace
 projectUrl: 
-  projectName: /novelapp
+  projectName: /novel
   domainUrl: https://www.potato369.com
   weChatMpAuthorizeUrl: /wechat/authorize
   weChatMpAuthorizeUrlUserInfo: /wechat/userInfo
