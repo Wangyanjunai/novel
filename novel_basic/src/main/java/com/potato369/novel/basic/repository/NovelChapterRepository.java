@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
 import com.potato369.novel.basic.dataobject.NovelChapter;
 /**
  * <pre>
@@ -27,4 +29,7 @@ public interface NovelChapterRepository extends JpaRepository<NovelChapter, Stri
 	NovelChapter findByTitleAndBookId(String title, String bookId, Sort sort);
 
 	Page<NovelChapter> findAllByBookId(String bookId, Pageable pageable);
+	
+	@Query(value = "SELECT ch FROM NovelChapter ch WHERE ch.bookId = ?1 ORDER BY ch.index ASC")
+	List<NovelChapter> selectByNovelId(String novelId);
 }

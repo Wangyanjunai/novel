@@ -27,6 +27,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +48,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping(value = "/lv2")
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class NovelController {
 
     @Autowired
@@ -239,6 +242,54 @@ public class NovelController {
             }
         }
     }
+    
+	@GetMapping(value = "/info/download/{novelId}")//小说下载
+    public ResultVO download(@PathVariable(name = "novelId") String novelId) {
+        ResultVO<NovelChapterTitleAndContentVO> resultVO = new ResultVO<NovelChapterTitleAndContentVO>();
+        try {
+            if (log.isDebugEnabled()) {
+                log.debug("【后台小说接口】start====================获取小说内容数据====================start");
+            }
+            NovelInfo novelInfo = novelInfoService.findById(novelId);
+            String title = null;
+            String statusString = null;
+            if (novelInfo != null) {
+            	title = novelInfo.getTitle();
+            	Integer status = novelInfo.getNovelStatus();
+            	if (Integer.valueOf(0).equals(status)) {
+            		statusString = "已完结";
+				}
+            	if (Integer.valueOf(1).equals(status)) {
+            		statusString = "连载中";
+				}
+			}
+            List<NovelChapter> contentList = novelChapterService.findAllContentByNovelId(novelId);
+            if (contentList != null && !contentList.isEmpty() && contentList.size() > 0) {
+            	StringBuffer sBuffer = new StringBuffer();
+            	for (NovelChapter chapter : contentList) {
+            		sBuffer.append(chapter.getTitle());
+            		sBuffer.append("\n");
+            		sBuffer.append(chapter.getContent());
+				}
+            	if (log.isDebugEnabled()) { 
+            		log.debug("content={}", sBuffer.toString());
+				}
+            	writeInFileByfi(title, statusString, sBuffer.toString());
+            }
+            resultVO.setCode(0);
+            resultVO.setData(null);
+            resultVO.setMsg("返回数据成功");
+            return resultVO;
+        } catch (Exception e) {
+            log.error("【后台小说接口】获取小说内容数据失败", e);
+            return ResultVOUtil.error(-1, "返回数据失败");
+        } finally {
+            if (log.isDebugEnabled()) {
+                log.debug("【后台小说接口】end====================获取小说内容数据====================end");
+            }
+        }
+    }
+    
 
     @GetMapping(value = "/book/hotWords-search")//热词搜索，大家都在搜，获取搜索热词
     public ResultVO<WordsVO> hotWordsSearch(@RequestParam(name = "page", defaultValue = "1") Integer page,
@@ -294,7 +345,7 @@ public class NovelController {
             Sort sort = new Sort(Sort.Direction.DESC, "title", "author", "retention", "createTime");
             PageRequest pageRequest = new PageRequest(page - 1, size, sort);
             Page<NovelInfo> novelInfoPage = novelInfoService.findByAuthorContainsOrTitleContains(keyWords, pageRequest);
-            novelInfoVOList = NovelInfo2NovelInfoVOConverter.convertNovelInfoVOPage(novelInfoPage, pageRequest).getContent();
+            novelInfoVOList = NovelInfo2NovelInfoVOConverter.convert2NovelInfoVOPage(novelInfoPage, pageRequest).getContent();
             fuzzySearchVO.setNovelInfoVOList(novelInfoVOList);
             fuzzySearchVO.setTotalPage(new BigDecimal(novelInfoPage.getTotalPages()));
             return ResultVOUtil.success(fuzzySearchVO);
@@ -442,5 +493,28 @@ public class NovelController {
             BigDecimal clickNumber = novelInfo.getClickNumber().add(new BigDecimal(1));
             novelInfoService.updateClickNumber(clickNumber, novelId);
         }
+    }
+    
+    private synchronized void writeInFileByfi(String title, String status,String content){
+        File f = new File(title+"["+status+"]"+".txt");
+        FileOutputStream fos = null;
+        try {
+            if(!f.exists()){
+                f.createNewFile();
+            }
+            fos = new FileOutputStream(f);
+            fos.write(content.getBytes());
+        } catch (IOException e) {
+            log.error("", e);
+        } finally {
+            if(fos != null){
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                	log.error("", e);
+                }
+            }
+        }
+        
     }
 }

@@ -1,6 +1,7 @@
 package com.potato369.novel.basic.service.impl;
 
 import com.potato369.novel.basic.dataobject.NovelShelfDetail;
+import com.potato369.novel.basic.dataobject.idClass.NovelShelfDetailIdClass;
 import com.potato369.novel.basic.repository.ShelfDetailRepository;
 import com.potato369.novel.basic.service.ShelfDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,4 +36,14 @@ public class ShelfDetailServiceImpl implements ShelfDetailService {
     public NovelShelfDetail save(NovelShelfDetail novelShelfDetail) {
         return detailRepository.save(novelShelfDetail);
     }
+    
+    @Override
+    public NovelShelfDetail selectByUserIdAndShelfIdAndNovelId(String userId, String shelfId, String novelId) {
+    	return detailRepository.selectByUserIdAndShelfIdAndNovelId(userId, shelfId, novelId);
+    }
+		
+	@Override
+	public void delete(NovelShelfDetailIdClass idClass) {
+		detailRepository.delete(idClass);
+	}
 }

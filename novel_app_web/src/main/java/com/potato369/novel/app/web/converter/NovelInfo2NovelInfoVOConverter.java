@@ -30,12 +30,12 @@ public class NovelInfo2NovelInfoVOConverter {
         return novelInfoVO;
     }
 
-    public static List<NovelInfoVO> convertTONovelInfoVOList(List<NovelInfo> novelInfoList) {
+    public static List<NovelInfoVO> convert2NovelInfoVOList(List<NovelInfo> novelInfoList) {
         return novelInfoList.stream().map(novelInfo -> convert(novelInfo)).collect(Collectors.toList());
     }
 
-    public static Page<NovelInfoVO> convertNovelInfoVOPage(Page<NovelInfo> novelInfoPage, Pageable pageable) {
-        return new PageImpl<>(convertTONovelInfoVOList(novelInfoPage.getContent()), pageable, novelInfoPage.getTotalElements());
+    public static Page<NovelInfoVO> convert2NovelInfoVOPage(Page<NovelInfo> novelInfoPage, Pageable pageable) {
+        return new PageImpl<>(convert2NovelInfoVOList(novelInfoPage.getContent()), pageable, novelInfoPage.getTotalElements());
     }
 
     public static NovelInfo convert(NovelInfoVO novelInfoVO) {
@@ -44,11 +44,11 @@ public class NovelInfo2NovelInfoVOConverter {
         return novelInfo;
     }
 
-    public static List<NovelInfo> convertTONovelInfoList(List<NovelInfoVO> novelInfoVOList) {
+    public static List<NovelInfo> convert2NovelInfoList(List<NovelInfoVO> novelInfoVOList) {
         return novelInfoVOList.stream().map(novelInfo -> convert(novelInfo)).collect(Collectors.toList());
     }
 
-    public static Page<NovelInfo> convertTONovelInfoPage(Page<NovelInfoVO> novelInfoVOPage, Pageable pageable) {
-        return new PageImpl<>(convertTONovelInfoList(novelInfoVOPage.getContent()), pageable, novelInfoVOPage.getTotalElements());
+    public static Page<NovelInfo> convert2NovelInfoPage(Page<NovelInfoVO> novelInfoVOPage, Pageable pageable) {
+        return new PageImpl<>(convert2NovelInfoList(novelInfoVOPage.getContent()), pageable, novelInfoVOPage.getTotalElements());
     }
 }

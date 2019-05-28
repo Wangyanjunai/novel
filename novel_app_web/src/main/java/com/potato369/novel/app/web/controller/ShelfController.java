@@ -11,6 +11,7 @@ import com.potato369.novel.basic.dataobject.NovelInfo;
 import com.potato369.novel.basic.dataobject.NovelShelf;
 import com.potato369.novel.basic.dataobject.NovelShelfDetail;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
+import com.potato369.novel.basic.dataobject.idClass.NovelShelfDetailIdClass;
 import com.potato369.novel.basic.dataobject.idClass.NovelUserInfoIdClass;
 import com.potato369.novel.basic.service.NovelInfoService;
 import com.potato369.novel.basic.service.ShelfDetailService;
@@ -40,7 +41,7 @@ import java.util.*;
 @Slf4j
 @RestController
 @RequestMapping(value = "/shelf")
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class ShelfController {
 
     @Autowired
@@ -57,7 +58,7 @@ public class ShelfController {
 
     /**
      * <pre>
-     * 获取用户书架
+     * 获取用户书架信息
      * @param userId 用户id
      * </pre>
      */
@@ -66,6 +67,9 @@ public class ShelfController {
         ResultVO<ShelfInfoVO> shelfInfoVOResultVO = new ResultVO<ShelfInfoVO>();
         ShelfInfoVO shelfInfoVO = ShelfInfoVO.builder().build();
         try {
+        	if (log.isDebugEnabled()) {
+				log.debug("start====================获取用户书架信息====================start");
+			}
             NovelShelf novelShelf = shelfService.selectByUserId(userId);
             String shelfId = null;
             if (novelShelf != null) {
@@ -94,9 +98,11 @@ public class ShelfController {
             shelfInfoVOResultVO.setCode(0);
             shelfInfoVOResultVO.setMsg("返回数据成功");
         } catch (Exception e) {
-            log.error("", e);
+            log.error("获取用户书架信息出现错误", e);
         } finally {
-
+        	if (log.isDebugEnabled()) {
+				log.debug("end======================获取用户书架信息======================end");
+			}
         }
         return shelfInfoVOResultVO;
     }
@@ -120,7 +126,6 @@ public class ShelfController {
      *      }
      * </pre>
      */
-    @SuppressWarnings("rawtypes")
 	@PostMapping(value = "/add")
     public ResultVO addToShelf(@RequestParam(name = "json") String shelfJson) {
         try {
@@ -130,6 +135,9 @@ public class ShelfController {
             Map<String, Object> shelfMap = (LinkedHashMap<String, Object>) JSONUtils.parse(shelfJson);
             if (log.isDebugEnabled()) {
                 log.info("shelf map={}", shelfMap);
+            }
+            if (log.isDebugEnabled()) {
+                log.info("start====================将小说添加到用户书架====================start");
             }
             if (shelfMap != null && !shelfMap.isEmpty() && shelfMap.size() > 0) {
                 //根据用户id查询用户书架和用户信息
@@ -189,14 +197,76 @@ public class ShelfController {
                     detailService.save(novelShelfDetail);
                 }
             }
-            return ResultVOUtil.success(0, "添加书架成功");
+            return ResultVOUtil.success(0, "将小说添加到用户书架成功");
         } catch (Exception e) {
-            log.error("", e);
-            return ResultVOUtil.error(-102, "添加书架失败");
+            log.error("将小说添加到用户书架出现错误", e);
+            return ResultVOUtil.error(-102, "将小说添加到用户书架失败");
         } finally {
-            if (log.isDebugEnabled()) {
-                log.debug("");
+        	if (log.isDebugEnabled()) {
+                log.info("end======================将小说添加到用户书架======================end");
             }
         }
     }
+
+    /**
+     * <pre>
+     * removeFromShelf方法的作用：将小说从书架移除
+     * 描述方法适用条件：
+     * 描述方法的执行流程：
+     * 描述方法的使用方法：
+     * 描述方法的注意事项：
+     * @param userId 用户id
+     * @param novelId 小说id
+     * @author Jack
+     * @since JDK 1.6
+     * </pre>
+     */
+	@GetMapping(value = "/remove")
+    public ResultVO removeFromShelf(@RequestParam(name = "userId") String userId, @RequestParam(name = "novelId") String novelId) {
+		try {
+		 if (log.isDebugEnabled()) {
+			 log.debug("start====================将小说从书架移除====================start");
+		 }
+		 if (StringUtils.isEmpty(userId) || StringUtils.isEmpty(novelId)) {
+			 log.error("用户id，小说id不能为空，获取不到用户的书架信息");
+             return ResultVOUtil.error(-103, "用户id，小说id不能为空，获取不到用户的书架信息");
+		}
+		 NovelUserInfo novelUserInfo = userInfoService.findByUserId(userId);
+         if (novelUserInfo == null) {
+             log.error("用户未注册，获取不到用户信息，用户id={}", userId);
+             return ResultVOUtil.error(-100, "用户未注册，获取不到用户信息");
+         }
+         NovelInfo novelInfo = novelInfoService.findById(novelId);
+         if (novelInfo == null) {
+        	 log.error("小说不存在，获取不到用户添加到书架的小说信息，小说id={}", novelId);
+             return ResultVOUtil.error(-104, "小说不存在，获取不到用户添加到书架的小说信息");
+		}
+        NovelShelf novelShelf = shelfService.selectByUserId(userId);
+        if (novelShelf == null) {
+        	log.error("用户书架不存在，获取不到用户添加到书架的小说信息，用户id={}", userId);
+            return ResultVOUtil.error(-105, "用户书架不存在，获取不到用户添加到书架的小说信息");
+		}
+        String shelfId = novelShelf.getShelfId();
+        NovelShelfDetail shelfDetail = detailService.selectByUserIdAndShelfIdAndNovelId(userId, shelfId, novelId);
+        if (shelfDetail == null) {
+        	log.error("用户书架详情不存在，获取不到用户添加到书架的书架详情信息，用户id={}，书架id={}，小说id={}", userId, shelfId, novelId);
+            return ResultVOUtil.error(-106, "用户书架详情不存在，获取不到用户添加到书架的书架详情信息");
+		}
+        String shelfDetailId = shelfDetail.getShelfDetailId();
+        NovelShelfDetailIdClass idClass = NovelShelfDetailIdClass.builder().build();
+        idClass.setShelfId(shelfId);
+        idClass.setShelfDetailId(shelfDetailId);
+        idClass.setNovelId(novelId);
+        idClass.setUserId(userId);
+        detailService.delete(idClass);
+		return ResultVOUtil.success(0, "将小说从用户书架移除成功");
+	 } catch (Exception e) {
+		 log.error("将小说从书架移除出现错误", e);
+		 return ResultVOUtil.error(-1, "将小说从用户书架移除失败");
+	 } finally {
+		 if (log.isDebugEnabled()) {
+			 log.debug("end======================将小说从书架移除======================end");
+		 }
+	   }
+    } 
 }

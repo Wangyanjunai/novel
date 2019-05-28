@@ -21,6 +21,9 @@ import java.util.List;
  */
 public interface ShelfDetailRepository extends JpaRepository<NovelShelfDetail, NovelShelfDetailIdClass> {
 
-    @Query(value = "select nd from NovelShelfDetail nd where nd.userId = ?1 and nd.shelfId = ?2")
+    @Query(value = "SELECT nd FROM NovelShelfDetail nd WHERE nd.userId = ?1 AND nd.shelfId = ?2")
     List<NovelShelfDetail> selectByUserIdAndShelfId(String userId, String shelfId);
+    
+    @Query(value = "SELECT nd FROM NovelShelfDetail nd WHERE nd.userId = ?1 AND nd.shelfId = ?2 AND novelId = ?3")
+    NovelShelfDetail selectByUserIdAndShelfIdAndNovelId(String userId, String shelfId, String novelId);
 }

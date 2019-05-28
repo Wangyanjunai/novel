@@ -41,7 +41,7 @@ public class NovelShelfDetail implements Serializable {
 
 	/**
 	 * <pre>
-	 * &#64;serialField shelfDetailId：联合主键，书架详情id。
+	 * @serialField shelfDetailId：联合主键，书架详情id。
 	 * </pre>
 	 */
 	@Id
@@ -50,7 +50,7 @@ public class NovelShelfDetail implements Serializable {
 
 	/**
 	 * <pre>
-	 * &#64;serialField shelfId：联合主键，书架id。
+	 * @serialField shelfId：联合主键，书架id。
 	 * </pre>
 	 */
 	@Id
@@ -59,7 +59,7 @@ public class NovelShelfDetail implements Serializable {
 
 	/**
 	 * <pre>
-	 * &#64;serialField shelfId：联合主键，小说id。
+	 * @serialField shelfId：联合主键，小说id。
 	 * </pre>
 	 */
 	@Id
@@ -68,7 +68,7 @@ public class NovelShelfDetail implements Serializable {
 
 	/**
 	 * <pre>
-	 * &#64;serialField userId：联合主键，用户id。
+	 * @serialField userId：联合主键，用户id。
 	 * </pre>
 	 */
 	@Id
@@ -77,79 +77,79 @@ public class NovelShelfDetail implements Serializable {
 
 	/**
 	 * <pre>
-	 * &#64;serialField lastReadChapterId：最后一次阅读的章节的id(可能为空)。
+	 * @serialField lastReadChapterId：最后一次阅读的章节的id(可能为空)。
 	 * </pre>
 	 */
-	@Column(name = "last_read_chapter_id", length = 32)
+	@Column(name = "last_read_chapter_id", nullable = true, length = 32)
 	private String lastReadChapterId;
 
 	/**
 	 * <pre>
-	 * &#64;serialField lastReadChapterIndex：最后一次阅读的章节索引index。
+	 * @serialField lastReadChapterIndex：最后一次阅读的章节索引index。
 	 * </pre>
 	 */
-	@Column(name = "last_read_chapter_index", length = 6)
+	@Column(name = "last_read_chapter_index", nullable = true, length = 6)
 	private Integer lastReadChapterIndex;
 
 	/**
 	 * <pre>
-	 * &#64;serialField lastReadPage：最后一次阅读章节的页码。
+	 * @serialField lastReadPage：最后一次阅读章节的页码。
 	 * </pre>
 	 */
-	@Column(name = "last_read_page", length = 6)
+	@Column(name = "last_read_page", nullable = true, length = 6)
 	private Integer lastReadPage;
 
 	/**
 	 * <pre>
-	 * &#64;serialField hasUpdate：书架的这本小说是否有新的章节更新，0-无更新，1-有更新，默认0。
+	 * @serialField hasUpdate：书架的这本小说是否有新的章节更新，0-无更新，1-有更新，默认0。
 	 * </pre>
 	 */
-	@Column(name = "has_update", length = 1)
+	@Column(name = "has_update", nullable = true, length = 1)
 	private Integer hasUpdate;
 
 	/**
 	 * <pre>
-	 * &#64;serialField sort：保存自定义排序的顺序。
+	 * @serialField sort：保存自定义排序的顺序。
 	 * </pre>
 	 */
-	@Column(name = "sort", length = 6)
+	@Column(name = "sort", nullable = true, length = 6)
 	private Integer sort;
 
 	/**
 	 * <pre>
-	 * &#64;serialField isOrNotTop：书架的这本小说是否开启置顶，0-不开启，1-开启，默认0。
+	 * @serialField isOrNotTop：书架的这本小说是否开启置顶，0-不开启，1-开启，默认0。
 	 * </pre>
 	 */
-	@Column(name = "is_or_not_top", length = 1)
+	@Column(name = "is_or_not_top", nullable = true, length = 1)
 	private Integer isOrNotTop;
 
 	/**
 	 * <pre>
-	 * &#64;serialField isOrNotPush：书架的这本小说是否开启小说章节更新消息推送，0-不开启，1-开启，默认0。
+	 * @serialField isOrNotPush：书架的这本小说是否开启小说章节更新消息推送，0-不开启，1-开启，默认0。
 	 * </pre>
 	 */
-	@Column(name = "is_or_not_push", length = 1)
+	@Column(name = "is_or_not_push", nullable = true, length = 1)
 	private Integer isOrNotPush;
 
 	/**
 	 * <pre>
-	 * &#64;serialField lastChapterUpdateTime：最新章节更新时间。
+	 * @serialField lastChapterUpdateTime：最新章节更新时间。
 	 * </pre>
 	 */
-	@Column(name = "last_chapter_update_time", length = 64)
+	@Column(name = "last_chapter_update_time", nullable = true, length = 64)
 	private Date lastChapterUpdateTime;
 
 	/**
 	 * <pre>
-	 * &#64;serialField latestReadTime：最后一次阅读时间。
+	 * @serialField latestReadTime：最后一次阅读时间。
 	 * </pre>
 	 */
-	@Column(name = "last_read_time", length = 64)
+	@Column(name = "last_read_time", nullable = true, length = 64)
 	private Date lastReadTime;
 
 	/**
 	 * <pre>
-	 * &#64;serialField createTime：创建时间。
+	 * @serialField createTime：创建时间。
 	 * </pre>
 	 */
 	@Column(name = "create_time", nullable = false, length = 64)
@@ -157,7 +157,7 @@ public class NovelShelfDetail implements Serializable {
 
 	/**
 	 * <pre>
-	 * &#64;serialField updateTime：更新时间。
+	 * @serialField updateTime：更新时间。
 	 * </pre>
 	 */
 	@Column(name = "update_time", nullable = false, length = 64)

@@ -201,7 +201,6 @@ public class NovelChapterServiceImpl implements NovelChapterService {
         return chapterMapper.selectByNovelId(novelId);
 //        return repository.findByBookId(novelId);
     }
-
 	
 	/**
 	 * <pre>
@@ -209,7 +208,6 @@ public class NovelChapterServiceImpl implements NovelChapterService {
 	 * @see com.potato369.novel.basic.service.NovelChapterService#selectByNovelIdAndIndex(java.lang.String, java.lang.Integer)
 	 * </pre>
 	 */
-		
 	@Override
 	public NovelChapter selectByNovelIdAndIndex(String novelId, Integer index) {
         Map<String, Object> map = new HashMap<String, Object>();
@@ -222,4 +220,15 @@ public class NovelChapterServiceImpl implements NovelChapterService {
     public Page<NovelChapter> findAllByNovelId(String novelId, Pageable pageable) {
         return repository.findAllByBookId(novelId, pageable);
     }
+
+	/**
+	 * <pre>
+	 * 描述该方法的实现功能：
+	 * @see com.potato369.novel.basic.service.NovelChapterService#findAllContentByNovelId(java.lang.String)
+	 * </pre>
+	 */
+	@Override
+	public List<NovelChapter> findAllContentByNovelId(String novelId) {
+		return repository.selectByNovelId(novelId);
+	}
 }

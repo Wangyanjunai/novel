@@ -215,7 +215,7 @@ public class CategoryController {
             updateNumber(novelCategory);
             Page<NovelInfo> novelInfoPage = novelInfoService.findByCategoryType(pageRequest, categoryType);
             if (novelInfoPage != null) {
-                categoryBookVO.setBooks(NovelInfo2NovelInfoVOConverter.convertTONovelInfoVOList(novelInfoPage.getContent()));
+                categoryBookVO.setBooks(NovelInfo2NovelInfoVOConverter.convert2NovelInfoVOList(novelInfoPage.getContent()));
                 categoryBookVO.setTotalPage(new BigDecimal(novelInfoPage.getTotalPages()));
             }
             return ResultVOUtil.success(categoryBookVO);

@@ -1,6 +1,7 @@
 package com.potato369.novel.basic.service;
 
 import com.potato369.novel.basic.dataobject.NovelShelfDetail;
+import com.potato369.novel.basic.dataobject.idClass.NovelShelfDetailIdClass;
 
 import java.util.List;
 
@@ -21,4 +22,8 @@ public interface ShelfDetailService {
     List<NovelShelfDetail> selectByUserIdAndShelfId(String userId, String shelfId);
 
     NovelShelfDetail save(NovelShelfDetail novelShelfDetail);
+    
+    NovelShelfDetail selectByUserIdAndShelfIdAndNovelId(String userId, String shelfId, String novelId);
+    
+    void delete(NovelShelfDetailIdClass idClass);
 }
