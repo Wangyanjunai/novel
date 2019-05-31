@@ -1,12 +1,9 @@
 package com.potato369.novel.basic;
 
 import lombok.extern.slf4j.Slf4j;
-
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
-import java.security.NoSuchAlgorithmException;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic
@@ -37,6 +34,7 @@ public class TestProtocols {
             for (int i = 0; i < protocols.length; i++) {
                 System.out.println(" " + protocols[i]);
             }
+            System.out.println("currentTimeMillis=" + System.currentTimeMillis());
         } catch (Exception e) {
             log.error("", e);
         }

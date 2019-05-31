@@ -183,36 +183,49 @@ INSERT INTO `novel_shelf_detail` VALUES ('161d7ffef8c945a09f6bfee10ca374bf', 'qd
 -- ----------------------------
 DROP TABLE IF EXISTS `novel_user_info`;
 CREATE TABLE `novel_user_info`  (
-    `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '用户id，主键id。',
-    `openid` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '微信openid，或者登录微博账号id，QQ账号id。',
+    `mid` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '用户mid，联合主键。',
+    `meid` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '手机串号，联合主键。',
+    `brand` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '手机品牌。',
+    `model` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '手机型号。',
+    `mac` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '手机mac地址。',
+    `system_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '手机系统类型。',
+    `system_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '手机系统版本。',
+    `version_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT 'APP应用版本名称。',
+    `openid` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '微信openid，或者微博openid，或者QQ账号openid。',
     `nick_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户微信，QQ，微博昵称。',
-    `gender` tinyint(4) UNSIGNED NOT NULL DEFAULT 0 COMMENT '性别，2-女；1-男；0-未知，默认：“0-未知“。',
-    `user_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户名。',
-    `signature` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '签名内容。',
-    `alt` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '个人主页URL。',
+    `gender` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '性别，0-未知；1-男；2-女，默认：“0-未知“。',
     `lang` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '语言。',
-    `city` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '城市。',
-    `province` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '省份。',
-    `country` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '国家。',
-    `avatar_url` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '头像URL。',
-    `balance` decimal(10, 0) UNSIGNED NULL DEFAULT 0 COMMENT '土豆币余额。',
-    `charge_amount` decimal(8, 2) NULL DEFAULT NULL COMMENT '充值总金额（元）。',
+    `address` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '定位地址（国家省份城市）。',
+    `avatar_url` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '头像地址URL。',
+    `charge_amount` decimal(8, 2) NULL DEFAULT 0.00 COMMENT '充值总金额（元）。',
+    `envelope_amount` decimal(8, 2) NULL DEFAULT 0.00 COMMENT '红包值。',
     `shelf_amount` int(11) NULL DEFAULT 0 COMMENT '书架小说总数量。',
-    `ip` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '客户端IP。',
-    `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间。',
-    `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间。',
+    `vip_grade_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT 'VIP等级id。关联VIP权限等级信息表的权限等级id主键',
+    `balance_amount` decimal(8, 2) NULL DEFAULT 0.00 COMMENT '余额。',
+    `user_type` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '用户身份类型，0-游客身份；1-微信身份；2-微博身份；3-QQ身份，默认：“0-游客“。',
+    `is_or_not_band_wechat` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '是否完成绑定微信号任务，0-未完成；1-完成，默认：“1-未完成“。',
+    `ip` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '客户端外网ip。',
+    `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间。',
     `login_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '登录时间。',
-    PRIMARY KEY (`id`) USING BTREE,
+    PRIMARY KEY (`mid`, `meid`) USING BTREE,
     INDEX `key_openid`(`openid`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息记录表。' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of novel_user_info
 -- ----------------------------
-INSERT INTO `novel_user_info` VALUES ('036a16dd9a8645f48dff1fd96af07877', 'oSkiNvxBVnRuFYmGK88w6n_HP-Bo', '晴天°smile', 1, '晴天°smile', '', 'http://thirdwx.qlogo.cn/mmopen/uxaicsZZrWDQfvY3cEgCXwRuY9WkwuSAicdCC4yOLc8xg7GnPrOicz1tvnayFfCibNYACicwf7HgIA67IKQAA8I23a2ZMZR00EtBH/132', '', '', '', '卢森堡', 'http://thirdwx.qlogo.cn/mmopen/uxaicsZZrWDQfvY3cEgCXwRuY9WkwuSAicdCC4yOLc8xg7GnPrOicz1tvnayFfCibNYACicwf7HgIA67IKQAA8I23a2ZMZR00EtBH/132', 0, 0.00, 0, '183.15.207.190', '2019-05-16 17:38:18', '2019-05-16 17:42:27', '2019-05-16 17:42:27');
-INSERT INTO `novel_user_info` VALUES ('060d7ffef8c945a09f6bfee10ca374bf', 'oSkiNv59X9BMABt8oOW2-OvSvEQY', 'Jackwang', 1, 'Jackwang', '', 'http://thirdwx.qlogo.cn/mmopen/X79cK0ndqvckftHictH9Z03BS9iahsibweSXywMQz3fWM6TyticDmgF0amkuPnCoYHPcpTfJVYLs6dIXwapewPUicwcPuiaNzU5qPj/132', 'zh_CN', '深圳', '广东', '中国', 'http://thirdwx.qlogo.cn/mmopen/X79cK0ndqvckftHictH9Z03BS9iahsibweSXywMQz3fWM6TyticDmgF0amkuPnCoYHPcpTfJVYLs6dIXwapewPUicwcPuiaNzU5qPj/132', 0, 0.00, 0, '183.15.207.190', '2019-05-16 17:42:18', '2019-05-16 17:43:11', '2019-05-16 17:43:11');
-INSERT INTO `novel_user_info` VALUES ('06cf9355f3e1470d8491db6d0dd64416', 'oSkiNv_pLE0qCc6XcdH14_ndUnZs', 'freebird', 2, 'freebird', '', 'http://thirdwx.qlogo.cn/mmopen/VHU8bI7BOJCiaicFlQMcibdIOfl0Cib0HBwCdwNQr7libJpia5LicwFYUicdIrZgMp4YUHjQ0hr6pCLRtyiaerSHO4icozuMYMJaexD4y5/132', '', '深圳', '广东', '中国', 'http://thirdwx.qlogo.cn/mmopen/VHU8bI7BOJCiaicFlQMcibdIOfl0Cib0HBwCdwNQr7libJpia5LicwFYUicdIrZgMp4YUHjQ0hr6pCLRtyiaerSHO4icozuMYMJaexD4y5/132', 0, 0.00, 0, '183.15.207.190', '2019-05-16 17:44:44', '2019-05-16 17:44:48', '2019-05-16 17:44:48');
+INSERT INTO `novel_user_info` VALUES ('1559196884223', 'A000007ECBF24A', '', 'oSkiNvxBVnRuFYmGK88w6n_HP-Bo', '晴天°smile', 1, '', 'http://thirdwx.qlogo.cn/mmopen/uxaicsZZrWDQfvY3cEgCXwRuY9WkwuSAicdCC4yOLc8xg7GnPrOicz1tvnayFfCibNYACicwf7HgIA67IKQAA8I23a2ZMZR00EtBH/132', '', '', '', '卢森堡', 'http://thirdwx.qlogo.cn/mmopen/uxaicsZZrWDQfvY3cEgCXwRuY9WkwuSAicdCC4yOLc8xg7GnPrOicz1tvnayFfCibNYACicwf7HgIA67IKQAA8I23a2ZMZR00EtBH/132', 0, 0.00, 0, '183.15.207.190', '2019-05-16 17:38:18', '2019-05-16 17:42:27', '2019-05-16 17:42:27');
+INSERT INTO `novel_user_info` VALUES ('1559196980826', 'A000007ECBF24C', 'oSkiNv59X9BMABt8oOW2-OvSvEQY', 'Jackwang', 1, '', 'http://thirdwx.qlogo.cn/mmopen/X79cK0ndqvckftHictH9Z03BS9iahsibweSXywMQz3fWM6TyticDmgF0amkuPnCoYHPcpTfJVYLs6dIXwapewPUicwcPuiaNzU5qPj/132', 'zh_CN', '深圳', '广东', '中国', 'http://thirdwx.qlogo.cn/mmopen/X79cK0ndqvckftHictH9Z03BS9iahsibweSXywMQz3fWM6TyticDmgF0amkuPnCoYHPcpTfJVYLs6dIXwapewPUicwcPuiaNzU5qPj/132', 0, 0.00, 0, '183.15.207.190', '2019-05-16 17:42:18', '2019-05-16 17:43:11', '2019-05-16 17:43:11');
+INSERT INTO `novel_user_info` VALUES ('1559197000449', 'A000007ECBF24E', 'oSkiNv_pLE0qCc6XcdH14_ndUnZs', 'freebird', 2, '', 'http://thirdwx.qlogo.cn/mmopen/VHU8bI7BOJCiaicFlQMcibdIOfl0Cib0HBwCdwNQr7libJpia5LicwFYUicdIrZgMp4YUHjQ0hr6pCLRtyiaerSHO4icozuMYMJaexD4y5/132', '', '深圳', '广东', '中国', 'http://thirdwx.qlogo.cn/mmopen/VHU8bI7BOJCiaicFlQMcibdIOfl0Cib0HBwCdwNQr7libJpia5LicwFYUicdIrZgMp4YUHjQ0hr6pCLRtyiaerSHO4icozuMYMJaexD4y5/132', 0, 0.00, 0, '183.15.207.190', '2019-05-16 17:44:44', '2019-05-16 17:44:48', '2019-05-16 17:44:48');
 
+-- ----------------------------
+-- Table structure for novel_vip_grade
+-- ----------------------------
+DROP TABLE IF EXISTS `novel_vip_grade`;
+CREATE TABLE `novel_vip_grade` (
+	`grade_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT 'VIP等级id，主键。',
+	`grade_name` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT 'VIP等级名称。',
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'VIP等级信息记录表。' ROW_FORMAT = Dynamic;
 -- ----------------------------
 -- Table structure for order_detail
 -- ----------------------------

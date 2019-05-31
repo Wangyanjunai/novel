@@ -5,14 +5,12 @@ import com.potato369.novel.basic.enums.ResultEnum;
 import com.potato369.novel.conf.prop.ProjectUrlProperties;
 import com.potato369.novel.constant.CookieConstant;
 import com.potato369.novel.constant.RedisConstant;
-import com.potato369.novel.converter.WxMpUser2UserInfoConverter;
 import com.potato369.novel.exception.BuyerAuthorizeException;
 import com.potato369.novel.manage.RedisManager;
 import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.utils.CookieUtil;
 import com.potato369.novel.utils.JsonUtil;
 import com.potato369.novel.utils.UUIDUtil;
-
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -27,7 +25,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -245,9 +242,9 @@ public class BuyerWeChatController {
 			if (userInfo == null) {
 //				userInfo = WxMpUser2UserInfoConverter.WxMpUser2UserInfoConvert(mpUser);
 			} else {
-				String id = userInfo.getId();
+				String mid = userInfo.getMid();
 				BeanUtils.copyProperties(mpUser, userInfo);
-				userInfo.setId(id);
+				userInfo.setMid(mid);
 			}
 			userInfoService.save(userInfo);
 		} catch (WxErrorException e) {

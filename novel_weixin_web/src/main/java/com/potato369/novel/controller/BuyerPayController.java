@@ -114,7 +114,7 @@ public class BuyerPayController {
             log.error("【微信公众号支付订单】用户信息不存在", ResultEnum.MP_USER_INFO_EMPTY);
             throw new NovelOrderException(ResultEnum.MP_USER_INFO_EMPTY);
         }
-        orderDTO.setBuyerAddress(userInfo.getCountry().concat(userInfo.getProvince()).concat(userInfo.getCity()));
+//        orderDTO.setBuyerAddress(userInfo.getCountry().concat(userInfo.getProvince()).concat(userInfo.getCity()));
         orderDTO.setBuyerOpenid(openid);
         BigDecimal orderAmount = BigDecimal.ZERO;
         if (productInfo.getProductType() == ProductInfoEnum.COIN.getCode()) {

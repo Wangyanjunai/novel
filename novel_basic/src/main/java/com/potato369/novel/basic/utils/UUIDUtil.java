@@ -33,6 +33,14 @@ public class UUIDUtil {
     public static synchronized String gen32UUID(){
         return UUID.randomUUID().toString().replaceAll("-", "").toLowerCase();
     }
+    
+    /**
+     * 创建用户mid，商品id
+     * @return
+     */
+    public static synchronized String gen13MID() {
+		return String.valueOf(System.currentTimeMillis());
+	}
 
     public static void main(String[] args) {
         System.out.println(UUIDUtil.genTimstampUUID());

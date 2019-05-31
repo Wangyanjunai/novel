@@ -41,12 +41,21 @@ public class NovelUserInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField id：用户id，主键id。
+     * @serialField mid：用户mid，联合主键。
      * </pre>
      */
     @Id
-    @Column(name = "id", nullable = false, length = 32)
-    private String id;
+    @Column(name = "mid", nullable = false, length = 20)
+    private String mid;
+    
+    /**
+     * <pre>
+     * @serialField meid：用户手机串号，联合主键。
+     * </pre>
+     */
+    @Id
+    @Column(name = "meid", nullable = false, length = 20)
+    private String meid;
 
     /**
      * <pre>
@@ -75,30 +84,6 @@ public class NovelUserInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField userName：用户名。
-     * </pre>
-     */
-    @Column(name = "user_name", nullable = false, length = 128)
-    private String userName;
-
-    /**
-     * <pre>
-     * @serialField signature：签名内容。
-     * </pre>
-     */
-    @Column(name = "signature", nullable = true, length = 256)
-    private String signature;
-
-    /**
-     * <pre>
-     * @serialField alt：个人主页URL。
-     * </pre>
-     */
-    @Column(name = "alt", nullable = true, length = 256)
-    private String alt;
-
-    /**
-     * <pre>
      * @serialField lang：语言。
      * </pre>
      */
@@ -110,8 +95,8 @@ public class NovelUserInfo implements Serializable {
      * @serialField city：城市。
      * </pre>
      */
-    @Column(name = "city", nullable = true, length = 25)
-    private String city;
+    @Column(name = "address", nullable = true, length = 256)
+    private String address;
 
     /**
      * <pre>

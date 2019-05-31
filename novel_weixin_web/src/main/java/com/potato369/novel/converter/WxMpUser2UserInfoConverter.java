@@ -2,15 +2,12 @@ package com.potato369.novel.converter;
 
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.service.UserInfoService;
+import com.potato369.novel.basic.utils.UUIDUtil;
 import com.potato369.novel.utils.JsonUtil;
-import com.potato369.novel.utils.UUIDUtil;
-
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 /**
  * <pre>
@@ -61,10 +58,10 @@ public class WxMpUser2UserInfoConverter {
      */
     public static NovelUserInfo WxMpUser2UserInfoConvert(WxMpUser wxMpUser) {
     	NovelUserInfo userInfo = NovelUserInfo.builder().build();
-        userInfo.setId(UUIDUtil.gen32UUID());
+        userInfo.setMid(UUIDUtil.gen13MID());
         userInfo.setCountry(wxMpUser.getCountry());
         userInfo.setProvince(wxMpUser.getProvince());
-        userInfo.setCity(wxMpUser.getCity());
+//        userInfo.setCity(wxMpUser.getCity());
         userInfo.setLang(wxMpUser.getLanguage());
         userInfo.setGender(wxMpUser.getSex());
 //        userInfo.setSubscribe(getSubscribeValue(wxMpUser.getSubscribe()));

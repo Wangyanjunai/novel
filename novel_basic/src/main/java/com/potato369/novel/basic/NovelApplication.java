@@ -10,5 +10,4 @@ public class NovelApplication {
         System.setProperty("https.protocols", "TLSv1.2");
         SpringApplication.run(NovelApplication.class, args);
     }
-
 }

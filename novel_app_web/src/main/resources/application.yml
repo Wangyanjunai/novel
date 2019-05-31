@@ -52,7 +52,7 @@ xfYun:
   textType: text
 server:
   context-path: /novel
-  port: 8080
+  port: 8081
   error:
     path: /error
   session:
@@ -79,5 +79,5 @@ security:
   basic:
     enabled: false
     path: /**
-endpoints: 
+endpoints:
   enabled: true
