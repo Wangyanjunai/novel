@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
 import org.hibernate.annotations.DynamicUpdate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -72,7 +71,7 @@ public class NovelAdvertisement implements Serializable{
 	 * @serialField imageUrl：广告图片链接地址。
 	 * </pre>
 	 */
-	@Column(name = "image_url", nullable = true, length = 1024)
+	@Column(name = "image_url", length = 1024)
 	private String imageUrl;
 	
 	/**
@@ -80,7 +79,7 @@ public class NovelAdvertisement implements Serializable{
 	 * @serialField linkUrl：广告跳转链接地址。
 	 * </pre>
 	 */
-	@Column(name = "link_url", nullable = true, length = 1024)
+	@Column(name = "link_url", length = 1024)
 	private String linkUrl;
 	
 	/**
@@ -88,7 +87,7 @@ public class NovelAdvertisement implements Serializable{
 	 * @serialField novelId：小说id。
 	 * </pre>
 	 */
-	@Column(name = "novel_id", nullable = true, length = 32)
+	@Column(name = "novel_id", length = 32)
 	private String novelId;
 	
 	/**
@@ -96,7 +95,7 @@ public class NovelAdvertisement implements Serializable{
 	 * @serialField novelParentCategoryId：小说分类所属父级id。
 	 * </pre>
 	 */
-	@Column(name = "novel_parent_category_id", nullable = true, length = 32)
+	@Column(name = "novel_parent_category_id", length = 32)
 	private String novelParentCategoryId;
 	
 	/**
