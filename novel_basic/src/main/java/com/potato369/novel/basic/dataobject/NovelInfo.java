@@ -63,7 +63,7 @@ public class NovelInfo implements Serializable {
      * @serialField coverURL：封面图片路径。
      * </pre>
      */
-    @Column(name = "cover_url", nullable = true, length = 1024)
+    @Column(name = "cover_url", length = 1024)
     private String coverURL;
 
     /**
@@ -71,7 +71,7 @@ public class NovelInfo implements Serializable {
      * @serialField coverURL：小说路径。
      * </pre>
      */
-    @Column(name = "data_url", nullable = true, length = 1024)
+    @Column(name = "data_url", length = 1024)
     private String dataURL;
 
     /**
@@ -79,7 +79,7 @@ public class NovelInfo implements Serializable {
      * @serialField title：小说名标题（名称）。
      * </pre>
      */
-    @Column(name = "title", nullable = true, length = 256)
+    @Column(name = "title", length = 256)
     private String title;
 
     /**
@@ -87,7 +87,7 @@ public class NovelInfo implements Serializable {
      * @serialField author：作者。
      * </pre>
      */
-    @Column(name = "author", nullable = true, length = 256)
+    @Column(name = "author", length = 256)
     private String author;
 
     /**
@@ -95,7 +95,7 @@ public class NovelInfo implements Serializable {
      * @serialField publisher：出版社，或者爬取的网站名称。
      * </pre>
      */
-    @Column(name = "publisher", nullable = true, length = 128)
+    @Column(name = "publisher", length = 128)
     private String publisher;
 
     /**
@@ -103,7 +103,7 @@ public class NovelInfo implements Serializable {
      * @serialField totalWords：总字数。
      * </pre>
      */
-    @Column(name = "total_words", nullable = true, length = 16)
+    @Column(name = "total_words", length = 16)
     private BigDecimal totalWords;
 
     /**
@@ -111,7 +111,7 @@ public class NovelInfo implements Serializable {
      * @serialField novelStatus：状态。
      * </pre>
      */
-    @Column(name = "novel_status", nullable = true, length = 4)
+    @Column(name = "novel_status", length = 1)
     private Integer novelStatus;
 
     /**

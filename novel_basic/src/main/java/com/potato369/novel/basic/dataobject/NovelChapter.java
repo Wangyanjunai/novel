@@ -89,7 +89,7 @@ public class NovelChapter implements Serializable {
      * @serialField url：章节网页路径URL
      * </pre>
      */
-    @Column(name = "chapter_url", nullable = true, length = 1024)
+    @Column(name = "chapter_url", length = 1024)
     private String url;
 
     /**
@@ -97,7 +97,7 @@ public class NovelChapter implements Serializable {
      * @serialField content：章节内容。
      * </pre>
      */
-    @Column(name = "chapter_content", nullable = true)
+    @Column(name = "chapter_content")
     private String content;
 
     /**

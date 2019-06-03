@@ -6,16 +6,16 @@ Target Host: www.potato369.com
 Target Database: novel_tmp
 Date: 2019/4/22 15:21:48
 */
-SET FOREIGN_KEY_CHECKS=0;
+SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 -- 【1】Table structure for app_version
 -- ----------------------------
 DROP TABLE IF EXISTS `app_version`;
 CREATE TABLE `app_version` (
   `id` varchar(32) NOT NULL COMMENT '版本id，主键。',
-  `version_code` int(11) NOT NULL DEFAULT 1 COMMENT '版本号。',
+  `version_code` int(11) NOT NULL COMMENT '版本号。',
   `version_name` varchar(16) NOT NULL COMMENT '版本名称。',
-  `release_notes` varchar(128) DEFAULT NULL COMMENT '版本更新内容说明。',
+  `release_notes` varchar(128) NULL DEFAULT NULL COMMENT '版本更新内容说明。',
   `source_file_url` varchar(256) NOT NULL COMMENT '更新的app版本下载地址',
   `publish_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '版本发布时间。',
   PRIMARY KEY (`id`) USING BTREE
@@ -35,8 +35,8 @@ DROP TABLE IF EXISTS `hot_words_info`;
 CREATE TABLE `hot_words_info` (
   `word_id` varchar(32) NOT NULL COMMENT '搜索热词id，主键。',
   `word` varchar(256) NOT NULL COMMENT '搜索热词。',
-  `times` decimal(16, 0) UNSIGNED NOT NULL DEFAULT '0' COMMENT '搜索次数。',
-  `is_new` tinyint(4) UNSIGNED NOT NULL DEFAULT '0' COMMENT '是否是新创建的，0-新创建，1-已经有的。',
+  `times` decimal(16, 0) UNSIGNED NOT NULL DEFAULT 0 COMMENT '搜索次数。',
+  `is_new` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否是新创建的，0-新创建，1-已经有的。',
   `soaring` decimal(16, 0) NULL DEFAULT 0 COMMENT '增长值。',
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间。',
@@ -65,8 +65,8 @@ INSERT INTO `hot_words_info` VALUES ('a41835e6e3714966ab97b46eab370ffc', '火影
 DROP TABLE IF EXISTS `novel_advertisement`;
 CREATE TABLE `novel_advertisement` (
    `ad_id` varchar(32) NOT NULL COMMENT '主键，广告id。',
-   `tag1` tinyint(4) NOT NULL DEFAULT 0 COMMENT '标识广告是应用类广告还是初始页面跳转广告，0-跳转广告，1-应用内广告。',
-   `tag2` tinyint(4) NOT NULL DEFAULT 0 COMMENT '标识广告是否可以跳转，0-可以跳转，1-不可以跳转。',
+   `tag1` tinyint(1) NOT NULL DEFAULT 0 COMMENT '标识广告是应用类广告还是初始页面跳转广告，0-跳转广告，1-应用内广告。',
+   `tag2` tinyint(1) NOT NULL DEFAULT 0 COMMENT '标识广告是否可以跳转，0-可以跳转，1-不可以跳转。',
    `image_url` varchar(1024) NULL DEFAULT NULL COMMENT '广告图片链接绝对路径URL。',
    `link_url` varchar(1024) NULL DEFAULT NULL COMMENT '广告跳转链接绝对路径URL。',
    `novel_id` varchar(32) NULL DEFAULT NULL COMMENT '小说id。',
@@ -178,19 +178,19 @@ CREATE TABLE `novel_info` (
   `title` varchar(256) DEFAULT NULL COMMENT '标题，小说的名称。',
   `author` varchar(256) DEFAULT NULL COMMENT '作者。',
   `publisher` varchar(128) DEFAULT NULL COMMENT '出版社或爬取的网站名称。',
-  `total_words` decimal(16,0) UNSIGNED DEFAULT '0' COMMENT '总字数。',
-  `novel_status` tinyint(4) UNSIGNED NOT NULL DEFAULT '0' COMMENT '状态，0-已完结，1-连载中。',
+  `total_words` decimal(16,0) UNSIGNED DEFAULT 0 COMMENT '总字数。',
+  `novel_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '状态，0-已完结，1-连载中。',
   `category_type` smallint(4) UNSIGNED NOT NULL COMMENT '类目类型编号。',
   `category_cn_text` varchar(64) NOT NULL COMMENT '类目类型中文名称。',
   `category_en_text` varchar(64) NOT NULL COMMENT '类目类型英文名称。',
   `introduction` text COMMENT '小说简介',
-  `readers` decimal(16,0) UNSIGNED DEFAULT '0' COMMENT '阅读（点击）用户数；默认“0-阅读（点击）用户数”。',
-  `recent_readers` decimal(16,0) UNSIGNED DEFAULT '0' COMMENT '最近跟随阅读（点击）用户数；默认“0-最近跟随阅读（点击）用户数”。',
-  `click_number` decimal(16,0) UNSIGNED DEFAULT '0' COMMENT '点击次数。',
+  `readers` decimal(16,0) UNSIGNED DEFAULT 0 COMMENT '阅读（点击）用户数；默认“0-阅读（点击）用户数”。',
+  `recent_readers` decimal(16,0) UNSIGNED DEFAULT 0 COMMENT '最近跟随阅读（点击）用户数；默认“0-最近跟随阅读（点击）用户数”。',
+  `click_number` decimal(16,0) UNSIGNED DEFAULT 0 COMMENT '点击次数。',
   `newest_chapter_id` varchar(32) DEFAULT NULL COMMENT '最新章节id。',
   `newest_chapter_title` varchar(512) DEFAULT NULL COMMENT '最新章节标题（名称）。',
-  `total_chapters` int(6) UNSIGNED DEFAULT '0' COMMENT '章节总数。',
-  `retention` tinyint(3) UNSIGNED DEFAULT '0' COMMENT '留存率，现在只是保存数字，显示的时候加上百分比。',
+  `total_chapters` int(6) UNSIGNED DEFAULT 0 COMMENT '章节总数。',
+  `retention` tinyint(3) UNSIGNED DEFAULT 0 COMMENT '留存率，现在只是保存数字，显示的时候加上百分比。',
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间。',
   `data_url` varchar(1024) DEFAULT NULL COMMENT '小说信息数据的地址url。',
@@ -201,7 +201,6 @@ CREATE TABLE `novel_info` (
 -- ----------------------------
 -- Records of novel_info
 -- ----------------------------
-
 
 -- ----------------------------
 -- 【8】Table structure for novel_menu_info
@@ -276,10 +275,10 @@ CREATE TABLE `novel_shelf_detail` (
   `last_read_chapter_id` varchar(32) NULL DEFAULT NULL COMMENT '最后一次阅读的章节的id(可能为空)。',
   `last_read_chapter_index` smallint(6) UNSIGNED NULL DEFAULT NULL COMMENT '最后一次阅读的章节索引index。',
   `last_read_page` smallint(6) UNSIGNED NULL DEFAULT NULL COMMENT '最后一次阅读章节的页码。',
-  `has_update` tinyint(1) UNSIGNED NULL DEFAULT '0' COMMENT '书架的这本小说是否有新的章节更新，0-无更新，1-有更新，默认0。',
+  `has_update` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '书架的这本小说是否有新的章节更新，0-无更新，1-有更新，默认0。',
   `sort` smallint(6) UNSIGNED NULL DEFAULT NULL COMMENT '保存自定义排序的顺序。',
-  `is_or_not_top` tinyint(1) UNSIGNED NULL DEFAULT '0' COMMENT '书架的这本小说是否开启置顶，0-不开启，1-开启，默认0。',
-  `is_or_not_push` tinyint(1) UNSIGNED NULL DEFAULT '0' COMMENT '书架的这本小说是否开启小说章节更新消息推送，0-不开启，1-开启，默认0。',
+  `is_or_not_top` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '书架的这本小说是否开启置顶，0-不开启，1-开启，默认0。',
+  `is_or_not_push` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '书架的这本小说是否开启小说章节更新消息推送，0-不开启，1-开启，默认0。',
   `last_chapter_update_time` timestamp(0) NULL DEFAULT NULL COMMENT '最新章节更新时间。',
   `last_read_time` timestamp(0) NULL DEFAULT NULL COMMENT '最后一次阅读时间。',
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
@@ -300,23 +299,23 @@ CREATE TABLE `novel_shelf_detail` (
 DROP TABLE IF EXISTS `novel_user_info`;
 CREATE TABLE `novel_user_info`  (
   `m_id` varchar(20) NOT NULL COMMENT '用户mid，联合主键。',
-  `me_id` varchar(20)  NOT NULL COMMENT '手机串号，联合主键。',
-  `brand` varchar(64)  NULL DEFAULT NULL COMMENT '手机品牌。',
-  `model` varchar(64)  NULL DEFAULT NULL COMMENT '手机型号。',
-  `mac` varchar(64)  NULL DEFAULT NULL COMMENT '手机mac地址。',
-  `system_name` varchar(64)  NULL DEFAULT NULL COMMENT '手机系统类型。',
-  `system_code` varchar(64)  NULL DEFAULT NULL COMMENT '手机系统版本。',
-  `version_name` varchar(64)  NULL DEFAULT NULL COMMENT 'APP应用版本名称。',
-  `openid` varchar(64)  NULL DEFAULT NULL COMMENT '微信openid，或者微博openid，或者QQ账号openid。',
-  `nick_name` varchar(128)  NULL DEFAULT NULL COMMENT '用户微信，QQ，微博昵称。',
+  `me_id` varchar(20) NOT NULL COMMENT '手机串号，联合主键。',
+  `brand` varchar(64) NULL DEFAULT NULL COMMENT '手机品牌。',
+  `model` varchar(64) NULL DEFAULT NULL COMMENT '手机型号。',
+  `mac` varchar(64) NULL DEFAULT NULL COMMENT '手机mac地址。',
+  `system_name` varchar(64) NULL DEFAULT NULL COMMENT '手机系统类型。',
+  `system_code` varchar(64) NULL DEFAULT NULL COMMENT '手机系统版本。',
+  `version_name` varchar(64) NULL DEFAULT NULL COMMENT 'APP应用版本名称。',
+  `openid` varchar(64) NULL DEFAULT NULL COMMENT '微信openid，或者微博openid，或者QQ账号openid。',
+  `nick_name` varchar(128) NULL DEFAULT NULL COMMENT '用户微信，QQ，微博昵称。',
   `gender` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '性别，0-未知；1-男；2-女，默认：“0-未知“。',
-  `lang` varchar(25)  NULL DEFAULT NULL COMMENT '语言。',
-  `address` varchar(256)  NULL DEFAULT NULL COMMENT '定位地址（国家省份城市）。',
-  `avatar_url` varchar(1024)  NULL DEFAULT NULL COMMENT '头像地址URL。',
+  `lang` varchar(25) NULL DEFAULT NULL COMMENT '语言。',
+  `address` varchar(256) NULL DEFAULT NULL COMMENT '定位地址（国家省份城市）。',
+  `avatar_url` varchar(1024) NULL DEFAULT NULL COMMENT '头像地址URL。',
   `charge_amount` decimal(8, 2) NULL DEFAULT 0.00 COMMENT '充值总金额（元）。',
   `envelope_amount` decimal(8, 2) NULL DEFAULT 0.00 COMMENT '红包进度条。',
   `shelf_amount` int(11) NULL DEFAULT 0 COMMENT '书架小说总数量。',
-  `vip_grade_id` varchar(32)  NULL DEFAULT NULL COMMENT 'VIP等级id。关联VIP权限等级信息表的权限等级id主键。',
+  `vip_grade_id` varchar(32) NULL DEFAULT NULL COMMENT 'VIP等级id。关联VIP权限等级信息表的权限等级id主键。',
   `vip_start_time` timestamp(0) NULL DEFAULT NULL COMMENT 'VIP开始时间。',
   `vip_end_time` timestamp(0) NULL DEFAULT NULL COMMENT 'VIP结束时间。',
   `balance_amount` decimal(8, 2) NULL DEFAULT 0.00 COMMENT '余额。',
@@ -339,9 +338,9 @@ CREATE TABLE `novel_user_info`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `novel_vip_grade`;
 CREATE TABLE `novel_vip_grade` (
-	`grade_id` varchar(32)  NOT NULL COMMENT 'VIP等级id，主键。',
-	`grade_name` varchar(10)  NULL DEFAULT NULL COMMENT 'VIP等级名称。',
-	`grade_intro` varchar(1024)  NULL DEFAULT NULL COMMENT 'VIP等级简介。',
+	`grade_id` varchar(32) NOT NULL COMMENT 'VIP等级id，主键。',
+	`grade_name` varchar(10) NULL DEFAULT NULL COMMENT 'VIP等级名称。',
+	`grade_intro` varchar(1024) NULL DEFAULT NULL COMMENT 'VIP等级简介。',
     `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
     `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间。',
     PRIMARY KEY (`grade_id`) USING BTREE,
@@ -357,13 +356,13 @@ CREATE TABLE `novel_vip_grade` (
 -- ----------------------------
 DROP TABLE IF EXISTS `novel_user_account`;
 CREATE TABLE `novel_user_account` (
-    `account_id` varchar(32)  NOT NULL COMMENT '账户id，主键。',
-    `account_name` varchar(10)  NULL DEFAULT NULL COMMENT '账户名称。',
-    `account_info` varchar(64)  NULL DEFAULT NULL COMMENT '账号信息。',
+    `account_id` varchar(32) NOT NULL COMMENT '账户id，主键。',
+    `account_name` varchar(10) NULL DEFAULT NULL COMMENT '账户名称。',
+    `account_info` varchar(64) NULL DEFAULT NULL COMMENT '账号信息。',
     `user_id` varchar(20) NOT NULL COMMENT '用户mid。',
-    `account_user_name` varchar(64)  NULL DEFAULT NULL COMMENT '姓名。',
-    `account_id_number` varchar(64)  NULL DEFAULT NULL COMMENT '身份证号码。',
-    `account_phone_number` varchar(64)  NULL DEFAULT NULL COMMENT '手机号码。',
+    `account_user_name` varchar(64) NULL DEFAULT NULL COMMENT '姓名。',
+    `account_id_number` varchar(64) NULL DEFAULT NULL COMMENT '身份证号码。',
+    `account_phone_number` varchar(64) NULL DEFAULT NULL COMMENT '手机号码。',
     `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
     `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间。',
     PRIMARY KEY (`account_id`) USING BTREE,
@@ -381,13 +380,13 @@ CREATE TABLE `novel_user_account` (
 -- ----------------------------
 DROP TABLE IF EXISTS `order_detail`;
 CREATE TABLE `order_detail` (
-  `detail_id` varchar(32)  NOT NULL COMMENT '详情id，主键。',
-  `order_id` varchar(32)  NOT NULL COMMENT '订单id。',
-  `product_id` varchar(32)  NOT NULL COMMENT '土豆币商品id。',
-  `buyer_openid` varchar(64)  NOT NULL COMMENT '买家微信openid。',
-  `user_id` varchar(20)  NOT NULL  COMMENT '用户mid。',
-  `product_name` varchar(64)  NOT NULL COMMENT '商品名称。',
-  `product_description` varchar(1024)  NULL DEFAULT NULL COMMENT '商品描述。',
+  `detail_id` varchar(32) NOT NULL COMMENT '详情id，主键。',
+  `order_id` varchar(32) NOT NULL COMMENT '订单id。',
+  `product_id` varchar(32) NOT NULL COMMENT '土豆币商品id。',
+  `buyer_openid` varchar(64) NOT NULL COMMENT '买家微信openid。',
+  `user_id` varchar(20) NOT NULL COMMENT '用户mid。',
+  `product_name` varchar(64) NOT NULL COMMENT '商品名称。',
+  `product_description` varchar(1024) NULL DEFAULT NULL COMMENT '商品描述。',
   `pay_time` timestamp(0) NULL DEFAULT NULL COMMENT '支付时间。',
   `start_time` timestamp(0) NULL DEFAULT NULL COMMENT 'VIP开始时间。',
   `end_time` timestamp(0) NULL DEFAULT NULL COMMENT 'VIP结束时间。',
@@ -409,21 +408,21 @@ CREATE TABLE `order_detail` (
 -- ----------------------------
 DROP TABLE IF EXISTS `order_master`;
 CREATE TABLE `order_master` (
-  `order_id` varchar(32)  NOT NULL COMMENT '订单id，主键。',
-  `buyer_name` varchar(32)  NOT NULL COMMENT '买家名字。',
-  `buyer_address` varchar(128)  NOT NULL COMMENT '买家地址。',
-  `buyer_openid` varchar(64)  NOT NULL COMMENT '买家openid。',
-  `user_id` varchar(20)  NOT NULL COMMENT '用户mid。',
+  `order_id` varchar(32) NOT NULL COMMENT '订单id，主键。',
+  `buyer_name` varchar(32) NOT NULL COMMENT '买家名字。',
+  `buyer_address` varchar(128) NOT NULL COMMENT '买家地址。',
+  `buyer_openid` varchar(64) NOT NULL COMMENT '买家openid。',
+  `user_id` varchar(20) NOT NULL COMMENT '用户mid。',
   `order_amount` decimal(8, 2) UNSIGNED NOT NULL COMMENT '订单总金额。',
-  `order_name` varchar(64)  NULL DEFAULT NULL COMMENT '订单名称。',
-  `order_type` tinyint(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '订单类型，0-提现；1-兑换，“默认：0-提现”。',
-  `order_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '订单状态，0-新订单；1-已完结；2-已取消，“默认：0-新订单”。',
-  `pay_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '订单支付状态，0-等待支付；1-支付成功，“默认：0-等待支付”。',
+  `order_name` varchar(64) NULL DEFAULT NULL COMMENT '订单名称。',
+  `order_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单类型，0-提现；1-兑换，“默认：0-提现”。',
+  `order_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单状态，0-新订单；1-已完结；2-已取消，“默认：0-新订单”。',
+  `pay_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单支付状态，0-等待支付；1-支付成功，“默认：0-等待支付”。',
   `pay_time` timestamp(0) NULL DEFAULT NULL COMMENT '支付时间。',
-  `start_time` timestamp(0)  NULL DEFAULT NULL COMMENT 'VIP开始时间。',
-  `end_time` timestamp(0)  NULL DEFAULT NULL COMMENT 'VIP结束时间。',
-  `create_time` timestamp(0)  NOT NULL DEFAULT CURRENT_TIMESTAMP(0)  COMMENT '创建时间。',
-  `update_time` timestamp(0)  NOT NULL DEFAULT CURRENT_TIMESTAMP(0)  ON UPDATE CURRENT_TIMESTAMP(0)  COMMENT '更新时间。',
+  `start_time` timestamp(0) NULL DEFAULT NULL COMMENT 'VIP开始时间。',
+  `end_time` timestamp(0) NULL DEFAULT NULL COMMENT 'VIP结束时间。',
+  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0)  COMMENT '创建时间。',
+  `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0)  ON UPDATE CURRENT_TIMESTAMP(0)  COMMENT '更新时间。',
   PRIMARY KEY (`order_id`) USING BTREE,
   KEY `key_buyer_openid` (`buyer_openid`) USING BTREE,
   KEY `key_user_id` (`user_id`) USING BTREE
@@ -440,7 +439,7 @@ DROP TABLE IF EXISTS `product_info`;
 CREATE TABLE `product_info` (
   `product_id` varchar(32) NOT NULL COMMENT '商品id，主键。',
   `product_name` varchar(64) NOT NULL COMMENT '商品名称。',
-  `product_type` tinyint(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '计算类型，0-按照天算，1-按照月算；默认0-按照天算。',
+  `product_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '计算类型，0-按照天算，1-按照月算；默认0-按照天算。',
   `product_amount` decimal(8, 2) NULL DEFAULT NULL COMMENT '商品总价（元）。',
   `product_description` varchar(1024) NULL DEFAULT NULL COMMENT '商品描述。',
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
@@ -459,7 +458,7 @@ CREATE TABLE `product_info` (
 DROP TABLE IF EXISTS `task_info`;
 CREATE TABLE `task_info` (
     `task_id` varchar(32) NOT NULL COMMENT '任务id，主键。',
-    `user_id` varchar(20)  NOT NULL COMMENT '用户mid。',
+    `user_id` varchar(20) NOT NULL COMMENT '用户mid。',
     `task_name` varchar(64) NOT NULL COMMENT '任务名称。',
     `task_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '任务类型，1-绑定任务；2-分享任务；3-下载任务；4-阅读任务',
     `task_description` varchar(1024) NULL DEFAULT NULL COMMENT '任务描述。',

@@ -73,7 +73,7 @@ public class NovelComment implements Serializable{
 	 * @serialField chapterId：不为空，则是对章节的评论的章节id，如果为空，则是对整本小说的评论，只是小说的id不为空。
 	 * </pre>
 	 */
-	@Column(name = "chapter_id", nullable = true, length = 32)
+	@Column(name = "chapter_id", length = 32)
 	private String chapterId;
 	
 	/**
@@ -81,7 +81,7 @@ public class NovelComment implements Serializable{
 	 * @serialField commentTitle：评论标题。
 	 * </pre>
 	 */
-	@Column(name = "comment_title", nullable = true, length = 512)
+	@Column(name = "comment_title", length = 512)
 	private String commentTitle;
 	
 	/**
@@ -89,7 +89,7 @@ public class NovelComment implements Serializable{
 	 * @serialField commentContent：评论内容。
 	 * </pre>
 	 */
-	@Column(name = "comment_content", nullable = true)
+	@Column(name = "comment_content")
 	private String commentContent;
 	
 	/**
