@@ -56,7 +56,7 @@ public class NovelCategory implements Serializable {
      * @serialField parentCategoryId：父级id。
      * </pre>
      */
-    @Column(name = "parent_category_id", nullable = true, length = 32)
+    @Column(name = "parent_category_id", length = 32)
     private String parentCategoryId;
 
     /**
@@ -64,7 +64,7 @@ public class NovelCategory implements Serializable {
      * @serialField categoryCNText：类目中文名称。
      * <pre>
      */
-    @Column(name = "category_cn_text", nullable = true, length = 64)
+    @Column(name = "category_cn_text", length = 64)
     private String categoryCNText;
     
     /**
@@ -72,7 +72,7 @@ public class NovelCategory implements Serializable {
      * @serialField categoryENText：类目英文名称。
      * <pre>
      */
-    @Column(name = "category_en_text", nullable = true, length = 64)
+    @Column(name = "category_en_text", length = 64)
     private String categoryENText;
     
     /**
@@ -80,7 +80,7 @@ public class NovelCategory implements Serializable {
      * @serialField categoryType：类目类型编号。
      * <pre>
      */
-    @Column(name = "category_type", nullable = true, length = 4)
+    @Column(name = "category_type", length = 4)
     private Integer categoryType;
     
     /**
@@ -96,7 +96,7 @@ public class NovelCategory implements Serializable {
      * @serialField readingNumber：阅读（点击）用户数。
      * <pre>
      */
-    @Column(name = "reading_number", nullable = true, length = 16)
+    @Column(name = "reading_number", length = 16)
     private BigDecimal readingNumber;
 
     /**
@@ -104,7 +104,7 @@ public class NovelCategory implements Serializable {
      * @serialField clickNumber：点击次数。
      * <pre>
      */
-    @Column(name = "click_number", nullable = true, length = 16)
+    @Column(name = "click_number", length = 16)
     private BigDecimal clickNumber;
 
     /**
@@ -112,7 +112,7 @@ public class NovelCategory implements Serializable {
      * @serialField isDeleted：类目是否删除；0-否，1-是。
      * </pre>
      */
-    @Column(name = "is_deleted", nullable = true, length = 4)
+    @Column(name = "is_deleted", length = 1)
     private Integer isDeleted;
 
     /**
