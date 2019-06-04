@@ -1,5 +1,7 @@
 package com.potato369.novel.basic.service;
 
+import com.potato369.novel.basic.dataobject.TaskInfo;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.service
@@ -13,4 +15,21 @@ package com.potato369.novel.basic.service;
  * </pre>
  */
 public interface TaskInfoService {
+
+    /**
+     * <pre>
+     * 新增任务进度记录信息
+     * @param taskInfo
+     * @return TaskInfo
+     * </pre>
+     */
+    TaskInfo save(TaskInfo taskInfo);
+
+    /**
+     * <pre>
+     * 根据主键删除任务进度记录信息
+     * @param primaryKey
+     * </pre>
+     */
+    void delete(String primaryKey);
 }
