@@ -1,6 +1,7 @@
 package com.potato369.novel.basic.dataobject;
 
 import com.potato369.novel.basic.enums.OrderStatusEnum;
+import com.potato369.novel.basic.enums.OrderTypeEnum;
 import com.potato369.novel.basic.enums.PayStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +21,7 @@ import java.util.List;
  * <pre>
  * @PackageName com.potato369.novel.dataobject
  * @ClassName OrderMaster
- * @Desc 订单信息记录实体
+ * @Desc 订单信息记录实体。
  * @WebSite https://www.potato369.com
  * @Author Jack
  * @Date 2019/01/08 17:37
@@ -72,35 +73,53 @@ public class OrderMaster implements Serializable {
 
     /**
      * <pre>
-     * @serialField buyerOpenid：买家微信openid。
+     * @serialField buyerOpenid：买家openid。
      * </pre>
      */
     @Column(name = "buyer_openid", nullable = false, length = 64)
     private String buyerOpenid;
-
+    
     /**
      * <pre>
-     * @serialField orderAmount：订单总金额。
+     * @serialField productId：商品id。
      * </pre>
      */
-    @Column(name = "order_amount", nullable = false, length = 8)
-    private BigDecimal orderAmount;
+    @Column(name = "product_id", nullable = false, length = 32)
+    private String productId;
+    
+    /**
+     * <pre>
+     * @serialField orderAmount：订单总金额，默认：0.00。
+     * </pre>
+     */
+    @Builder.Default
+    @Column(name = "order_amount", nullable = false, length = 10)
+    private BigDecimal orderAmount = BigDecimal.ZERO;
 
     /**
      * <pre>
      * @serialField orderName：订单名称。
      * <pre>
      */
-    @Column(name = "order_name", nullable = true, length = 64)
+    @Column(name = "order_name", length = 64)
     private String orderName;
-
+    
+    /**
+     * <pre>
+     * @serialField orderType：订单类型，0-提现；1-兑换，“默认：0-提现”。
+     * </pre>
+     */
+    @Builder.Default
+    @Column(name = "order_type", nullable = false, length = 1)
+    private Integer orderType = OrderTypeEnum.WITHDRAW.getCode();
+    
     /**
      * <pre>
      * @serialField orderStatus：订单状态，0-新订单；1-已完结；2-已取消，“默认：0-新订单”。
      * </pre>
      */
     @Builder.Default
-    @Column(name = "order_status", nullable = false, length = 3)
+    @Column(name = "order_status", nullable = false, length = 1)
     private Integer orderStatus = OrderStatusEnum.NEW.getCode();
 
     /**
@@ -109,24 +128,8 @@ public class OrderMaster implements Serializable {
      * </pre>
      */
     @Builder.Default
-    @Column(name = "pay_status", nullable = false, length = 3)
+    @Column(name = "pay_status", nullable = false, length = 1)
     private Integer payStatus = PayStatusEnum.WAITING.getCode();
-
-    /**
-     * <pre>
-     * @serialField payTime：会员支付时间。
-     * </pre>
-     */
-    @Column(name = "pay_time", nullable = true, length = 64)
-    private Date payTime;
-
-    /**
-     * <pre>
-     * @serialField endTime：会员结束时间。
-     * </pre>
-     */
-    @Column(name = "end_time", nullable = true, length = 64)
-    private Date endTime;
 
     /**
      * <pre>
@@ -144,6 +147,11 @@ public class OrderMaster implements Serializable {
     @Column(name = "update_time", nullable = false, length = 64)
     private Date updateTime;
     
+    /**
+     * <pre>
+     * @serialField orderDetailList：订单详情列表。
+     * </pre>
+     */
     @Transient
     private List<OrderDetail> orderDetailList;
 }

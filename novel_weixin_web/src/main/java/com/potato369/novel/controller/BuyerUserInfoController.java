@@ -49,7 +49,7 @@ public class BuyerUserInfoController {
 			NovelUserInfo userInfo = userInfoService.findByOpenid(openid);
 	        UserInfoVO userInfoVO = new UserInfoVO();
 	        //userInfoVO.setId(userInfo.getPrivatedId());
-	        userInfoVO.setBalance(userInfo.getBalance());
+	        userInfoVO.setBalance(userInfo.getBalanceAmount());
 	        userInfoVO.setUserAvatar(userInfo.getAvatarUrl());
 	        userInfoVO.setUserNickName(userInfo.getNickName());
 	        resultVO.setTotal(BigDecimal.ONE);

@@ -10,8 +10,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.dataobject
@@ -43,17 +45,26 @@ public class NovelMenuInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField menuId：主键，公众号自定义菜单id。
+     * @serialField menuId：公众号自定义菜单id，主键。
      * </pre>
      */
     @Id
     @Column(name = "menu_id", nullable = false, length = 32)
     private String menuId;
+
+    /**
+     * <pre>
+     * @serialField parentMenuId：公众号自定义菜单父级id。
+     * </pre>
+     */
+    @Column(name = "parent_menu_id", length = 32)
+    private String parentMenuId;
+
     /**
      * <pre>
      * @serialField type：菜单的响应动作类型，
-     *      view表示网页类型，
-     *      click表示点击类型，
+     *      view表示网页类型；
+     *      click表示点击类型；
      *      miniprogram表示小程序类型。
      * </pre>
      */
@@ -70,8 +81,7 @@ public class NovelMenuInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField key：菜单KEY值，用于消息接口推送，不超过128字节，
-     * click等点击类型必须。
+     * @serialField key：菜单KEY值，用于消息接口推送，不超过128字节，click等点击类型必须。
      * </pre>
      */
     @Column(name = "key", nullable = true, length = 64)
@@ -85,32 +95,66 @@ public class NovelMenuInfo implements Serializable {
      * view、miniprogram类型必须
      * </pre>
      */
-    @Column(name = "url", nullable = true, length = 256)
+    @Column(name = "url", length = 256)
     private String url;
 
     /**
      * <pre>
-     * @serialField mediaId：调用新增永久素材接口返回的合法media_id，media_id类型和view_limited类型必须
+     * @serialField readingNumber：阅读（点击）用户数。
      * </pre>
      */
-    @Column(name = "media_id", nullable = true, length = 128)
+    @Builder.Default
+    @Column(name = "reading_number", length = 16)
+    private BigDecimal readingNumber = BigDecimal.ZERO;
+
+    /**
+     * <pre>
+     * @serialField clickNumber：点击次数。
+     * </pre>
+     */
+    @Builder.Default
+    @Column(name = "click_number", length = 16)
+    private BigDecimal clickNumber = BigDecimal.ZERO;
+
+    /**
+     * <pre>
+     * @serialField mediaId：调用新增永久素材接口返回的合法media_id，media_id类型和view_limited类型必须。
+     * </pre>
+     */
+    @Column(name = "media_id", length = 128)
     private String mediaId;
 
     /**
      * <pre>
      * @serialField appId：小程序的appid，
-     *      		miniprogram类型必须
+     *      		miniprogram类型必须。
      * </pre>
      */
-    @Column(name = "app_id", nullable = true, length = 64)
+    @Column(name = "app_id", length = 64)
     private String appId;
 
     /**
      * <pre>
      * @serialField pagePath：小程序的页面路径，
-     *              miniprogram 类型必须
+     *              miniprogram 类型必须。
      * </pre>
      */
-    @Column(name = "page_path", nullable = true, length = 256)
+    @Column(name = "page_path", length = 256)
     private String pagePath;
+
+    /**
+     * <pre>
+     * @serialField createTime：创建时间。
+     * </pre>
+     */
+    @Column(name = "create_time", nullable = false, length = 64)
+    private Date createTime;
+
+    /**
+     * <pre>
+     * @serialField updateTime：更新时间。
+     * </pre>
+     */
+    @Column(name = "update_time", nullable = false, length = 64)
+    private Date updateTime;
 }

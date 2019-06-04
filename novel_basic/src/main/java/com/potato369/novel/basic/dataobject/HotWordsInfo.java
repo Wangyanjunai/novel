@@ -1,5 +1,6 @@
 package com.potato369.novel.basic.dataobject;
 
+import com.potato369.novel.basic.enums.HotWordsInfoEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,12 +14,11 @@ import javax.persistence.Transient;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.dataobject
  * @ClassName HotWordsInfo
- * @Desc hot_words_info
+ * @Desc 搜索热词信息记录实体
  * @WebSite https://www.potato369.com
  * @Author Jack
  * @Date 2019/5/14 10:38
@@ -70,19 +70,21 @@ public class HotWordsInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField isNew：是否是新创建的，0-新创建，1-已经有的。
+     * @serialField isNew：是否新建，0-新建；1-已有，默认：0-新建。
      * </pre>
      */
-    @Column(name = "is_new", nullable = false, length = 4)
-    private Integer isNew;
+    @Builder.Default
+    @Column(name = "is_new", nullable = false, length = 1)
+    private Integer isNew = HotWordsInfoEnum.NEW.getCode();
 
     /**
      * <pre>
-     * @serialField soaring：增长值。
+     * @serialField soaring：增长值，默认：0。
      * </pre>
      */
+    @Builder.Default
     @Column(name = "soaring", length = 16)
-    private BigDecimal soaring;
+    private BigDecimal soaring = BigDecimal.ZERO;
 
     /**
      * <pre>

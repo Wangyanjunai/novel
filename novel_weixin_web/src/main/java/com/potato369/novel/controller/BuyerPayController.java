@@ -3,7 +3,6 @@ package com.potato369.novel.controller;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.dataobject.OrderDetail;
 import com.potato369.novel.basic.dataobject.ProductInfo;
-import com.potato369.novel.basic.enums.ProductInfoEnum;
 import com.potato369.novel.basic.enums.ResultEnum;
 import com.potato369.novel.dto.OrderDTO;
 import com.potato369.novel.exception.NovelOrderException;
@@ -14,7 +13,6 @@ import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.service.WeChatPayService;
 import com.potato369.novel.utils.JsonUtil;
 import com.potato369.novel.utils.WwwUtil;
-
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -24,13 +22,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.controller
@@ -88,12 +84,12 @@ public class BuyerPayController {
         List<OrderDetail> orderDetailList = new ArrayList<>();
         OrderDetail orderDetail = OrderDetail.builder().build();
         BeanUtils.copyProperties(productInfo, orderDetail);
-        orderDetail.setProductGiveQuantity(productInfo.getProductGiveQuantity());
+//        orderDetail.setProductGiveQuantity(productInfo.getProductGiveQuantity());
         orderDetail.setCreateTime(null);
         orderDetail.setUpdateTime(null);
         orderDetail.setBuyerOpenid(openid);
         if (log.isDebugEnabled()) {
-            log.debug("productInfo.getProductGiveQuantity()=={}", productInfo.getProductGiveQuantity());
+//            log.debug("productInfo.getProductGiveQuantity()=={}", productInfo.getProductGiveQuantity());
             log.debug("orderDetail--1={}", orderDetail);
         }
         orderDetailList.add(orderDetail);
@@ -117,12 +113,12 @@ public class BuyerPayController {
 //        orderDTO.setBuyerAddress(userInfo.getCountry().concat(userInfo.getProvince()).concat(userInfo.getCity()));
         orderDTO.setBuyerOpenid(openid);
         BigDecimal orderAmount = BigDecimal.ZERO;
-        if (productInfo.getProductType() == ProductInfoEnum.COIN.getCode()) {
-            orderAmount = productInfo.getProductPrice().multiply(productInfo.getProductQuantity());
-        }
-        if (productInfo.getProductType() == ProductInfoEnum.VIP.getCode()) {
-            orderAmount = productInfo.getProductAmount();
-        }
+//        if (productInfo.getProductType() == ProductInfoEnum.COIN.getCode()) {
+////            orderAmount = productInfo.getProductPrice().multiply(productInfo.getProductQuantity());
+//        }
+//        if (productInfo.getProductType() == ProductInfoEnum.VIP.getCode()) {
+//            orderAmount = productInfo.getProductAmount();
+//        }
         orderDTO.setOrderAmount(orderAmount);
         orderDTO.setOrderName(productInfo.getProductName());
         orderDTO.setBuyerName(userInfo.getNickName());

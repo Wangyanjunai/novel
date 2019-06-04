@@ -1,19 +1,25 @@
 package com.potato369.novel.basic.dataobject;
 
 import com.potato369.novel.basic.dataobject.idClass.NovelShelfDetailIdClass;
+import com.potato369.novel.basic.enums.ShelfDetailEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 import java.io.Serializable;
 import java.util.Date;
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.dataobject
  * @ClassName NovelShelf
- * @Desc novel_shelf 小说app书架信息记录实体类
+ * @Desc novel_shelf 小说app书架详情信息记录实体类
  * @WebSite https://www.potato369.com
  * @Author Jack
  * @Date 2019/5/14 17:42
@@ -41,7 +47,7 @@ public class NovelShelfDetail implements Serializable {
 
 	/**
 	 * <pre>
-	 * @serialField shelfDetailId：联合主键，书架详情id。
+	 * @serialField shelfDetailId：书架详情id，联合主键。
 	 * </pre>
 	 */
 	@Id
@@ -50,7 +56,7 @@ public class NovelShelfDetail implements Serializable {
 
 	/**
 	 * <pre>
-	 * @serialField shelfId：联合主键，书架id。
+	 * @serialField shelfId：书架id，联合主键。
 	 * </pre>
 	 */
 	@Id
@@ -59,7 +65,7 @@ public class NovelShelfDetail implements Serializable {
 
 	/**
 	 * <pre>
-	 * @serialField shelfId：联合主键，小说id。
+	 * @serialField shelfId：小说id，联合主键。
 	 * </pre>
 	 */
 	@Id
@@ -68,11 +74,11 @@ public class NovelShelfDetail implements Serializable {
 
 	/**
 	 * <pre>
-	 * @serialField userId：联合主键，用户id。
+	 * @serialField userId：用户mid，联合主键。
 	 * </pre>
 	 */
 	@Id
-	@Column(name = "user_id", nullable = false, length = 32)
+	@Column(name = "user_id", nullable = false, length = 20)
 	private String userId;
 
 	/**
@@ -80,7 +86,7 @@ public class NovelShelfDetail implements Serializable {
 	 * @serialField lastReadChapterId：最后一次阅读的章节的id(可能为空)。
 	 * </pre>
 	 */
-	@Column(name = "last_read_chapter_id", nullable = true, length = 32)
+	@Column(name = "last_read_chapter_id", length = 32)
 	private String lastReadChapterId;
 
 	/**
@@ -88,7 +94,7 @@ public class NovelShelfDetail implements Serializable {
 	 * @serialField lastReadChapterIndex：最后一次阅读的章节索引index。
 	 * </pre>
 	 */
-	@Column(name = "last_read_chapter_index", nullable = true, length = 6)
+	@Column(name = "last_read_chapter_index", length = 6)
 	private Integer lastReadChapterIndex;
 
 	/**
@@ -96,7 +102,7 @@ public class NovelShelfDetail implements Serializable {
 	 * @serialField lastReadPage：最后一次阅读章节的页码。
 	 * </pre>
 	 */
-	@Column(name = "last_read_page", nullable = true, length = 6)
+	@Column(name = "last_read_page", length = 6)
 	private Integer lastReadPage;
 
 	/**
@@ -104,39 +110,42 @@ public class NovelShelfDetail implements Serializable {
 	 * @serialField hasUpdate：书架的这本小说是否有新的章节更新，0-无更新，1-有更新，默认0。
 	 * </pre>
 	 */
-	@Column(name = "has_update", nullable = true, length = 1)
-	private Integer hasUpdate;
+	@Builder.Default
+	@Column(name = "has_update", length = 1)
+	private Integer hasUpdate = ShelfDetailEnum.NO_UPDATE.getCode();
 
 	/**
 	 * <pre>
 	 * @serialField sort：保存自定义排序的顺序。
 	 * </pre>
 	 */
-	@Column(name = "sort", nullable = true, length = 6)
+	@Column(name = "sort", length = 6)
 	private Integer sort;
 
 	/**
 	 * <pre>
-	 * @serialField isOrNotTop：书架的这本小说是否开启置顶，0-不开启，1-开启，默认0。
+	 * @serialField isOrNotTop：书架的这本小说是否开启置顶，0-开启，1-不开启，默认：0-不开启。
 	 * </pre>
 	 */
-	@Column(name = "is_or_not_top", nullable = true, length = 1)
-	private Integer isOrNotTop;
+	@Builder.Default
+	@Column(name = "is_or_not_top", length = 1)
+	private Integer isOrNotTop = ShelfDetailEnum.NOT_TOP.getCode();
 
 	/**
 	 * <pre>
-	 * @serialField isOrNotPush：书架的这本小说是否开启小说章节更新消息推送，0-不开启，1-开启，默认0。
+	 * @serialField isOrNotPush：书架的这本小说是否开启小说章节更新消息推送，0-不开启，1-开启，默认：0-不开启。
 	 * </pre>
 	 */
-	@Column(name = "is_or_not_push", nullable = true, length = 1)
-	private Integer isOrNotPush;
+	@Builder.Default
+	@Column(name = "is_or_not_push", length = 1)
+	private Integer isOrNotPush = ShelfDetailEnum.NOT_PUSH.getCode();
 
 	/**
 	 * <pre>
 	 * @serialField lastChapterUpdateTime：最新章节更新时间。
 	 * </pre>
 	 */
-	@Column(name = "last_chapter_update_time", nullable = true, length = 64)
+	@Column(name = "last_chapter_update_time", length = 64)
 	private Date lastChapterUpdateTime;
 
 	/**
@@ -144,7 +153,7 @@ public class NovelShelfDetail implements Serializable {
 	 * @serialField latestReadTime：最后一次阅读时间。
 	 * </pre>
 	 */
-	@Column(name = "last_read_time", nullable = true, length = 64)
+	@Column(name = "last_read_time", length = 64)
 	private Date lastReadTime;
 
 	/**

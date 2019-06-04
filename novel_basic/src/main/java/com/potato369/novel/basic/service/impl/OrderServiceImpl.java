@@ -204,7 +204,7 @@ public class OrderServiceImpl implements OrderService {
         }
         /** 3、修改订单支付状态 */
         orderMaster.setPayStatus(PayStatusEnum.SUCCESS.getCode());
-        orderMaster.setPayTime(now);
+//        orderMaster.setPayTime(now);
         List<OrderDetail> orderDetailList = orderMaster.getOrderDetailList();
         for (OrderDetail orderDetail : orderDetailList) {
             orderDetail.setPayTime(now);
@@ -217,17 +217,17 @@ public class OrderServiceImpl implements OrderService {
                 Calendar calendar =Calendar.getInstance();
                 calendar.setTime(now);
                 calendar.add(Calendar.YEAR, 1);
-                orderMaster.setEndTime(calendar.getTime());
+//                orderMaster.setEndTime(calendar.getTime());
                 orderDetail.setEndTime(calendar.getTime());
             }
             if (productInfo.getProductId().equals("80edd2c1503249debecd2ce523f1fa12")) {
                 Calendar calendar =Calendar.getInstance();
                 calendar.setTime(now);
                 calendar.add(Calendar.MONTH, 3);
-                orderMaster.setEndTime(calendar.getTime());
+//                orderMaster.setEndTime(calendar.getTime());
                 orderDetail.setEndTime(calendar.getTime());
             }else {
-                orderMaster.setEndTime(now);
+//                orderMaster.setEndTime(now);
                 orderDetail.setEndTime(now);
             }
             /**给对应的用户发放书币*/
@@ -236,8 +236,8 @@ public class OrderServiceImpl implements OrderService {
                 log.error("【微信公众号支付更新订单】给对应的用户发放书币失败，用户微信openid={}", orderMaster.getBuyerOpenid());
                 throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
             }
-            BigDecimal balance = userInfo.getBalance().add(orderDetail.getProductQuantity()).add(orderDetail.getProductGiveQuantity());
-            userInfo.setBalance(balance);
+            BigDecimal balance = userInfo.getBalanceAmount();
+            userInfo.setBalanceAmount(balance);
             NovelUserInfo userInfoUpdateResult =  userInfoRepository.save(userInfo);
             if (userInfoUpdateResult == null) {
                 log.error("【微信公众号支付更新订单】给对应的用户发放书币失败，用户信息={}", userInfo);

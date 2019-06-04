@@ -2,9 +2,7 @@ package com.potato369.novel.basic.service;
 
 import com.potato369.novel.basic.dataobject.AppVersion;
 import org.springframework.data.domain.Sort;
-
 import java.util.List;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.service

@@ -1,93 +1,102 @@
 package com.potato369.novel.basic.dataobject;
 
-import com.potato369.novel.basic.dataobject.idClass.NovelShelfIdClass;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.aspectj.lang.annotation.DeclareError;
 import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import java.io.Serializable;
 import java.util.Date;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.dataobject
- * @ClassName NovelShelf
- * @Desc novel_shelf 小说app书架信息记录实体类
+ * @ClassName NovelUserAccount
+ * @Desc 用户账户信息记录实体。
  * @WebSite https://www.potato369.com
  * @Author Jack
- * @Date 2019/5/14 17:42
+ * @Date 2019/6/4 11:02
  * @CreateBy IntellJ IDEA 2019.1.1
  * @Copyright Copyright (c) 2016 ~ 2020 版权所有 (C) 土豆互联科技(深圳)有限公司 https://www.potato369.com All Rights Reserved。
  * </pre>
  */
 @AllArgsConstructor
 @Builder
-@DynamicUpdate
 @Data
-@Entity(name = "NovelShelf")
+@DynamicUpdate
+@Entity(name = "NovelUserAccount")
 @NoArgsConstructor
-@Table(name = "novel_shelf")
-@IdClass(value = NovelShelfIdClass.class)
-public class NovelShelf implements Serializable {
-
+@Table(name = "novel_user_account")
+public class NovelUserAccount implements Serializable {
+	
     /**
-	 * <pre>
-	 * serialVersionUID：序列号。
-	 * @since JDK 1.6
-	 * </pre>
-	 */
-	@Transient	
-	private static final long serialVersionUID = 7818526440474990984L;
-
-	/**
      * <pre>
-     * @serialField shelfId：联合主键，书架id。
+     * @serialField serialVersionUID：序列号。
      * </pre>
      */
-    @Id
-    @Column(name = "shelf_id", nullable = false, length = 32)
-    private String shelfId;
+    @Transient
+    private static final long serialVersionUID = -8639503100981273589L;
 
     /**
      * <pre>
-     * @serialField userId：联合主键，用户id。
+     * @serialField accountId：账户id，主键。
      * </pre>
      */
     @Id
-    @Column(name = "user_id", nullable = false, length = 20)
+    @Column(name = "account_id", nullable = false, length = 32)
+    private String accountId;
+
+    /**
+     * <pre>
+     * @serialField accountName：账户名称。
+     * </pre>
+     */
+    @Column(name = "account_name", length = 10)
+    private String accountName;
+
+    /**
+     * <pre>
+     * @serialField accountInfo：账户信息。
+     * </pre>
+     */
+    @Column(name = "account_info", length = 64)
+    private String accountInfo;
+
+    /**
+     * <pre>
+     * @serialField userId：用户mid。
+     * </pre>
+     */
+    @Column(name = "userId", length = 20)
     private String userId;
 
     /**
      * <pre>
-     * @serialField novelId：小说id。
+     * @serialField accountUserName：姓名。
      * </pre>
      */
-    @Column(name = "novel_id", nullable = false, length = 32)
-    private String novelId;
+    @Column(name = "account_user_name", length = 64)
+    private String accountUserName;
 
     /**
      * <pre>
-     * @serialField chapterId：已经阅读到的小说章节id。
+     * @serialField accountIdNumber：身份证号码。
      * </pre>
      */
-    @Column(name = "chapter_id", length = 32)
-    private String chapterId;
+    @Column(name = "account_id_number", length = 64)
+    private String accountIdNumber;
 
     /**
      * <pre>
-     * @serialField chapterIndex：已经阅读到的小说章节索引。
+     * @serialField accountPhoneNumber：手机号码。
      * </pre>
      */
-    @Column(name = "chapter_index", length = 6)
-    private Integer chapterIndex;
+    @Column(name = "account_phone_number", length = 64)
+    private String accountPhoneNumber;
 
     /**
      * <pre>

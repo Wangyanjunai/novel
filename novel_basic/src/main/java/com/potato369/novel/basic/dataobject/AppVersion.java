@@ -12,12 +12,11 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.repository
  * @ClassName AppVersion
- * @Desc app版本管理实体
+ * @Desc APP版本信息记录实体
  * @WebSite https://www.potato369.com
  * @Author Jack
  * @Date 2019/5/20 17:36
@@ -77,7 +76,7 @@ public class AppVersion implements Serializable {
 
     /**
      * <pre>
-     * @serialField sourceFileUrl：app包下载资源地址。
+     * @serialField sourceFileUrl：更新的APP版本安装包下载地址。
      * </pre>
      */
     @Column(name = "source_file_url", nullable = false, length = 256)
@@ -85,7 +84,7 @@ public class AppVersion implements Serializable {
 
     /**
      * <pre>
-     * @serialField publishTime：发布更新时间。
+     * @serialField publishTime：版本发布时间。
      * </pre>
      */
     @Column(name = "publish_time", nullable = false, length = 64)

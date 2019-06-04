@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
 import java.io.Serializable;
 import java.util.Date;
 /**
@@ -69,7 +68,7 @@ public class SellerInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField openid：微信openid。
+     * @serialField openid：买家登录openid。
      * </pre>
      */
     @Column(name = "openid", nullable = false, length = 64)
@@ -80,15 +79,15 @@ public class SellerInfo implements Serializable {
      * @serialField loginTime：登录时间。
      * </pre>
      */
-    @Column(name = "login_time", nullable = true, length = 64)
+    @Column(name = "login_time", length = 64)
     private Date loginTime;
 
     /**
      * <pre>
-     * @serialField loginIp：登录终端ip。
+     * @serialField loginIp：登录终端外网ip。
      * </pre>
      */
-    @Column(name = "login_ip", nullable = true, length = 32)
+    @Column(name = "login_ip", length = 32)
     private String loginIp;
 
     /**

@@ -10,7 +10,6 @@ import com.github.binarywang.wxpay.constant.WxPayConstants;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.dataobject.ProductInfo;
-import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.enums.ResultEnum;
 import com.potato369.novel.conf.prop.WeChatPayProperties;
 import com.potato369.novel.dto.OrderDTO;
@@ -25,16 +24,13 @@ import com.potato369.novel.utils.JsonUtil;
 import com.potato369.novel.utils.StringUtil;
 import com.potato369.novel.utils.UUIDUtil;
 import com.potato369.novel.utils.WxPaySignature;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.service.impl
@@ -165,10 +161,10 @@ public class WeChatPayServiceImpl implements WeChatPayService {
             List<ProductInfo> productInfoList = orderDetailService.findProductInfoByOrderId(orderDTO.getOrderId());
             BigDecimal quantity = null;
             for (ProductInfo productInfo : productInfoList) {
-                quantity = productInfo.getProductQuantity().add(productInfo.getProductGiveQuantity());
+//                quantity = productInfo.getProductQuantity().add(productInfo.getProductGiveQuantity());
             }
-            BigDecimal balance = userInfo.getBalance().subtract(quantity);
-            userInfo.setBalance(balance);
+            BigDecimal balance = userInfo.getBalanceAmount().subtract(quantity);
+            userInfo.setBalanceAmount(balance);
             NovelUserInfo result =  userInfoService.save(userInfo);
             if (result == null) {
                 log.error("【微信公众号支付退款】给对应的用户去书币失败，用户信息={}", JsonUtil.toJson(userInfo));

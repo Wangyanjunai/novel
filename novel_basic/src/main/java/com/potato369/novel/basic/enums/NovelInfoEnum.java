@@ -9,11 +9,9 @@
  */
 package com.potato369.novel.basic.enums;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.enums

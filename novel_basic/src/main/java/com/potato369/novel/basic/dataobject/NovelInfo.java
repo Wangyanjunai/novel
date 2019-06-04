@@ -10,6 +10,7 @@
 package com.potato369.novel.basic.dataobject;
 
 import com.potato369.novel.basic.enums.CategoryEnum;
+import com.potato369.novel.basic.enums.NovelInfoEnum;
 import com.potato369.novel.basic.utils.UUIDUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -51,7 +52,7 @@ public class NovelInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField id：id，主键id。
+     * @serialField id：id，主键。
      * </pre>
      */
     @Id
@@ -60,7 +61,7 @@ public class NovelInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField coverURL：封面图片路径。
+     * @serialField coverURL：封面图片绝对路径url。
      * </pre>
      */
     @Column(name = "cover_url", length = 1024)
@@ -68,7 +69,7 @@ public class NovelInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField coverURL：小说路径。
+     * @serialField dataURL：小说信息数据的地址url。
      * </pre>
      */
     @Column(name = "data_url", length = 1024)
@@ -76,7 +77,7 @@ public class NovelInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField title：小说名标题（名称）。
+     * @serialField title：标题，小说的名称。
      * </pre>
      */
     @Column(name = "title", length = 256)
@@ -92,7 +93,7 @@ public class NovelInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField publisher：出版社，或者爬取的网站名称。
+     * @serialField publisher：出版社或爬取的网站名称。
      * </pre>
      */
     @Column(name = "publisher", length = 128)
@@ -103,20 +104,22 @@ public class NovelInfo implements Serializable {
      * @serialField totalWords：总字数。
      * </pre>
      */
+    @Builder.Default
     @Column(name = "total_words", length = 16)
-    private BigDecimal totalWords;
+    private BigDecimal totalWords = BigDecimal.ZERO;
 
     /**
      * <pre>
-     * @serialField novelStatus：状态。
+     * @serialField novelStatus：状态，0-已完结；1-连载中，默认：1-连载中。
      * </pre>
      */
+    @Builder.Default
     @Column(name = "novel_status", length = 1)
-    private Integer novelStatus;
+    private Integer novelStatus = NovelInfoEnum.NOVEL_STATUS_UPDATING.getCode();
 
     /**
      * <pre>
-     * @serialField categoryType：类目类型编号。
+     * @serialField categoryType：类型编号。
      * </pre>
      */
     @Column(name = "category_type", nullable = false, length = 4)
@@ -124,18 +127,18 @@ public class NovelInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField categoryCNText：类目类型中文名称。
+     * @serialField categoryCNText：中文名称。
      * </pre>
      */
-    @Column(name = "category_cn_text", nullable = false, length = 64)
+    @Column(name = "category_cn_text", length = 64)
     private String categoryCNText;
     
     /**
      * <pre>
-     * @serialField categoryEnText：类目类型英文名称。
+     * @serialField categoryEnText：英文名称。
      * <pre>
      */
-    @Column(name = "category_en_text", nullable = false, length = 64)
+    @Column(name = "category_en_text", length = 64)
     private String categoryENText;
 
     /**
@@ -143,7 +146,7 @@ public class NovelInfo implements Serializable {
      * @serialField introduction：小说简介。
      * </pre>
      */
-    @Column(name = "introduction", nullable = true, length = 4096)
+    @Column(name = "introduction")
     private String introduction;
 
     /**
@@ -151,31 +154,34 @@ public class NovelInfo implements Serializable {
      * @serialField readers：阅读（点击）用户数；默认“0-阅读（点击）用户数”。
      * </pre>
      */
-    @Column(name = "readers", nullable = true, length = 16)
-    private BigDecimal readers;
+    @Builder.Default
+    @Column(name = "readers", length = 16)
+    private BigDecimal readers = BigDecimal.ZERO;
     
     /**
      * <pre>
      * @serialField recentReaders：最近跟随阅读（点击）用户数；默认“0-最近跟随阅读（点击）用户数”。
      * </pre>
      */
-    @Column(name = "recent_readers", nullable = true, length = 16)
-    private BigDecimal recentReaders;
+    @Builder.Default
+    @Column(name = "recent_readers", length = 16)
+    private BigDecimal recentReaders = BigDecimal.ZERO;
     
     /**
      * <pre>
      * @serialField clickNumber：点击次数。
      * </pre>
      */
-    @Column(name = "click_number", nullable = true, length = 16)
-    private BigDecimal clickNumber;
+    @Builder.Default
+    @Column(name = "click_number", length = 16)
+    private BigDecimal clickNumber = BigDecimal.ZERO;
     
     /**
      * <pre>
      * @serialField newestChapterId：最新章节id。
      * </pre>
      */
-    @Column(name = "newest_chapter_id", nullable = true, length = 32)
+    @Column(name = "newest_chapter_id", length = 32)
     private String newestChapterId;
     
     /**
@@ -183,24 +189,26 @@ public class NovelInfo implements Serializable {
      * @serialField newestChapterTitle：最新章节标题（名称）。
      * </pre>
      */
-    @Column(name = "newest_chapter_title", nullable = true, length = 512)
+    @Column(name = "newest_chapter_title", length = 512)
     private String newestChapterTitle;
     
     /**
      * <pre>
-     * @serialField totalChapters：总章节数。
+     * @serialField totalChapters：章节总数。
      * </pre>
      */
-    @Column(name = "total_chapters", nullable = true, length = 6)
-    private Integer totalChapters;
+    @Builder.Default
+    @Column(name = "total_chapters", length = 6)
+    private Integer totalChapters = Integer.valueOf(0);
     
     /**
      * <pre>
      * @serialField retention：留存率，现在只是保存数字，显示的时候加上百分比。
      * </pre>
      */
-    @Column(name = "retention", nullable = true, length = 3)
-    private Integer retention;
+    @Builder.Default
+    @Column(name = "retention", length = 3)
+    private Integer retention = Integer.valueOf(0);
 
     /**
      * <pre>

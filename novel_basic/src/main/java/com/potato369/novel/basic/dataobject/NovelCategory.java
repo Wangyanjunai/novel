@@ -1,5 +1,6 @@
 package com.potato369.novel.basic.dataobject;
 
+import com.potato369.novel.basic.enums.CategoryEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,7 @@ import java.util.Date;
  * <pre>
  * @PackageName com.potato369.novel.dataobject
  * @ClassName NovelCategory
- * @Desc 小说类目信息
+ * @Desc 小说类目信息记录实体
  * @WebSite https://www.potato369.com
  * @Author 王艳军
  * @Date 2018/12/17 15:19
@@ -96,24 +97,27 @@ public class NovelCategory implements Serializable {
      * @serialField readingNumber：阅读（点击）用户数。
      * <pre>
      */
+    @Builder.Default
     @Column(name = "reading_number", length = 16)
-    private BigDecimal readingNumber;
+    private BigDecimal readingNumber = BigDecimal.ZERO;
 
     /**
      * <pre>
      * @serialField clickNumber：点击次数。
      * <pre>
      */
+    @Builder.Default
     @Column(name = "click_number", length = 16)
-    private BigDecimal clickNumber;
+    private BigDecimal clickNumber = BigDecimal.ZERO;
 
     /**
      * <pre>
      * @serialField isDeleted：类目是否删除；0-否，1-是。
      * </pre>
      */
+    @Builder.Default
     @Column(name = "is_deleted", length = 1)
-    private Integer isDeleted;
+    private Integer isDeleted = CategoryEnum.NOT_DELETE.getCode();
 
     /**
      * <pre>

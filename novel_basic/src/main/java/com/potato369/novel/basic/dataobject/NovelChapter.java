@@ -7,13 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
 import org.hibernate.annotations.DynamicUpdate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 /**
  * <pre>
  * 类名: NovelChapter
@@ -86,7 +84,7 @@ public class NovelChapter implements Serializable {
     
     /**
      * <pre>
-     * @serialField url：章节网页路径URL
+     * @serialField url：章节数据路径URL。
      * </pre>
      */
     @Column(name = "chapter_url", length = 1024)

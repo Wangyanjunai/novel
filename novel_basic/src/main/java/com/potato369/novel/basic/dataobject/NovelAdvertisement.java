@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import com.potato369.novel.basic.enums.NovelAdvertisementEnum;
 import org.hibernate.annotations.DynamicUpdate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,23 +54,25 @@ public class NovelAdvertisement implements Serializable{
 	
 	/**
 	 * <pre>
-	 * @serialField tag1：标识广告是应用类广告还是初始页面跳转广告，0-跳转广告，1-应用内广告。
+	 * @serialField tag1：标识广告是应用类广告还是初始页面跳转广告，0-跳转广告，1-应用内广告，默认：0-跳转广告。
 	 * </pre>
 	 */
-	@Column(name = "tag1", nullable = false, length = 4)
-	private Integer tag1;
+	@Builder.Default
+	@Column(name = "tag1", nullable = false, length = 1)
+	private Integer tag1 = NovelAdvertisementEnum.SKIP_AD.getCode();
 	
 	/**
 	 * <pre>
-	 * @serialField tag2：标识广告是否可以跳转，0-可以跳转，1-不可以跳转。
+	 * @serialField tag2：标识广告是否可以跳转，0-可以跳转，1-不可以跳转。默认：0-可以跳转。
 	 * </pre>
 	 */
-	@Column(name = "tag2", nullable = false, length = 4)
-	private Integer tag2;
+	@Builder.Default
+	@Column(name = "tag2", nullable = false, length = 1)
+	private Integer tag2 = NovelAdvertisementEnum.JUMP.getCode();
 	
 	/**
 	 * <pre>
-	 * @serialField imageUrl：广告图片链接地址。
+	 * @serialField imageUrl：广告图片链接绝对路径URL。
 	 * </pre>
 	 */
 	@Column(name = "image_url", length = 1024)
@@ -76,7 +80,7 @@ public class NovelAdvertisement implements Serializable{
 	
 	/**
 	 * <pre>
-	 * @serialField linkUrl：广告跳转链接地址。
+	 * @serialField linkUrl：广告跳转链接绝对路径URL。
 	 * </pre>
 	 */
 	@Column(name = "link_url", length = 1024)

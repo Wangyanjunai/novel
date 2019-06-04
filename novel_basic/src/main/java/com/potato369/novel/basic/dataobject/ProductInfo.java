@@ -1,5 +1,6 @@
 package com.potato369.novel.basic.dataobject;
 
+import com.potato369.novel.basic.enums.ProductInfoEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,7 @@ import java.util.Date;
  * <pre>
  * @PackageName com.potato369.novel.dataobject
  * @ClassName ProductInfo
- * @Desc 金币产品信息实体对象
+ * @Desc 商品信息记录实体
  * @WebSite https://www.potato369.com
  * @Author Jack
  * @Date 2019/01/08 17:16
@@ -44,7 +45,7 @@ public class ProductInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField productId：书币产品id，主键。
+     * @serialField productId：商品id，主键。
      * </pre>
      */
     @Id
@@ -53,64 +54,34 @@ public class ProductInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField productName：书币产品名称。
+     * @serialField productName：商品名称。
      * </pre>
      */
     @Column(name = "product_name", nullable = false, length = 64)
     private String productName;
 
     /**
-     * @serialField productType：产品类型，0-书币，1-会员；默认0-书币
+     * @serialField productType：计算类型，0-按照天算，1-按照月算；默认：0-按照天算。
      */
-    @Column(name = "product_type", nullable = false, length = 4)
-    private Integer productType;
+    @Builder.Default
+    @Column(name = "product_type", nullable = false, length = 1)
+    private Integer productType = ProductInfoEnum.DAY.getCode();
 
     /**
      * <pre>
-     * @serialField productPrice：书币产品单价。
+     * @serialField productAmount：商品总价（元）。
      * </pre>
      */
-    @Column(name = "product_price", nullable = false, length = 10)
-    private BigDecimal productPrice;
+    @Builder.Default
+    @Column(name = "product_amount", length = 10)
+    private BigDecimal productAmount = BigDecimal.ZERO;
 
     /**
      * <pre>
-     * @serialField productQuantity：产品数量。
+     * @serialField productDescription：商品描述。
      * </pre>
      */
-    @Column(name = "product_quantity", nullable = true, length = 8)
-    private BigDecimal productQuantity;
-
-    /**
-     * <pre>
-     * @serialField productAmount：产品总价。
-     * </pre>
-     */
-    @Column(name = "product_amount", nullable = true, length = 10)
-    private BigDecimal productAmount;
-
-    /**
-     * <pre>
-     * @serialField productGiveQuantity：赠送数量。
-     * </pre>
-     */
-    @Column(name = "product_give_quantity", nullable = true, length = 8)
-    private BigDecimal productGiveQuantity;
-
-    /**
-     * <pre>
-     * @serialField productRank：排行。
-     * </pre>
-     */
-    @Column(name = "product_rank", nullable = true, length = 64)
-    private String productRank;
-
-    /**
-     * <pre>
-     * @serialField productDescription：书币产品描述。
-     * </pre>
-     */
-    @Column(name = "product_description", nullable = true, length = 1024)
+    @Column(name = "product_description", length = 1024)
     private String productDescription;
 
     /**

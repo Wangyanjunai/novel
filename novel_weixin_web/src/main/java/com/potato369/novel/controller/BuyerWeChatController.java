@@ -242,9 +242,9 @@ public class BuyerWeChatController {
 			if (userInfo == null) {
 //				userInfo = WxMpUser2UserInfoConverter.WxMpUser2UserInfoConvert(mpUser);
 			} else {
-				String mid = userInfo.getMid();
+				String mid = userInfo.getMId();
 				BeanUtils.copyProperties(mpUser, userInfo);
-				userInfo.setMid(mid);
+				userInfo.setMId(mid);
 			}
 			userInfoService.save(userInfo);
 		} catch (WxErrorException e) {

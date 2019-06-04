@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 /**
  * <pre>
@@ -58,10 +57,18 @@ public class OrderDetail implements Serializable {
      */
     @Column(name = "order_id", nullable = false, length = 32)
     private String orderId;
+    
+    /**
+     * <pre>
+     * @serialField userId：用户mid。
+     * </pre>
+     */
+    @Column(name = "user_id", nullable = false, length = 20)
+    private String userId;
 
     /**
      * <pre>
-     * @serialField productId：产品id，外键。
+     * @serialField productId：商品id。
      * </pre>
      */
     @Column(name = "product_id", nullable = false, length = 32)
@@ -69,66 +76,34 @@ public class OrderDetail implements Serializable {
 
     /**
      * <pre>
-     * @serialField buyerOpenid：买家微信openid，外键。
+     * @serialField buyerOpenid：买家openid。
      * </pre>
      */
-    @Column(name = "buyer_openid", nullable = false, length = 64)
+    @Column(name = "buyer_openid", length = 64)
     private String buyerOpenid;
 
     /**
      * <pre>
-     * @serialField productName：产品名称。
+     * @serialField payTime：支付时间。
      * </pre>
      */
-    @Column(name = "product_name", nullable = false, length = 64)
-    private String productName;
-
-    /**
-     * <pre>
-     * @serialField productPrice：产品单价。
-     * </pre>
-     */
-    @Column(name = "product_price", nullable = false, length = 8)
-    private BigDecimal productPrice;
-
-    /**
-     * <pre>
-     * @serialField productQuantity：购买数量。
-     * </pre>
-     */
-    @Column(name = "product_quantity", nullable = false, length = 11)
-    private BigDecimal productQuantity;
-
-    /**
-     * <pre>
-     * @serialField productGiveQuantity：赠送数量。
-     * </pre>
-     */
-    @Column(name = "product_give_quantity", nullable = false, length = 8)
-    private BigDecimal productGiveQuantity;
-
-    /**
-     * <pre>
-     * @serialField productDescription：书币产品描述。
-     * </pre>
-     */
-    @Column(name = "product_description", nullable = true, length = 1024)
-    private String productDescription;
-
-    /**
-     * <pre>
-     * @serialField payTime：会员支付时间。
-     * </pre>
-     */
-    @Column(name = "pay_time", nullable = true, length = 64)
+    @Column(name = "pay_time", length = 64)
     private Date payTime;
-
+    
     /**
      * <pre>
-     * @serialField endTime：会员结束时间。
+     * @serialField startTime：VIP开始时间。
      * </pre>
      */
-    @Column(name = "end_time", nullable = true, length = 64)
+    @Column(name = "start_time", length = 64)
+    private Date startTime;
+    
+    /**
+     * <pre>
+     * @serialField endTime：VIP结束时间。
+     * </pre>
+     */
+    @Column(name = "end_time", length = 64)
     private Date endTime;
 
     /**

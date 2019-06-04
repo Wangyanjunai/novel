@@ -1,23 +1,20 @@
 package com.potato369.novel.service.impl;
 
-import com.potato369.novel.basic.dataobject.OrderDetail;
+//import com.potato369.novel.basic.dataobject.OrderDetail;
 import com.potato369.novel.conf.prop.WeChatMpProperties;
 import com.potato369.novel.dto.OrderDTO;
 import com.potato369.novel.dto.SellerInfoDTO;
 import com.potato369.novel.service.PushMessageService;
 import com.potato369.novel.utils.DateUtil;
 import com.potato369.novel.utils.JsonUtil;
-
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Arrays;
 import java.util.List;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.service.impl
@@ -76,11 +73,11 @@ public class PushMessageServiceImpl implements PushMessageService {
         WxMpTemplateMessage templateMessage = new WxMpTemplateMessage();
         templateMessage.setTemplateId(wechatAccountConfig.getOrderSuccess());
         templateMessage.setToUser(orderDTO.getBuyerOpenid());
-        List<OrderDetail> orderDetailList = orderDTO.getOrderDetailList();
+//        List<OrderDetail> orderDetailList = orderDTO.getOrderDetailList();
         StringBuffer orderProductNames = new StringBuffer();
-        for(OrderDetail orderDetail:orderDetailList) {
-            orderProductNames.append(orderDetail.getProductName()).append(" ");
-        }
+//        for(OrderDetail orderDetail:orderDetailList) {
+//            orderProductNames.append(orderDetail.getProductName()).append(" ");
+//        }
         List<WxMpTemplateData> data = Arrays.asList(
                 new WxMpTemplateData("first","恭喜您，订单下单成功通知！！！","red"),
                 new WxMpTemplateData("keyword1", orderProductNames.toString()),

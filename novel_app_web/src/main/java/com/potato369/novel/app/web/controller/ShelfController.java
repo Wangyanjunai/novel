@@ -144,7 +144,7 @@ public class ShelfController {
                 NovelUserInfoIdClass idClass = NovelUserInfoIdClass.builder().build();
                 if (shelfMap.containsKey("userId")) {//用户id
                     String userId = (String) shelfMap.get("userId");
-                    idClass.setMid(userId);
+                    idClass.setMId(userId);
                     NovelUserInfo novelUserInfo = userInfoService.findByUserId(userId);
                     if (novelUserInfo == null) {
                         log.error("用户未注册，获取不到用户信息，用户id={}", userId);

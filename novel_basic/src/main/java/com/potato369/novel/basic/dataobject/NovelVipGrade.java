@@ -1,93 +1,71 @@
 package com.potato369.novel.basic.dataobject;
 
-import com.potato369.novel.basic.dataobject.idClass.NovelShelfIdClass;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.aspectj.lang.annotation.DeclareError;
 import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.dataobject
- * @ClassName NovelShelf
- * @Desc novel_shelf 小说app书架信息记录实体类
+ * @ClassName NovelVipGrade
+ * @Desc VIP等级信息记录实体。
  * @WebSite https://www.potato369.com
  * @Author Jack
- * @Date 2019/5/14 17:42
+ * @Date 2019/6/4 10:50
  * @CreateBy IntellJ IDEA 2019.1.1
  * @Copyright Copyright (c) 2016 ~ 2020 版权所有 (C) 土豆互联科技(深圳)有限公司 https://www.potato369.com All Rights Reserved。
  * </pre>
  */
 @AllArgsConstructor
 @Builder
-@DynamicUpdate
 @Data
-@Entity(name = "NovelShelf")
+@DynamicUpdate
+@Entity(name = "NovelVipGrade")
 @NoArgsConstructor
-@Table(name = "novel_shelf")
-@IdClass(value = NovelShelfIdClass.class)
-public class NovelShelf implements Serializable {
+@Table(name = "novel_vip_grade")
+public class NovelVipGrade implements Serializable {
 
     /**
-	 * <pre>
-	 * serialVersionUID：序列号。
-	 * @since JDK 1.6
-	 * </pre>
-	 */
-	@Transient	
-	private static final long serialVersionUID = 7818526440474990984L;
-
-	/**
      * <pre>
-     * @serialField shelfId：联合主键，书架id。
+     * @serialField serialVersionUID：序列号。
+     * </pre>
+     */
+    @Transient
+    private static final long serialVersionUID = -8639503100982863589L;
+
+    /**
+     * <pre>
+     * @serialField gradeId：主键，VIP等级id。
      * </pre>
      */
     @Id
-    @Column(name = "shelf_id", nullable = false, length = 32)
-    private String shelfId;
+    @Column(name = "grade_id", nullable = false, length = 32)
+    private String gradeId;
 
     /**
      * <pre>
-     * @serialField userId：联合主键，用户id。
+     * @serialField gradeName：VIP等级名称。
      * </pre>
      */
-    @Id
-    @Column(name = "user_id", nullable = false, length = 20)
-    private String userId;
+    @Column(name = "grade_name", length = 10)
+    private String gradeName;
 
     /**
      * <pre>
-     * @serialField novelId：小说id。
+     * @serialField gradeIntro：VIP等级简介。
      * </pre>
      */
-    @Column(name = "novel_id", nullable = false, length = 32)
-    private String novelId;
-
-    /**
-     * <pre>
-     * @serialField chapterId：已经阅读到的小说章节id。
-     * </pre>
-     */
-    @Column(name = "chapter_id", length = 32)
-    private String chapterId;
-
-    /**
-     * <pre>
-     * @serialField chapterIndex：已经阅读到的小说章节索引。
-     * </pre>
-     */
-    @Column(name = "chapter_index", length = 6)
-    private Integer chapterIndex;
+    @Column(name = "grade_intro", length = 1024)
+    private String gradeIntro;
 
     /**
      * <pre>

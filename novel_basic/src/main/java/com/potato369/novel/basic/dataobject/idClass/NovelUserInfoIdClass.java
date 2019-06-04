@@ -34,15 +34,15 @@ public class NovelUserInfoIdClass implements Serializable {
 
 	/**
 	 * <pre>
-	 * @serialField mid：用户mid。
+	 * @serialField mId：用户mid。
 	 * </pre>
 	 */
-	private String mid;
+	private String mId;
 	
 	/**
 	 * <pre>
-	 * @serialField meid：手机串号。
+	 * @serialField meId：手机串号。
 	 * </pre>
 	 */
-	private String meid;
+	private String meId;
 }

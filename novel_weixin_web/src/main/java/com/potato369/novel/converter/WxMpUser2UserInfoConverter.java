@@ -58,9 +58,9 @@ public class WxMpUser2UserInfoConverter {
      */
     public static NovelUserInfo WxMpUser2UserInfoConvert(WxMpUser wxMpUser) {
     	NovelUserInfo userInfo = NovelUserInfo.builder().build();
-        userInfo.setMid(UUIDUtil.gen13MID());
-        userInfo.setCountry(wxMpUser.getCountry());
-        userInfo.setProvince(wxMpUser.getProvince());
+        userInfo.setMId(UUIDUtil.gen13MID());
+        userInfo.setAddress(wxMpUser.getCountry()+wxMpUser.getProvince()+wxMpUser.getCity());
+//        userInfo.setProvince(wxMpUser.getProvince());
 //        userInfo.setCity(wxMpUser.getCity());
         userInfo.setLang(wxMpUser.getLanguage());
         userInfo.setGender(wxMpUser.getSex());
@@ -70,7 +70,7 @@ public class WxMpUser2UserInfoConverter {
 //        userInfo.setUnionId(wxMpUser.getUnionId());
         userInfo.setAvatarUrl(wxMpUser.getHeadImgUrl());
 //        userInfo.setSubscribeTime(new Date(wxMpUser.getSubscribeTime() * 1000L));
-        userInfo.setBalance(BigDecimal.ZERO);
+        userInfo.setBalanceAmount(BigDecimal.ZERO);
         if (log.isDebugEnabled()) {
         	log.debug("userInfo={}", JsonUtil.toJson(userInfo));
 		}
