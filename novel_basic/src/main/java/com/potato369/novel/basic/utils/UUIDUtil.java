@@ -94,7 +94,7 @@ public class UUIDUtil {
         calendar_day90.setTime(now);
         calendar_day90.add(Calendar.DATE, 90);
         String lastDayDateStr90 = DateUtil.strFormat(calendar_day90.getTime(), "yyyy-MM-dd HH:mm:ss");
-        Date add90Date = calendar_day90.getTime();
+//        Date add90Date = calendar_day90.getTime();
         System.out.println("九十天后的时间：" + lastDayDateStr90);
     }
 }
