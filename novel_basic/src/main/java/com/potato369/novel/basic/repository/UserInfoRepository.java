@@ -4,14 +4,12 @@ import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.dataobject.idClass.NovelUserInfoIdClass;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
 import java.util.List;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.repository
  * @ClassName UserInfoRepository
- * @Desc 用户信息Repository数据库操作类
+ * @Desc 用户信息数据操作Repository接口
  * @WebSite https://www.potato369.com
  * @Author Jack
  * @Date 2018/12/25 17:30

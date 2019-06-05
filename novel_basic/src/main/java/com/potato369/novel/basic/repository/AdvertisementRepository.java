@@ -2,12 +2,11 @@ package com.potato369.novel.basic.repository;
 
 import com.potato369.novel.basic.dataobject.NovelAdvertisement;
 import org.springframework.data.jpa.repository.JpaRepository;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.repository
  * @InterfaceName AdvertisementRepository
- * @Desc Advertisement
+ * @Desc 广告信息数据操作Repository接口
  * @WebSite https://www.potato369.com
  * @Author Jack
  * @Date 2019/4/25 10:58

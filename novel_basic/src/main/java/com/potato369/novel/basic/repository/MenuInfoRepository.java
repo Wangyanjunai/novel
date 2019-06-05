@@ -2,12 +2,11 @@ package com.potato369.novel.basic.repository;
 
 import com.potato369.novel.basic.dataobject.NovelMenuInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.repository
  * @InterfaceName MenuInfoRepository
- * @Desc 公众号菜单信息数据repository
+ * @Desc 公众号菜单信息数据操作Repository接口
  * @WebSite https://www.potato369.com
  * @Author Jack
  * @Date 2019/6/4 17:26

@@ -14,6 +14,7 @@ import com.potato369.novel.basic.repository.mapper.AdvertisementMapper;
 import com.potato369.novel.basic.service.AdvertisementService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <pre>
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Service;
  * </pre>
  */
 @Service
+@Transactional
 public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Autowired

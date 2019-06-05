@@ -3,12 +3,11 @@ package com.potato369.novel.basic.repository;
 import com.potato369.novel.basic.dataobject.HotWordsInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.repository
  * @InterfaceName HotWordsInfoRepository
- * @Desc HotWordsInfo
+ * @Desc 搜索热词记录数据操作Repository接口
  * @WebSite https://www.potato369.com
  * @Author Jack
  * @Date 2019/5/14 11:06
@@ -18,6 +17,6 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface HotWordsInfoRepository extends JpaRepository<HotWordsInfo, String> {
 
-    @Query(value = "select h.wordId from HotWordsInfo h where h.word = ?1", nativeQuery = false, name = "findWord")
+    @Query(value = "select h.wordId from HotWordsInfo h where h.word = ?1", name = "findWord")
     String selectWord(String words);
 }

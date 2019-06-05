@@ -2,14 +2,12 @@ package com.potato369.novel.basic.repository;
 
 import com.potato369.novel.basic.dataobject.OrderDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.List;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.dataobject
  * @InterfaceName OrderDetailRepository
- * @Desc 订单详情Repository数据库操作类
+ * @Desc 订单详情数据操作Repository接口
  * @WebSite https://www.potato369.com
  * @Author Jack
  * @Date 2019/01/08 18:10

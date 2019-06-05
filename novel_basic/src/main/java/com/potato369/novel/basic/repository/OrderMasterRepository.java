@@ -4,14 +4,12 @@ import com.potato369.novel.basic.dataobject.OrderMaster;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.List;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.repository
  * @InterfaceName OrderMasterRepository
- * @Desc 订单信息Repository数据库操作类
+ * @Desc 订单信息数据操作Repository接口
  * @WebSite https://www.potato369.com
  * @Author Jack
  * @Date 2019/01/08 17:54

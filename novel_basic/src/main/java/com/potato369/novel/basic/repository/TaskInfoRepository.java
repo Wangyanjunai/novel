@@ -2,12 +2,11 @@ package com.potato369.novel.basic.repository;
 
 import com.potato369.novel.basic.dataobject.TaskInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.repository
  * @InterfaceName TaskInfoRepository
- * @Desc 任务进度信息repository
+ * @Desc 任务进度信息数据操作Repository接口
  * @WebSite https://www.potato369.com
  * @Author Jack
  * @Date 2019/6/4 17:24

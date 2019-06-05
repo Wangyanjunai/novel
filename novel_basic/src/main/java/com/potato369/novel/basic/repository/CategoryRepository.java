@@ -6,12 +6,11 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import java.math.BigDecimal;
 import java.util.List;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.repository
  * @ClassName CategoryRepository
- * @Desc 小说类目信息Repository数据库操作类
+ * @Desc 小说类目信息数据操作Repository接口
  * @WebSite https://www.potato369.com
  * @Author 王艳军
  * @Date 2018/12/17 15:31

@@ -4,14 +4,12 @@ import com.potato369.novel.basic.dataobject.NovelShelfDetail;
 import com.potato369.novel.basic.dataobject.idClass.NovelShelfDetailIdClass;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
 import java.util.List;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.dataobject
  * @InterfaceName ShelfDetailRepository
- * @Desc ShelfRepository
+ * @Desc 书架详情信息数据操作Repository接口
  * @WebSite https://www.potato369.com
  * @Author Jack
  * @Date 2019/5/16 17:16

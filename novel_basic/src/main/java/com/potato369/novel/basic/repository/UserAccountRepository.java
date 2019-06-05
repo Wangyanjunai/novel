@@ -2,12 +2,11 @@ package com.potato369.novel.basic.repository;
 
 import com.potato369.novel.basic.dataobject.NovelUserAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.repository
  * @InterfaceName UserAccountRepository
- * @Desc 用户账户信息repository
+ * @Desc 用户账户信息数据操作Repository接口
  * @WebSite https://www.potato369.com
  * @Author Jack
  * @Date 2019/6/4 17:20

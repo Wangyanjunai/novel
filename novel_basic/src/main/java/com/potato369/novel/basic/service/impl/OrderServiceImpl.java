@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -35,6 +36,7 @@ import java.util.List;
  * </pre>
  */
 @Service
+@Transactional
 @Slf4j
 public class OrderServiceImpl implements OrderService {
 

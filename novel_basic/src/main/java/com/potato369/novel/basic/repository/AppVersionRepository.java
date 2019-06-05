@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * <pre>
  * @PackageName com.potato369.novel.basic.repository
  * @ClassName AppVersionRepository
- * @Desc
+ * @Desc APP版本信息数据操作Repository接口
  * @WebSite https://www.potato369.com
  * @Author Jack
  * @Date 2019/5/20 17:47

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.repository.UserInfoRepository;
 import com.potato369.novel.basic.service.UserInfoService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <pre>
@@ -24,6 +25,7 @@ import com.potato369.novel.basic.service.UserInfoService;
  * </pre>
  */
 @Service
+@Transactional
 public class UserInfoServiceImpl implements UserInfoService {
 
     @Autowired

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.potato369.novel.basic.dataobject.NovelComment;
 import com.potato369.novel.basic.repository.CommentRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <pre>
@@ -25,6 +26,7 @@ import com.potato369.novel.basic.repository.CommentRepository;
  * </pre>
  */
 @Service
+@Transactional
 public class CommentServiceImpl implements CommentService {
 
 	@Autowired

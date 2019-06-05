@@ -5,6 +5,8 @@ import com.potato369.novel.basic.repository.SellerInfoRepository;
 import com.potato369.novel.basic.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.service.impl
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
  * </pre>
  */
 @Service
+@Transactional
 public class SellerServiceImpl implements SellerService {
 
     @Autowired

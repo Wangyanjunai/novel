@@ -5,6 +5,7 @@ import com.potato369.novel.basic.repository.ShelfRepository;
 import com.potato369.novel.basic.service.ShelfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <pre>
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
  * </pre>
  */
 @Service
+@Transactional
 public class ShelfServiceImpl implements ShelfService {
 
     @Autowired

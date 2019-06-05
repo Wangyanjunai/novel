@@ -2,12 +2,11 @@ package com.potato369.novel.basic.repository;
 
 import com.potato369.novel.basic.dataobject.SellerInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.repository
  * @InterfaceName SellerInfoRepository
- * @Desc 卖家信息Repository数据库操作类
+ * @Desc 卖家信息数据操作Repository接口
  * @WebSite https://www.potato369.com
  * @Author Jack
  * @Date 2019/01/09 11:18
