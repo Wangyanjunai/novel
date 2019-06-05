@@ -37,6 +37,25 @@ public class UserInfoController {
     @Autowired
     private UserInfoService userInfoService;
 
+    /**
+     * {
+     * 	"meId": "qqqqq",
+     * 	"brand": "张三",
+     * 	"model": "11111111",
+     * 	"mac": "121222222222",
+     * 	"systemName": "121222222222",
+     * 	"systemCode": "121222222222",
+     * 	"versionName": "121222222222",
+     * 	"openid": "121222222222",
+     * 	"nickName": "121222222222",
+     * 	"gender": 0,
+     * 	"avatarUrl": "121222222222",
+     * 	"ip": "183.14.29.207"
+     * }
+     * @param userInfoDTO
+     * @param bindingResult
+     * @return
+     */
     @PostMapping(value = "/reg", produces = "application/json;charset=utf-8")
     public ResultVO<UserInfoVO> register(@RequestBody @Valid UserInfoDTO userInfoDTO, BindingResult bindingResult) {
         ResultVO<UserInfoVO> resultVO = new ResultVO<>();
