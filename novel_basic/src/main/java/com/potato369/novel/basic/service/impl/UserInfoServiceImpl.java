@@ -98,6 +98,17 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     /**
+     * 根据meId手机串号查找用户信息
+     * @param meId
+     * @return NovelUserInfo
+     * @throws Exception
+     */
+    @Override
+    public NovelUserInfo findByMeIdOrOpenid(String meId, String openid) {
+        return repository.selectByUserMeIdOrUserOpenid(meId, openid);
+    }
+
+    /**
      * 根据openid查找用户信息
      *
      * @param openid

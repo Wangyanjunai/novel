@@ -193,8 +193,9 @@ public class NovelUserInfo implements Serializable {
      * @serialField vipGradeId：VIP等级id。关联VIP权限等级信息表的权限等级id主键。
      * </pre>
      */
+    @Builder.Default
     @Column(name = "vip_grade_id", length = 32)
-    private String vipGradeId;
+    private String vipGradeId = UserInfoEnum.VIP1.getMessage();
 
     /**
      * <pre>

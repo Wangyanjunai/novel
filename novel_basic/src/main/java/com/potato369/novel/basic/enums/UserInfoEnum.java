@@ -38,6 +38,12 @@ public enum UserInfoEnum implements CodeEnum<Object>{
     FINISHED(1, "完成绑定微信任务"),
 
     UNFINISHED(0, "未完成绑定微信任务"),
+    
+    VIP0(0, "450b9b4f90b14fb784f45643ded0dff5"),
+    
+    VIP1(1, "450b9b4f90b14fb784f45643ded0dff6"),
+    
+    VIP2(2, "450b9b4f90b14fb784f45643ded0dff7"),
 
     ;
 

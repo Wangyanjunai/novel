@@ -69,13 +69,21 @@ public interface UserInfoService {
     NovelUserInfo findById(NovelUserInfoIdClass idClass);
 
     /**
-     * 根据id查找用户信息
+     * 根据mid查找用户信息
      * @param userId
      * @return
      * @throws Exception
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     NovelUserInfo findByUserId(String userId);
+    /**
+     * 根据meId手机串号查找用户信息
+     * @param meId
+     * @return NovelUserInfo
+     * @throws Exception
+     */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    NovelUserInfo findByMeIdOrOpenid(String meId, String openid);
 
     /**
      * 根据openid查找用户信息

@@ -350,6 +350,9 @@ CREATE TABLE `novel_vip_grade` (
 -- ----------------------------
 -- Records of novel_vip_grade
 -- ----------------------------
+INSERT INTO `novel_vip_grade` VALUES ('450b9b4f90b14fb784f45643ded0dff5', 'VIP-0', 'VIP-0：普通用户，广告全开，VIP-1到期后获得VIP-0。', '2019-06-05 10:33:39', '2019-06-05 10:37:01');
+INSERT INTO `novel_vip_grade` VALUES ('450b9b4f90b14fb784f45643ded0dff6', 'VIP-1', 'VIP-1：章节免广告用户，免除章节阅读时的广告，新注册用户、以及邀请码的方式获得。', '2019-06-05 10:33:50', '2019-06-05 10:36:39');
+INSERT INTO `novel_vip_grade` VALUES ('450b9b4f90b14fb784f45643ded0dff7', 'VIP-2', 'VIP-2：全场免广告用户，全场免广告（除开屏、精选界面轮播广告）通过充值、兑换获得VIP-2全场免广告用户。', '2019-06-05 10:34:50', '2019-06-05 10:38:31');
 
 -- ----------------------------
 -- 【13】Table structure for novel_user_account
@@ -446,6 +449,15 @@ CREATE TABLE `product_info` (
 -- ----------------------------
 -- Records of product_info
 -- ----------------------------
+INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bf', 'VIP7天', '0', '5.00', '兑换VIP-2等级权限7天。', '2019-06-05 10:22:53', '2019-06-05 10:25:34');
+INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bg', 'VIP30天', '0', '20.00', '兑换VIP-2等级权限30天。', '2019-06-05 10:23:55', '2019-06-05 10:24:10');
+INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bh', 'VIP60天', '0', '40.00', '兑换VIP-2等级权限60天。', '2019-06-05 10:24:51', '2019-06-05 10:25:21');
+INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bi', 'VIP90天', '0', '60.00', '兑换VIP-2等级权限90天。', '2019-06-05 10:26:00', '2019-06-05 10:26:21');
+INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4cb9', '1一个月VIP', '1', '10.00', '开通一个月VIP-2等级权限。', '2019-06-05 10:28:20', '2019-06-05 10:28:20');
+INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4cc9', '3个月VIP', '1', '30.00', '开通三个月VIP-2等级权限。', '2019-06-05 10:29:04', '2019-06-05 10:29:21');
+INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4cd9', '6六个月VIP', '1', '60.00', '开通六个月VIP-2等级权限。', '2019-06-05 10:29:53', '2019-06-05 10:30:30');
+INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4ce9', '12个月VIP', '1', '120.00', '开通十二个月VIP-2等级权限。', '2019-06-05 10:31:05', '2019-06-05 10:31:22');
+
 
 -- ----------------------------
 -- 【17】Table structure for task_info
