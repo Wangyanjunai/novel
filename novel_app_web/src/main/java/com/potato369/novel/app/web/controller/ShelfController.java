@@ -145,7 +145,7 @@ public class ShelfController {
                 if (shelfMap.containsKey("userId")) {//用户id
                     String userId = (String) shelfMap.get("userId");
                     idClass.setMId(userId);
-                    NovelUserInfo novelUserInfo = userInfoService.findByUserId(userId);
+                    NovelUserInfo novelUserInfo = userInfoService.findByUserMId(userId);
                     if (novelUserInfo == null) {
                         log.error("用户未注册，获取不到用户信息，用户id={}", userId);
                         return ResultVOUtil.error(-100, "用户未注册，获取不到用户信息");
@@ -231,7 +231,7 @@ public class ShelfController {
 			 log.error("用户id，小说id不能为空，获取不到用户的书架信息");
              return ResultVOUtil.error(-103, "用户id，小说id不能为空，获取不到用户的书架信息");
 		}
-		 NovelUserInfo novelUserInfo = userInfoService.findByUserId(userId);
+		 NovelUserInfo novelUserInfo = userInfoService.findByUserMId(userId);
          if (novelUserInfo == null) {
              log.error("用户未注册，获取不到用户信息，用户id={}", userId);
              return ResultVOUtil.error(-100, "用户未注册，获取不到用户信息");

@@ -19,11 +19,17 @@ import java.util.List;
  */
 public interface UserInfoRepository extends JpaRepository<NovelUserInfo, NovelUserInfoIdClass> {
 
-    @Query(value = "select nu from NovelUserInfo nu where nu.mId = ?1")
-    NovelUserInfo selectByUserId(String userId);
+    @Query(value = "SELECT nu FROM NovelUserInfo nu WHERE nu.mId = ?1")
+    NovelUserInfo selectByUserMId(String userMId);
+    
+    @Query(value = "SELECT nu FROM NovelUserInfo nu WHERE nu.meId = ?1")
+    NovelUserInfo selectByUserMeId(String userMeId);
+    
+    @Query(value = "SELECT nu FROM NovelUserInfo nu WHERE nu.openid = ?1")
+    NovelUserInfo selectByUserOpenid(String userOpenid);
 
-    @Query(value = "select nu from NovelUserInfo nu where nu.meId = ?1 or nu.openid = ?2")
-    NovelUserInfo selectByUserMeIdOrUserOpenid(String meId, String openid);
+    @Query(value = "SELECT nu FROM NovelUserInfo nu WHERE nu.meId = ?1 AND nu.openid = ?2")
+    NovelUserInfo selectByUserMeIdAndUserOpenid(String meId, String openid);
 
     NovelUserInfo findUserInfoByOpenid(String openid);
 

@@ -11,7 +11,6 @@ import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.repository.UserInfoRepository;
 import com.potato369.novel.basic.service.UserInfoService;
 import org.springframework.transaction.annotation.Transactional;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.service.impl
@@ -93,8 +92,18 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public NovelUserInfo findByUserId(String userId) {
-        return repository.selectByUserId(userId);
+    public NovelUserInfo findByUserMId(String userMId) {
+        return repository.selectByUserMId(userMId);
+    }
+    /**
+     * 根据meId手机串号查找用户信息
+     * @param userMeId
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public NovelUserInfo findByUserMeId(String userMeId) {
+    	return repository.selectByUserMeId(userMeId);
     }
 
     /**
@@ -104,8 +113,8 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @throws Exception
      */
     @Override
-    public NovelUserInfo findByMeIdOrOpenid(String meId, String openid) {
-        return repository.selectByUserMeIdOrUserOpenid(meId, openid);
+    public NovelUserInfo findByMeIdAndOpenid(String meId, String openid) {
+        return repository.selectByUserMeIdAndUserOpenid(meId, openid);
     }
 
     /**

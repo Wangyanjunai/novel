@@ -8,6 +8,7 @@ import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.basic.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -71,24 +72,50 @@ public class UserInfoController {
                 resultVO.setData(null);
                 return resultVO;
             }
-            String meId = null;
-            String openid = null;
+            //String mId = null;//用户mId
+            String meId = null;//用户手机串号
+            String openid = null;//用户平台openid
             if (userInfoDTO != null) {
+//                mId = userInfoDTO.getMId();
                 meId = userInfoDTO.getMeId();
                 openid = userInfoDTO.getOpenid();
             }
-            NovelUserInfo userInfoTmp = userInfoService.findByMeIdOrOpenid(meId, openid);//根据前端传过来的数据查找用户信息
-            if (userInfoTmp == null) {
-                NovelUserInfo userInfo = UserInfo2UserInfoDTOConverter.convert(userInfoDTO);
-                userInfo.setMId(UUIDUtil.gen13MID());
-                NovelUserInfo userInfoResult = userInfoService.save(userInfo);
-                BeanUtils.copyProperties(userInfoResult, userInfoVO);
-                if (log.isDebugEnabled()) {
-                    log.debug("【前端用户登录】userInfo用户信息={}", userInfo);
-                }
-            } else {
-                BeanUtils.copyProperties(userInfoTmp, userInfoVO);
+            NovelUserInfo novelUserInfo = null;
+            NovelUserInfo userInfoResult = null;
+            if (StringUtils.isNotEmpty(meId)) {//手机串号不为空
+            	novelUserInfo = userInfoService.findByUserMeId(meId);
+            	if (novelUserInfo == null) {
+                	novelUserInfo = UserInfo2UserInfoDTOConverter.convert(userInfoDTO);
+            		novelUserInfo.setMId(UUIDUtil.gen13MID());
+                    userInfoResult = userInfoService.save(novelUserInfo);
+                    if (log.isDebugEnabled()) {
+                        log.debug("【前端用户登录】保存用户信息，userInfo用户信息={}", novelUserInfo);
+                    }
+				} else {
+					novelUserInfo = UserInfo2UserInfoDTOConverter.convert(userInfoDTO);
+					userInfoResult = userInfoService.update(novelUserInfo);
+					if (log.isDebugEnabled()) {
+                        log.debug("【前端用户登录】更新用户信息，userInfo用户信息={}", novelUserInfo);
+                    }
+					if (StringUtils.isNotEmpty(openid)) {//用户平台openid不为空
+	            		novelUserInfo = userInfoService.findByMeIdAndOpenid(meId, openid);
+	            		if (novelUserInfo != null) {//根据用户手机串号和平台openid查询的用户信息为空，创建一个新用户
+	            			userInfoResult = userInfoService.update(novelUserInfo);// 更新用户信息
+	            			if (log.isDebugEnabled()) {
+	                            log.debug("【前端用户登录】更新用户信息，userInfo用户信息={}", userInfoResult);
+	                        }
+	    				} else {
+	    					novelUserInfo = UserInfo2UserInfoDTOConverter.convert(userInfoDTO);
+	                		novelUserInfo.setMId(UUIDUtil.gen13MID());
+	                        userInfoResult = userInfoService.save(novelUserInfo);
+	                        if (log.isDebugEnabled()) {
+	                            log.debug("【前端用户登录】保存用户信息，userInfo用户信息={}", novelUserInfo);
+	                        }
+						}
+					}
+				}
             }
+            BeanUtils.copyProperties(userInfoResult, userInfoVO);
             resultVO.setCode(0);
             resultVO.setMsg("登录成功");
             resultVO.setData(userInfoVO);

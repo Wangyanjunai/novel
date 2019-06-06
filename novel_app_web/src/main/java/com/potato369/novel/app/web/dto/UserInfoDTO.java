@@ -24,9 +24,15 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class UserInfoDTO {
 
+    @JsonProperty(value = "mId")
+    private String mId;// 用户mId
+
     @NotNull(message = "手机串号不能为空")
     @JsonProperty(value = "meId")
     private String meId;// 手机串号。
+
+    @JsonProperty(value = "openid")
+    private String openid;// 微信openid，或者微博openid，或者QQ账号openid。
 
     @JsonProperty(value = "brand")
     private String brand;// 手机品牌。
@@ -45,9 +51,6 @@ public class UserInfoDTO {
 
     @JsonProperty(value = "versionName")
     private String versionName;// APP应用版本名称。
-
-    @JsonProperty(value = "openid")
-    private String openid;// 微信openid，或者微博openid，或者QQ账号openid。
 
     @JsonProperty(value = "nickName")
     private String nickName;// 用户微信，QQ，微博昵称。

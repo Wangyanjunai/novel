@@ -75,7 +75,16 @@ public interface UserInfoService {
      * @throws Exception
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    NovelUserInfo findByUserId(String userId);
+    NovelUserInfo findByUserMId(String userMId);
+    
+    /**
+     * 根据meId手机串号查找用户信息
+     * @param userMeId
+     * @return
+     * @throws Exception
+     */
+    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    NovelUserInfo findByUserMeId(String userMeId);
     /**
      * 根据meId手机串号查找用户信息
      * @param meId
@@ -83,7 +92,7 @@ public interface UserInfoService {
      * @throws Exception
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    NovelUserInfo findByMeIdOrOpenid(String meId, String openid);
+    NovelUserInfo findByMeIdAndOpenid(String meId, String openid);
 
     /**
      * 根据openid查找用户信息
