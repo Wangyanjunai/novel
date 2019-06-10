@@ -237,8 +237,8 @@ public class NovelUserInfo implements Serializable {
      * </pre>
      */
     @Builder.Default
-    @Column(name = "is_or_not_band_weChat", length = 1)
-    private Integer isOrNotBandWeChat = UserInfoEnum.UNFINISHED.getCode();
+    @Column(name = "is_or_not_band_wechat", length = 1)
+    private Integer isOrNotBandWechat = UserInfoEnum.UNFINISHED.getCode();
 
     /**
      * <pre>

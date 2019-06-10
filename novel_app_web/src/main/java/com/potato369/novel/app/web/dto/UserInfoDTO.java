@@ -24,12 +24,13 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class UserInfoDTO {
 
-    @JsonProperty(value = "mId")
-    private String mId;// 用户mId
-
     @NotNull(message = "手机串号不能为空")
     @JsonProperty(value = "meId")
     private String meId;// 手机串号。
+    
+    @NotNull(message = "用户登录身份类型不能为空")
+    @JsonProperty(value = "type")
+    private Integer userType;// userType：用户登录身份类型，0-游客身份；1-微信身份；2-微博身份；3-QQ身份，默认：“0-游客身份“。
 
     @JsonProperty(value = "openid")
     private String openid;// 微信openid，或者微博openid，或者QQ账号openid。
@@ -58,9 +59,12 @@ public class UserInfoDTO {
     @JsonProperty(value = "gender")
     private Integer gender;// 性别，2-女；1-男；0-未知，默认：“0-未知“。
 
-    @JsonProperty(value = "avatarUrl")
+    @JsonProperty(value = "avatar")
     private String avatarUrl;// 头像地址URL。
 
     @JsonProperty(value = "ip")
     private String ip;// APP客户端登录的外网IP。
+    
+    @JsonProperty(value = "address")
+    private String address;// 用户登录或者设置的地址（国家省份城市）
 }

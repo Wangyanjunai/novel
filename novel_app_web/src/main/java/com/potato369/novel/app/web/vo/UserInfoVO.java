@@ -1,5 +1,6 @@
 package com.potato369.novel.app.web.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,7 +30,7 @@ public class UserInfoVO {
     @JsonProperty(value = "mid")
     private String mId;// 用户mid。
 
-    @JsonProperty(value = "nickname")
+    @JsonProperty(value = "nickName")
     private String nickName;// 用户微信，QQ，微博昵称。
 
     @JsonProperty(value = "gender")
@@ -48,17 +49,19 @@ public class UserInfoVO {
     private String vipGradeName;// VIP等级名称
 
     @JsonProperty(value = "startTime")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date vipStartTime;// VIP开始时间
 
     @JsonProperty(value = "endTime")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date vipEndTime;// VIP结束时间
 
     @JsonProperty(value = "balance")
     private BigDecimal balanceAmount;//总余额
 
     @JsonProperty(value = "type")
-    private String userTypeName;//用户登录身份类型
+    private Integer userType;//用户登录身份类型
 
-    @JsonProperty(value = "bindingWeChat")
-    private String isOrNotBindingWeChat;// 是否完成绑定微信任务
+    @JsonProperty(value = "isOrNotBandWechat")
+    private Integer isOrNotBandWechat;// 是否完成绑定微信任务
 }

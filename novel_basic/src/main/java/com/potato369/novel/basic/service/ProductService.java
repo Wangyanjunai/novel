@@ -13,7 +13,7 @@ import java.util.List;
  * <pre>
  * @PackageName com.potato369.novel.service
  * @InterfaceName ProductService
- * @Desc 书币产品业务Service接口
+ * @Desc 商品业务Service接口
  * @WebSite https://www.potato369.com
  * @Author Jack
  * @Date 2019/01/08 17:30
@@ -23,7 +23,7 @@ import java.util.List;
  */
 public interface ProductService {
     /**
-     * 根据书币产品id查询书币产品信息
+     * 根据商品id查询商品信息
      * @param productInfoId
      * @return
      */
@@ -31,14 +31,21 @@ public interface ProductService {
     ProductInfo findOne(String productInfoId) throws Exception;
 
     /**
-     * 查询所有的书币产品信息
+     * 查询所有的商品信息
      * @return
      */
 	@Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     List<ProductInfo> findAll() throws Exception;
+	
+    /**
+     * 根据产品计算类型查询所有的商品信息列表
+     * @return
+     */
+	@Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+	List<ProductInfo> findAllByType(Integer type);
 
     /**
-     * 分页查询所有的书币产品信息
+     * 分页查询所有的商品信息
      * @param pageable
      * @return
      */

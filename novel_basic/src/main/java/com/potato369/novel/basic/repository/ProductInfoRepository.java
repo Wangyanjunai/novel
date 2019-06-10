@@ -1,6 +1,9 @@
 package com.potato369.novel.basic.repository;
 
 import com.potato369.novel.basic.dataobject.ProductInfo;
+
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * <pre>
@@ -15,4 +18,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * </pre>
  */
 public interface ProductInfoRepository extends JpaRepository<ProductInfo, String> {
+	
+	/**
+	 * <pre>
+	 * findByProductType方法的作用： 根据产品计算类型查询所有的商品信息列表
+	 * @param productType
+	 * @return List<ProductInfo>
+	 * </pre>
+	 */
+	List<ProductInfo> findByProductType(Integer productType);
 }

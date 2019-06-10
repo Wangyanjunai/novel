@@ -62,4 +62,15 @@ public class ProductServiceImpl implements ProductService {
     public Page<ProductInfo> findAll(Pageable pageable) throws Exception{
         return repository.findAll(pageable);
     }
+
+	/**
+	 * <pre>
+	 * 描述该方法的实现功能： 根据产品计算类型查询所有的商品信息列表
+	 * @see com.potato369.novel.basic.service.ProductService#findAllByType(java.lang.Integer)
+	 * </pre>
+	 */
+	@Override
+	public List<ProductInfo> findAllByType(Integer type) {
+		return repository.findByProductType(type);
+	}
 }

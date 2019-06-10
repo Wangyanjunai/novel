@@ -5,7 +5,11 @@ import com.potato369.novel.app.web.dto.UserInfoDTO;
 import com.potato369.novel.app.web.vo.ResultVO;
 import com.potato369.novel.app.web.vo.UserInfoVO;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
+import com.potato369.novel.basic.dataobject.NovelVipGrade;
+import com.potato369.novel.basic.enums.UserInfoEnum;
 import com.potato369.novel.basic.service.UserInfoService;
+import com.potato369.novel.basic.service.VipGradeService;
+import com.potato369.novel.basic.utils.DateUtil;
 import com.potato369.novel.basic.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -16,6 +20,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
 import javax.validation.Valid;
 
 /**
@@ -37,7 +45,10 @@ public class UserInfoController {
 
     @Autowired
     private UserInfoService userInfoService;
-
+    
+    @Autowired
+    private VipGradeService vipGradeService;
+    
     /**
      * {
      * 	"meId": "qqqqq",
@@ -72,56 +83,105 @@ public class UserInfoController {
                 resultVO.setData(null);
                 return resultVO;
             }
-            //String mId = null;//用户mId
-            String meId = null;//用户手机串号
-            String openid = null;//用户平台openid
+            String meId = null; // 用户手机串号
+            String openid = null; // 用户平台openid
+            Integer userType = null;// 用户登录类型
+            NovelUserInfo novelUserInfo = null;// 需要保存或者更新的对象信息
+            NovelUserInfo userInfoResult = null;// 保存或者更新的对象结果信息
+            Date nowDate = new Date();// 当前系统时间
+            String gradeName = null;
+            Integer gender = null;
             if (userInfoDTO != null) {
-//                mId = userInfoDTO.getMId();
                 meId = userInfoDTO.getMeId();
                 openid = userInfoDTO.getOpenid();
+                userType = userInfoDTO.getUserType();
+                gender = userInfoDTO.getGender();
             }
-            NovelUserInfo novelUserInfo = null;
-            NovelUserInfo userInfoResult = null;
-            if (StringUtils.isNotEmpty(meId)) {//手机串号不为空
-            	novelUserInfo = userInfoService.findByUserMeId(meId);
+            if (StringUtils.isNotEmpty(openid)) {// 用户平台openid不为空
+            	novelUserInfo = userInfoService.findByOpenid(openid);// 首先根据用户平台openid去查找用户信息
             	if (novelUserInfo == null) {
-                	novelUserInfo = UserInfo2UserInfoDTOConverter.convert(userInfoDTO);
+            		novelUserInfo = UserInfo2UserInfoDTOConverter.convert(userInfoDTO);
+            		if (UserInfoEnum.WECHAT.getCode().equals(userType)) {
+            			novelUserInfo.setIsOrNotBandWechat(UserInfoEnum.FINISHED.getCode());
+            			novelUserInfo.setBalanceAmount(new BigDecimal(6.66));
+					} else {
+						novelUserInfo.setIsOrNotBandWechat(UserInfoEnum.UNFINISHED.getCode());
+						novelUserInfo.setBalanceAmount(BigDecimal.ZERO);
+					}
+            		if (gender == null) {
+            			novelUserInfo.setGender(UserInfoEnum.GENDER_UNKNOWN.getCode());
+					}
+            		NovelVipGrade vipGrade = vipGradeService.findOne(novelUserInfo.getVipGradeId());
+            		if (vipGrade != null) {
+						gradeName = vipGrade.getGradeName();
+					}
+            		novelUserInfo.setUserType(userType);
             		novelUserInfo.setMId(UUIDUtil.gen13MID());
-                    userInfoResult = userInfoService.save(novelUserInfo);
+            		novelUserInfo.setVipStartTime(nowDate);
+            		novelUserInfo.setVipEndTime(DateUtil.getAfterDayDate(nowDate, 7));
+                    userInfoResult = userInfoService.save(novelUserInfo);//平台openid账号不覆盖登录
                     if (log.isDebugEnabled()) {
-                        log.debug("【前端用户登录】保存用户信息，userInfo用户信息={}", novelUserInfo);
+                        log.debug("【前端用户平台账号登录】保存用户信息，userInfo用户信息={}", novelUserInfo);
                     }
 				} else {
-					novelUserInfo = UserInfo2UserInfoDTOConverter.convert(userInfoDTO);
+					BeanUtils.copyProperties(userInfoDTO, novelUserInfo);
+					NovelVipGrade vipGrade = vipGradeService.findOne(novelUserInfo.getVipGradeId());
+            		if (vipGrade != null) {
+						gradeName = vipGrade.getGradeName();
+					}
 					userInfoResult = userInfoService.update(novelUserInfo);
 					if (log.isDebugEnabled()) {
-                        log.debug("【前端用户登录】更新用户信息，userInfo用户信息={}", novelUserInfo);
+                        log.debug("【前端用户平台账号登录】更新用户信息，userInfo用户信息={}", novelUserInfo);
                     }
-					if (StringUtils.isNotEmpty(openid)) {//用户平台openid不为空
-	            		novelUserInfo = userInfoService.findByMeIdAndOpenid(meId, openid);
-	            		if (novelUserInfo != null) {//根据用户手机串号和平台openid查询的用户信息为空，创建一个新用户
-	            			userInfoResult = userInfoService.update(novelUserInfo);// 更新用户信息
-	            			if (log.isDebugEnabled()) {
-	                            log.debug("【前端用户登录】更新用户信息，userInfo用户信息={}", userInfoResult);
-	                        }
-	    				} else {
-	    					novelUserInfo = UserInfo2UserInfoDTOConverter.convert(userInfoDTO);
-	                		novelUserInfo.setMId(UUIDUtil.gen13MID());
-	                        userInfoResult = userInfoService.save(novelUserInfo);
-	                        if (log.isDebugEnabled()) {
-	                            log.debug("【前端用户登录】保存用户信息，userInfo用户信息={}", novelUserInfo);
-	                        }
-						}
-					}
 				}
-            }
+			} else {
+	            if (StringUtils.isNotEmpty(meId)) { // 手机串号不为空
+	            	novelUserInfo = userInfoService.findByUserMeId(meId);
+	            	if (novelUserInfo == null) {
+	                	novelUserInfo = UserInfo2UserInfoDTOConverter.convert(userInfoDTO);
+	                	if (UserInfoEnum.WECHAT.getCode().equals(userType)) {
+	            			novelUserInfo.setIsOrNotBandWechat(UserInfoEnum.FINISHED.getCode());
+	            			novelUserInfo.setBalanceAmount(new BigDecimal(6.66));
+						} else {
+							novelUserInfo.setIsOrNotBandWechat(UserInfoEnum.UNFINISHED.getCode());
+							novelUserInfo.setBalanceAmount(BigDecimal.ZERO);
+						}
+	                	NovelVipGrade vipGrade = vipGradeService.findOne(novelUserInfo.getVipGradeId());
+	            		if (vipGrade != null) {
+							gradeName = vipGrade.getGradeName();
+						}
+	            		if (gender == null) {
+	            			novelUserInfo.setGender(UserInfoEnum.GENDER_UNKNOWN.getCode());
+						}
+	                	novelUserInfo.setUserType(userType);
+	            		novelUserInfo.setMId(UUIDUtil.gen13MID());
+	            		novelUserInfo.setVipStartTime(nowDate);
+	            		novelUserInfo.setVipEndTime(DateUtil.getAfterDayDate(nowDate, 7));
+	                    userInfoResult = userInfoService.save(novelUserInfo);// 保存用户信息
+	                    if (log.isDebugEnabled()) {
+	                        log.debug("【前端用户游客身份登录】保存用户信息，userInfo用户信息={}", novelUserInfo);
+	                    }
+					} else {
+						BeanUtils.copyProperties(userInfoDTO, novelUserInfo);
+						NovelVipGrade vipGrade = vipGradeService.findOne(novelUserInfo.getVipGradeId());
+	            		if (vipGrade != null) {
+							gradeName = vipGrade.getGradeName();
+						}
+						userInfoResult = userInfoService.update(novelUserInfo);// 更新用户信息
+            			if (log.isDebugEnabled()) {
+                            log.debug("【前端用户游客身份登录】更新用户信息，userInfo用户信息={}", userInfoResult);
+                        }
+					}
+	            }
+			}
             BeanUtils.copyProperties(userInfoResult, userInfoVO);
+            userInfoVO.setVipGradeName(gradeName);
             resultVO.setCode(0);
             resultVO.setMsg("登录成功");
             resultVO.setData(userInfoVO);
             return resultVO;
         } catch (Exception e) {
-            log.error("", e);
+            log.error("【前端用户登录】出现错误", e);
             resultVO.setMsg("登录失败");
             resultVO.setCode(-2);
             resultVO.setData(null);

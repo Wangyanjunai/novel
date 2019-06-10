@@ -83,6 +83,14 @@ public class ProductInfo implements Serializable {
      */
     @Column(name = "product_description", length = 1024)
     private String productDescription;
+    
+    /**
+     * <pre>
+     * @serialField dateValue：加对应的日期值。
+     * </pre>
+     */
+    @Column(name = "date_value", length = 2)
+    private Integer dateValue;
 
     /**
      * <pre>

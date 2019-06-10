@@ -209,6 +209,33 @@ public class DateUtil {
 
         return dateStr;
     }
+    /**
+     * 
+     * <pre>
+     * getAfterDayDate方法的作用：得到days天之后的日期时间
+     * @param now 当前的日期时间
+     * @param days 多少天
+     * </pre>
+     */
+    public static Date getAfterDayDate(Date now, int days) {
+    	Calendar calendar_day = Calendar.getInstance();
+        calendar_day.setTime(now);
+        calendar_day.add(Calendar.DATE, days);
+        return calendar_day.getTime();
+	}
+    /**
+     * <pre>
+     * getAfterMonthDate方法的作用：得到months月之后的日期时间
+     * @param now 当前的日期时间
+     * @param months 多少月
+     * </pre>
+     */
+    public static Date getAfterMonthDate(Date now, int months) {
+    	Calendar calendar_day = Calendar.getInstance();
+        calendar_day.setTime(now);
+        calendar_day.add(Calendar.MONTH, months);
+        return calendar_day.getTime();
+	}
 
     /**
      * 得到n天之后是周几
