@@ -30,10 +30,10 @@ import lombok.extern.slf4j.Slf4j;
  * <pre>
  */
 @RestController
-@RequestMapping("/buyer/product")
+@RequestMapping("/product")
 @Slf4j
 @SuppressWarnings("unchecked")
-public class BuyerProductController {
+public class ProductController {
 
 	@Autowired
 	private ProductService productService;

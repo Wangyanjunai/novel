@@ -21,9 +21,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum ProductInfoEnum implements CodeEnum<Object> {
 
-    DAY(0, "按天计算"),
+    DAY(0, "按天算"),
 
-    MONTH(1, "按月计算"),
+    MONTH(1, "按月算"),
 
     ;
 

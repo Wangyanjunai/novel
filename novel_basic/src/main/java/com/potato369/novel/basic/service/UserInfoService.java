@@ -1,15 +1,12 @@
 package com.potato369.novel.basic.service;
 
 import java.util.List;
-
-import com.potato369.novel.basic.dataobject.idClass.NovelUserInfoIdClass;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
 
 /**
@@ -44,12 +41,12 @@ public interface UserInfoService {
 
     /**
      * 删除用户信息
-     * @param id
+     * @param mid
      * @return
      */
     @Modifying
     @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    void del(NovelUserInfoIdClass id);
+    void del(String mid);
 
     /**
      * 修改用户信息
@@ -62,15 +59,15 @@ public interface UserInfoService {
 
     /**
      * 根据id class查找用户信息
-     * @param idClass
+     * @param mid
      * @return
      */
     @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    NovelUserInfo findById(NovelUserInfoIdClass idClass);
+    NovelUserInfo findById(String mid);
 
     /**
      * 根据mid查找用户信息
-     * @param userId
+     * @param userMId
      * @return
      * @throws Exception
      */

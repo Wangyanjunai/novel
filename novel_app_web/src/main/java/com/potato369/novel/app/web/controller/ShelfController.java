@@ -12,7 +12,6 @@ import com.potato369.novel.basic.dataobject.NovelShelf;
 import com.potato369.novel.basic.dataobject.NovelShelfDetail;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.dataobject.idClass.NovelShelfDetailIdClass;
-import com.potato369.novel.basic.dataobject.idClass.NovelUserInfoIdClass;
 import com.potato369.novel.basic.service.NovelInfoService;
 import com.potato369.novel.basic.service.ShelfDetailService;
 import com.potato369.novel.basic.service.ShelfService;
@@ -141,10 +140,9 @@ public class ShelfController {
             }
             if (shelfMap != null && !shelfMap.isEmpty() && shelfMap.size() > 0) {
                 //根据用户id查询用户书架和用户信息
-                NovelUserInfoIdClass idClass = NovelUserInfoIdClass.builder().build();
+//                NovelUserInfoIdClass idClass = NovelUserInfoIdClass.builder().build();
                 if (shelfMap.containsKey("userId")) {//用户id
                     String userId = (String) shelfMap.get("userId");
-                    idClass.setMId(userId);
                     NovelUserInfo novelUserInfo = userInfoService.findByUserMId(userId);
                     if (novelUserInfo == null) {
                         log.error("用户未注册，获取不到用户信息，用户id={}", userId);

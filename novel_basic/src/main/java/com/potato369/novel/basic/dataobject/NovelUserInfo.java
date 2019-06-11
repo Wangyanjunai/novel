@@ -1,6 +1,5 @@
 package com.potato369.novel.basic.dataobject;
 
-import com.potato369.novel.basic.dataobject.idClass.NovelUserInfoIdClass;
 import com.potato369.novel.basic.enums.UserInfoEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -35,7 +33,6 @@ import java.util.Date;
 @Entity(name = "NovelUserInfo")
 @NoArgsConstructor
 @Table(name = "novel_user_info")
-@IdClass(value = NovelUserInfoIdClass.class)
 public class NovelUserInfo implements Serializable {
 
     /**
@@ -48,7 +45,7 @@ public class NovelUserInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField mid：用户mid，联合主键。
+     * @serialField mid：用户mid，主键。
      * </pre>
      */
     @Id
@@ -57,11 +54,10 @@ public class NovelUserInfo implements Serializable {
     
     /**
      * <pre>
-     * @serialField meId：手机串号，联合主键。
+     * @serialField meId：手机串号。
      * </pre>
      */
-    @Id
-    @Column(name = "me_id", nullable = false, length = 20)
+    @Column(name = "me_id", length = 20)
     private String meId;
 
     /**

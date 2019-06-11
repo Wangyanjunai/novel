@@ -324,7 +324,7 @@ CREATE TABLE `novel_user_info`  (
   `ip` varchar(25)  NULL DEFAULT NULL COMMENT 'APP客户端登录的外网IP。',
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '注册时间。',
   `login_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '登录时间。',
-  PRIMARY KEY (`m_id`, `me_id`) USING BTREE,
+  PRIMARY KEY (`m_id`) USING BTREE,
   INDEX `key_openid`(`openid`) USING BTREE,
   INDEX `key_me_id`(`me_id`) USING BTREE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息记录表。' ROW_FORMAT = DYNAMIC;

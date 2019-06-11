@@ -50,23 +50,12 @@ public class UserInfoController {
     private VipGradeService vipGradeService;
     
     /**
-     * {
-     * 	"meId": "qqqqq",
-     * 	"brand": "张三",
-     * 	"model": "11111111",
-     * 	"mac": "121222222222",
-     * 	"systemName": "121222222222",
-     * 	"systemCode": "121222222222",
-     * 	"versionName": "121222222222",
-     * 	"openid": "121222222222",
-     * 	"nickName": "121222222222",
-     * 	"gender": 0,
-     * 	"avatarUrl": "121222222222",
-     * 	"ip": "183.14.29.207"
-     * }
+     * <pre>
+     * 登录注册
      * @param userInfoDTO
      * @param bindingResult
-     * @return
+     * @return ResultVO<UserInfoVO>
+     * </pre>
      */
     @PostMapping(value = "/reg", produces = "application/json;charset=utf-8")
     public ResultVO<UserInfoVO> register(@RequestBody @Valid UserInfoDTO userInfoDTO, BindingResult bindingResult) {

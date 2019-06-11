@@ -2,25 +2,12 @@ package com.potato369.novel.app.web.vo;
 
 import java.math.BigDecimal;
 import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-/**
- * <pre>
- * 类名: ProductInfoVO
- * 类的作用:
- * 创建原因:
- * 创建时间: 2019年6月10日 下午4:19:21
- * 描述: 
- * @author Jack
- * @version 
- * @since JDK 1.6
- * </pre>
- */
 /** 
  * <pre>
  * @ClassName: ProductInfoVO
@@ -43,7 +30,7 @@ public class ProductInfoVO {
      * @JsonProperty productId：商品id，主键。
      * </pre>
      */
-	@JsonProperty(value = "id")
+	@JsonProperty(value = "no")
     private String productId;
 
     /**
@@ -51,14 +38,14 @@ public class ProductInfoVO {
      * @JsonProperty productName：商品名称。
      * </pre>
      */
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "title")
     private String productName;
 
     /**
      * @JsonProperty productType：计算类型，0-按照天算，1-按照月算；默认：0-按照天算。
      */
-    @JsonProperty(value = "typeName")
-    private Integer productType;
+    @JsonProperty(value = "type")
+    private String typeName;
 
     /**
      * <pre>
@@ -73,7 +60,7 @@ public class ProductInfoVO {
      * @JsonProperty productDescription：商品描述。
      * </pre>
      */
-    @JsonProperty(value = "description")
+    @JsonProperty(value = "desc")
     private String productDescription;
     
     /**

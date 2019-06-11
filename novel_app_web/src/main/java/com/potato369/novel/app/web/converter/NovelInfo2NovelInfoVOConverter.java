@@ -6,10 +6,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.app.web.converter
@@ -24,6 +22,15 @@ import java.util.stream.Collectors;
  */
 public class NovelInfo2NovelInfoVOConverter {
 
+	/**
+	 * <pre>
+	 * convert方法的作用：将NovelInfo对象转换为NovelInfoVO对象
+	 * @author Jack
+	 * @param novelInfo
+	 * @return NovelInfoVO
+	 * @since JDK 1.6
+	 * </pre>
+	 */
     public static NovelInfoVO convert(NovelInfo novelInfo) {
         NovelInfoVO novelInfoVO = NovelInfoVO.builder().build();
         BeanUtils.copyProperties(novelInfo, novelInfoVO);
@@ -38,6 +45,15 @@ public class NovelInfo2NovelInfoVOConverter {
         return new PageImpl<>(convert2NovelInfoVOList(novelInfoPage.getContent()), pageable, novelInfoPage.getTotalElements());
     }
 
+    /**
+	 * <pre>
+	 * convert方法的作用：将NovelInfoVO对象转换为NovelInfo对象
+	 * @author Jack
+	 * @param novelInfoVO
+	 * @return NovelInfo
+	 * @since JDK 1.6
+	 * </pre>
+	 */
     public static NovelInfo convert(NovelInfoVO novelInfoVO) {
         NovelInfo novelInfo = NovelInfo.builder().build();
         BeanUtils.copyProperties(novelInfoVO, novelInfo);
