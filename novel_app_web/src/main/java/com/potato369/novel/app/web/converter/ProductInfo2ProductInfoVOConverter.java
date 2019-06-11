@@ -23,12 +23,12 @@ public class ProductInfo2ProductInfoVOConverter {
 	public static ProductInfoVO convert(ProductInfo productInfo) {
 		ProductInfoVO productInfoVO = ProductInfoVO.builder().build();
 		BeanUtils.copyProperties(productInfo, productInfoVO);
-		if (ProductInfoEnum.DAY.getCode().equals(productInfo.getProductType())) {
-			productInfoVO.setTypeName(ProductInfoEnum.DAY.getMessage());
-		}
-		if (ProductInfoEnum.MONTH.getCode().equals(productInfo.getProductType())) {
-			productInfoVO.setTypeName(ProductInfoEnum.MONTH.getMessage());
-		}
+//		if (ProductInfoEnum.DAY.getCode().equals(productInfo.getProductType())) {
+//			productInfoVO.setTypeName(ProductInfoEnum.DAY.getMessage());
+//		}
+//		if (ProductInfoEnum.MONTH.getCode().equals(productInfo.getProductType())) {
+//			productInfoVO.setTypeName(ProductInfoEnum.MONTH.getMessage());
+//		}
 		return productInfoVO;
 	}
 	

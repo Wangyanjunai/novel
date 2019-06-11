@@ -42,50 +42,10 @@ public class ProductInfoVO {
     private String productName;
 
     /**
-     * @JsonProperty productType：计算类型，0-按照天算，1-按照月算；默认：0-按照天算。
-     */
-    @JsonProperty(value = "type")
-    private String typeName;
-
-    /**
      * <pre>
      * @JsonProperty productAmount：商品总价（元）。
      * </pre>
      */
     @JsonProperty(value = "amount")
     private BigDecimal productAmount;
-
-    /**
-     * <pre>
-     * @JsonProperty productDescription：商品描述。
-     * </pre>
-     */
-    @JsonProperty(value = "desc")
-    private String productDescription;
-    
-    /**
-     * <pre>
-     * @JsonProperty dateValue：加对应的日期值。
-     * </pre>
-     */
-    @JsonProperty(value = "value")
-    private Integer dateValue;
-
-    /**
-     * <pre>
-     * @JsonProperty createTime：创建时间。
-     * </pre>
-     */
-    @JsonProperty(value = "create")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
-
-    /**
-     * <pre>
-     * @JsonProperty updateTime：更新时间。
-     * </pre>
-     */
-    @JsonProperty(value = "update")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date updateTime;
 }

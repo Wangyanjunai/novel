@@ -1,7 +1,9 @@
 package com.potato369.novel.app.web.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import com.potato369.novel.app.web.vo.ProductVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,16 +41,19 @@ public class ProductController {
 	private ProductService productService;
 	
 	@GetMapping(value = "/list/{type}")
-	public ResultVO<List<ProductInfoVO>> list(@PathVariable(name = "type") Integer type) {
+	public ResultVO<ProductVO> list(@PathVariable(name = "type") Integer type) {
 		try {
-			ResultVO<List<ProductInfoVO>> resultVO = new ResultVO<List<ProductInfoVO>>();
+			ResultVO<ProductVO> resultVO = new ResultVO<>();
 			if (log.isDebugEnabled()) {
 				log.debug("start====================后端获取产品信息数据====================start");
 			}
+			ProductVO productVO = ProductVO.builder().build();
 			List<ProductInfo> productInfoList = productService.findAllByType(type);
 			List<ProductInfoVO> productInfoVOList = ProductInfo2ProductInfoVOConverter.convertToProductInfoVOList(productInfoList);
+            productVO.setList(productInfoVOList);
+            productVO.setTotalPage(BigDecimal.ONE);
 			resultVO.setCode(0);
-			resultVO.setData(productInfoVOList);
+			resultVO.setData(productVO);
 			resultVO.setMsg("返回数据成功");
 			return resultVO;
 		} catch (Exception e) {
