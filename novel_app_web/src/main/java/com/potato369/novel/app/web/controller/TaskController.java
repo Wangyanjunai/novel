@@ -8,17 +8,14 @@ import com.potato369.novel.app.web.vo.TaskInfoVO;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.service.TaskInfoService;
 import com.potato369.novel.basic.service.UserInfoService;
-import org.apache.tools.ant.taskdefs.EchoXML;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import lombok.extern.slf4j.Slf4j;
-
 import java.math.BigDecimal;
 import java.util.List;
-
 /**
  * <pre>
  * @ClassName TaskController
@@ -60,7 +57,7 @@ public class TaskController {
         resultVO.setMsg("返回数据成功");
         return resultVO;
       } catch (Exception e) {
-          log.error("", e);
+          log.error("后端查询任务信息列表失败", e);
           return ResultVOUtil.error(-1, "返回数据失败");
       } finally {
           if (log.isDebugEnabled()) {

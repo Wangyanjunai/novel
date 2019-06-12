@@ -29,6 +29,9 @@ public class ProductInfo2ProductInfoVOConverter {
 //		if (ProductInfoEnum.MONTH.getCode().equals(productInfo.getProductType())) {
 //			productInfoVO.setTypeName(ProductInfoEnum.MONTH.getMessage());
 //		}
+		if (null == productInfo.getDateValue()) {
+			productInfoVO.setDateValue(productInfo.getProductAmount().intValue());
+		}
 		return productInfoVO;
 	}
 	

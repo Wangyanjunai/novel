@@ -15,41 +15,12 @@ spring:
     charset: UTF-8
     template-loader-path: classpath:/templates/
 weChat:
-  mp:
-    appId: wx53762126dcb961f9
-    appSecret: 15b6fcb9cd933a561733a83e708f040a
-    token: potato369token
-    aesKey: 8XSi84XgQJ1NE2Hh01FIzJxRVxUq7Eg4s8joHU2nq62
-    templateId:
-      orderStatus: l8ZgiVk7Cb3art8XjHtsyv6uPrpooT37ycS37EXywLM
-      orderSuccess: Z_y_ovpCRyU0eBrikdJL9_VsehJA_AouU21L61k8vgc
-      orderCancel: iGR0BRPe927iVHHFlW9sY-T33S9_EI-YcrY5EMnd4Rg
-      paySuccess: oFx8eJFfs8VC_x58KflhSRcsLBgxCp0y10fwRJN9vRc
-      sellerLoginSuccess: II0W0VUYbnpvHwNPsJuNsbuQYfV1F4ndhmTogiakR2o
   pay:
-    appId: wx53762126dcb961f9
+    appId: wxfb0967015f2c8735
     mchId: 1453416602
-    mchKey: c6b8341c4d274189bee934112a369212
-    subAppId: null
-    subMchId: null
+    mchKey: 9dc8133c841faf945fd5844823755a34
+    appSecret: 9dc8133c841faf945fd5844823755a34
     notifyUrl: /pay/notify
-  open:
-    appId: wx3c2ae24f69ea4121
-    appSecret: 0a355cb0843b9b21f9c079f2ca7a72e5
-xfYun:
-  appId: 5c0f3f67
-  apiKey: b727bcf8859657dcd191c885935c4569
-  host: api.xfyun.cn
-  path: /v1/service/v1/tts
-  method: POST
-  auf: audio/L16;rate=16000
-  aue: lame
-  voiceName: xiaoyan
-  speed: 30
-  volume: 50
-  pitch: 50
-  engineType: intp65
-  textType: text
 server:
   context-path: /novel
   port: 8080

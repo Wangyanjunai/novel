@@ -2,6 +2,8 @@ package com.potato369.novel.basic.repository;
 
 import com.potato369.novel.basic.dataobject.NovelUserAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.repository
@@ -15,4 +17,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * </pre>
  */
 public interface UserAccountRepository extends JpaRepository<NovelUserAccount, String> {
+
+    @Query("select nu from NovelUserAccount nu where nu.userId = ?1 and nu.accountName = ?2")
+    NovelUserAccount selectByUserIdAndAccountName(String userId, String accountName);
 }

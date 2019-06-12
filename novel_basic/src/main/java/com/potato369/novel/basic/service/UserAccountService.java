@@ -47,11 +47,21 @@ public interface UserAccountService {
 
     /**
      * <pre>
-     * 更新用户账户信息
+     * 根据主键查找用户账户信息
      * @return novelUserAccount
      * </pre>
      */
     NovelUserAccount findOne(String primaryKey);
+
+    /**
+     * <pre>
+     * 根据用户mid和用户绑定的账号名称查找用户绑定的账户信息
+     * @param userId
+     * @param accountName
+     * @return Page<NovelUserAccount>
+     * </pre>
+     */
+    NovelUserAccount findByUserIdAndAccountName(String userId, String accountName);
 
     /**
      * <pre>

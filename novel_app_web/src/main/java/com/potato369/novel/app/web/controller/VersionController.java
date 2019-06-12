@@ -4,7 +4,7 @@ package com.potato369.novel.app.web.controller;
  * <pre>
  * @PackageName com.potato369.novel.app.web.controller
  * @ClassName VersionService
- * @Desc
+ * @Desc 获取app最新版本信息controller
  * @WebSite https://www.potato369.com
  * @Author Jack
  * @Date 2019/5/20 17:53
@@ -12,7 +12,6 @@ package com.potato369.novel.app.web.controller;
  * @Copyright Copyright (c) 2016 ~ 2020 版权所有 (C) 土豆互联科技(深圳)有限公司 https://www.potato369.com All Rights Reserved。
  * </pre>
  */
-
 import com.potato369.novel.app.web.utils.ResultVOUtil;
 import com.potato369.novel.app.web.vo.AppVersionVO;
 import com.potato369.novel.app.web.vo.ResultVO;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
-
 @RestController
 @RequestMapping(value = "/android/releases")
 @Slf4j
@@ -39,6 +37,7 @@ public class VersionController {
     @GetMapping(value = "/latest")
     public ResultVO<AppVersionVO> latest() {
         try {
+            ResultVO<AppVersionVO> resultVO = new ResultVO<>();
             AppVersionVO appVersionVO = AppVersionVO.builder().build();
             if (log.isDebugEnabled()) {
                 log.debug("后台开始获取app最新版本信息");
@@ -49,10 +48,13 @@ public class VersionController {
                 AppVersion appVersion = appVersionList.get(0);
                 BeanUtils.copyProperties(appVersion, appVersionVO);
             }
-            return ResultVOUtil.success(appVersionVO);
+            resultVO.setData(appVersionVO);
+            resultVO.setCode(0);
+            resultVO.setMsg("获取最新版本成功");
+            return resultVO;
         } catch (Exception e) {
             log.error("获取最新版本失败", e);
-            return ResultVOUtil.error();
+            return ResultVOUtil.error(-1, "获取最新版本失败");
         } finally {
             if (log.isDebugEnabled()) {
                 log.debug("后台结束获取app最新版本信息");

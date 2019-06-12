@@ -339,6 +339,7 @@ CREATE TABLE `novel_user_info`  (
 DROP TABLE IF EXISTS `novel_vip_grade`;
 CREATE TABLE `novel_vip_grade` (
 	`grade_id` varchar(32) NOT NULL COMMENT '主键，VIP等级id。',
+    `grade_type` tinyint(1) NOT NULL COMMENT 'VIP等级类型，0-VIP0；1-VIP1；2-VIP2，默认:0-VIP0。',
 	`grade_name` varchar(10) NULL DEFAULT NULL COMMENT 'VIP等级名称。',
 	`grade_intro` varchar(1024) NULL DEFAULT NULL COMMENT 'VIP等级简介。',
     `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',

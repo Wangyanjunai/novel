@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.potato369.novel.basic.service", "com.potato369.novel.app.web.controller"})
+@ComponentScan(basePackages = {"com.potato369.novel.basic.service", "com.potato369.novel.app.web", "com.potato369.novel.app.web.controller"})
 @EnableJpaRepositories(basePackages = "com.potato369.novel.basic.repository")
 @EntityScan(basePackages = "com.potato369.novel.basic.dataobject")
 @MapperScan(basePackages = "com.potato369.novel.basic.repository.mapper")

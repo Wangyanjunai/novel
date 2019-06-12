@@ -43,6 +43,14 @@ public class ProductInfoVO {
 
     /**
      * <pre>
+     * @JsonProperty dateValue：加对应的日期值。
+     * </pre>
+     */
+    @JsonProperty(value = "value")
+    private Integer dateValue;
+
+    /**
+     * <pre>
      * @JsonProperty productAmount：商品总价（元）。
      * </pre>
      */
