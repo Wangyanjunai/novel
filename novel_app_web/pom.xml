@@ -18,6 +18,7 @@
 
 	<properties>
 		<wechat-java-group.version>3.3.0</wechat-java-group.version>
+		<alipay-sdk-java-version>3.7.89.ALL</alipay-sdk-java-version>
 		<java.version>1.8</java.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -44,33 +45,14 @@
 		</dependency>
 		<dependency>
 			<groupId>com.github.binarywang</groupId>
-			<artifactId>weixin-java-common</artifactId>
-			<version>${wechat-java-group.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.binarywang</groupId>
-			<artifactId>weixin-java-cp</artifactId>
-			<version>${wechat-java-group.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.binarywang</groupId>
-			<artifactId>weixin-java-miniapp</artifactId>
-			<version>${wechat-java-group.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.binarywang</groupId>
-			<artifactId>weixin-java-mp</artifactId>
-			<version>${wechat-java-group.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.binarywang</groupId>
-			<artifactId>weixin-java-open</artifactId>
-			<version>${wechat-java-group.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.binarywang</groupId>
 			<artifactId>weixin-java-pay</artifactId>
 			<version>${wechat-java-group.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.alipay.sdk/alipay-sdk-java -->
+		<dependency>
+			<groupId>com.alipay.sdk</groupId>
+			<artifactId>alipay-sdk-java</artifactId>
+			<version>${alipay-sdk-java-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

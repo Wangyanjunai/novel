@@ -17,7 +17,7 @@ spring:
 weChat:
   pay:
     appId: wxfb0967015f2c8735
-    mchId: 1453416602
+    mchId: 1539515591
     mchKey: 9dc8133c841faf945fd5844823755a34
     appSecret: 9dc8133c841faf945fd5844823755a34
     notifyUrl: /pay/notify
