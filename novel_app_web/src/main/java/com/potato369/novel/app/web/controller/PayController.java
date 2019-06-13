@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.app.web.controller
@@ -47,6 +46,16 @@ public class PayController {
      */
     @PostMapping(value = "/create", produces = "application/json;charset=utf-8")
     public void create() {
-
+    	try {
+			if (log.isDebugEnabled()) {
+				log.debug("");
+			}
+		} catch (Exception e) {
+			log.error("");
+		} finally {
+			if (log.isDebugEnabled()) {
+				log.debug("");
+			}
+		}
     }
 }

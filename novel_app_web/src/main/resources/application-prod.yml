@@ -41,7 +41,7 @@ logging:
     org.springframework.web: error
     com.potato369.novel.weixin.web: error
     com.alibaba.druid: error
-    com.potato369.novel.weixin.web.dataobject.mapper: trace
+    com.potato369.novel.weixin.web.dataobject.mapper: error
 projectUrl: 
   projectName: /novel
   domainUrl: https://www.potato369.com

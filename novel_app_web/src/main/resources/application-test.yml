@@ -41,7 +41,7 @@ logging:
     org.springframework.web: info
     com.potato369.novel.weixin.web: info
     com.alibaba.druid: info
-    com.potato369.novel.weixin.web.dataobject.mapper: trace
+    com.potato369.novel.weixin.web.dataobject.mapper: info
 projectUrl:
   projectName: /novel
   domainUrl: http://potato369.mynatapp.cc
