@@ -135,10 +135,20 @@ public class ProjectUrlProperties {
     @Value(value = "${projectUrl.resUrl}")
     private  String resUrl;
 
+    /**
+     * <pre>
+     * @Field uploadFilePath：科大讯飞语音合成文件Nginx服务器下载URL
+     * </pre>
+     */
     @JsonProperty(value = "uploadFilePath")
     @Value(value = "${projectUrl.uploadFilePath}")
     private String uploadFilePath;
-    
+
+    /**
+     * <pre>
+     * @Field coverImgFilePath：科大讯飞语音合成文件Nginx服务器下载URL
+     * </pre>
+     */
     @JsonProperty(value = "coverImgFilePath")
     @Value(value = "${projectUrl.coverImgFilePath}")
     private String coverImgFilePath;

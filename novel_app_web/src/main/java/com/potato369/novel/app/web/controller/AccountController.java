@@ -64,12 +64,12 @@ public class AccountController {
                 resultVO.setCode(-2);
                 return resultVO;
             }
-            String name = null;
-            String mid = null;
+            String name = null;//提现账户类型名称，支付宝，微信
+            String mid  = null;//提现用户mid
             NovelUserAccount userAccount;
             if (accountDTO != null) {
                 name = accountDTO.getAccountName();
-                mid = accountDTO.getUserId();
+                mid  = accountDTO.getUserId();
             }
             userAccount = userAccountService.findByUserIdAndAccountName(mid, name);
             if (userAccount == null) {

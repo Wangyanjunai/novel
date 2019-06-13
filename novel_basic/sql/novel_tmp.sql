@@ -467,7 +467,6 @@ INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4ce9', '12个月
 DROP TABLE IF EXISTS `task_info`;
 CREATE TABLE `task_info` (
   `task_id` varchar(32) NOT NULL COMMENT '任务id，主键。',
-  `user_id` varchar(20) NOT NULL COMMENT '用户mid。',
   `task_name` varchar(64) NOT NULL COMMENT '任务名称。',
   `task_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '任务类型，1-绑定任务；2-分享任务；3-下载任务；4-阅读任务，默认：1-绑定任务。',
   `task_description` varchar(1024) NULL DEFAULT NULL COMMENT '任务描述。',
@@ -476,14 +475,32 @@ CREATE TABLE `task_info` (
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间。',
   PRIMARY KEY (`task_id`) USING BTREE,
   INDEX `key_task_name`(`task_name`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '任务信息记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '任务信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of task_info
 -- ----------------------------
 
 -- ----------------------------
--- 【18】Table structure for seller_info
+-- 【18】Table structure for task_record_info
+-- ----------------------------
+DROP TABLE IF EXISTS `task_record_info`;
+CREATE TABLE `task_info` (
+  `task_record_id` varchar(32) NOT NULL COMMENT '任务记录id，主键。',
+  `task_id` varchar(32) NOT NULL COMMENT '任务id，主键。',
+  `user_id` varchar(20) NOT NULL COMMENT '用户mid。',
+  `task_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '任务完成状态，0-未完成，1-完成，默认：0-未完成。',
+  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
+  `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间。',
+  PRIMARY KEY (`task_record_id`) USING BTREE
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '任务记录表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of task_record_info
+-- ----------------------------
+
+-- ----------------------------
+-- 【19】Table structure for seller_info
 -- ----------------------------
 DROP TABLE IF EXISTS `seller_info`;
 CREATE TABLE `seller_info` (
