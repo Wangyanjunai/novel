@@ -25,6 +25,12 @@ public enum ProductInfoEnum implements CodeEnum<Object> {
 
     MONTH(1, "按月算"),
 
+    CHARGE(0, "充值"),
+
+    EXCHANGE(1, "兑换"),
+
+    WITHDRAW(2, "提现"),
+
     ;
 
     private Integer code;

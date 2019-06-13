@@ -417,7 +417,7 @@ CREATE TABLE `order_master` (
   `product_id` varchar(32) NOT NULL COMMENT '商品id。',
   `order_amount` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '订单总金额，默认：0.00。',
   `order_name` varchar(64) NULL DEFAULT NULL COMMENT '订单名称。',
-  `order_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单类型，0-提现；1-兑换，“默认：0-提现”。',
+  `order_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单类型，0-提现；1-兑换；2-充值，“默认：0-提现”。',
   `order_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单状态，0-新订单；1-已完结；2-已取消，“默认：0-新订单”。',
   `pay_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单支付状态，0-等待支付；1-支付成功，“默认：0-等待支付”。',
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0)  COMMENT '创建时间。',
@@ -438,7 +438,8 @@ DROP TABLE IF EXISTS `product_info`;
 CREATE TABLE `product_info` (
   `product_id` varchar(32) NOT NULL COMMENT '商品id，主键。',
   `product_name` varchar(64) NOT NULL COMMENT '商品名称。',
-  `product_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '计算类型，0-按照天算，1-按照月算；默认0-按照天算。',
+  `product_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '产品类型，0-充值，1-兑换；2-提现，默认：0-充值。',
+  `product_calculate_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '产品计算类型，0-按照天算，1-按照月算；默认0-按照天算。',
   `product_amount` decimal(8, 2) NULL DEFAULT NULL COMMENT '商品总价（元）。',
   `product_description` varchar(1024) NULL DEFAULT NULL COMMENT '商品描述。',
   `date_value` smallint(2) NULL DEFAULT NULL COMMENT '加对应的日期值',
@@ -485,7 +486,7 @@ CREATE TABLE `task_info` (
 -- 【18】Table structure for task_record_info
 -- ----------------------------
 DROP TABLE IF EXISTS `task_record_info`;
-CREATE TABLE `task_info` (
+CREATE TABLE `task_record_info` (
   `task_record_id` varchar(32) NOT NULL COMMENT '任务记录id，主键。',
   `task_id` varchar(32) NOT NULL COMMENT '任务id，主键。',
   `user_id` varchar(20) NOT NULL COMMENT '用户mid。',

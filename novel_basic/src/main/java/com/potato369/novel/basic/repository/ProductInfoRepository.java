@@ -22,9 +22,9 @@ public interface ProductInfoRepository extends JpaRepository<ProductInfo, String
 	/**
 	 * <pre>
 	 * findByProductType方法的作用： 根据产品计算类型查询所有的商品信息列表
-	 * @param productType
+	 * @param productCalculateType
 	 * @return List<ProductInfo>
 	 * </pre>
 	 */
-	List<ProductInfo> findByProductType(Integer productType);
+	List<ProductInfo> findByProductCalculateType(Integer productCalculateType);
 }

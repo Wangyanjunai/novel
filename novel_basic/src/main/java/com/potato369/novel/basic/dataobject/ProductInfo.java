@@ -61,11 +61,18 @@ public class ProductInfo implements Serializable {
     private String productName;
 
     /**
-     * @serialField productType：计算类型，0-按照天算，1-按照月算；默认：0-按照天算。
+     * @serialField productCalculateType：计算类型，0-按照天算，1-按照月算；默认：0-按照天算。
+     */
+    @Builder.Default
+    @Column(name = "product_calculate_type", nullable = false, length = 1)
+    private Integer productCalculateType = ProductInfoEnum.DAY.getCode();
+
+    /**
+     * @serialField productType：产品类型，0-充值，1-兑换；2-提现，默认：0-充值。
      */
     @Builder.Default
     @Column(name = "product_type", nullable = false, length = 1)
-    private Integer productType = ProductInfoEnum.DAY.getCode();
+    private Integer productType = ProductInfoEnum.CHARGE.getCode();
 
     /**
      * <pre>

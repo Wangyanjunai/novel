@@ -71,6 +71,6 @@ public class ProductServiceImpl implements ProductService {
 	 */
 	@Override
 	public List<ProductInfo> findAllByType(Integer type) {
-		return repository.findByProductType(type);
+		return repository.findByProductCalculateType(type);
 	}
 }

@@ -28,6 +28,10 @@ public enum TaskInfoEnum implements CodeEnum<Object> {
 
     READING(4, "阅读任务"),
 
+    UNFINISHED(0, "未完成"),
+
+    FINISHED(1, "完成"),
+
     ;
     private Integer code;
 
