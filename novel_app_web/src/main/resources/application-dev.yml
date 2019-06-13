@@ -7,7 +7,7 @@ spring:
       username: root
       password: MyNewPassword4!@#
       keep-alive: true
-      initial-size: 5
+      initial-size: 1
       min-idle: 5
       max-active: 20
       max-wait: 60000
@@ -38,11 +38,11 @@ spring:
     password: foobared123!@#
 logging:
   level:
-    org.springframework.web: debug
-    com.potato369.novel.basic: debug
-    com.potato369.novel.app.web: debug
-    com.alibaba.druid: debug
-    com.potato369.novel.basic.dataobject.mapper: debug
+    org.springframework.web: error
+    com.potato369.novel.basic: error
+    com.potato369.novel.app.web: error
+    com.alibaba.druid: error
+    com.potato369.novel.basic.dataobject.mapper: error
 projectUrl: 
   projectName: /novel
   domainUrl: http://potato369.mynatapp.cc

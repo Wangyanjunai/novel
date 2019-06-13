@@ -7,7 +7,7 @@ spring:
       username: root
       password: 123456
       keep-alive: true
-      initial-size: 10
+      initial-size: 2
       min-idle: 10
       max-active: 40
       max-wait: 60000
