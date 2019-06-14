@@ -119,8 +119,8 @@ public class AccountController {
                 log.debug("start====================查询绑定的提现账户====================start");
             }
 //            String name = null;//提现账户类型名称，支付宝，微信
-            String mid  = null;//提现用户mid
-            NovelUserAccount userAccount = userAccountService.findByUserId(mid);
+//            String mid  = null;//提现用户mid
+            NovelUserAccount userAccount = userAccountService.findByUserId(userId);
             if (userAccount != null) {
             	AccountDTO accountDTO = NovelUserAccount2AccountDTOConverter.convert(userAccount);
                 resultVO.setMsg("返回数据成功");
