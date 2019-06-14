@@ -18,6 +18,9 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface UserAccountRepository extends JpaRepository<NovelUserAccount, String> {
 
-    @Query("select nu from NovelUserAccount nu where nu.userId = ?1 and nu.accountName = ?2")
+    @Query("SELECT nu FROM NovelUserAccount nu WHERE nu.userId = ?1 AND nu.accountName = ?2")
     NovelUserAccount selectByUserIdAndAccountName(String userId, String accountName);
+    
+    @Query("SELECT nu FROM NovelUserAccount nu WHERE nu.userId = ?1")
+    NovelUserAccount selectByUserId(String userId);
 }

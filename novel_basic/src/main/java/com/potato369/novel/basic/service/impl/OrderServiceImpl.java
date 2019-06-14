@@ -233,7 +233,7 @@ public class OrderServiceImpl implements OrderService {
                 orderDetail.setEndTime(now);
             }
             /**给对应的用户发放书币*/
-            NovelUserInfo userInfo = userInfoRepository.findUserInfoByOpenid(orderMaster.getBuyerOpenid());
+            NovelUserInfo userInfo = userInfoRepository.selectByUserOpenid(orderMaster.getBuyerOpenid());
             if (userInfo == null) {
                 log.error("【微信公众号支付更新订单】给对应的用户发放书币失败，用户微信openid={}", orderMaster.getBuyerOpenid());
                 throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());

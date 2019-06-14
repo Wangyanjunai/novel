@@ -74,6 +74,18 @@ public class UserAccountServiceImpl implements UserAccountService {
     public NovelUserAccount findOne(String primaryKey) {
         return repository.findOne(primaryKey);
     }
+    
+    /**
+     * <pre>
+     * 根据用户mid查找用户绑定的账户信息
+     * @param userId
+     * @return NovelUserAccount
+     * </pre>
+     */
+    @Override
+    public NovelUserAccount findByUserId(String userId) {
+        return repository.selectByUserId(userId);
+    }
 
     /**
      * <pre>

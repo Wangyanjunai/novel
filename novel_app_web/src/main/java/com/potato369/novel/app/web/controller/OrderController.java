@@ -1,9 +1,10 @@
 package com.potato369.novel.app.web.controller;
 
 import com.potato369.novel.app.web.dto.PayInfoDTO;
-import com.potato369.novel.app.web.service.WeChatPayService;
+import com.potato369.novel.app.web.service.PayService;
 import com.potato369.novel.app.web.vo.ResultVO;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
+import com.potato369.novel.basic.dataobject.OrderDetail;
 import com.potato369.novel.basic.dataobject.OrderMaster;
 import com.potato369.novel.basic.dataobject.ProductInfo;
 import com.potato369.novel.basic.enums.OrderStatusEnum;
@@ -17,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.validation.Valid;
 /**
  * <pre>
@@ -33,6 +36,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "/order")
 @Slf4j
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class OrderController {
 
     @Autowired
@@ -45,7 +49,7 @@ public class OrderController {
     private ProductService productService;
 
     @Autowired
-    private WeChatPayService weChatPayService;
+    private PayService payService;
 
     /**
      * <pre>
@@ -90,25 +94,51 @@ public class OrderController {
             }
             Integer productType = productInfo.getProductType();
 			if (productType != null) {
+				OrderMaster orderMaster = OrderMaster.builder().build();
+	            String orderId = UUIDUtil.genTimstampUUID();
+	            orderMaster.setOrderId(orderId);//订单id
+	            orderMaster.setBuyerAddress(novelUserInfo.getAddress());//用户地址
+	            orderMaster.setBuyerName(novelUserInfo.getNickName());//用户名称
+	            orderMaster.setBuyerOpenid(novelUserInfo.getOpenid());//用户平台openid
+	            orderMaster.setOrderName(productInfo.getProductName());//商品名称
+	            orderMaster.setProductId(productInfo.getProductId());//商品id
+			    orderMaster.setPayType(payType);//支付方式
+			    orderMaster.setOrderAmount(productInfo.getProductAmount());//支付总金额
+			    List<OrderDetail> orderDetailList = new ArrayList<OrderDetail>();
+			    OrderDetail orderDetail = OrderDetail.builder().build();
+			    orderDetail.setDetailId(UUIDUtil.genTimstampUUID());//订单详情id
+			    orderDetail.setOrderId(orderId);//订单id
+			    orderDetail.setBuyerOpenid(novelUserInfo.getOpenid());//用户平台openid
+			    orderDetail.setProductId(productInfo.getProductId());
+			    orderDetail.setUserId(novelUserInfo.getMId());
+			    orderDetailList.add(orderDetail);
+			    orderMaster.setOrderDetailList(orderDetailList);
 			    if (ProductInfoEnum.CHARGE.getCode().equals(productType)) {//充值
-
+			    	orderMaster.setOrderStatus(OrderStatusEnum.NEW.getCode());//订单状态
+		            orderMaster.setPayStatus(PayStatusEnum.WAITING.getCode());//支付状态
+		            orderMaster.setOrderType(ProductInfoEnum.CHARGE.getCode());//订单类型
                 }
 			    if (ProductInfoEnum.EXCHANGE.getCode().equals(productType)) {//兑换
-
+			    	orderMaster.setOrderStatus(OrderStatusEnum.EXCHANG_ING.getCode());
+			    	orderMaster.setPayStatus(PayStatusEnum.DEDUCT_ING.getCode());
+			    	orderMaster.setOrderType(ProductInfoEnum.EXCHANGE.getCode());
                 }
 			    if (ProductInfoEnum.WITHDRAW.getCode().equals(productType)) {//提现
-
+			    	orderMaster.setOrderStatus(OrderStatusEnum.WITHDRAW_ING.getCode());
+			    	orderMaster.setPayStatus(PayStatusEnum.DEDUCT_ING.getCode());
+			    	orderMaster.setOrderType(ProductInfoEnum.WITHDRAW.getCode());
                 }
+			    orderService.save(orderMaster);
+			    if (PayStatusEnum.PAY_WITH_ALIPAY.getCode().equals(payType)) {//支付宝支付
+					
+				}
+			    if (PayStatusEnum.PAY_WITH_BALANCE.getCode().equals(payType)) {//余额支付
+					
+				}
+			    if (PayStatusEnum.PAY_WITH_WECHAT.getCode().equals(payType)) {//微信支付
+			    	payService.createByWeChatPay(orderMaster);
+			    }
             }
-            OrderMaster orderMaster = OrderMaster.builder().build();
-            String orderId = UUIDUtil.genTimstampUUID();
-            orderMaster.setOrderId(orderId);
-            orderMaster.setBuyerAddress(novelUserInfo.getAddress());
-            orderMaster.setBuyerName(novelUserInfo.getNickName());
-            orderMaster.setBuyerOpenid(novelUserInfo.getOpenid());
-            orderMaster.setOrderName(productInfo.getProductName());
-            orderMaster.setOrderStatus(OrderStatusEnum.NEW.getCode());
-            orderMaster.setPayStatus(PayStatusEnum.WAITING.getCode());
 			return resultVO;
 		} catch (Exception e) {
 			log.error("", e);
@@ -118,5 +148,10 @@ public class OrderController {
 				log.debug("");
 			}
 		}
+    }
+    
+    @GetMapping(value = "/notify")
+    public void notified() {
+    	
     }
 }

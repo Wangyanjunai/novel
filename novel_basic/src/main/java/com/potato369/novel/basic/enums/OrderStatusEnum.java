@@ -26,7 +26,18 @@ public enum OrderStatusEnum implements CodeEnum<Object> {
     FINISHED(1, "已完结"),
 
     CANCEL(2, "已取消"),
-
+    
+    EXCHANG_ING(3, "等待兑换"),
+    
+    EXCHANGE_SUCCESSED(4, "兑换成功"),
+    
+    EXCHANGE_FAILED(5, "兑换失败"),
+    
+    WITHDRAW_ING(6, "等待提现"),
+    
+    WITHDRAW_SUCCESSED(7, "提现成功"),
+    
+    WITHDRAW_FAILED(8, "提现失败"),
     ;
     private Integer code;
 

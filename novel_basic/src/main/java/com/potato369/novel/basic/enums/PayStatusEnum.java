@@ -26,7 +26,18 @@ public enum PayStatusEnum implements CodeEnum<Object> {
     SUCCESS(1, "支付成功"),
 
     FAIL(2, "支付失败"),
-
+    
+    DEDUCT_ING(3, "等待扣除"),
+    
+    DEDUCT_SUCCESSED(4, "扣除成功"),
+    
+    DEDUCT_FAILED(5, "扣除失败"),
+    
+    PAY_WITH_ALIPAY(1, "支付宝支付"),
+    
+    PAY_WITH_WECHAT(2, "微信支付"),
+    
+    PAY_WITH_BALANCE(3, "余额支付"),
     ;
 
     private Integer code;

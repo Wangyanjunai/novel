@@ -3,12 +3,7 @@ package com.potato369.novel.basic.service;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.service
@@ -26,17 +21,15 @@ public interface UserInfoService {
     /**
      * 保存用户信息
      * @param userInfo
-     * @return
+     * @return NovelUserInfo
      */
-    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     NovelUserInfo save(NovelUserInfo userInfo);
 
     /**
      * 保存用户信息列表
      * @param userInfoList
-     * @return
+     * @return List<NovelUserInfo>
      */
-    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     List<NovelUserInfo> save(List<NovelUserInfo> userInfoList);
 
     /**
@@ -44,81 +37,94 @@ public interface UserInfoService {
      * @param mid
      * @return
      */
-    @Modifying
-    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    void del(String mid);
+    void delete(String mid);
 
     /**
      * 修改用户信息
      * @param userInfo
-     * @return
+     * @return NovelUserInfo
      */
-    @Modifying
-    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     NovelUserInfo update(NovelUserInfo userInfo);
 
     /**
-     * 根据id class查找用户信息
+     * 根据用户mid查找用户信息
      * @param mid
-     * @return
+     * @return NovelUserInfo
      */
-    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     NovelUserInfo findById(String mid);
 
     /**
-     * 根据mid查找用户信息
+     * 根据meId（手机串码）查找用户信息
      * @param userMId
-     * @return
-     * @throws Exception
+     * @return NovelUserInfo
      */
-    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     NovelUserInfo findByUserMId(String userMId);
     
     /**
-     * 根据meId手机串号查找用户信息
+     * 根据meId手机串号查找用户信息列表
      * @param userMeId
-     * @return
-     * @throws Exception
+     * @return List<NovelUserInfo>
      */
-    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    NovelUserInfo findByUserMeId(String userMeId);
-    /**
-     * 根据meId手机串号查找用户信息
-     * @param meId
-     * @return NovelUserInfo
-     * @throws Exception
-     */
-    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    NovelUserInfo findByMeIdAndOpenid(String meId, String openid);
-
+    List<NovelUserInfo> findByUserMeId(String userMeId);
+    
     /**
      * 根据openid查找用户信息
      * @param openid
-     * @return
+     * @return NovelUserInfo
      */
-    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     NovelUserInfo findByOpenid(String openid);
-
-    /**
-     * 查询所有用户信息
-     * @return
-     */
-    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
-    List<NovelUserInfo> findAll();
-
+    
     /**
      * 根据性别查询所有的用户信息
      * @param sex
-     * @return
+     * @return List<NovelUserInfo>
      */
-    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     List<NovelUserInfo> findBySex(String sex);
+    
+    /**
+     * 根据meId手机串号和用户类型查找用户信息
+     * @param userMeId
+     * @param userType
+     * @return NovelUserInfo
+     */
+    NovelUserInfo findByUserMeIdAndUserType(String userMeId, Integer userType);
+    
+    /**
+     * 根据meId手机串号和用户平台id查找用户信息
+     * @param meId
+     * @return NovelUserInfo
+     */
+    NovelUserInfo findByMeIdAndOpenid(String meId, String openid);
+    
+    /**
+	 * <pre>
+	 * 根据用户登录平台openid和用户登录平台身份类型查找用户信息
+	 * @param openid
+	 * @param userType
+	 * @return NovelUserInfo
+	 * </pre>
+	 */
+    NovelUserInfo findByOpenidAndUserType(String openid, Integer userType);
+    
+    /**
+     * 根据meId手机串号，平台openid和用户登录身份类型查找用户信息
+     * @param meId
+     * @param openid
+     * @param userType
+     * @return NovelUserInfo
+     */
+    NovelUserInfo findByMeIdAndOpenidAndUserType(String meId, String openid, Integer userType);
 
     /**
-     * 分页查询所有的用户信息
-     * @param pageable
-     * @return
+     * 查询所有用户信息
+     * @return List<NovelUserInfo>
      */
-    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    List<NovelUserInfo> findAll();
+
+    /**
+     * 分页查询所有的用户信息列表
+     * @param pageable
+     * @return Page<NovelUserInfo>
+     */
     Page<NovelUserInfo> findAll(Pageable pageable);
 }

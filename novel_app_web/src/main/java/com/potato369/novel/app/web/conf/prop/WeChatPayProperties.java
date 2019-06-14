@@ -81,6 +81,15 @@ public class WeChatPayProperties {
     @JsonProperty(value = "notifyUrl")
     @Value(value = "${weChat.pay.notifyUrl}")
     private String notifyUrl;
+    
+    /**
+     * <pre>
+     * @Field 7、orderNamePrefix：微信支付订单名称前缀
+     * </pre>
+     */
+    @JsonProperty(value = "orderNamePrefix")
+    @Value(value = "${weChat.pay.orderNamePrefix}")
+    private String orderNamePrefix;
 
     @Override
     public String toString() {

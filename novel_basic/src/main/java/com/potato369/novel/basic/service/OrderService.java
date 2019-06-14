@@ -2,10 +2,6 @@ package com.potato369.novel.basic.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import com.potato369.novel.basic.dataobject.OrderMaster;
 import java.util.List;
 /**
@@ -29,7 +25,6 @@ public interface OrderService {
      * @return OrderMaster.class
      * </pre>
      */
-    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     OrderMaster save(OrderMaster orderMaster) throws Exception;
 
     /**
@@ -39,7 +34,6 @@ public interface OrderService {
      * @return OrderMaster.class
      * </pre>
      */
-    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     OrderMaster findOne(String orderId) throws Exception;
     
     /**
@@ -49,7 +43,6 @@ public interface OrderService {
      * @return OrderMaster.class
      * </pre>
      */
-    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     List<OrderMaster> findAll() throws Exception;
 
     /**
@@ -60,7 +53,6 @@ public interface OrderService {
      * @return List<OrderMaster>.class
      * </pre>
      */
-    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     List<OrderMaster> findTimeOutUnpaid(Integer payStatus, Integer orderStatus) throws Exception;
 
     /**
@@ -71,7 +63,6 @@ public interface OrderService {
      * @return Page<OrderMaster>.class
      * </pre>
      */
-    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     Page<OrderMaster> findAll(String buyerOpenid, Pageable pageable) throws Exception;
 
     /**
@@ -81,8 +72,6 @@ public interface OrderService {
      * @return OrderMaster.class
      * </pre>
      */
-    @Modifying
-    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     OrderMaster cancel(OrderMaster orderMaster) throws Exception;
 
     /**
@@ -92,8 +81,6 @@ public interface OrderService {
      * @return OrderMaster.class
      * </pre>
      */
-    @Modifying
-    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     OrderMaster finish(OrderMaster orderMaster) throws Exception;
 
     /**
@@ -103,8 +90,6 @@ public interface OrderService {
      * @return OrderMaster.class
      * </pre>
      */
-    @Modifying
-    @Transactional(readOnly = false, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     OrderMaster paid(OrderMaster orderMaster) throws Exception;
 
     /**
@@ -114,6 +99,5 @@ public interface OrderService {
      * @return Page<OrderMaster>.class
      * </pre>
      */
-    @Transactional(readOnly = true, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     Page<OrderMaster> findAll(Pageable pageable) throws Exception;
 }

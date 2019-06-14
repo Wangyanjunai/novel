@@ -62,6 +62,15 @@ public interface UserAccountService {
      * </pre>
      */
     NovelUserAccount findByUserIdAndAccountName(String userId, String accountName);
+    
+    /**
+     * <pre>
+     * 根据用户mid查找用户绑定的账户信息
+     * @param userId
+     * @return NovelUserAccount
+     * </pre>
+     */
+    NovelUserAccount findByUserId(String userId);
 
     /**
      * <pre>

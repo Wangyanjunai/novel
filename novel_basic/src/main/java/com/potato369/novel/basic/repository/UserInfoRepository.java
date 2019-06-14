@@ -18,19 +18,88 @@ import java.util.List;
  */
 public interface UserInfoRepository extends JpaRepository<NovelUserInfo, String> {
 
-    @Query(value = "SELECT nu FROM NovelUserInfo nu WHERE nu.mId = ?1")
-    NovelUserInfo selectByUserMId(String userMId);
+	/**
+	 * <pre>
+	 * selectByUserMId方法的作用：根据用户mid查找用户信息
+	 * @param mId
+	 * @return NovelUserInfo
+	 * </pre>
+	 */
+    @Query(value = "SELECT nu FROM NovelUserInfo nu WHERE nu.mId = ?1 ORDER BY nu.loginTime DESC, nu.createTime DESC")
+    NovelUserInfo selectByUserMId(String mId);
     
-    @Query(value = "SELECT nu FROM NovelUserInfo nu WHERE nu.meId = ?1")
-    NovelUserInfo selectByUserMeId(String userMeId);
+    /**
+	 * <pre>
+	 * selectByUserMeId方法的作用：根据用户meId（手机串号）查找用户信息
+	 * @param meId
+	 * @return List<NovelUserInfo>
+	 * </pre>
+	 */
+    @Query(value = "SELECT nu FROM NovelUserInfo nu WHERE nu.meId = ?1 ORDER BY nu.loginTime DESC, nu.createTime DESC")
+    List<NovelUserInfo> selectByUserMeId(String meId);
     
-    @Query(value = "SELECT nu FROM NovelUserInfo nu WHERE nu.openid = ?1")
-    NovelUserInfo selectByUserOpenid(String userOpenid);
+    /**
+	 * <pre>
+	 * selectByUserOpenid方法的作用：根据用户登录平台openid查找用户信息
+	 * @param openid
+	 * @return NovelUserInfo
+	 * </pre>
+	 */
+    @Query(value = "SELECT nu FROM NovelUserInfo nu WHERE nu.openid = ?1 ORDER BY nu.loginTime DESC, nu.createTime DESC")
+    NovelUserInfo selectByUserOpenid(String openid);
+    
+    /**
+	 * <pre>
+	 * selectByUserGender方法的作用：根据用户性别查找用户信息列表
+	 * @param gender
+	 * @return List<NovelUserInfo>
+	 * </pre>
+	 */
+    @Query(value = "SELECT nu FROM NovelUserInfo nu WHERE nu.gender = ?1 ORDER BY nu.loginTime DESC, nu.createTime DESC")
+    List<NovelUserInfo> selectByUserGender(String gender);
+    
+    /**
+	 * <pre>
+	 * selectByUserMeIdAndUserType方法的作用：根据用户meId（手机串号）和用户登录平台身份类型查找用户信息
+	 * @param meId
+	 * @param userType
+	 * @return NovelUserInfo
+	 * </pre>
+	 */
+    @Query(value = "SELECT nu FROM NovelUserInfo nu WHERE nu.meId = ?1 AND nu.userType = ?2 ORDER BY nu.loginTime DESC, nu.createTime DESC")
+    NovelUserInfo selectByUserMeIdAndUserType(String meId, Integer userType);
 
-    @Query(value = "SELECT nu FROM NovelUserInfo nu WHERE nu.meId = ?1 AND nu.openid = ?2")
+    /**
+	 * <pre>
+	 * selectByUserMeIdAndUserOpenid方法的作用：根据用户meId（手机串号）和用户登录平台openid查找用户信息
+	 * @param meId
+	 * @param openid
+	 * @return NovelUserInfo
+	 * </pre>
+	 */
+    @Query(value = "SELECT nu FROM NovelUserInfo nu WHERE nu.meId = ?1 AND nu.openid = ?2 ORDER BY nu.loginTime DESC, nu.createTime DESC")
     NovelUserInfo selectByUserMeIdAndUserOpenid(String meId, String openid);
-
-    NovelUserInfo findUserInfoByOpenid(String openid);
-
-    List<NovelUserInfo> findUserInfosByGender(String gender);
+    
+    /**
+	 * <pre>
+	 * selectByUserOpenidAndUserType方法的作用：根据用户登录平台openid和用户登录平台身份类型查找用户信息
+	 * @param openid
+	 * @param userType
+	 * @return NovelUserInfo
+	 * </pre>
+	 */
+    @Query(value = "SELECT nu FROM NovelUserInfo nu WHERE nu.openid = ?1 AND nu.userType = ?2 ORDER BY nu.loginTime DESC, nu.createTime DESC")
+    NovelUserInfo selectByUserOpenidAndUserType(String openid, Integer userType);
+    
+    /**
+	 * <pre>
+	 * selectByUserMeIdAndUserOpenidAndUserType方法的作用：根据用户meId（手机串号），用户登录平台openid和用户登录平台身份类型查找用户信息
+	 * @param meId
+	 * @param openid
+	 * @param userType
+	 * @return NovelUserInfo
+	 * </pre>
+	 */
+    @Query(value = "SELECT nu FROM NovelUserInfo nu WHERE nu.meId = ?1 AND nu.openid = ?2 AND nu.userType = ?3 ORDER BY nu.loginTime DESC, nu.createTime DESC")
+    NovelUserInfo selectByUserMeIdAndUserOpenidAndUserType(String meId, String openid, Integer userType);
 }

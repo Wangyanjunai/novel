@@ -68,7 +68,7 @@ public class OrderMaster implements Serializable {
      * @serialField buyerAddress：买家地址。
      * </pre>
      */
-    @Column(name = "buyer_address", nullable = false, length = 128)
+    @Column(name = "buyer_address", length = 128)
     private String buyerAddress;
 
     /**
@@ -76,7 +76,7 @@ public class OrderMaster implements Serializable {
      * @serialField buyerOpenid：买家openid。
      * </pre>
      */
-    @Column(name = "buyer_openid", nullable = false, length = 64)
+    @Column(name = "buyer_openid", length = 64)
     private String buyerOpenid;
     
     /**
@@ -130,6 +130,14 @@ public class OrderMaster implements Serializable {
     @Builder.Default
     @Column(name = "pay_status", nullable = false, length = 1)
     private Integer payStatus = PayStatusEnum.WAITING.getCode();
+    
+    /**
+     * <pre>
+     * @serialField payType：订单支付方式，0-支付宝；1-微信支付；3-扣余额。
+     * </pre>
+     */
+    @Column(name = "pay_type", length = 1)
+    private Integer payType;
 
     /**
      * <pre>

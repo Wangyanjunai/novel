@@ -32,7 +32,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * 保存用户信息
      *
      * @param userInfo
-     * @return
+     * @return NovelUserInfo
      */
     @Override
     public NovelUserInfo save(NovelUserInfo userInfo){
@@ -43,7 +43,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * 保存用户信息列表
      *
      * @param userInfoList
-     * @return
+     * @return NovelUserInfo
      */
     @Override
     public List<NovelUserInfo> save(List<NovelUserInfo> userInfoList){
@@ -57,7 +57,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return
      */
     @Override
-    public void del(String id){
+    public void delete(String id){
         repository.delete(id);
     }
 
@@ -65,7 +65,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * 修改用户信息
      *
      * @param userInfo
-     * @return
+     * @return NovelUserInfo
      */
     @Override
     public NovelUserInfo update(NovelUserInfo userInfo){
@@ -76,7 +76,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * 根据id查找用户信息
      *
      * @param id
-     * @return
+     * @return NovelUserInfo
      */
     @Override
     public NovelUserInfo findById(String mid){
@@ -87,7 +87,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * 根据用户id查找用户信息
      *
      * @param userId
-     * @return
+     * @return NovelUserInfo
      */
     @Override
     public NovelUserInfo findByUserMId(String userMId) {
@@ -96,40 +96,73 @@ public class UserInfoServiceImpl implements UserInfoService {
     /**
      * 根据meId手机串号查找用户信息
      * @param userMeId
-     * @return
-     * @throws Exception
+     * @return List<NovelUserInfo>
      */
     @Override
-    public NovelUserInfo findByUserMeId(String userMeId) {
+    public List<NovelUserInfo> findByUserMeId(String userMeId) {
     	return repository.selectByUserMeId(userMeId);
+    }
+    
+    /**
+     * 根据meId手机串号和用户类型查找用户信息
+     * @param userMeId
+     * @param userType
+     * @return NovelUserInfo
+     */
+    @Override
+    public NovelUserInfo findByUserMeIdAndUserType(String userMeId, Integer userType) {
+    	return repository.selectByUserMeIdAndUserType(userMeId, userType);
     }
 
     /**
-     * 根据meId手机串号查找用户信息
+     * 根据meId手机串号和平台openid查找用户信息
      * @param meId
+     * @param openid
      * @return NovelUserInfo
-     * @throws Exception
      */
     @Override
     public NovelUserInfo findByMeIdAndOpenid(String meId, String openid) {
         return repository.selectByUserMeIdAndUserOpenid(meId, openid);
+    }
+    
+    /**
+     * 根据用户登录平台openid和用户登录平台身份类型查找用户信息
+     * @param openid
+     * @param userType
+     * @return NovelUserInfo
+     */
+	@Override
+	public NovelUserInfo findByOpenidAndUserType(String openid, Integer userType) {
+		return repository.selectByUserOpenidAndUserType(openid, userType);
+	}
+	
+    /**
+     * 根据meId手机串号，平台openid和用户登录身份类型查找用户信息
+     * @param meId
+     * @param openid
+     * @param userType
+     * @return NovelUserInfo
+     */
+    @Override
+    public NovelUserInfo findByMeIdAndOpenidAndUserType(String meId, String openid, Integer userType) {
+        return repository.selectByUserMeIdAndUserOpenidAndUserType(meId, openid, userType);
     }
 
     /**
      * 根据openid查找用户信息
      *
      * @param openid
-     * @return
+     * @return NovelUserInfo
      */
     @Override
     public NovelUserInfo findByOpenid(String openid){
-        return repository.findUserInfoByOpenid(openid);
+        return repository.selectByUserOpenid(openid);
     }
 
     /**
      * 查询所有用户信息
      *
-     * @return
+     * @return List<NovelUserInfo>
      */
     @Override
     public List<NovelUserInfo> findAll(){
@@ -140,18 +173,18 @@ public class UserInfoServiceImpl implements UserInfoService {
      * 根据性别查询所有的用户信息
      *
      * @param gender
-     * @return
+     * @return List<NovelUserInfo>
      */
     @Override
     public List<NovelUserInfo> findBySex(String gender){
-        return repository.findUserInfosByGender(gender);
+        return repository.selectByUserGender(gender);
     }
 
     /**
      * 分页查询所有的用户信息
      *
      * @param pageable
-     * @return
+     * @return Page<NovelUserInfo>
      */
     @Override
     public Page<NovelUserInfo> findAll(Pageable pageable) {
