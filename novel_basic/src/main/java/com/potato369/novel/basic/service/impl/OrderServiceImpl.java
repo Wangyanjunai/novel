@@ -196,17 +196,23 @@ public class OrderServiceImpl implements OrderService {
         Date now = new Date();
         /** 1、判断订单状态 */
         if (OrderStatusEnum.NEW.getCode() != orderMaster.getOrderStatus()){
-            log.error("【微信公众号支付订单】订单状态不正确， orderId={}，orderStatus={}", orderMaster.getOrderId(), orderMaster.getOrderStatus());
+            log.error("【微信APP支付订单】订单状态不正确， orderId={}，orderStatus={}", orderMaster.getOrderId(), orderMaster.getOrderStatus());
             throw new Exception(ResultEnum.ORDER_STATUS_ERROR.getMessage());
         }
         /** 2、判断支付状态 */
         if (PayStatusEnum.WAITING.getCode() != orderMaster.getPayStatus()){
-            log.error("【微信公众号支付订单】订单支付状态不正确， orderId={}，orderStatus={}", orderMaster.getOrderId(), orderMaster.getOrderStatus());
+            log.error("【微信APP支付订单】订单支付状态不正确， orderId={}，orderStatus={}", orderMaster.getOrderId(), orderMaster.getPayStatus());
             throw new Exception(ResultEnum.ORDER_PAY_STATUS_ERROR.getMessage());
         }
+        /** 3、判断支付方式 */
+        if (PayStatusEnum.PAY_WITH_WECHAT.getCode() != orderMaster.getPayType()) {
+        	log.error("【微信APP支付订单】订单支付方式不正确， orderId={}，payType={}", orderMaster.getOrderId(), orderMaster.getPayType());
+            throw new Exception(ResultEnum.ORDER_PAY_TYPE_ERROR.getMessage());
+		}
         /** 3、修改订单支付状态 */
         orderMaster.setPayStatus(PayStatusEnum.SUCCESS.getCode());
-//        orderMaster.setPayTime(now);
+        orderMaster.setPayType(orderMaster.getPayType());
+        orderMaster.setOrderStatus(OrderStatusEnum.FINISHED.getCode());
         List<OrderDetail> orderDetailList = orderMaster.getOrderDetailList();
         for (OrderDetail orderDetail : orderDetailList) {
             orderDetail.setPayTime(now);

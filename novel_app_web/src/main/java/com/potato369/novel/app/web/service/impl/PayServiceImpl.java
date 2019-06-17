@@ -1,17 +1,23 @@
 package com.potato369.novel.app.web.service.impl;
 
+import com.alibaba.druid.support.json.JSONUtils;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.bean.result.WxPayUnifiedOrderResult;
 import com.github.binarywang.wxpay.constant.WxPayConstants;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.potato369.novel.app.web.conf.prop.WeChatPayProperties;
-import com.potato369.novel.app.web.model.PayResult;
+import com.potato369.novel.app.web.model.WeixinPayResult;
 import com.potato369.novel.app.web.service.PayService;
 import com.potato369.novel.basic.dataobject.OrderMaster;
+import com.potato369.novel.basic.enums.OrderStatusEnum;
+import com.potato369.novel.basic.enums.PayStatusEnum;
+import com.potato369.novel.basic.enums.ResultEnum;
+import com.potato369.novel.basic.service.OrderService;
 import com.potato369.novel.basic.utils.WwwUtil;
 import lombok.extern.slf4j.Slf4j;
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,34 +44,101 @@ public class PayServiceImpl implements PayService {
     private WxPayService wxPayService;
     
     @Autowired
+    private OrderService orderService;
+    
+    @Autowired
     private WeChatPayProperties properties;
 
     /**
      * <pre>
-     * 微信公众号支付订单
+     * 微信APP支付订单
      * @param orderMaster
      * @return
      * </pre>
      */
     @Override
-    public PayResult createByWeChatPay(OrderMaster orderMaster) {
-    	WxPayUnifiedOrderRequest orderRequest = new WxPayUnifiedOrderRequest();
+    public WeixinPayResult weixinPay(String orderId) {
+    	WeixinPayResult payResult = new WeixinPayResult();
     	try {
-    		orderRequest.setBody(new StringBuffer().append(this.properties.getOrderNamePrefix()).append(orderMaster.getOrderName()).toString().trim());
-    		orderRequest.setOutTradeNo(orderMaster.getOrderId());
-    		orderRequest.setTotalFee(orderMaster.getOrderAmount().intValue()*100);
+    		OrderMaster order = orderService.findOne(orderId);
+    		if (order == null) {
+    			log.error("【微信APP支付订单】 订单信息不存在，订单id={}", orderId);
+    			throw new Exception(ResultEnum.ORDER_NOT_EXIST.getMessage());
+			}
+    		if (order.getOrderStatus() != OrderStatusEnum.NEW.getCode()) {
+    			log.error("【微信APP支付订单】 订单状态不正确，订单id={}，订单状态={}", orderId, order.getOrderStatus());
+    			throw new Exception(ResultEnum.ORDER_STATUS_ERROR.getMessage());
+			}
+    		if (order.getPayStatus() != PayStatusEnum.WAITING.getCode()) {
+    			log.error("【微信APP支付订单】 订单支付状态不正确，订单id={}，订单支付状态={}", orderId, order.getPayStatus());
+    			throw new Exception(ResultEnum.ORDER_PAY_STATUS_ERROR.getMessage());
+			}
+    		WxPayUnifiedOrderRequest orderRequest = new WxPayUnifiedOrderRequest();
+    		orderRequest.setBody(new StringBuffer().append(this.properties.getOrderNamePrefix()).append(order.getOrderName()).toString().trim());
+    		orderRequest.setOutTradeNo(order.getOrderId());
+    		orderRequest.setTotalFee(order.getOrderAmount().intValue()*100);
     		ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
     		HttpServletRequest request = requestAttributes.getRequest();
     		orderRequest.setSpbillCreateIp(WwwUtil.getIpAddr4(request));
     		orderRequest.setTradeType(WxPayConstants.TradeType.APP);
     		WxPayUnifiedOrderResult result = wxPayService.unifiedOrder(orderRequest);
+    		log.info("result={}", result);
+    		if (result != null) {
+				String returnCode = result.getReturnCode();
+				String resultCode = result.getResultCode();
+				if ("SUCCESS".equals(returnCode)) {
+					BeanUtils.copyProperties(result, payResult);
+					return payResult;
+				}
+				if ("SUCCESS".equals(returnCode) && "SUCCESS".equals(resultCode)) {
+					BeanUtils.copyProperties(result, payResult);
+					return payResult;
+				}
+			} else {
+				payResult.setReturnCode("FAIL");
+				payResult.setReturnMsg("微信APP支付订单失败");
+				payResult.setResultCode("FAIL");
+				payResult.setErrCode("FAIL");
+				payResult.setErrCodeDes("请求微信支付统一下单接口返回数据为空。");
+				return payResult;
+			}
 		} catch (Exception e) {
 			log.error("", e);
+			payResult.setReturnCode("FAIL");
+			payResult.setReturnMsg("微信APP支付订单失败");
+			payResult.setResultCode("FAIL");
+			payResult.setErrCode("FAIL");
+			payResult.setErrCodeDes("请求微信APP出现错误。");
+			return payResult;
 		} finally {
 			
 		}
-        return null;
+    	return payResult;
     }
+    
+    /**
+     * <pre>
+     * 支付宝APP支付订单
+     * @param orderMaster
+     * @return
+     * </pre>
+     */
+    @Override
+    public void aliPay(String orderId) {
+		
+	}
+    
+    /**
+     * <pre>
+     * 余额APP支付订单
+     * @param orderMaster
+     * @return
+     * </pre>
+     */
+    @Override
+    public void balancePay(String orderId) {
+		
+	}
 
     /**
      * <pre>
@@ -76,7 +149,44 @@ public class PayServiceImpl implements PayService {
      */
     @Override
     public WxPayOrderNotifyResult notify(String notifyData) {
-        return null;
+    	WxPayOrderNotifyResult payOrderNotifyResult = null;
+    	try {
+    		payOrderNotifyResult = wxPayService.parseOrderNotifyResult(notifyData);
+    		if (log.isDebugEnabled()) {
+    			log.debug("【微信APP支付】异步通知，payResponse={}", JSONUtils.toJSONString(payOrderNotifyResult));
+			}
+    		if (payOrderNotifyResult != null) {
+				String returnCode = payOrderNotifyResult.getReturnCode();
+				if ("SUCCESS".equals(returnCode)) {
+					String resultCode = payOrderNotifyResult.getResultCode();
+					if ("SUCCESS".equals(resultCode)) {
+						OrderMaster orderMaster = orderService.findOne(payOrderNotifyResult.getOutTradeNo());//商户订单号
+						if (orderMaster == null) {
+							log.error("【微信APP支付】异步通知，订单不存在 orderId={}", payOrderNotifyResult.getOutTradeNo());
+						    throw new Exception(ResultEnum.ORDER_NOT_EXIST.getMessage());
+						} else {
+							if (payOrderNotifyResult.getTotalFee().compareTo(orderMaster.getOrderAmount().intValue()) != 0) {
+								log.error("【微信APP支付】异步通知，订单金额不一致 orderId={}，微信通知金额={}，系统金额={}", payOrderNotifyResult.getOutTradeNo(), payOrderNotifyResult.getTotalFee(), orderMaster.getOrderAmount());
+							    throw new Exception(ResultEnum.WXPAY_NOTIFY_MONEY_VERIFY_ERROR.getMessage());
+							}
+							orderService.paid(orderMaster);
+						}
+					} else {
+						
+					}
+				} else {
+					
+				}
+			} else {
+				
+			}
+    		return payOrderNotifyResult;
+		} catch (Exception e) {
+			log.error("", e);
+			return payOrderNotifyResult;
+		} finally {
+			
+		}
     }
 
     /**
@@ -87,7 +197,7 @@ public class PayServiceImpl implements PayService {
      * </pre>
      */
     @Override
-    public void refund(OrderMaster orderMaster) {
+    public void refund(String orderId) {
 
     }
 
@@ -98,7 +208,7 @@ public class PayServiceImpl implements PayService {
      * </pre>
      */
     @Override
-    public void close(OrderMaster orderMaster) {
+    public void close(String orderId) {
 
     }
 }

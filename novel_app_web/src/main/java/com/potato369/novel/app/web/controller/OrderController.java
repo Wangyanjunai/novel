@@ -1,6 +1,6 @@
 package com.potato369.novel.app.web.controller;
 
-import com.potato369.novel.app.web.dto.PayInfoDTO;
+import com.potato369.novel.app.web.model.WeixinPayResult;
 import com.potato369.novel.app.web.service.PayService;
 import com.potato369.novel.app.web.vo.ResultVO;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
@@ -15,12 +15,13 @@ import com.potato369.novel.basic.service.ProductService;
 import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.basic.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import javax.validation.Valid;
 /**
  * <pre>
  * @PackageName com.potato369.novel.app.web.controller
@@ -36,7 +37,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "/order")
 @Slf4j
-@SuppressWarnings({"unchecked", "rawtypes"})
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class OrderController {
 
     @Autowired
@@ -57,39 +58,40 @@ public class OrderController {
      * https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_1
      * </pre>
      */
-    @PostMapping(value = "/create", produces = "application/json;charset=utf-8")
-    public ResultVO create(@RequestBody @Valid PayInfoDTO payInfoDTO, BindingResult bindingResult) {
+	@GetMapping(value = "/create")
+    public ResultVO create(@RequestParam(name = "mid", required = false) String mid,
+    					   @RequestParam(name = "pid", required = false) String pid,
+    					   @RequestParam(name = "type", required = false) Integer type) {
         ResultVO resultVO = new ResultVO();
         try {
 			if (log.isDebugEnabled()) {
-				log.debug("");
+				log.debug("start====================【创建订单】后台生成订单信息并支付====================start");
 			}
-			if (bindingResult.hasErrors()) {
-                resultVO.setMsg(bindingResult.getFieldError().getDefaultMessage());
+			if (StringUtils.isEmpty(mid)) {
+				resultVO.setMsg("【创建订单】缺少必要参数用户mid，用户mid不能为空。");
                 resultVO.setCode(-100);
-                resultVO.setData(null);
                 return resultVO;
-            }
-            String userId = null;
-            String productId = null;
-            Integer payType = null;
-			if (payInfoDTO != null) {
-                userId      = payInfoDTO.getUserId();
-                productId   = payInfoDTO.getProductId();
-                payType     = payInfoDTO.getPayType();
-            }
-            NovelUserInfo novelUserInfo = userInfoService.findByUserMId(userId);
+			}
+			if (StringUtils.isEmpty(pid)) {
+				resultVO.setMsg("【创建订单】缺少必要参数选择的VIP套餐商品id，VIP套餐商品id不能为空。");
+                resultVO.setCode(-100);
+                return resultVO;
+			}
+			if (type == null) {
+				resultVO.setMsg("【创建订单】缺少必要参数支付方式，支付方式不能为空。");
+                resultVO.setCode(-100);
+                return resultVO;
+			}
+            NovelUserInfo novelUserInfo = userInfoService.findByUserMId(mid);
 			if (novelUserInfo == null) {
-                resultVO.setMsg("用户信息不存在");
+                resultVO.setMsg("【创建订单】查询用户信息不存在。");
                 resultVO.setCode(-200);
-                resultVO.setData(null);
                 return resultVO;
             }
-            ProductInfo productInfo = productService.findOne(productId);
+            ProductInfo productInfo = productService.findOne(pid);
 			if (productInfo == null) {
-                resultVO.setMsg("商品信息不存在");
+                resultVO.setMsg("【创建订单】查询商品信息不存在。");
                 resultVO.setCode(-300);
-                resultVO.setData(null);
                 return resultVO;
             }
             Integer productType = productInfo.getProductType();
@@ -102,8 +104,9 @@ public class OrderController {
 	            orderMaster.setBuyerOpenid(novelUserInfo.getOpenid());//用户平台openid
 	            orderMaster.setOrderName(productInfo.getProductName());//商品名称
 	            orderMaster.setProductId(productInfo.getProductId());//商品id
-			    orderMaster.setPayType(payType);//支付方式
-			    orderMaster.setOrderAmount(productInfo.getProductAmount());//支付总金额
+			    orderMaster.setPayType(type);//支付方式
+//			    orderMaster.setOrderAmount(productInfo.getProductAmount());//支付总金额
+			    orderMaster.setOrderAmount(new BigDecimal(1));//支付总金额
 			    List<OrderDetail> orderDetailList = new ArrayList<OrderDetail>();
 			    OrderDetail orderDetail = OrderDetail.builder().build();
 			    orderDetail.setDetailId(UUIDUtil.genTimstampUUID());//订单详情id
@@ -129,29 +132,28 @@ public class OrderController {
 			    	orderMaster.setOrderType(ProductInfoEnum.WITHDRAW.getCode());
                 }
 			    orderService.save(orderMaster);
-			    if (PayStatusEnum.PAY_WITH_ALIPAY.getCode().equals(payType)) {//支付宝支付
-					
-				}
-			    if (PayStatusEnum.PAY_WITH_BALANCE.getCode().equals(payType)) {//余额支付
-					
-				}
-			    if (PayStatusEnum.PAY_WITH_WECHAT.getCode().equals(payType)) {//微信支付
-			    	payService.createByWeChatPay(orderMaster);
+			    if (PayStatusEnum.PAY_WITH_WECHAT.getCode().equals(type)) {//微信支付
+			    	WeixinPayResult payResult = payService.weixinPay(orderMaster.getOrderId());
+			    	resultVO.setCode(0);
+			    	resultVO.setMsg("请求微信支付生成预支付信息成功。");
+			    	resultVO.setData(payResult);
+			    	return resultVO;
 			    }
+			    if (PayStatusEnum.PAY_WITH_ALIPAY.getCode().equals(type)) {//支付宝支付
+			    	payService.aliPay(orderId);
+				}
+			    if (PayStatusEnum.PAY_WITH_BALANCE.getCode().equals(type)) {//余额支付
+			    	payService.balancePay(orderId);
+				}
             }
 			return resultVO;
 		} catch (Exception e) {
-			log.error("", e);
+			log.error("【创建订单】后台生成订单信息并支付出现错误", e);
             return resultVO;
 		} finally {
 			if (log.isDebugEnabled()) {
-				log.debug("");
+				log.debug("end======================【创建订单】后台生成订单信息并支付======================end");
 			}
 		}
-    }
-    
-    @GetMapping(value = "/notify")
-    public void notified() {
-    	
     }
 }

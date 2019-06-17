@@ -1,14 +1,7 @@
 package com.potato369.novel.app.web.service;
 
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
-import com.potato369.novel.app.web.dto.OrderDTO;
-import com.potato369.novel.app.web.model.PayResult;
-import com.potato369.novel.basic.dataobject.OrderMaster;
-
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
+import com.potato369.novel.app.web.model.WeixinPayResult;
 /**
  * <pre>
  * @PackageName com.potato369.novel.service.impl
@@ -26,11 +19,29 @@ public interface PayService {
     /**
      * <pre>
      * 微信支付订单
+     * @param orderId
+     * @return
+     * </pre>
+     */
+    WeixinPayResult weixinPay(String orderId);
+    
+    /**
+     * <pre>
+     * 支付宝APP支付订单
      * @param orderMaster
      * @return
      * </pre>
      */
-    PayResult createByWeChatPay(OrderMaster orderMaster);
+    void aliPay(String orderId);
+    
+    /**
+     * <pre>
+     * 余额APP支付订单
+     * @param orderId
+     * @return
+     * </pre>
+     */
+    void balancePay(String orderId);
 
     /**
      * <pre>
@@ -44,17 +55,17 @@ public interface PayService {
     /**
      * <pre>
      * 微信公众号支付退款
-     * @param orderMaster
+     * @param orderId
      * @return
      * </pre>
      */
-    void refund(OrderMaster orderMaster);
+    void refund(String orderId);
 
     /**
      * <pre>
      * 关闭超时未支付的订单
-     * @param orderMaster
+     * @param orderId
      * </pre>
      */
-    void close(OrderMaster orderMaster);
+    void close(String orderId);
 }

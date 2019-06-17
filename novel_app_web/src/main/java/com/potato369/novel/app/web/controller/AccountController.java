@@ -7,6 +7,7 @@ import com.potato369.novel.basic.dataobject.NovelUserAccount;
 import com.potato369.novel.basic.service.UserAccountService;
 import com.potato369.novel.basic.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.app.web.controller
@@ -64,8 +64,8 @@ public class AccountController {
                 resultVO.setCode(-2);
                 return resultVO;
             }
-            String name = null;//提现账户类型名称，支付宝，微信
-            String mid  = null;//提现用户mid
+            String name = null;//提现账户类型名称，支付宝，微信。
+            String mid  = null;//提现用户mid。
             NovelUserAccount userAccount;
             if (accountDTO != null) {
                 name = accountDTO.getAccountName();
@@ -76,18 +76,19 @@ public class AccountController {
                 userAccount = NovelUserAccount2AccountDTOConverter.convert(accountDTO);
                 userAccount.setAccountId(UUIDUtil.gen32UUID());
                 userAccountService.save(userAccount);
-                resultVO.setMsg("绑定”"+name+"“提现账户成功");
+                resultVO.setMsg("添加未绑定”"+name+"“提现账户成功。");
                 resultVO.setCode(0);
                 return resultVO;
             } else {
+            	BeanUtils.copyProperties(accountDTO, userAccount);
                 userAccountService.update(userAccount);
-                resultVO.setMsg("已经绑定”"+name+"“提现账户，不需要重新绑定");
+                resultVO.setMsg("更新已绑定”"+name+"“提现账户，不需要重新绑定。");
                 resultVO.setCode(0);
                 return resultVO;
             }
         } catch (Exception e) {
             log.error("绑定提现账户失败", e);
-            resultVO.setMsg("绑定提现账户失败");
+            resultVO.setMsg("绑定提现账户失败。");
             resultVO.setCode(-1);
             return resultVO;
         } finally {

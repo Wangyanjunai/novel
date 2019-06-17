@@ -116,6 +116,8 @@ public enum ResultEnum implements CodeEnum<Object> {
     CATEGORY_PARENT_ERROR(53, "父级类目信息不存在的类目信息列表出现错误"),
 
     NOVEL_INFO_LIST_ERROR(54, "查询小说信息列表出现错误"),
+    
+    ORDER_PAY_TYPE_ERROR(55, "订单支付方式出现错误"),
     ;
 
     private Integer code;

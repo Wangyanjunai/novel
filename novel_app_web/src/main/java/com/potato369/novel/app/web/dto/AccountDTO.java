@@ -35,10 +35,10 @@ public class AccountDTO {
 
     /**
      * <pre>
-     * @JsonProperty accountInfo：账户信息。
+     * @JsonProperty accountInfo：账号信息。
      * </pre>
      */
-    @NotNull(message = "账号不能为空")
+    @NotNull(message = "账号不能为空。")
     @JsonProperty(value = "info")
     private String accountInfo;
 
@@ -47,7 +47,7 @@ public class AccountDTO {
      * @JsonProperty userId：用户mid。
      * </pre>
      */
-    @NotNull(message = "用户mid不能为空")
+    @NotNull(message = "用户mid不能为空。")
     @JsonProperty(value = "userId")
     private String userId;
 
@@ -56,7 +56,7 @@ public class AccountDTO {
      * @JsonProperty accountUserName：姓名。
      * </pre>
      */
-    @NotNull(message = "姓名不能为空")
+    @NotNull(message = "姓名不能为空。")
     @JsonProperty(value = "userName")
     private String accountUserName;
 
@@ -65,7 +65,7 @@ public class AccountDTO {
      * @JsonProperty accountIdNumber：身份证号码。
      * </pre>
      */
-    @NotNull(message = "身份证号码不能为空")
+    @NotNull(message = "身份证号码不能为空。")
     @JsonProperty(value = "idNumber")
     private String accountIdNumber;
 

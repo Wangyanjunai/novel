@@ -38,14 +38,14 @@ spring:
     password: foobared123!@#
 logging:
   level:
-    org.springframework.web: error
-    com.potato369.novel.basic: error
-    com.potato369.novel.app.web: error
-    com.alibaba.druid: error
-    com.potato369.novel.basic.dataobject.mapper: error
+    org.springframework.web: debug
+    com.potato369.novel.basic: debug
+    com.potato369.novel.app.web: debug
+    com.alibaba.druid: debug
+    com.potato369.novel.basic.dataobject.mapper: debug
 projectUrl: 
   projectName: /novel
-  domainUrl: http://potato369.mynatapp.cc
+  domainUrl: https://potato369.mynatapp.cc
   weChatMpAuthorizeUrl: /wechat/authorize
   weChatMpAuthorizeUrlUserInfo: /wechat/userInfo
   weChatOpenAuthorizeUrl: /wechat/qrAuthorize

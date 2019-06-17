@@ -12,7 +12,7 @@ spring:
     exposeSpringMacroHelpers: false
     prefer-file-system-access: true
     suffix: .ftl
-    charset: UTF-8
+    charset: utf-8
     template-loader-path: classpath:/templates/
 weChat:
   pay:
@@ -21,7 +21,7 @@ weChat:
     mchKey: 9dc8133c841faf945fd5844823755a34
     appSecret: 9dc8133c841faf945fd5844823755a34
     notifyUrl: /pay/notify
-    orderNamePrefix: 急速追书-充值
+    orderNamePrefix: 急速追书VIP会员-充值
 server:
   context-path: /novel
   port: 8080
