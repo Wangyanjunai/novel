@@ -1,7 +1,10 @@
 package com.potato369.novel.basic.dataobject;
 
 import com.potato369.novel.basic.dataobject.idClass.NovelShelfDetailIdClass;
-import com.potato369.novel.basic.enums.ShelfDetailEnum;
+import com.potato369.novel.basic.enums.ShelfDetailHasOrNotUpdateEnum;
+import com.potato369.novel.basic.enums.ShelfDetailIsOrNotPushEnum;
+import com.potato369.novel.basic.enums.ShelfDetailIsOrNotTopEnum;
+import com.potato369.novel.basic.utils.EnumUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -112,7 +115,7 @@ public class NovelShelfDetail implements Serializable {
 	 */
 	@Builder.Default
 	@Column(name = "has_update", length = 1)
-	private Integer hasUpdate = ShelfDetailEnum.NO_UPDATE.getCode();
+	private Integer hasUpdate = ShelfDetailHasOrNotUpdateEnum.NO_UPDATE.getCode();
 
 	/**
 	 * <pre>
@@ -129,7 +132,7 @@ public class NovelShelfDetail implements Serializable {
 	 */
 	@Builder.Default
 	@Column(name = "is_or_not_top", length = 1)
-	private Integer isOrNotTop = ShelfDetailEnum.NOT_TOP.getCode();
+	private Integer isOrNotTop = ShelfDetailIsOrNotTopEnum.NOT_TOP.getCode();
 
 	/**
 	 * <pre>
@@ -138,7 +141,7 @@ public class NovelShelfDetail implements Serializable {
 	 */
 	@Builder.Default
 	@Column(name = "is_or_not_push", length = 1)
-	private Integer isOrNotPush = ShelfDetailEnum.NOT_PUSH.getCode();
+	private Integer isOrNotPush = ShelfDetailIsOrNotPushEnum.NOT_PUSH.getCode();
 
 	/**
 	 * <pre>
@@ -171,4 +174,19 @@ public class NovelShelfDetail implements Serializable {
 	 */
 	@Column(name = "update_time", nullable = false, length = 64)
 	private Date updateTime;
+
+	@Transient
+	public ShelfDetailIsOrNotTopEnum getShelfDetailIsOrNotTopEnum() {
+		return EnumUtil.getByCode(isOrNotTop, ShelfDetailIsOrNotTopEnum.class);
+	}
+
+	@Transient
+	public ShelfDetailIsOrNotPushEnum getShelfDetailIsOrNotPushEnum() {
+		return EnumUtil.getByCode(isOrNotPush, ShelfDetailIsOrNotPushEnum.class);
+	}
+
+	@Transient
+	public ShelfDetailHasOrNotUpdateEnum getShelfDetailHasOrNotUpdateEnum() {
+		return EnumUtil.getByCode(hasUpdate, ShelfDetailHasOrNotUpdateEnum.class);
+	}
 }

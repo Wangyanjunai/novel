@@ -8,7 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.potato369.novel.basic.enums.NovelAdvertisementEnum;
+import com.potato369.novel.basic.enums.NovelAdvertisementTag1Enum;
+import com.potato369.novel.basic.enums.NovelAdvertisementTag2Enum;
+import com.potato369.novel.basic.utils.EnumUtil;
 import org.hibernate.annotations.DynamicUpdate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -59,7 +61,7 @@ public class NovelAdvertisement implements Serializable{
 	 */
 	@Builder.Default
 	@Column(name = "tag1", nullable = false, length = 1)
-	private Integer tag1 = NovelAdvertisementEnum.SKIP_AD.getCode();
+	private Integer tag1 = NovelAdvertisementTag1Enum.SKIP_AD.getCode();
 	
 	/**
 	 * <pre>
@@ -68,7 +70,7 @@ public class NovelAdvertisement implements Serializable{
 	 */
 	@Builder.Default
 	@Column(name = "tag2", nullable = false, length = 1)
-	private Integer tag2 = NovelAdvertisementEnum.JUMP.getCode();
+	private Integer tag2 = NovelAdvertisementTag2Enum.JUMP.getCode();
 	
 	/**
 	 * <pre>
@@ -117,4 +119,14 @@ public class NovelAdvertisement implements Serializable{
 	 */
 	@Column(name = "update_time", nullable = false, length = 64)
 	private Date updateTime;
+
+	@Transient
+	public NovelAdvertisementTag1Enum getNovelAdvertisementTag1Enum() {
+		return EnumUtil.getByCode(tag1, NovelAdvertisementTag1Enum.class);
+	}
+
+	@Transient
+	public NovelAdvertisementTag2Enum getNovelAdvertisementTag2Enum() {
+		return EnumUtil.getByCode(tag2, NovelAdvertisementTag2Enum.class);
+	}
 }

@@ -1,7 +1,7 @@
 package com.potato369.novel.service.impl;
 
 import com.potato369.novel.basic.dataobject.NovelCategory;
-import com.potato369.novel.basic.enums.CategoryEnum;
+import com.potato369.novel.basic.enums.CategoryIsDeleteEnum;
 import com.potato369.novel.basic.repository.CategoryRepository;
 import com.potato369.novel.converter.NovelCategory2CategoryDTOConverter;
 import com.potato369.novel.dto.CategoryDTO;
@@ -65,7 +65,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public CategoryDTO delete(String categoryId) {
 		NovelCategory novelCategory = novelCategoryRepository.findOne(categoryId);
-		novelCategory.setIsDeleted(CategoryEnum.DELETE.getCode());
+		novelCategory.setIsDeleted(CategoryIsDeleteEnum.DELETE.getCode());
 		return NovelCategory2CategoryDTOConverter.convert(novelCategoryRepository.saveAndFlush(novelCategory));
 	}
 

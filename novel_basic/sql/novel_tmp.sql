@@ -360,27 +360,58 @@ INSERT INTO `novel_vip_grade` VALUES ('450b9b4f90b14fb784f45643ded0dff7', 'VIP-2
 -- ----------------------------
 DROP TABLE IF EXISTS `novel_user_account`;
 CREATE TABLE `novel_user_account` (
-    `account_id` varchar(32) NOT NULL COMMENT '账户id，主键。',
-    `account_name` varchar(10) NULL DEFAULT NULL COMMENT '账户名称。',
-    `account_info` varchar(64) NULL DEFAULT NULL COMMENT '账号信息。',
-    `user_id` varchar(20) NOT NULL COMMENT '用户mid。',
-    `account_user_name` varchar(64) NULL DEFAULT NULL COMMENT '姓名。',
-    `account_id_number` varchar(64) NULL DEFAULT NULL COMMENT '身份证号码。',
-    `account_phone_number` varchar(64) NULL DEFAULT NULL COMMENT '手机号码。',
-    `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
-    `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间。',
-    PRIMARY KEY (`account_id`) USING BTREE,
-    INDEX `key_account_name`(`account_name`) USING BTREE,
-    INDEX `key_user_id`(`user_id`) USING BTREE
+	`account_id` varchar(32) NOT NULL COMMENT '账户id，主键。',
+	`account_name` varchar(10) NULL DEFAULT NULL COMMENT '账户名称。',
+	`account_info` varchar(64) NULL DEFAULT NULL COMMENT '账号信息。',
+	`user_id` varchar(20) NOT NULL COMMENT '用户mid。',
+	`account_user_name` varchar(64) NULL DEFAULT NULL COMMENT '姓名。',
+	`account_id_number` varchar(64) NULL DEFAULT NULL COMMENT '身份证号码。',
+	`account_phone_number` varchar(64) NULL DEFAULT NULL COMMENT '手机号码。',
+	`create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
+	`update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间。',
+	PRIMARY KEY (`account_id`) USING BTREE,
+	INDEX `key_account_name`(`account_name`) USING BTREE,
+	INDEX `key_user_id`(`user_id`) USING BTREE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户账户信息记录表。' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of novel_user_account
 -- ----------------------------
 
+-- ----------------------------
+-- 【14】Table structure for order_master
+-- ----------------------------
+DROP TABLE IF EXISTS `order_master`;
+CREATE TABLE `order_master` (
+  `order_id` varchar(32) NOT NULL COMMENT '订单id，主键。',
+  `user_id` varchar(20) NOT NULL COMMENT '用户mid。', 
+  `transactional_id` varchar(64) NULL DEFAULT NULL COMMENT '订单支付流水号。',
+  `buyer_name` varchar(64) NULL DEFAULT NULL COMMENT '买家名字。',
+  `buyer_address` varchar(128) NULL DEFAULT NULL COMMENT '买家地址。',
+  `buyer_openid` varchar(64) NULL DEFAULT NULL COMMENT '买家平台openid。', 
+  `product_id` varchar(32) NOT NULL COMMENT '商品id。',
+  `order_amount` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '订单总金额，默认：0.00。',
+  `order_name` varchar(64) NULL DEFAULT NULL COMMENT '订单名称。',
+  `order_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单产品类型，0-提现；1-兑换；2-充值，“默认：0-提现”。',
+  `order_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单状态，0-新订单；1-已完结；2-已取消，“默认：0-新订单”。',
+  `pay_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单支付状态，0-等待支付；1-支付成功；2-已经关闭，“默认：0-等待支付。”。',
+  `pay_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 NULL COMMENT '订单支付方式，1-支付宝；2-微信支付；3-余额支付，”默认：1-支付宝“。',
+  `pay_time` timestamp(0) NULL DEFAULT NULL COMMENT '订单支付时间。',
+  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0)  COMMENT '创建时间。',
+  `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0)  ON UPDATE CURRENT_TIMESTAMP(0)  COMMENT '更新时间。',
+  PRIMARY KEY (`order_id`) USING BTREE,
+  KEY `key_user_id` (`user_id`) USING BTREE,
+  KEY `key_transactional_id` (`transactional_id`) USING BTREE,
+  KEY `key_buyer_openid` (`buyer_openid`) USING BTREE,
+  KEY `key_product_id` (`product_id`) USING BTREE
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单信息记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- 【14】Table structure for order_detail
+-- Records of order_master
+-- ----------------------------
+
+-- ----------------------------
+-- 【15】Table structure for order_detail
 -- ----------------------------
 DROP TABLE IF EXISTS `order_detail`;
 CREATE TABLE `order_detail` (
@@ -389,9 +420,6 @@ CREATE TABLE `order_detail` (
   `user_id` varchar(20) NOT NULL COMMENT '用户mid。',
   `product_id` varchar(32) NOT NULL COMMENT '商品id。',
   `buyer_openid` varchar(64) NULL DEFAULT NULL COMMENT '买家openid。',
-  `pay_time` timestamp(0) NULL DEFAULT NULL COMMENT '支付时间。',
-  `start_time` timestamp(0) NULL DEFAULT NULL COMMENT 'VIP开始时间。',
-  `end_time` timestamp(0) NULL DEFAULT NULL COMMENT 'VIP结束时间。',
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间。',
   PRIMARY KEY (`detail_id`) USING BTREE,
@@ -405,62 +433,40 @@ CREATE TABLE `order_detail` (
 -- Records of order_detail
 -- ----------------------------
 
--- ----------------------------
--- 【15】Table structure for order_master
--- ----------------------------
-DROP TABLE IF EXISTS `order_master`;
-CREATE TABLE `order_master` (
-  `order_id` varchar(32) NOT NULL COMMENT '订单id，主键。',
-  `buyer_name` varchar(64) NOT NULL COMMENT '买家名字。',
-  `buyer_address` varchar(128) NULL DEFAULT NULL COMMENT '买家地址。',
-  `buyer_openid` varchar(64) NULL DEFAULT NULL COMMENT '买家openid。', 
-  `product_id` varchar(32) NOT NULL COMMENT '商品id。',
-  `order_amount` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '订单总金额，默认：0.00。',
-  `order_name` varchar(64) NULL DEFAULT NULL COMMENT '订单名称。',
-  `order_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单类型，0-提现；1-兑换；2-充值，“默认：0-提现”。',
-  `order_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单状态，0-新订单；1-已完结；2-已取消，“默认：0-新订单”。',
-  `pay_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单支付状态，0-等待支付；1-支付成功，“默认：0-等待支付”。',
-  `pay_type` tinyint(1) UNSIGNED NULL DEFAULT NULL COMMENT '订单支付方式，1-支付宝；2-微信支付；3-余额支付。',
-  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0)  COMMENT '创建时间。',
-  `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0)  ON UPDATE CURRENT_TIMESTAMP(0)  COMMENT '更新时间。',
-  PRIMARY KEY (`order_id`) USING BTREE,
-  KEY `key_buyer_openid` (`buyer_openid`) USING BTREE,
-  KEY `key_product_id` (`product_id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单信息记录表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of order_master
--- ----------------------------
 
 -- ----------------------------
 -- 【16】Table structure for product_info
 -- ----------------------------
+-- ----------------------------
+-- Table structure for product_info
+-- ----------------------------
 DROP TABLE IF EXISTS `product_info`;
 CREATE TABLE `product_info` (
-  `product_id` varchar(32) NOT NULL COMMENT '商品id，主键。',
-  `product_name` varchar(64) NOT NULL COMMENT '商品名称。',
-  `product_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '产品类型，0-充值，1-兑换；2-提现，默认：0-充值。',
-  `product_calculate_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '产品计算类型，0-按照天算，1-按照月算；默认0-按照天算。',
-  `product_amount` decimal(8, 2) NULL DEFAULT NULL COMMENT '商品总价（元）。',
-  `product_description` varchar(1024) NULL DEFAULT NULL COMMENT '商品描述。',
-  `date_value` smallint(2) NULL DEFAULT NULL COMMENT '加对应的日期值',
-  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
-  `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间',
-  PRIMARY KEY (`product_id`) USING BTREE,
-  INDEX `key_product_name`(`product_name`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品信息记录表' ROW_FORMAT = DYNAMIC;
+    `product_id` varchar(32) NOT NULL COMMENT '商品id，主键。',
+    `product_name` varchar(64) NOT NULL COMMENT '商品名称。',
+    `product_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '产品类型，0-充值，1-兑换；2-提现，默认：0-充值。',
+    `product_calculate_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '计算类型，0-按照天算，1-按照月算；默认0-按照天算。',
+    `product_amount` decimal(8,2) DEFAULT NULL COMMENT '商品总价（元）。',
+    `product_description` varchar(1024) DEFAULT NULL COMMENT '商品描述。',
+    `date_value` smallint(2) DEFAULT NULL COMMENT '对应的日期值',
+    `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间。',
+    `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    PRIMARY KEY (`product_id`) USING BTREE,
+    KEY `key_product_name` (`product_name`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='商品信息记录表';
 
 -- ----------------------------
 -- Records of product_info
 -- ----------------------------
-INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bf', 'VIP7天', '0', '5.00', '兑换VIP-2等级权限7天。', '2019-06-05 10:22:53', '2019-06-05 10:25:34');
-INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bg', 'VIP30天', '0', '20.00', '兑换VIP-2等级权限30天。', '2019-06-05 10:23:55', '2019-06-05 10:24:10');
-INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bh', 'VIP60天', '0', '40.00', '兑换VIP-2等级权限60天。', '2019-06-05 10:24:51', '2019-06-05 10:25:21');
-INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bi', 'VIP90天', '0', '60.00', '兑换VIP-2等级权限90天。', '2019-06-05 10:26:00', '2019-06-05 10:26:21');
-INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4cb9', '1一个月VIP', '1', '10.00', '开通一个月VIP-2等级权限。', '2019-06-05 10:28:20', '2019-06-05 10:28:20');
-INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4cc9', '3个月VIP', '1', '30.00', '开通三个月VIP-2等级权限。', '2019-06-05 10:29:04', '2019-06-05 10:29:21');
-INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4cd9', '6六个月VIP', '1', '60.00', '开通六个月VIP-2等级权限。', '2019-06-05 10:29:53', '2019-06-05 10:30:30');
-INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4ce9', '12个月VIP', '1', '120.00', '开通十二个月VIP-2等级权限。', '2019-06-05 10:31:05', '2019-06-05 10:31:22');
+INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bf', 'VIP - 7天', '1', '0', '5.00', '兑换VIP2等级权限7天。', '7', '2019-06-05 10:22:53', '2019-06-13 17:41:12');
+INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bg', 'VIP - 30天', '1', '0', '20.00', '兑换VIP2等级权限30天。', '30', '2019-06-05 10:23:55', '2019-06-13 17:41:14');
+INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bh', 'VIP - 60天', '1', '0', '40.00', '兑换VIP2等级权限60天。', '60', '2019-06-05 10:24:51', '2019-06-13 17:41:15');
+INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bi', 'VIP - 90天', '1', '0', '60.00', '兑换VIP2等级权限90天。', '90', '2019-06-05 10:26:00', '2019-06-13 17:41:20');
+INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4ae9', '提现20元', '2', '2', '20.00', '提现20元。', null, '2019-06-11 17:17:27', '2019-06-13 17:39:09');
+INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4cb9', '1个月 - VIP', '0', '1', '10.00', '充值开通一个月VIP2等级权限。', '1', '2019-06-05 10:28:20', '2019-06-13 17:46:54');
+INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4cc9', '3个月 - VIP', '0', '1', '30.00', '充值开通三个月VIP2等级权限。', '3', '2019-06-05 10:29:04', '2019-06-13 17:47:20');
+INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4cd9', '6个月 - VIP', '0', '1', '60.00', '充值开通六个月VIP2等级权限。', '6', '2019-06-05 10:29:53', '2019-06-13 17:47:05');
+INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4ce9', '12个月 - VIP', '0', '1', '120.00', '充值开通十二个月VIP2等级权限。', '12', '2019-06-05 10:31:05', '2019-06-13 17:47:11');
 
 
 -- ----------------------------

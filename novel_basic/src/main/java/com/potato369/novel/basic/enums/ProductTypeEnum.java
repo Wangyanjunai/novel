@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 /**
  * <pre>
  * @PackageName com.potato369.novel.enums
- * @EnumName PayStatusEnum
- * @Desc 支付状态枚举
+ * @EnumName ProductCalculateTypeEnum
+ * @Desc 产品信息枚举
  * @WebSite https://www.potato369.com
  * @Author Jack
- * @Date 2019/01/08 17:40
+ * @Date 2019/01/11 10:40
  * @CreateBy IntellJ IDEA 2018.3.2
  * @Copyright Copyright (c) 2016 ~ 2020 版权所有 (C) 土豆互联科技(深圳)有限公司 https://www.potato369.com All Rights Reserved。
  * </pre>
@@ -19,23 +19,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @NoArgsConstructor
-public enum PayStatusEnum implements CodeEnum<Object> {
+public enum ProductTypeEnum implements CodeEnum<Object> {
 
-    WAITING(0, "等待支付"),
+    CHARGE(0, "充值"),
 
-    SUCCESS(1, "支付成功"),
+    EXCHANGE(1, "兑换"),
 
-    FAIL(2, "支付失败"),
-    
-    DEDUCT_ING(3, "等待扣除"),
-    
-    DEDUCT_SUCCESSED(4, "扣除成功"),
-    
-    DEDUCT_FAILED(5, "扣除失败"),
+    WITHDRAW(2, "提现"),
+
     ;
 
     private Integer code;
 
     private String message;
-
 }

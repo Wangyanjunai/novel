@@ -84,30 +84,6 @@ public class OrderDetail implements Serializable {
 
     /**
      * <pre>
-     * @serialField payTime：支付时间。
-     * </pre>
-     */
-    @Column(name = "pay_time", length = 64)
-    private Date payTime;
-    
-    /**
-     * <pre>
-     * @serialField startTime：VIP开始时间。
-     * </pre>
-     */
-    @Column(name = "start_time", length = 64)
-    private Date startTime;
-    
-    /**
-     * <pre>
-     * @serialField endTime：VIP结束时间。
-     * </pre>
-     */
-    @Column(name = "end_time", length = 64)
-    private Date endTime;
-
-    /**
-     * <pre>
      * @serialField createTime：创建时间。
      * </pre>
      */

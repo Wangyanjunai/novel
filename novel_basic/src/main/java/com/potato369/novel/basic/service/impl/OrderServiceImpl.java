@@ -4,14 +4,13 @@ import com.potato369.novel.basic.dataobject.OrderDetail;
 import com.potato369.novel.basic.dataobject.OrderMaster;
 import com.potato369.novel.basic.dataobject.ProductInfo;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
-import com.potato369.novel.basic.enums.OrderStatusEnum;
-import com.potato369.novel.basic.enums.PayStatusEnum;
-import com.potato369.novel.basic.enums.ResultEnum;
+import com.potato369.novel.basic.enums.*;
 import com.potato369.novel.basic.repository.OrderDetailRepository;
 import com.potato369.novel.basic.repository.OrderMasterRepository;
 import com.potato369.novel.basic.repository.ProductInfoRepository;
 import com.potato369.novel.basic.repository.UserInfoRepository;
 import com.potato369.novel.basic.service.OrderService;
+import com.potato369.novel.basic.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -186,7 +185,7 @@ public class OrderServiceImpl implements OrderService {
     }
     /**
      * <pre>
-     * 支付订单
+     * 回调修改支付订单状态
      * @param orderMaster
      * @return OrderMaster.class
      * </pre>
@@ -196,72 +195,65 @@ public class OrderServiceImpl implements OrderService {
         Date now = new Date();
         /** 1、判断订单状态 */
         if (OrderStatusEnum.NEW.getCode() != orderMaster.getOrderStatus()){
-            log.error("【微信APP支付订单】订单状态不正确， orderId={}，orderStatus={}", orderMaster.getOrderId(), orderMaster.getOrderStatus());
+            log.error("【微信APP支付订单】订单状态不正确， 订单id={}，订单状态={}", orderMaster.getOrderId(), orderMaster.getOrderStatus());
             throw new Exception(ResultEnum.ORDER_STATUS_ERROR.getMessage());
         }
-        /** 2、判断支付状态 */
+        /** 2、判断订单支付状态 */
         if (PayStatusEnum.WAITING.getCode() != orderMaster.getPayStatus()){
-            log.error("【微信APP支付订单】订单支付状态不正确， orderId={}，orderStatus={}", orderMaster.getOrderId(), orderMaster.getPayStatus());
+            log.error("【微信APP支付订单】订单支付状态不正确， 订单id={}，订单支付状态={}", orderMaster.getOrderId(), orderMaster.getPayStatus());
             throw new Exception(ResultEnum.ORDER_PAY_STATUS_ERROR.getMessage());
         }
-        /** 3、判断支付方式 */
-        if (PayStatusEnum.PAY_WITH_WECHAT.getCode() != orderMaster.getPayType()) {
-        	log.error("【微信APP支付订单】订单支付方式不正确， orderId={}，payType={}", orderMaster.getOrderId(), orderMaster.getPayType());
+        /** 3、判断订单支付方式 */
+        if (PayTypeEnum.PAY_WITH_WECHAT.getCode() != orderMaster.getPayType()) {
+        	log.error("【微信APP支付订单】订单支付方式不正确， 订单id={}，订单支付方式={}", orderMaster.getOrderId(), orderMaster.getPayType());
             throw new Exception(ResultEnum.ORDER_PAY_TYPE_ERROR.getMessage());
 		}
-        /** 3、修改订单支付状态 */
-        orderMaster.setPayStatus(PayStatusEnum.SUCCESS.getCode());
-        orderMaster.setPayType(orderMaster.getPayType());
-        orderMaster.setOrderStatus(OrderStatusEnum.FINISHED.getCode());
+        /** 4、修改订单状态 */
+        orderMaster.setPayStatus(PayStatusEnum.SUCCESS.getCode());//订单支付状态：成功
+        orderMaster.setOrderStatus(OrderStatusEnum.FINISHED.getCode());//订单状态，完成
         List<OrderDetail> orderDetailList = orderMaster.getOrderDetailList();
-        for (OrderDetail orderDetail : orderDetailList) {
-            orderDetail.setPayTime(now);
+        for (OrderDetail orderDetail:orderDetailList) {
             ProductInfo productInfo = productRepository.findOne(orderDetail.getProductId());
             if (productInfo == null) {
-                log.error("【查询书币产品信息】书币产品信息不存在， 产品id={}", orderDetail.getProductId());
+                log.error("【查询商品信息】商品信息信息不存在， 产品id={}", orderDetail.getProductId());
                 throw new Exception(ResultEnum.PRODUCT_NOT_EXIST.getMessage());
             }
-            if (productInfo.getProductId().equals("5ff041a3da12455b83546e2987741a10")) {
-                Calendar calendar =Calendar.getInstance();
-                calendar.setTime(now);
-                calendar.add(Calendar.YEAR, 1);
-//                orderMaster.setEndTime(calendar.getTime());
-                orderDetail.setEndTime(calendar.getTime());
-            }
-            if (productInfo.getProductId().equals("80edd2c1503249debecd2ce523f1fa12")) {
-                Calendar calendar =Calendar.getInstance();
-                calendar.setTime(now);
-                calendar.add(Calendar.MONTH, 3);
-//                orderMaster.setEndTime(calendar.getTime());
-                orderDetail.setEndTime(calendar.getTime());
-            }else {
-//                orderMaster.setEndTime(now);
-                orderDetail.setEndTime(now);
-            }
             /**给对应的用户发放书币*/
-            NovelUserInfo userInfo = userInfoRepository.selectByUserOpenid(orderMaster.getBuyerOpenid());
+            NovelUserInfo userInfo = userInfoRepository.selectByUserMId(orderDetail.getUserId());
             if (userInfo == null) {
-                log.error("【微信公众号支付更新订单】给对应的用户发放书币失败，用户微信openid={}", orderMaster.getBuyerOpenid());
+                log.error("【微信APP支付更新订单】给对应的用户时长失败，用户mid={}", orderDetail.getUserId());
                 throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
             }
-            BigDecimal balance = userInfo.getBalanceAmount();
-            userInfo.setBalanceAmount(balance);
+            BigDecimal chargeAmount = userInfo.getChargeAmount();
+            userInfo.setChargeAmount(chargeAmount.add(orderMaster.getOrderAmount()));
+            userInfo.setVipGradeId(UserInfoVIPGradeIdEnum.VIP2.getMessage());
+            Date vipEndTime = userInfo.getVipEndTime();
+            Integer calculateType = productInfo.getProductCalculateType();
+            Integer dateValue = productInfo.getDateValue();
+            Date updateVIPEndTime = null;
+            if (ProductCalculateTypeEnum.DAY.getCode().equals(calculateType)) {
+                updateVIPEndTime = DateUtil.getAfterDayDate(vipEndTime, dateValue);
+            }
+            if (ProductCalculateTypeEnum.MONTH.getCode().equals(calculateType)) {
+                updateVIPEndTime = DateUtil.getAfterMonthDate(vipEndTime, dateValue);
+            }
+            userInfo.setVipEndTime(updateVIPEndTime);
             NovelUserInfo userInfoUpdateResult =  userInfoRepository.save(userInfo);
             if (userInfoUpdateResult == null) {
-                log.error("【微信公众号支付更新订单】给对应的用户发放书币失败，用户信息={}", userInfo);
+                log.error("【微信APP支付更新订单】给对应的用户时长失败，用户信息={}", userInfo);
                 throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
             }
             /**更新订单详情表数据*/
             OrderDetail orderDetailUpdateResult = orderDetailRepository.save(orderDetail);
             if (orderDetailUpdateResult == null) {
-                log.error("【微信公众号支付更新订单】更新订单订单详情失败，orderDetail={}", orderDetail);
+                log.error("【微信APP支付更新订单】更新订单订单详情失败，orderDetail={}", orderDetail);
                 throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
             }
         }
         /**更新订单表数据*/
         OrderMaster orderMasterUpdateResult = orderMasterRepository.save(orderMaster);
         if (orderMasterUpdateResult == null) {
-            log.error("【微信公众号支付更新订单】更新订单失败，orderMaster={}", orderMaster);
+            log.error("【微信APP支付更新订单】更新订单失败，orderMaster={}", orderMaster);
             throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
         }
         return orderMaster;

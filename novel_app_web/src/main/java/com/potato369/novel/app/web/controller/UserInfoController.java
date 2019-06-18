@@ -6,7 +6,7 @@ import com.potato369.novel.app.web.vo.ResultVO;
 import com.potato369.novel.app.web.vo.UserInfoVO;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.dataobject.NovelVipGrade;
-import com.potato369.novel.basic.enums.UserInfoEnum;
+import com.potato369.novel.basic.enums.UserInfoGenderEnum;
 import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.basic.service.VipGradeService;
 import com.potato369.novel.basic.utils.DateUtil;
@@ -82,7 +82,7 @@ public class UserInfoController {
                 userType = userInfoDTO.getUserType();
                 gender = userInfoDTO.getGender();
             }
-            if (UserInfoEnum.VISITOR.getCode().equals(userType)) {
+            if (UserInfoGenderEnum.VISITOR.getCode().equals(userType)) {
             	novelUserInfo = userInfoService.findByUserMeIdAndUserType(meId, userType);
             	if (novelUserInfo != null) {
             		NovelVipGrade vipGrade = vipGradeService.findOne(novelUserInfo.getVipGradeId());
@@ -95,15 +95,15 @@ public class UserInfoController {
                     }
 				} else {
 					novelUserInfo = UserInfo2UserInfoDTOConverter.convert(userInfoDTO);
-	        		if (UserInfoEnum.WECHAT.getCode().equals(userType)) {
-	        			novelUserInfo.setIsOrNotBandWechat(UserInfoEnum.FINISHED.getCode());
+	        		if (UserInfoGenderEnum.WECHAT.getCode().equals(userType)) {
+	        			novelUserInfo.setIsOrNotBandWechat(UserInfoGenderEnum.FINISHED.getCode());
 	        			novelUserInfo.setBalanceAmount(new BigDecimal(6.66));
 					} else {
-						novelUserInfo.setIsOrNotBandWechat(UserInfoEnum.UNFINISHED.getCode());
+						novelUserInfo.setIsOrNotBandWechat(UserInfoGenderEnum.UNFINISHED.getCode());
 						novelUserInfo.setBalanceAmount(BigDecimal.ZERO);
 					}
 	        		if (gender == null) {
-	        			novelUserInfo.setGender(UserInfoEnum.GENDER_UNKNOWN.getCode());
+	        			novelUserInfo.setGender(UserInfoGenderEnum.GENDER_UNKNOWN.getCode());
 					}
 	        		NovelVipGrade vipGrade = vipGradeService.findOne(novelUserInfo.getVipGradeId());
 	        		if (vipGrade != null) {
@@ -122,15 +122,15 @@ public class UserInfoController {
 				novelUserInfo = userInfoService.findByMeIdAndOpenidAndUserType(meId, openid, userType);
 	            if (novelUserInfo == null) {
 	            	novelUserInfo = UserInfo2UserInfoDTOConverter.convert(userInfoDTO);
-	        		if (UserInfoEnum.WECHAT.getCode().equals(userType)) {
-	        			novelUserInfo.setIsOrNotBandWechat(UserInfoEnum.FINISHED.getCode());
+	        		if (UserInfoGenderEnum.WECHAT.getCode().equals(userType)) {
+	        			novelUserInfo.setIsOrNotBandWechat(UserInfoGenderEnum.FINISHED.getCode());
 	        			novelUserInfo.setBalanceAmount(new BigDecimal(6.66));
 					} else {
-						novelUserInfo.setIsOrNotBandWechat(UserInfoEnum.UNFINISHED.getCode());
+						novelUserInfo.setIsOrNotBandWechat(UserInfoGenderEnum.UNFINISHED.getCode());
 						novelUserInfo.setBalanceAmount(BigDecimal.ZERO);
 					}
 	        		if (gender == null) {
-	        			novelUserInfo.setGender(UserInfoEnum.GENDER_UNKNOWN.getCode());
+	        			novelUserInfo.setGender(UserInfoGenderEnum.GENDER_UNKNOWN.getCode());
 					}
 	        		NovelVipGrade vipGrade = vipGradeService.findOne(novelUserInfo.getVipGradeId());
 	        		if (vipGrade != null) {

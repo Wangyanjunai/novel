@@ -1,6 +1,7 @@
 package com.potato369.novel.basic.dataobject;
 
-import com.potato369.novel.basic.enums.CategoryEnum;
+import com.potato369.novel.basic.enums.CategoryIsDeleteEnum;
+import com.potato369.novel.basic.utils.EnumUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -117,7 +118,7 @@ public class NovelCategory implements Serializable {
      */
     @Builder.Default
     @Column(name = "is_deleted", length = 1)
-    private Integer isDeleted = CategoryEnum.NOT_DELETE.getCode();
+    private Integer isDeleted = CategoryIsDeleteEnum.NOT_DELETE.getCode();
 
     /**
      * <pre>
@@ -134,4 +135,9 @@ public class NovelCategory implements Serializable {
      */
     @Column(name = "update_time", nullable = false, length = 64)
     private Date updateTime;
+
+    @Transient
+    public CategoryIsDeleteEnum getCategoryIsDeleteEnum() {
+        return EnumUtil.getByCode(isDeleted, CategoryIsDeleteEnum.class);
+    }
 }

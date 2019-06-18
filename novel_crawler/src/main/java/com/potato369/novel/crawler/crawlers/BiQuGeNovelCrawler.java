@@ -4,6 +4,9 @@ import cn.wanghaomiao.seimi.annotation.Crawler;
 import cn.wanghaomiao.seimi.def.BaseSeimiCrawler;
 import cn.wanghaomiao.seimi.struct.Request;
 import cn.wanghaomiao.seimi.struct.Response;
+import com.potato369.novel.basic.enums.CategoryIsDeleteEnum;
+import com.potato369.novel.basic.enums.CategoryTypeEnum;
+import com.potato369.novel.basic.enums.NovelInfoStatusEnum;
 import com.potato369.novel.basic.service.NovelInfoService;
 import com.potato369.novel.basic.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +15,6 @@ import java.util.List;
 import org.seimicrawler.xpath.JXDocument;
 import com.potato369.novel.basic.dataobject.NovelChapter;
 import com.potato369.novel.basic.dataobject.NovelInfo;
-import com.potato369.novel.basic.enums.CategoryEnum;
-import com.potato369.novel.basic.enums.NovelInfoEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 /**
  * <pre>
@@ -89,10 +90,10 @@ public class BiQuGeNovelCrawler extends BaseSeimiCrawler{
 			novelInfo.setCoverURL(DOMAIN_URL.concat(novelInfo.getCoverURL()));
 			novelInfo.setAuthor(novelInfo.getAuthor().split("：")[1]);
 			String realUrl = response.getRealUrl();
-			CategoryEnum category = getCategoryType(realUrl);
+			CategoryTypeEnum category = getCategoryType(realUrl);
 			novelInfo.setCategoryType(category.getCode());
 			novelInfo.setCategoryENText(category.getMessage());
-			novelInfo.setNovelStatus(NovelInfoEnum.NOVEL_STATUS_FINISHED.getCode());
+			novelInfo.setNovelStatus(NovelInfoStatusEnum.NOVEL_STATUS_FINISHED.getCode());
 //			novelInfo.setHaveRead(category.getCode());
 //			novelInfo.setType(category.getCode());
 			log.info("novelInfo={}", novelInfo);
@@ -129,23 +130,23 @@ public class BiQuGeNovelCrawler extends BaseSeimiCrawler{
 		}
 	}
 	
-	public CategoryEnum getCategoryType(String realUrl) {
+	public CategoryTypeEnum getCategoryType(String realUrl) {
 		if (realUrl.contains("xuanhuanxiaoshuo")) {
-			return CategoryEnum.XUANYILINGYI;
+			return CategoryTypeEnum.XUANHUANQIHUAN;
 		} if (realUrl.contains("xiuzhenxiaoshuo")) {
-			return CategoryEnum.XIUXIANXIUZHEN;
+			return CategoryTypeEnum.XIUXIANXIUZHEN;
 		} if (realUrl.contains("dushixiaoshuo")) {
-			return CategoryEnum.DUSHIQINGGAN;
+			return CategoryTypeEnum.DUSHIQINGGAN;
 		} if (realUrl.contains("chuanyuexiaoshuo")) {
-			return CategoryEnum.CHUANGYUECHONGSHENG;
+			return CategoryTypeEnum.CHUANGYUECHONGSHENG;
 		} if (realUrl.contains("wangyouxiaoshuo")) {
-			return CategoryEnum.YOUXIJINGJI;
+			return CategoryTypeEnum.YOUXIJINGJI;
 		} if (realUrl.contains("kehuanxiaoshuo")) {
-			return CategoryEnum.KEHUANMOSHI;
+			return CategoryTypeEnum.KEHUANMOSHI;
 		} if (realUrl.contains("qitaxiaoshuo")) {
-			return CategoryEnum.QITALEIBIE;
+			return CategoryTypeEnum.QITALEIBIE;
 		} else {
-			return CategoryEnum.QITALEIBIE;
+			return CategoryTypeEnum.QITALEIBIE;
 		}
 	}
 }

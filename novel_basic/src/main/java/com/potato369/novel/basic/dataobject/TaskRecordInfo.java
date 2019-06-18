@@ -1,6 +1,6 @@
 package com.potato369.novel.basic.dataobject;
 
-import com.potato369.novel.basic.enums.TaskInfoEnum;
+import com.potato369.novel.basic.enums.TaskTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -70,7 +70,7 @@ public class TaskRecordInfo implements Serializable{
 	 */
 	@Builder.Default
 	@Column(name = "task_status", nullable = false, length = 1)
-	private Integer taskStatus = TaskInfoEnum.UNFINISHED.getCode();
+	private Integer taskStatus = TaskTypeEnum.UNFINISHED.getCode();
 
 	/**
 	 * <pre>

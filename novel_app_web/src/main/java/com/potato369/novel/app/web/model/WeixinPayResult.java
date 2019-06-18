@@ -38,54 +38,13 @@ public class WeixinPayResult {
 	 */
 	@JsonProperty(value = "return_msg")
 	private String returnMsg;
-
-    /** 以下字段仅在微信APP支付返回。*/
-	/**
-	 * <pre>
-	 * @JsonProperty appid：应用APPID，调用接口提交的应用ID。
-	 * </pre>
-	 */
-	@JsonProperty(value = "appid")
-    private String appid;
 	
-	/**
-	 * <pre>
-	 * @JsonProperty mchId：商户号，调用接口提交的商户号。
-	 * </pre>
-	 */
-	@JsonProperty(value = "mch_id")
-	private String mchId;
-	
-	/**
-	 * <pre>
-	 * @JsonProperty deviceInfo：设备号，调用接口提交的终端设备号。
-	 * </pre>
-	 */
-	@JsonProperty(value = "device_info")
-	private String deviceInfo;
-
-	/**
-	 * <pre>
-	 * @JsonProperty nonceStr：随机字符串，微信返回的随机字符串。
-	 * </pre>
-	 */
-	@JsonProperty(value = "nonce_str")
-    private String nonceStr;
-
-	/**
-	 * <pre>
-	 * @JsonProperty sign：签名，微信返回的签名，详见签名算法。
-	 * </pre>
-	 */
-    @JsonProperty("sign")
-    private String sign;
-    
     /**
 	 * <pre>
 	 * @JsonProperty resultCode：业务结果，微信返回的业务结果，SUCCESS/FAIL。
 	 * </pre>
 	 */
-    @JsonProperty("result_code")
+    @JsonProperty(value = "result_code")
     private String resultCode;
 
     /**
@@ -93,7 +52,7 @@ public class WeixinPayResult {
 	 * @JsonProperty errCode：错误代码，详细参见第6节错误列表。
 	 * </pre>
 	 */
-    @JsonProperty("err_code")
+    @JsonProperty(value = "err_code")
     private String errCode;
     
     /**
@@ -101,22 +60,65 @@ public class WeixinPayResult {
 	 * @JsonProperty errCodeDes：错误代码描述，错误返回的信息描述。
 	 * </pre>
 	 */
-    @JsonProperty("err_code_des")
+    @JsonProperty(value = "err_code_des")
     private String errCodeDes;
+    
+	/**
+	 * <pre>
+	 * @JsonProperty appId：应用APPID，微信开放平台审核通过的应用APPID。
+	 * </pre>
+	 */
+	@JsonProperty(value = "appid")
+    private String appId;
+	
+    /**
+	 * <pre>
+	 * @JsonProperty partnerId：商户号，微信支付分配的商户号。
+	 * </pre>
+	 */
+    @JsonProperty(value = "partnerid")
+    private String partnerId;
     
     /**
 	 * <pre>
-	 * @JsonProperty tradeType：交易类型，调用接口提交的交易类型，取值如下：JSAPI，NATIVE，APP，详细说明见参数规定。
+	 * @JsonProperty prepayId：预支付交易会话ID，微信返回的支付交易会话ID。
 	 * </pre>
 	 */
-    @JsonProperty("trade_type")
-    private String tradeType;
-
-    /**
-	 * <pre>
-	 * @JsonProperty prepayId：预支付交易会话标识，微信生成的预支付回话标识，用于后续接口调用中使用，该值有效期为2小时。
-	 * </pre>
-	 */
-    @JsonProperty("prepay_id")
+    @JsonProperty(value = "prepayid")
     private String prepayId;
+    
+    /**
+     * <pre>
+     * 由于package为java保留关键字，因此改为packageValue. 前端使用时记得要更改为package
+     * @JsonProperty packageValue：扩展字段，暂填写固定值Sign=WXPay
+     * </pre>
+     */
+    @JsonProperty(value = "package")
+    private String packageValue;
+
+	/**
+	 * <pre>
+	 * @JsonProperty nonceStr：随机字符串，微信返回的随机字符串。
+	 * </pre>
+	 */
+	@JsonProperty(value = "noncestr")
+    private String nonceStr;
+	
+    /**
+     * <pre>
+     * @JsonProperty timeStamp：时间戳，时间戳，请见接口规则-参数规定。
+     * </pre>
+     */
+    @JsonProperty(value = "timestamp")
+    private String timeStamp;
+
+	/**
+	 * <pre>
+	 * @JsonProperty sign：签名，微信返回的签名，详见签名算法。
+	 * </pre>
+	 */
+    @JsonProperty(value = "sign")
+    private String sign;
+
+
 }

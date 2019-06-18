@@ -113,10 +113,10 @@ public class BuyerPayController {
 //        orderDTO.setBuyerAddress(userInfo.getCountry().concat(userInfo.getProvince()).concat(userInfo.getCity()));
         orderDTO.setBuyerOpenid(openid);
         BigDecimal orderAmount = BigDecimal.ZERO;
-//        if (productInfo.getProductType() == ProductInfoEnum.COIN.getCode()) {
+//        if (productInfo.getProductType() == ProductCalculateTypeEnum.COIN.getCode()) {
 ////            orderAmount = productInfo.getProductPrice().multiply(productInfo.getProductQuantity());
 //        }
-//        if (productInfo.getProductType() == ProductInfoEnum.VIP.getCode()) {
+//        if (productInfo.getProductType() == ProductCalculateTypeEnum.VIP.getCode()) {
 //            orderAmount = productInfo.getProductAmount();
 //        }
         orderDTO.setOrderAmount(orderAmount);

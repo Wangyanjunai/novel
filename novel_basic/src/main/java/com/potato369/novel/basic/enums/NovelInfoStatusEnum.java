@@ -1,7 +1,7 @@
 /**
  * <pre>
  * Project Name: novel
- * File Name: NovelInfoEnum.java
+ * File Name: NovelInfoStatusEnum.java
  * Package Name: com.potato369.novel.enums
  * Create Date: 2018年12月18日 下午2:49:37
  * Copyright (c) 2018, 版权所有 (C) 2016-2036 土豆互联科技(深圳)有限公司 www.potato369.com All Rights Reserved
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 /**
  * <pre>
  * @PackageName com.potato369.novel.enums
- * @ClassName NovelInfoEnum
+ * @ClassName NovelInfoStatusEnum
  * @Desc 描述此类实现的功能作用
  * @WebSite https://www.potato369.com
  * @Author 王艳军
@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @NoArgsConstructor
-public enum NovelInfoEnum implements CodeEnum<Object> {
+public enum NovelInfoStatusEnum implements CodeEnum<Object> {
 
     NOT_SELECTED(0, Boolean.FALSE, "否"),
 

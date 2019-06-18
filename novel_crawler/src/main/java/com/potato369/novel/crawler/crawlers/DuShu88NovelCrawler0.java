@@ -6,13 +6,10 @@ import cn.wanghaomiao.seimi.struct.Request;
 import cn.wanghaomiao.seimi.struct.Response;
 import com.potato369.novel.basic.constants.BusinessConstants;
 import com.potato369.novel.basic.dataobject.NovelInfo;
-import com.potato369.novel.basic.enums.CategoryEnum;
-import com.potato369.novel.basic.enums.NovelInfoEnum;
+import com.potato369.novel.basic.enums.NovelInfoStatusEnum;
 import com.potato369.novel.basic.service.NovelInfoService;
-import com.potato369.novel.basic.utils.BeanUtil;
 import com.potato369.novel.basic.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.seimicrawler.xpath.JXDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -264,14 +261,14 @@ public class DuShu88NovelCrawler0 extends BaseSeimiCrawler{
 		}
 		log.debug("5、小说总字数=={}", novelTotalWordsDecimal);
 		novelInfo.setTotalWords(novelTotalWordsDecimal);//5、设置小说总字数
-		String novelStatusStr = NovelInfoEnum.NOVEL_STATUS_UPDATING.getMessage();//默认：连载中
-		Integer status = NovelInfoEnum.NOVEL_STATUS_UPDATING.getCode();//默认：1，连载中
+		String novelStatusStr = NovelInfoStatusEnum.NOVEL_STATUS_UPDATING.getMessage();//默认：连载中
+		Integer status = NovelInfoStatusEnum.NOVEL_STATUS_UPDATING.getCode();//默认：1，连载中
 		if (statusObj != null) {
 			novelStatusStr = statusObj.toString();
 		}
-		if (NovelInfoEnum.NOVEL_STATUS_FINISHED.getMessage().equals(novelStatusStr)) {
-			novelStatusStr = NovelInfoEnum.NOVEL_STATUS_FINISHED.getMessage();
-			status = NovelInfoEnum.NOVEL_STATUS_FINISHED.getCode();//已完成
+		if (NovelInfoStatusEnum.NOVEL_STATUS_FINISHED.getMessage().equals(novelStatusStr)) {
+			novelStatusStr = NovelInfoStatusEnum.NOVEL_STATUS_FINISHED.getMessage();
+			status = NovelInfoStatusEnum.NOVEL_STATUS_FINISHED.getCode();//已完成
 		}
 		log.debug("6、小说状态=={}", novelStatusStr);
 		novelInfo.setNovelStatus(status);//6、设置小说更新状态

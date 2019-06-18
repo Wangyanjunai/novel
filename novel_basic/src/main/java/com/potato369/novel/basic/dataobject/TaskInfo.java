@@ -8,7 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.potato369.novel.basic.enums.TaskInfoEnum;
+import com.potato369.novel.basic.enums.TaskTypeEnum;
+import com.potato369.novel.basic.utils.EnumUtil;
 import org.hibernate.annotations.DynamicUpdate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -75,7 +76,7 @@ public class TaskInfo implements Serializable{
 	 */
 	@Builder.Default
 	@Column(name = "task_type", nullable = false, length = 1)
-	private Integer taskType = TaskInfoEnum.BINDING.getCode();
+	private Integer taskType = TaskTypeEnum.BINDING.getCode();
 	
 	/**
 	 * <pre>
@@ -109,4 +110,9 @@ public class TaskInfo implements Serializable{
 	 */
 	@Column(name = "update_time", nullable = false, length = 64)
 	private Date updateTime;
+
+	@Transient
+	public TaskTypeEnum getTaskTypeEnum() {
+		return EnumUtil.getByCode(taskType, TaskTypeEnum.class);
+	}
 }

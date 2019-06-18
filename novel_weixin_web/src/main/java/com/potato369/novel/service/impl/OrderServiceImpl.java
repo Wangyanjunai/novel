@@ -257,7 +257,7 @@ public class OrderServiceImpl implements OrderService {
 //        orderMaster.setPayTime(now);
         List<OrderDetail> orderDetailList = orderDTO.getOrderDetailList();
         for (OrderDetail orderDetail : orderDetailList) {
-            orderDetail.setPayTime(now);
+//            orderDetail.setPayTime(now);
             ProductInfo productInfo = productService.findOne(orderDetail.getProductId());
             if (productInfo == null) {
                 log.error("【查询书币产品信息】书币产品信息不存在， 产品id={}", orderDetail.getProductId());
@@ -268,17 +268,17 @@ public class OrderServiceImpl implements OrderService {
                 calendar.setTime(now);
                 calendar.add(Calendar.YEAR, 1);
 //                orderMaster.setEndTime(calendar.getTime());
-                orderDetail.setEndTime(calendar.getTime());
+//                orderDetail.setEndTime(calendar.getTime());
             }
             if (productInfo.getProductId().equals("80edd2c1503249debecd2ce523f1fa12")) {
                 Calendar calendar =Calendar.getInstance();
                 calendar.setTime(now);
                 calendar.add(Calendar.MONTH, 3);
 //                orderMaster.setEndTime(calendar.getTime());
-                orderDetail.setEndTime(calendar.getTime());
+//                orderDetail.setEndTime(calendar.getTime());
             }else {
 //                orderMaster.setEndTime(now);
-                orderDetail.setEndTime(now);
+//                orderDetail.setEndTime(now);
             }
             /**给对应的用户发放书币*/
             NovelUserInfo userInfo = null;

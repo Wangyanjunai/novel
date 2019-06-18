@@ -6,36 +6,30 @@ import lombok.NoArgsConstructor;
 
 /**
  * <pre>
- * @PackageName com.potato369.novel.enums
- * @EnumName PayStatusEnum
- * @Desc 支付状态枚举
+ * @PackageName com.potato369.novel.basic.enums
+ * @EnumName UserInfoGenderEnum
+ * @Desc 用户默认值设置枚举
  * @WebSite https://www.potato369.com
  * @Author Jack
- * @Date 2019/01/08 17:40
- * @CreateBy IntellJ IDEA 2018.3.2
+ * @Date 2019/6/4 16:40
+ * @CreateBy IntellJ IDEA 2019.1.1
  * @Copyright Copyright (c) 2016 ~ 2020 版权所有 (C) 土豆互联科技(深圳)有限公司 https://www.potato369.com All Rights Reserved。
  * </pre>
  */
 @AllArgsConstructor
 @Getter
 @NoArgsConstructor
-public enum PayStatusEnum implements CodeEnum<Object> {
-
-    WAITING(0, "等待支付"),
-
-    SUCCESS(1, "支付成功"),
-
-    FAIL(2, "支付失败"),
+public enum UserInfoVIPGradeIdEnum implements CodeEnum<Object>{
     
-    DEDUCT_ING(3, "等待扣除"),
+    VIP0(0, "450b9b4f90b14fb784f45643ded0dff5"),
     
-    DEDUCT_SUCCESSED(4, "扣除成功"),
+    VIP1(1, "450b9b4f90b14fb784f45643ded0dff6"),
     
-    DEDUCT_FAILED(5, "扣除失败"),
+    VIP2(2, "450b9b4f90b14fb784f45643ded0dff7"),
+
     ;
 
     private Integer code;
 
     private String message;
-
 }

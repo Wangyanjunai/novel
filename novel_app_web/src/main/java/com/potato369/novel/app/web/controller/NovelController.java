@@ -7,7 +7,7 @@ import com.potato369.novel.basic.dataobject.HotWordsInfo;
 import com.potato369.novel.basic.dataobject.NovelCategory;
 import com.potato369.novel.basic.dataobject.NovelChapter;
 import com.potato369.novel.basic.dataobject.NovelInfo;
-import com.potato369.novel.basic.enums.NovelInfoEnum;
+import com.potato369.novel.basic.enums.NovelInfoStatusEnum;
 import com.potato369.novel.basic.enums.TypeEnum;
 import com.potato369.novel.basic.service.CategoryService;
 import com.potato369.novel.basic.service.HotWordsInfoService;
@@ -367,7 +367,7 @@ public class NovelController {
             if (log.isDebugEnabled()) {
                 log.debug("【小说后台接口】start====================查询小说状态为已完成的数据====================start");
             }
-            return ResultVOUtil.success(getData1(NovelInfoEnum.NOVEL_STATUS_FINISHED.getCode(), BeanUtil.getId(categoryType), new PageRequest(page - 1, size, new Sort(Sort.Direction.DESC, "createTime", "retention"))));
+            return ResultVOUtil.success(getData1(NovelInfoStatusEnum.NOVEL_STATUS_FINISHED.getCode(), BeanUtil.getId(categoryType), new PageRequest(page - 1, size, new Sort(Sort.Direction.DESC, "createTime", "retention"))));
         } catch (Exception e) {
             log.error("查询小说状态为已完成的数据失败", e);
             return ResultVOUtil.error(-1, "返回数据失败");
@@ -386,7 +386,7 @@ public class NovelController {
             if (log.isDebugEnabled()) {
                 log.debug("【小说后台接口】start====================查询小说状态为已完成的数据====================start");
             }
-            return ResultVOUtil.success(getData1(NovelInfoEnum.NOVEL_STATUS_UPDATING.getCode(), BeanUtil.getId(categoryType), new PageRequest(page - 1, size, new Sort(Sort.Direction.DESC, "updateTime", "clickNumber"))));
+            return ResultVOUtil.success(getData1(NovelInfoStatusEnum.NOVEL_STATUS_UPDATING.getCode(), BeanUtil.getId(categoryType), new PageRequest(page - 1, size, new Sort(Sort.Direction.DESC, "updateTime", "clickNumber"))));
         } catch (Exception e) {
             log.error("查询小说状态为已完成的数据失败", e);
             return ResultVOUtil.error(-1, "返回数据失败");

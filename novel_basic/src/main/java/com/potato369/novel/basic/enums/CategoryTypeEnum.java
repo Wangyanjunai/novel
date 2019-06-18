@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 /**
  * <pre>
  * @PackageName com.potato369.novel.enums
- * @EnumName CategoryEnum
+ * @EnumName CategoryIsDeleteEnum
  * @Desc 类目信息枚举
  * @WebSite https://www.potato369.com
  * @Author Jack
@@ -19,11 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @NoArgsConstructor
-public enum CategoryEnum implements CodeEnum<Object> {
-
-    DELETE(1, Boolean.TRUE, "是"),
-
-    NOT_DELETE(0, Boolean.FALSE, "否"),
+public enum CategoryTypeEnum implements CodeEnum<Object> {
     
     MALE(100, Boolean.TRUE, "male"),
     

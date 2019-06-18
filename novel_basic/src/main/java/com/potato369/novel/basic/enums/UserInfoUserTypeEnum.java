@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.enums
- * @EnumName UserInfoEnum
+ * @EnumName UserInfoGenderEnum
  * @Desc 用户默认值设置枚举
  * @WebSite https://www.potato369.com
  * @Author Jack
@@ -19,13 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @NoArgsConstructor
-public enum UserInfoEnum implements CodeEnum<Object>{
-
-    GENDER_UNKNOWN(0, "未知"),
-
-    GENDER_MALE(1, "男"),
-
-    GENDER_FEMALE(2, "女"),
+public enum UserInfoUserTypeEnum implements CodeEnum<Object>{
 
     VISITOR(0, "游客身份"),
 

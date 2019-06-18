@@ -5,8 +5,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import com.potato369.novel.app.web.vo.ProductInfoVO;
 import com.potato369.novel.basic.dataobject.ProductInfo;
-import com.potato369.novel.basic.enums.ProductInfoEnum;
-/** 
+
+/**
  * <pre>
  * @ClassName ProductInfo2ProductInfoVOConverter
  * @Function 将商品信息转换为商品数据封装信息转换器
@@ -23,11 +23,11 @@ public class ProductInfo2ProductInfoVOConverter {
 	public static ProductInfoVO convert(ProductInfo productInfo) {
 		ProductInfoVO productInfoVO = ProductInfoVO.builder().build();
 		BeanUtils.copyProperties(productInfo, productInfoVO);
-//		if (ProductInfoEnum.DAY.getCode().equals(productInfo.getProductType())) {
-//			productInfoVO.setTypeName(ProductInfoEnum.DAY.getMessage());
+//		if (ProductCalculateTypeEnum.DAY.getCode().equals(productInfo.getProductType())) {
+//			productInfoVO.setTypeName(ProductCalculateTypeEnum.DAY.getMessage());
 //		}
-//		if (ProductInfoEnum.MONTH.getCode().equals(productInfo.getProductType())) {
-//			productInfoVO.setTypeName(ProductInfoEnum.MONTH.getMessage());
+//		if (ProductCalculateTypeEnum.MONTH.getCode().equals(productInfo.getProductType())) {
+//			productInfoVO.setTypeName(ProductCalculateTypeEnum.MONTH.getMessage());
 //		}
 		if (null == productInfo.getDateValue()) {
 			productInfoVO.setDateValue(productInfo.getProductAmount().intValue());

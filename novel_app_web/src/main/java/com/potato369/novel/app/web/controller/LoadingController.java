@@ -1,7 +1,8 @@
 package com.potato369.novel.app.web.controller;
 
 import com.potato369.novel.basic.dataobject.NovelAdvertisement;
-import com.potato369.novel.basic.enums.AdvertisementEnum;
+import com.potato369.novel.basic.enums.NovelAdvertisementTag1Enum;
+import com.potato369.novel.basic.enums.NovelAdvertisementTag2Enum;
 import com.potato369.novel.basic.enums.TypeEnum;
 import com.potato369.novel.basic.service.AdvertisementService;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +45,7 @@ public class LoadingController {
             if (log.isDebugEnabled()) {
                 log.debug("【急速追书后台APP接口】开始查找首页初始加载的广告信息");
             }
-            List<LoadingDataVO> loadingDataVOS = getBannerAdDataVOs(AdvertisementEnum.TAG1_TIAOZHUANG.getCode(), AdvertisementEnum.TAG2_NO_TIAOZHUANG.getCode(), 1, "");
+            List<LoadingDataVO> loadingDataVOS = getBannerAdDataVOs(NovelAdvertisementTag1Enum.SKIP_AD.getCode(), NovelAdvertisementTag2Enum.NO_JUMP.getCode(), 1, "");
             if (loadingDataVOS != null && !loadingDataVOS.isEmpty() && loadingDataVOS.size() > 0) {
                 loadingDataVO = loadingDataVOS.get(0);
                 if (loadingDataVO != null) {
@@ -110,7 +111,7 @@ public class LoadingController {
             if (TypeEnum.PICTURE.getCn().equals(categoryType) || TypeEnum.PICTURE.getEn().equals(categoryType)) {
                 categoryId = TypeEnum.PICTURE.getId();
             }
-            loadingDataVOs = getBannerAdDataVOs(AdvertisementEnum.TAG1_APPLICATION.getCode(), AdvertisementEnum.TAG2_TIAOZHUANG.getCode(), 5, categoryId);
+            loadingDataVOs = getBannerAdDataVOs(NovelAdvertisementTag1Enum.APP_AD.getCode(), NovelAdvertisementTag2Enum.JUMP.getCode(), 5, categoryId);
         } catch (Exception e) {
             log.error("【急速追书后台APP接口】查找首页初始加载的广告信息出现错误", e);
         } finally {

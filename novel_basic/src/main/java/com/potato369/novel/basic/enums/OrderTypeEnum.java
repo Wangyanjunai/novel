@@ -24,6 +24,8 @@ public enum OrderTypeEnum implements CodeEnum<Object>{
 	WITHDRAW(0, "提现"),
 
 	EXCHANGE(1, "兑换"),
+
+    RECHARGE(2, "充值"),
     ;
     
     private Integer code;

@@ -3,6 +3,8 @@ package com.potato369.novel.basic.dataobject;
 import com.potato369.novel.basic.enums.OrderStatusEnum;
 import com.potato369.novel.basic.enums.OrderTypeEnum;
 import com.potato369.novel.basic.enums.PayStatusEnum;
+import com.potato369.novel.basic.enums.PayTypeEnum;
+import com.potato369.novel.basic.utils.EnumUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -54,13 +56,29 @@ public class OrderMaster implements Serializable {
     @Id
     @Column(name = "order_id", nullable = false, length = 32)
     private String orderId;
+    
+    /**
+     * <pre>
+     * @serialField userId：用户mid。
+     * </pre>
+     */
+    @Column(name = "user_id", nullable = false, length = 20)
+    private String userId;
+    
+    /**
+     * <pre>
+     * @serialField transactionalId：订单支付流水号。
+     * </pre>
+     */
+    @Column(name = "transactional_id", length = 64)
+    private String transactionalId;
 
     /**
      * <pre>
      * @serialField buyerName：买家名字。
      * </pre>
      */
-    @Column(name = "buyer_name", nullable = false, length = 32)
+    @Column(name = "buyer_name", length = 64)
     private String buyerName;
 
     /**
@@ -106,7 +124,7 @@ public class OrderMaster implements Serializable {
     
     /**
      * <pre>
-     * @serialField orderType：订单类型，0-提现；1-兑换，“默认：0-提现”。
+     * @serialField orderType：订单产品类型，0-提现；1-兑换；2-充值，“默认：0-提现”。
      * </pre>
      */
     @Builder.Default
@@ -124,7 +142,7 @@ public class OrderMaster implements Serializable {
 
     /**
      * <pre>
-     * @serialField payStatus：订单支付状态，0-等待支付；1-支付成功，“默认：0-等待支付”。
+     * @serialField payStatus：订单支付状态，0-等待支付；1-支付成功；2-已经关闭，“默认：0-等待支付。”。
      * </pre>
      */
     @Builder.Default
@@ -133,11 +151,20 @@ public class OrderMaster implements Serializable {
     
     /**
      * <pre>
-     * @serialField payType：订单支付方式，0-支付宝；1-微信支付；3-扣余额。
+     * @serialField payType：订单支付方式，1-支付宝；2-微信支付；3-余额支付，”默认：1-支付宝“。
      * </pre>
      */
-    @Column(name = "pay_type", length = 1)
-    private Integer payType;
+    @Builder.Default
+    @Column(name = "pay_type", nullable = false, length = 1)
+    private Integer payType = PayTypeEnum.PAY_WITH_ALIPAY.getCode();
+    
+    /**
+     * <pre>
+     * @serialField payTime：支付时间。
+     * </pre>
+     */
+    @Column(name = "pay_time", length = 64)
+    private Date payTime;
 
     /**
      * <pre>
@@ -162,4 +189,24 @@ public class OrderMaster implements Serializable {
      */
     @Transient
     private List<OrderDetail> orderDetailList;
+
+    @Transient
+    public OrderTypeEnum getOrderTypeEnum() {
+        return EnumUtil.getByCode(orderType, OrderTypeEnum.class);
+    }
+
+    @Transient
+    public OrderStatusEnum getOrderStatusEnum() {
+        return EnumUtil.getByCode(orderStatus, OrderStatusEnum.class);
+    }
+
+    @Transient
+    public PayStatusEnum getPayStatusEnum() {
+        return EnumUtil.getByCode(payStatus, PayStatusEnum.class);
+    }
+
+    @Transient
+    public PayTypeEnum getPayTypeEnum() {
+        return EnumUtil.getByCode(payType, PayTypeEnum.class);
+    }
 }

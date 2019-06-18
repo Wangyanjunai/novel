@@ -249,17 +249,17 @@ public class BuyerNovelInfoController {
 		novelInfoVO.setCategory(novelInfo.getCategoryType());
 		novelInfoVO.setCover(getCover(novelInfo));
 		novelInfoVO.setIntroduction(new StringBuffer().append("『内容简介：").append(novelInfo.getIntroduction()).append("……』").toString().trim());
-//		if (novelInfo.getCache() == NovelInfoEnum.CACHE.getCode()) {
-//			novelInfoVO.setCache(NovelInfoEnum.CACHE.getStatus());
+//		if (novelInfo.getCache() == NovelInfoStatusEnum.CACHE.getCode()) {
+//			novelInfoVO.setCache(NovelInfoStatusEnum.CACHE.getStatus());
 //		}
-//		if (novelInfo.getHaveRead() == NovelInfoEnum.HAVE_READ.getCode()) {
-//			novelInfoVO.setHaveRead(NovelInfoEnum.HAVE_READ.getStatus());
+//		if (novelInfo.getHaveRead() == NovelInfoStatusEnum.HAVE_READ.getCode()) {
+//			novelInfoVO.setHaveRead(NovelInfoStatusEnum.HAVE_READ.getStatus());
 //		}
-//		if (novelInfo.getSelected() == NovelInfoEnum.SELECTED.getCode()) {
-//			novelInfoVO.setSelected(NovelInfoEnum.SELECTED.getStatus());
+//		if (novelInfo.getSelected() == NovelInfoStatusEnum.SELECTED.getCode()) {
+//			novelInfoVO.setSelected(NovelInfoStatusEnum.SELECTED.getStatus());
 //		}
-//		if (novelInfo.getPrivated() == NovelInfoEnum.PRIVATED.getCode()) {
-//			novelInfoVO.setPrivated(NovelInfoEnum.PRIVATED.getStatus());
+//		if (novelInfo.getPrivated() == NovelInfoStatusEnum.PRIVATED.getCode()) {
+//			novelInfoVO.setPrivated(NovelInfoStatusEnum.PRIVATED.getStatus());
 //		}
 		return novelInfoVO;
 	}

@@ -7,8 +7,9 @@ import cn.wanghaomiao.seimi.struct.Response;
 import com.potato369.novel.basic.constants.BusinessConstants;
 import com.potato369.novel.basic.dataobject.NovelChapter;
 import com.potato369.novel.basic.dataobject.NovelInfo;
-import com.potato369.novel.basic.enums.CategoryEnum;
-import com.potato369.novel.basic.enums.NovelInfoEnum;
+import com.potato369.novel.basic.enums.CategoryIsDeleteEnum;
+import com.potato369.novel.basic.enums.CategoryTypeEnum;
+import com.potato369.novel.basic.enums.NovelInfoStatusEnum;
 import com.potato369.novel.basic.service.NovelChapterService;
 import com.potato369.novel.basic.service.NovelInfoService;
 import com.potato369.novel.basic.utils.UUIDUtil;
@@ -228,8 +229,8 @@ public class DuShu88NovelChapterCrawler extends BaseSeimiCrawler{
 			}
             novelInfo = novelInfo.compasByCategoryCNText(novelInfo,categoryText);
             if ("综合类型".equals(categoryText)) {
-            	novelInfo.setCategoryType(CategoryEnum.QITALEIBIE.getCode());//2、小说分类类型type
-            	novelInfo.setCategoryENText(CategoryEnum.QITALEIBIE.getMessage());//3、小说分类英文名称
+            	novelInfo.setCategoryType(CategoryTypeEnum.QITALEIBIE.getCode());//2、小说分类类型type
+            	novelInfo.setCategoryENText(CategoryTypeEnum.QITALEIBIE.getMessage());//3、小说分类英文名称
 			}
             if (log.isDebugEnabled()) {
         		log.debug("【后台爬虫系统爬取数据】开始爬取2、小说分类类型type data={}", novelInfo.getCategoryType());
@@ -267,10 +268,10 @@ public class DuShu88NovelChapterCrawler extends BaseSeimiCrawler{
             for (Object object : novelstatusList) {
             	status = object.toString().split("：")[1];
 			}
-            if (NovelInfoEnum.NOVEL_STATUS_UPDATING.getMessage().equals(status)) {
-                novelInfo.setNovelStatus(NovelInfoEnum.NOVEL_STATUS_UPDATING.getCode());//6、设置小说更新状态为连载中
-            } else if (NovelInfoEnum.NOVEL_STATUS_FINISHED.getMessage().equals(status)) {
-                novelInfo.setNovelStatus(NovelInfoEnum.NOVEL_STATUS_FINISHED.getCode());//6、设置小说更新状态为已完成
+            if (NovelInfoStatusEnum.NOVEL_STATUS_UPDATING.getMessage().equals(status)) {
+                novelInfo.setNovelStatus(NovelInfoStatusEnum.NOVEL_STATUS_UPDATING.getCode());//6、设置小说更新状态为连载中
+            } else if (NovelInfoStatusEnum.NOVEL_STATUS_FINISHED.getMessage().equals(status)) {
+                novelInfo.setNovelStatus(NovelInfoStatusEnum.NOVEL_STATUS_FINISHED.getCode());//6、设置小说更新状态为已完成
             }
             if (log.isDebugEnabled()) {
             	log.debug("【后台爬虫系统爬取数据】开始爬取7、小说更新状态data={}", novelInfo.getNovelStatus());

@@ -1,6 +1,7 @@
 package com.potato369.novel.basic.dataobject;
 
-import com.potato369.novel.basic.enums.HotWordsInfoEnum;
+import com.potato369.novel.basic.enums.HotWordsIsNewEnum;
+import com.potato369.novel.basic.utils.EnumUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -75,7 +76,7 @@ public class HotWordsInfo implements Serializable {
      */
     @Builder.Default
     @Column(name = "is_new", nullable = false, length = 1)
-    private Integer isNew = HotWordsInfoEnum.NEW.getCode();
+    private Integer isNew = HotWordsIsNewEnum.NEW.getCode();
 
     /**
      * <pre>
@@ -101,4 +102,9 @@ public class HotWordsInfo implements Serializable {
      */
     @Column(name = "update_time", nullable = false, length = 64)
     private Date updateTime;
+
+    @Transient
+    public HotWordsIsNewEnum getHotWordsIsNewEnum(Integer code) {
+        return EnumUtil.getByCode(code, HotWordsIsNewEnum.class);
+    }
 }

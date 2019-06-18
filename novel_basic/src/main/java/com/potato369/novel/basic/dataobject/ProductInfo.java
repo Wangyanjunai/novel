@@ -1,6 +1,8 @@
 package com.potato369.novel.basic.dataobject;
 
-import com.potato369.novel.basic.enums.ProductInfoEnum;
+import com.potato369.novel.basic.enums.ProductCalculateTypeEnum;
+import com.potato369.novel.basic.enums.ProductTypeEnum;
+import com.potato369.novel.basic.utils.EnumUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -65,14 +67,14 @@ public class ProductInfo implements Serializable {
      */
     @Builder.Default
     @Column(name = "product_calculate_type", nullable = false, length = 1)
-    private Integer productCalculateType = ProductInfoEnum.DAY.getCode();
+    private Integer productCalculateType = ProductCalculateTypeEnum.DAY.getCode();
 
     /**
      * @serialField productType：产品类型，0-充值，1-兑换；2-提现，默认：0-充值。
      */
     @Builder.Default
     @Column(name = "product_type", nullable = false, length = 1)
-    private Integer productType = ProductInfoEnum.CHARGE.getCode();
+    private Integer productType = ProductTypeEnum.CHARGE.getCode();
 
     /**
      * <pre>
@@ -114,4 +116,14 @@ public class ProductInfo implements Serializable {
      */
     @Column(name = "update_time", nullable = false, length = 64)
     private Date updateTime;
+
+    @Transient
+    public ProductCalculateTypeEnum getProductCalculateTypeEnum() {
+        return EnumUtil.getByCode(productCalculateType, ProductCalculateTypeEnum.class);
+    }
+
+    @Transient
+    public ProductTypeEnum getProductTypeEnum() {
+        return EnumUtil.getByCode(productType, ProductTypeEnum.class);
+    }
 }

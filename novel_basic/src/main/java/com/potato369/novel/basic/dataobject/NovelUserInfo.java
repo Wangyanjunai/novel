@@ -1,6 +1,10 @@
 package com.potato369.novel.basic.dataobject;
 
-import com.potato369.novel.basic.enums.UserInfoEnum;
+import com.potato369.novel.basic.enums.UserInfoGenderEnum;
+import com.potato369.novel.basic.enums.UserInfoIsOrNotBandWechatEnum;
+import com.potato369.novel.basic.enums.UserInfoUserTypeEnum;
+import com.potato369.novel.basic.enums.UserInfoVIPGradeIdEnum;
+import com.potato369.novel.basic.utils.EnumUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -131,7 +135,7 @@ public class NovelUserInfo implements Serializable {
      */
     @Builder.Default
     @Column(name = "gender", length = 1)
-    private Integer gender = UserInfoEnum.GENDER_UNKNOWN.getCode();
+    private Integer gender = UserInfoGenderEnum.GENDER_UNKNOWN.getCode();
 
     /**
      * <pre>
@@ -191,7 +195,7 @@ public class NovelUserInfo implements Serializable {
      */
     @Builder.Default
     @Column(name = "vip_grade_id", length = 32)
-    private String vipGradeId = UserInfoEnum.VIP1.getMessage();
+    private String vipGradeId = UserInfoVIPGradeIdEnum.VIP1.getMessage();
 
     /**
      * <pre>
@@ -225,7 +229,7 @@ public class NovelUserInfo implements Serializable {
      */
     @Builder.Default
     @Column(name = "user_type", length = 1)
-    private Integer userType = UserInfoEnum.VISITOR.getCode();
+    private Integer userType = UserInfoUserTypeEnum.VISITOR.getCode();
 
     /**
      * <pre>
@@ -234,7 +238,7 @@ public class NovelUserInfo implements Serializable {
      */
     @Builder.Default
     @Column(name = "is_or_not_band_wechat", length = 1)
-    private Integer isOrNotBandWechat = UserInfoEnum.UNFINISHED.getCode();
+    private Integer isOrNotBandWechat = UserInfoIsOrNotBandWechatEnum.UNFINISHED.getCode();
 
     /**
      * <pre>
@@ -259,4 +263,24 @@ public class NovelUserInfo implements Serializable {
      */
     @Column(name = "login_time", nullable = false, length = 64)
     private Date loginTime;
+
+    @Transient
+    public UserInfoGenderEnum getUserInfoGenderEnum() {
+        return EnumUtil.getByCode(gender, UserInfoGenderEnum.class);
+    }
+
+    @Transient
+    public UserInfoUserTypeEnum getUserInfoUserTypeEnum() {
+        return EnumUtil.getByCode(userType, UserInfoUserTypeEnum.class);
+    }
+
+    @Transient
+    public UserInfoVIPGradeIdEnum getUserInfoVIPGradeIdEnum() {
+        return EnumUtil.getByCode(0,UserInfoVIPGradeIdEnum.class);
+    }
+
+    @Transient
+    public UserInfoIsOrNotBandWechatEnum getUserInfoIsOrNotBandWechatEnum() {
+        return EnumUtil.getByCode(isOrNotBandWechat, UserInfoIsOrNotBandWechatEnum.class);
+    }
 }
