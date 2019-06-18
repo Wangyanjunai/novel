@@ -1,6 +1,5 @@
 package com.potato369.novel.app.web.service.impl;
 
-import com.alibaba.druid.support.json.JSONUtils;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.github.binarywang.wxpay.bean.order.WxPayAppOrderResult;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
@@ -8,6 +7,7 @@ import com.github.binarywang.wxpay.constant.WxPayConstants;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.potato369.novel.app.web.model.WeixinPayResult;
 import com.potato369.novel.app.web.service.PayService;
+import com.potato369.novel.app.web.utils.MathUtil;
 import com.potato369.novel.basic.dataobject.OrderMaster;
 import com.potato369.novel.basic.enums.OrderStatusEnum;
 import com.potato369.novel.basic.enums.PayStatusEnum;
@@ -16,6 +16,7 @@ import com.potato369.novel.basic.service.OrderService;
 import com.potato369.novel.basic.utils.DateUtil;
 import com.potato369.novel.basic.utils.WwwUtil;
 import lombok.extern.slf4j.Slf4j;
+import java.math.BigDecimal;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,7 +73,7 @@ public class PayServiceImpl implements PayService {
     		WxPayUnifiedOrderRequest orderRequest = new WxPayUnifiedOrderRequest();
     		orderRequest.setBody(order.getOrderName());
     		orderRequest.setOutTradeNo(order.getOrderId());
-    		orderRequest.setTotalFee(order.getOrderAmount().intValueExact()*100);
+    		orderRequest.setTotalFee(order.getOrderAmount().multiply(new BigDecimal(100)).intValue());
     		ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
     		HttpServletRequest request = requestAttributes.getRequest();
     		orderRequest.setSpbillCreateIp(WwwUtil.getIpAddr4(request));
@@ -149,9 +150,6 @@ public class PayServiceImpl implements PayService {
     	WxPayOrderNotifyResult payOrderNotifyResult = null;
     	try {
     		payOrderNotifyResult = wxPayService.parseOrderNotifyResult(notifyData);
-    		if (log.isDebugEnabled()) {
-    			log.debug("【微信APP支付】异步通知，payResponse={}", JSONUtils.toJSONString(payOrderNotifyResult));
-			}
     		if (payOrderNotifyResult != null) {
 				String returnCode = payOrderNotifyResult.getReturnCode();
 				if ("SUCCESS".equals(returnCode)) {
@@ -162,7 +160,7 @@ public class PayServiceImpl implements PayService {
 							log.error("【微信APP支付】异步通知，订单不存在 orderId={}", payOrderNotifyResult.getOutTradeNo());
 						    throw new Exception(ResultEnum.ORDER_NOT_EXIST.getMessage());
 						} else {
-							if (payOrderNotifyResult.getTotalFee().compareTo(orderMaster.getOrderAmount().intValue()) != 0) {
+							if (MathUtil.equals(payOrderNotifyResult.getTotalFee().doubleValue(), orderMaster.getOrderAmount().doubleValue())) {
 								log.error("【微信APP支付】异步通知，订单金额不一致 orderId={}，微信通知金额={}，系统金额={}", payOrderNotifyResult.getOutTradeNo(), payOrderNotifyResult.getTotalFee(), orderMaster.getOrderAmount());
 							    throw new Exception(ResultEnum.WXPAY_NOTIFY_MONEY_VERIFY_ERROR.getMessage());
 							}

@@ -45,7 +45,7 @@ logging:
     com.potato369.novel.basic.dataobject.mapper: debug
 projectUrl: 
   projectName: /novel
-  domainUrl: https://potato369.mynatapp.cc
+  domainUrl: http://potato369.mynatapp.cc
   weChatMpAuthorizeUrl: /wechat/authorize
   weChatMpAuthorizeUrlUserInfo: /wechat/userInfo
   weChatOpenAuthorizeUrl: /wechat/qrAuthorize

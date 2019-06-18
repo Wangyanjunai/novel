@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import java.math.BigDecimal;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 /**
@@ -192,7 +191,6 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public OrderMaster paid(OrderMaster orderMaster) throws Exception{
-        Date now = new Date();
         /** 1、判断订单状态 */
         if (OrderStatusEnum.NEW.getCode() != orderMaster.getOrderStatus()){
             log.error("【微信APP支付订单】订单状态不正确， 订单id={}，订单状态={}", orderMaster.getOrderId(), orderMaster.getOrderStatus());
