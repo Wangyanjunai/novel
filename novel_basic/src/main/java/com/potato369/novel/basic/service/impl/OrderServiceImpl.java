@@ -184,28 +184,14 @@ public class OrderServiceImpl implements OrderService {
     }
     /**
      * <pre>
-     * 回调修改支付订单状态
+     * 回调修改支付订单信息
      * @param orderMaster
      * @return OrderMaster.class
      * </pre>
      */
     @Override
     public OrderMaster paid(OrderMaster orderMaster) throws Exception{
-        /** 1、判断订单状态 */
-        if (OrderStatusEnum.NEW.getCode() != orderMaster.getOrderStatus()){
-            log.error("【微信APP支付订单】订单状态不正确， 订单id={}，订单状态={}", orderMaster.getOrderId(), orderMaster.getOrderStatus());
-            throw new Exception(ResultEnum.ORDER_STATUS_ERROR.getMessage());
-        }
-        /** 2、判断订单支付状态 */
-        if (PayStatusEnum.WAITING.getCode() != orderMaster.getPayStatus()){
-            log.error("【微信APP支付订单】订单支付状态不正确， 订单id={}，订单支付状态={}", orderMaster.getOrderId(), orderMaster.getPayStatus());
-            throw new Exception(ResultEnum.ORDER_PAY_STATUS_ERROR.getMessage());
-        }
-        /** 3、判断订单支付方式 */
-        if (PayTypeEnum.PAY_WITH_WECHAT.getCode() != orderMaster.getPayType()) {
-        	log.error("【微信APP支付订单】订单支付方式不正确， 订单id={}，订单支付方式={}", orderMaster.getOrderId(), orderMaster.getPayType());
-            throw new Exception(ResultEnum.ORDER_PAY_TYPE_ERROR.getMessage());
-		}
+        checkOrder(orderMaster);
         /** 4、修改订单状态 */
         orderMaster.setPayStatus(PayStatusEnum.SUCCESS.getCode());//订单支付状态：成功
         orderMaster.setOrderStatus(OrderStatusEnum.FINISHED.getCode());//订单状态，完成
@@ -213,13 +199,12 @@ public class OrderServiceImpl implements OrderService {
         for (OrderDetail orderDetail:orderDetailList) {
             ProductInfo productInfo = productRepository.findOne(orderDetail.getProductId());
             if (productInfo == null) {
-                log.error("【查询商品信息】商品信息信息不存在， 产品id={}", orderDetail.getProductId());
+                log.error("【微信APP支付回调更新订单】查询商品信息不存在， 商品id={}", orderDetail.getProductId());
                 throw new Exception(ResultEnum.PRODUCT_NOT_EXIST.getMessage());
             }
-            /**给对应的用户发放书币*/
             NovelUserInfo userInfo = userInfoRepository.selectByUserMId(orderDetail.getUserId());
             if (userInfo == null) {
-                log.error("【微信APP支付更新订单】给对应的用户时长失败，用户mid={}", orderDetail.getUserId());
+                log.error("【微信APP支付回调更新订单】查询用户信息不存在，给对应的用户增加VIP时长失败，用户mid={}", orderDetail.getUserId());
                 throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
             }
             BigDecimal chargeAmount = userInfo.getChargeAmount();
@@ -236,22 +221,22 @@ public class OrderServiceImpl implements OrderService {
                 updateVIPEndTime = DateUtil.getAfterMonthDate(vipEndTime, dateValue);
             }
             userInfo.setVipEndTime(updateVIPEndTime);
-            NovelUserInfo userInfoUpdateResult =  userInfoRepository.save(userInfo);
+            NovelUserInfo userInfoUpdateResult = userInfoRepository.save(userInfo);
             if (userInfoUpdateResult == null) {
-                log.error("【微信APP支付更新订单】给对应的用户时长失败，用户信息={}", userInfo);
+                log.error("【微信APP支付回调更新订单】给对应的用户增加VIP时长失败，用户信息={}", userInfo);
                 throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
             }
             /**更新订单详情表数据*/
             OrderDetail orderDetailUpdateResult = orderDetailRepository.save(orderDetail);
             if (orderDetailUpdateResult == null) {
-                log.error("【微信APP支付更新订单】更新订单订单详情失败，orderDetail={}", orderDetail);
+                log.error("【微信APP支付回调更新订单】更新订单详情失败，orderDetail={}", orderDetail);
                 throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
             }
         }
         /**更新订单表数据*/
         OrderMaster orderMasterUpdateResult = orderMasterRepository.save(orderMaster);
         if (orderMasterUpdateResult == null) {
-            log.error("【微信APP支付更新订单】更新订单失败，orderMaster={}", orderMaster);
+            log.error("【微信APP支付回调更新订单】更新订单失败，orderMaster={}", orderMaster);
             throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
         }
         return orderMaster;
@@ -268,4 +253,27 @@ public class OrderServiceImpl implements OrderService {
     public Page<OrderMaster> findAll(Pageable pageable) throws Exception{
         return orderMasterRepository.findAll(pageable);
     }
+    
+    public OrderMaster checkOrder(OrderMaster order) throws Exception {
+		if (order == null) {
+			log.error("【微信APP预支付订单】 订单信息不存在");
+			throw new Exception(ResultEnum.ORDER_NOT_EXIST.getMessage());
+		}
+		String orderId = order.getOrderId();
+		if (order.getOrderStatus() != OrderStatusEnum.NEW.getCode()) {
+			log.error("【微信APP预支付订单】 订单状态不正确，订单id={}，订单状态={}", orderId, order.getOrderStatusEnum().getMessage());
+			throw new Exception(ResultEnum.ORDER_STATUS_ERROR.getMessage());
+		}
+		if (order.getPayStatus() != PayStatusEnum.WAITING.getCode()) {
+			log.error("【微信APP预支付订单】 订单支付状态不正确，订单id={}，订单支付状态={}", orderId, order.getPayStatusEnum().getMessage());
+			throw new Exception(ResultEnum.ORDER_PAY_STATUS_ERROR.getMessage());
+		}
+		if (order.getPayType() != PayTypeEnum.PAY_WITH_ALIPAY.getCode() && 
+			order.getPayType() != PayTypeEnum.PAY_WITH_WECHAT.getCode() && 
+			order.getPayType() != PayTypeEnum.PAY_WITH_BALANCE.getCode()) {
+			log.error("【微信APP预支付订单】 订单支付方式不正确，订单id={}，订单支付方式={}", orderId, order.getPayTypeEnum().getMessage());
+			throw new Exception(ResultEnum.ORDER_PAY_STATUS_ERROR.getMessage());
+		}
+		return order;
+	}
 }

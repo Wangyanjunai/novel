@@ -19,20 +19,34 @@ import java.util.Date;
  * </pre>
  */
 public class DateUtil {
+	
+	public static final String sdfYearFmt = "yyyy";
+	
+	public static final String sdfDayFmt = "yyyy-MM-dd";
+	
+	public static final String sdfDaysFmt = "yyyyMMdd";
+	
+	public static final String sdfTimeFmt = "yyyy-MM-dd HH:mm:ss";
+	
+	public static final String sdfTimeCNFmt = "yyyy年MM月dd日 HH:mm:ss";
+	
+	public static final String sdfTimeMinuFmt = "yyyyMMddHHmmss";
+	
+	public static final String sdfTimeStampFmt = "yyyyMMddHHmmssSSS";
 
-    public final static SimpleDateFormat sdfYear = new SimpleDateFormat("yyyy");
+    public final static SimpleDateFormat sdfYear = new SimpleDateFormat(sdfYearFmt);
 
-    public final static SimpleDateFormat sdfDay = new SimpleDateFormat("yyyy-MM-dd");
+    public final static SimpleDateFormat sdfDay = new SimpleDateFormat(sdfDayFmt);
 
-    public final static SimpleDateFormat sdfDays = new SimpleDateFormat("yyyyMMdd");
+    public final static SimpleDateFormat sdfDays = new SimpleDateFormat(sdfDaysFmt);
 
-    public final static SimpleDateFormat sdfTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public final static SimpleDateFormat sdfTime = new SimpleDateFormat(sdfTimeFmt);
 
-    public final static SimpleDateFormat sdfTimeCN = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+    public final static SimpleDateFormat sdfTimeCN = new SimpleDateFormat(sdfTimeCNFmt);
 
-    public final static SimpleDateFormat sdfTimeMinu = new SimpleDateFormat("yyyyMMddHHmmss");
+    public final static SimpleDateFormat sdfTimeMinu = new SimpleDateFormat(sdfTimeMinuFmt);
 
-    public final static SimpleDateFormat sdfTimeStamp = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+    public final static SimpleDateFormat sdfTimeStamp = new SimpleDateFormat(sdfTimeStampFmt);
 
     /**
      * 获取YYYY格式

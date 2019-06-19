@@ -1,6 +1,9 @@
 package com.potato369.novel.app.web.service;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
+import com.potato369.novel.app.web.model.AliPayResult;
 import com.potato369.novel.app.web.model.WeixinPayResult;
 /**
  * <pre>
@@ -32,7 +35,7 @@ public interface PayService {
      * @return
      * </pre>
      */
-    void aliPay(String orderId);
+    AliPayResult aliPay(String orderId);
     
     /**
      * <pre>
@@ -51,6 +54,15 @@ public interface PayService {
      * </pre>
      */
     WxPayOrderNotifyResult notify(String notifyData);
+    
+    /**
+     * <pre>
+     * 支付宝支付异步通知结果
+     * @param request
+     * @return
+     * </pre>
+     */
+    void notify1(HttpServletRequest request);
 
     /**
      * <pre>

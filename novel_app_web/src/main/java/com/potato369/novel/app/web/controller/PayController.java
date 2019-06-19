@@ -1,10 +1,12 @@
 package com.potato369.novel.app.web.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 import com.potato369.novel.app.web.service.PayService;
 /**
  * <pre>
@@ -26,17 +28,27 @@ public class PayController {
 	private PayService payService;
 	
 	 /**
+	  * <pre>
 	  * 微信异步通知
 	  * @param notifyData
-	  * @return
+	  * @return ModelAndView
+	  * <pre>
 	  */
 	  @PostMapping(value = "/notify")
-	  public String notify(@RequestBody String notifyData) {
-	    payService.notify(notifyData);
-	    //3、返回给微信处理结果
-	    return "<xml>\r\n" + 
-	    			"<return_code><![CDATA[SUCCESS]]></return_code>\r\n" + 
-	    			"<return_msg><![CDATA[OK]]></return_msg>\r\n" + 
-	    		"</xml>";
+	  public ModelAndView notify(@RequestBody String notifyData) {
+	    payService.notify(notifyData);//修改微信支付结果
+	    return new ModelAndView("pay/success");//返回给微信处理结果
+	  }
+	  
+  	/**
+	  * <pre>
+	  * 支付宝异步通知
+	  * @param request
+	  * @return
+	  * <pre>
+	  */
+	  @PostMapping(value = "/notify1")
+	  public void notify1(HttpServletRequest request) {
+		payService.notify1(request);
 	  }
 }

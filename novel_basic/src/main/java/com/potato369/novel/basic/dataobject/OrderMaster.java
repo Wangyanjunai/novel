@@ -67,11 +67,11 @@ public class OrderMaster implements Serializable {
     
     /**
      * <pre>
-     * @serialField transactionalId：订单支付流水号。
+     * @serialField transactionId：订单支付交易流水号。
      * </pre>
      */
-    @Column(name = "transactional_id", length = 64)
-    private String transactionalId;
+    @Column(name = "transaction_id", length = 64)
+    private String transactionId;
 
     /**
      * <pre>

@@ -1,6 +1,5 @@
 package com.potato369.novel.app.web.conf.prop;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,7 +32,6 @@ public class WeChatPayProperties {
      * @Field 1、appId：微信开放平台审核通过的应用APPID（请登录open.weixin.qq.com查看，注意与公众号的APPID不同）
      * </pre>
      */
-    @JsonProperty(value = "appId")
     @Value(value = "${weChat.pay.appId}")
     private String appId;
 
@@ -42,7 +40,6 @@ public class WeChatPayProperties {
      * @Field 2、appSecret：微信开放平台审核通过的应用appSecret（请登录open.weixin.qq.com查看，注意与公众号的appSecret不同）
      * </pre>
      */
-    @JsonProperty(value = "appId")
     @Value(value = "${weChat.pay.appSecret}")
     private String appSecret;
 
@@ -51,7 +48,6 @@ public class WeChatPayProperties {
      * @Field 3、mchId：微信支付分配的商户号
      * </pre>
      */
-    @JsonProperty(value = "mchId")
     @Value(value = "${weChat.pay.mchId}")
     private String mchId;
 
@@ -60,7 +56,6 @@ public class WeChatPayProperties {
      * @Field 4、mchKey：微信支付商户密钥
      * </pre>
      */
-    @JsonProperty(value = "mchKey")
     @Value(value = "${weChat.pay.mchKey}")
     private String mchKey;
 
@@ -69,7 +64,6 @@ public class WeChatPayProperties {
      * @Field 5、keyPath：apiclient_cert.p12文件的绝对路径，或者如果放在项目中，请以classpath:开头指定
      * </pre>
      */
-    @JsonProperty(value = "keyPath")
     @Value(value = "${weChat.pay.keyPath}")
     private String keyPath;
 
@@ -78,7 +72,6 @@ public class WeChatPayProperties {
      * @Field 6、notifyUrl：微信支付异步通知地址URL
      * </pre>
      */
-    @JsonProperty(value = "notifyUrl")
     @Value(value = "${weChat.pay.notifyUrl}")
     private String notifyUrl;
     
@@ -87,7 +80,6 @@ public class WeChatPayProperties {
      * @Field 7、orderNamePrefix：微信支付订单名称前缀
      * </pre>
      */
-    @JsonProperty(value = "orderNamePrefix")
     @Value(value = "${weChat.pay.orderNamePrefix}")
     private String orderNamePrefix;
 

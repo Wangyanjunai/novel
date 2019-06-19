@@ -1,6 +1,7 @@
 package com.potato369.novel.app.web.controller;
 
 import com.potato369.novel.app.web.conf.prop.WeChatPayProperties;
+import com.potato369.novel.app.web.model.AliPayResult;
 import com.potato369.novel.app.web.model.WeixinPayResult;
 import com.potato369.novel.app.web.service.PayService;
 import com.potato369.novel.app.web.vo.ResultVO;
@@ -54,8 +55,11 @@ public class OrderController {
 
     /**
      * <pre>
-     * 创建订单
-     * https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_1
+     * 创建订单并提交生成并返回预支付订单信息
+     * 创建订单微信文档地址：https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_1
+     * @param mid 用户mid
+     * @param pid 商品id
+     * @param type 支付方式
      * </pre>
      */
 	@GetMapping(value = "/create")
@@ -97,29 +101,29 @@ public class OrderController {
             Integer productType = productInfo.getProductType();
 			if (productType != null) {
 				OrderMaster orderMaster = OrderMaster.builder().build();
-	            String orderId = UUIDUtil.genTimstampUUID();
-	            orderMaster.setOrderId(orderId);//订单id
-	            orderMaster.setUserId(novelUserInfo.getMId());//用户mid
-	            orderMaster.setBuyerName(novelUserInfo.getNickName());//用户名称
-	            orderMaster.setBuyerAddress(novelUserInfo.getAddress());//用户地址
-	            orderMaster.setBuyerOpenid(novelUserInfo.getOpenid());//用户平台openid
-	            orderMaster.setOrderName(new StringBuffer().append(this.properties.getOrderNamePrefix()).append(productInfo.getProductName()).toString().trim());//订单名称
-	            orderMaster.setProductId(productInfo.getProductId());//商品id
-			    orderMaster.setPayType(type);//支付方式
-			    orderMaster.setOrderAmount(productInfo.getProductAmount());//支付总金额
+	            String orderId = UUIDUtil.genTimstampUUID();//创建订单id
+	            orderMaster.setOrderId(orderId);//设置订单id
+	            orderMaster.setUserId(novelUserInfo.getMId());//设置用户mid
+	            orderMaster.setBuyerName(novelUserInfo.getNickName());//设置用户名称
+	            orderMaster.setBuyerAddress(novelUserInfo.getAddress());//设置用户地址
+	            orderMaster.setBuyerOpenid(novelUserInfo.getOpenid());//设置用户平台openid
+	            orderMaster.setOrderName(new StringBuffer().append(this.properties.getOrderNamePrefix()).append(productInfo.getProductName()).toString().trim());//设置订单名称
+	            orderMaster.setProductId(productInfo.getProductId());//设置商品id
+			    orderMaster.setPayType(type);//设置支付方式
+			    orderMaster.setOrderAmount(productInfo.getProductAmount());//设置支付总金额
 			    List<OrderDetail> orderDetailList = new ArrayList<OrderDetail>();
 			    OrderDetail orderDetail = OrderDetail.builder().build();
-			    orderDetail.setDetailId(UUIDUtil.genTimstampUUID());//订单详情id
-			    orderDetail.setOrderId(orderId);//订单id
-			    orderDetail.setBuyerOpenid(novelUserInfo.getOpenid());//用户平台openid
-			    orderDetail.setProductId(productInfo.getProductId());
-			    orderDetail.setUserId(novelUserInfo.getMId());
+			    orderDetail.setDetailId(UUIDUtil.genTimstampUUID());//设置订单详情id
+			    orderDetail.setOrderId(orderId);//设置订单id
+			    orderDetail.setBuyerOpenid(novelUserInfo.getOpenid());//设置用户平台openid
+			    orderDetail.setProductId(productInfo.getProductId());//设置商品id
+			    orderDetail.setUserId(novelUserInfo.getMId());//设置用户mid
 			    orderDetailList.add(orderDetail);
 			    orderMaster.setOrderDetailList(orderDetailList);
 			    if (ProductTypeEnum.CHARGE.getCode().equals(productType)) {//充值
-			    	orderMaster.setOrderStatus(OrderStatusEnum.NEW.getCode());//订单状态
-		            orderMaster.setPayStatus(PayStatusEnum.WAITING.getCode());//支付状态
-		            orderMaster.setOrderType(ProductTypeEnum.CHARGE.getCode());//订单类型
+			    	orderMaster.setOrderStatus(OrderStatusEnum.NEW.getCode());//设置订单状态
+		            orderMaster.setPayStatus(PayStatusEnum.WAITING.getCode());//设置支付状态
+		            orderMaster.setOrderType(ProductTypeEnum.CHARGE.getCode());//设置订单类型
                 }
 			    if (ProductTypeEnum.EXCHANGE.getCode().equals(productType)) {//兑换
 			    	orderMaster.setOrderStatus(OrderStatusEnum.EXCHANG_ING.getCode());
@@ -140,7 +144,11 @@ public class OrderController {
 			    	return resultVO;
 			    }
 			    if (PayTypeEnum.PAY_WITH_ALIPAY.getCode().equals(type)) {//支付宝支付
-			    	payService.aliPay(orderId);
+			    	AliPayResult payResult = payService.aliPay(orderId);
+			    	resultVO.setCode(0);
+			    	resultVO.setMsg("请求支付宝支付生成预支付信息成功。");
+			    	resultVO.setData(payResult);
+			    	return resultVO;
 				}
 			    if (PayTypeEnum.PAY_WITH_BALANCE.getCode().equals(type)) {//余额支付
 			    	payService.balancePay(orderId);
