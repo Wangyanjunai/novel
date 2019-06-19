@@ -246,7 +246,7 @@ public class PayServiceImpl implements PayService {
     /**
      * <pre>
      * 微信APP支付异步通知结果
-     * @param notifyData
+     * @param request
      * @return
      * </pre>
      */
