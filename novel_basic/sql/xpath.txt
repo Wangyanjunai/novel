@@ -77,3 +77,6 @@ UPDATE `novel_info`  SET `category_type`=202,`category_cn_text`='古代言情',`
 UPDATE `novel_info`  SET `category_type`=205,`category_cn_text`='总裁豪门',`category_en_text`='zongcaihaomen'  WHERE `category_type`=207 ORDER BY id ASC LIMIT 19;
 
 UPDATE `novel_info`  SET `category_type`=204,`category_cn_text`='青春校园',`category_en_text`='qingchunxiaoyuan'  WHERE `category_type`=104 ORDER BY id ASC LIMIT 8;
+
+IntelliJ IDEA For Mac 快捷键：
+https://github.com/icegomic/IntelliJ-IDEA-Tutorial/blob/master/keymap-mac-introduce.md

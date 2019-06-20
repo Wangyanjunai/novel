@@ -8,6 +8,8 @@ import com.potato369.novel.app.web.model.AliPayResult;
 import com.potato369.novel.app.web.model.WeChatPayQueryResult;
 import com.potato369.novel.app.web.model.WeChatPayResult;
 
+import java.util.Map;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.service.impl
@@ -34,7 +36,7 @@ public interface PayService {
     /**
      * <pre>
      * 支付宝APP支付订单
-     * @param orderMaster
+     * @param orderId
      * @return
      * </pre>
      */
@@ -61,11 +63,11 @@ public interface PayService {
     /**
      * <pre>
      * 支付宝支付异步通知结果
-     * @param request
-     * @return
+     * @param conversionParams
+     * @return String
      * </pre>
      */
-    void notify1(HttpServletRequest request);
+    String notify1(Map<String, String> conversionParams);
 
     /**
      * <pre>

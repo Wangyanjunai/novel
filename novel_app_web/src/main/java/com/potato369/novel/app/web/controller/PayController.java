@@ -1,6 +1,7 @@
 package com.potato369.novel.app.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * <pre>
@@ -78,8 +83,39 @@ public class PayController {
      * <pre>
      */
     @PostMapping(value = "/notify1")
-    public void notify1(HttpServletRequest request) {
-        payService.notify1(request);
+    public String notify1(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            if (log.isDebugEnabled()) {
+                log.debug("start==================支付宝异步返回支付结果==================start");
+            }
+            //1.从支付宝回调的request域中取值
+            //获取支付宝返回的参数集合
+            Map<String, String[]> aliParams = request.getParameterMap();
+            //用以存放转化后的参数集合
+            Map<String, String> conversionParams = new HashMap<>();
+            for (Iterator<String> iter = aliParams.keySet().iterator(); iter.hasNext();) {
+                String key = iter.next();
+                String[] values = aliParams.get(key);
+                String valueStr = "";
+                for (int i = 0; i < values.length; i++) {
+                    valueStr = (i == values.length - 1) ? valueStr + values[i] : valueStr + values[i] + ",";
+                }
+                // 乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
+                // valueStr = new String(valueStr.getBytes("ISO-8859-1"), "uft-8");
+                conversionParams.put(key, valueStr);
+            }
+            if (log.isDebugEnabled()) {
+                log.debug("返回参数集合={}", conversionParams);
+            }
+            return payService.notify1(conversionParams);
+        } catch (Exception e) {
+            log.error("支付宝异步返回支付结果出现错误", e);
+            return "fail";
+        } finally {
+            if (log.isDebugEnabled()) {
+                log.debug("end====================支付宝异步返回支付结果====================end");
+            }
+        }
     }
 
     /**
@@ -168,7 +204,7 @@ public class PayController {
                     StringUtils.trimToNull(this.properties.getAppPrivateKey()),
                     StringUtils.trimToNull(this.properties.getFormat()),
                     StringUtils.trimToNull(this.properties.getCharSet()),
-                    StringUtils.trimToNull(this.properties.getAlipayPublicKey()),
+                    StringUtils.trimToNull(this.properties.getAliPayPublicKey()),
                     StringUtils.trimToNull(this.properties.getSignType()));
             AlipayTradeQueryResponse response = alipayClient.execute(request);
             if (response != null) {

@@ -29,10 +29,10 @@ public class AliPayProperties {
 
 	/**
      * <pre>
-     * @Field 1、serverUrl：请求接口地址。
+     * @Field 1、serverUrl：支付宝网关。
      * </pre>
      */
-    @Value(value = "${alipay.pay.serverPayUrl}")
+    @Value(value = "${aliPay.pay.serverPayUrl}")
     private String serverPayUrl;
 	
     /**
@@ -40,15 +40,15 @@ public class AliPayProperties {
      * @Field 2、appId：支付宝分配给开发者的应用ID。
      * </pre>
      */
-    @Value(value = "${alipay.pay.appId}")
+    @Value(value = "${aliPay.pay.appId}")
     private String appId;
     
     /**
      * <pre>
-     * @Field 3、appPrivateKey：应用私钥。
+     * @Field 3、appPrivateKey：商户应用私钥。
      * </pre>
      */
-    @Value(value = "${alipay.pay.appPrivateKey}")
+    @Value(value = "${aliPay.pay.appPrivateKey}")
     private String appPrivateKey;
     
     /**
@@ -56,7 +56,7 @@ public class AliPayProperties {
      * @Field 4、format：请求数据格式，仅支持JSON。
      * </pre>
      */
-    @Value(value = "${alipay.pay.format}")
+    @Value(value = "${aliPay.pay.format}")
     private String format;
     
     /**
@@ -64,15 +64,15 @@ public class AliPayProperties {
      * @Field 5、charSet：请求使用的编码格式，如utf-8,gbk,gb2312等。
      * </pre>
      */
-    @Value(value = "${alipay.pay.charSet}")
+    @Value(value = "${aliPay.pay.charSet}")
     private String charSet;
     
     /**
      * <pre>
-     * @Field 6、appPublicKey：应用公钥。
+     * @Field 6、appPublicKey：商户应用公钥。
      * </pre>
      */
-    @Value(value = "${alipay.pay.appPublicKey}")
+    @Value(value = "${aliPay.pay.appPublicKey}")
     private String appPublicKey;
     
     /**
@@ -80,7 +80,7 @@ public class AliPayProperties {
      * @Field 7、signType：商户生成签名字符串所使用的签名算法类型，目前支持RSA2和RSA，推荐使用RSA2。
      * </pre>
      */
-    @Value(value = "${alipay.pay.signType}")
+    @Value(value = "${aliPay.pay.signType}")
     private String signType;
     
     /**
@@ -88,25 +88,40 @@ public class AliPayProperties {
      * @Field 8、timeoutExpress：支付宝支付超时时间。
      * </pre>
      */
-    @Value(value = "${alipay.pay.timeoutExpress}")
+    @Value(value = "${aliPay.pay.timeoutExpress}")
     private String timeoutExpress;
     
     /**
      * <pre>
-     * @Field 9、notifyUrl：支付宝支付异步通知地址URL
+     * @Field 9、notifyUrl：服务器异步通知页面路径 需http://或者https://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问。
      * </pre>
      */
-    @Value(value = "${alipay.pay.notifyUrl}")
+    @Value(value = "${aliPay.pay.notifyUrl}")
     private String notifyUrl;
-    
-    
+
     /**
      * <pre>
-     * @Field 10、alipayPublicKey：支付宝公钥。
+     * @Field 10、aliPayPublicKey：支付宝公钥。
      * </pre>
      */
-    @Value(value = "${alipay.pay.alipayPublicKey}")
-    private String alipayPublicKey;
+    @Value(value = "${aliPay.pay.aliPayPublicKey}")
+    private String aliPayPublicKey;
+
+    /**
+     * <pre>
+     * @Field 11、aesKey：接口内容加密方式：AES密钥。
+     * </pre>
+     */
+    @Value(value = "aliPay.pay.aesKey")
+    private String aesKey;
+
+    /**
+     * <pre>
+     * @Field 12、returnUrl：页面跳转同步通知页面路径 需http://或者https://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问 商户可以自定义同步跳转地址。
+     * </pre>
+     */
+    @Value(value = "aliPay.pay.returnUrl")
+    private String returnUrl;
     
     @Override
     public String toString() {
