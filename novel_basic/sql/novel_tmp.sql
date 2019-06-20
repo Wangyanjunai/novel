@@ -446,13 +446,15 @@ CREATE TABLE `product_info` (
     `product_name` varchar(64) NOT NULL COMMENT '商品名称。',
     `product_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '产品类型，0-充值，1-兑换；2-提现，默认：0-充值。',
     `product_calculate_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '计算类型，0-按照天算，1-按照月算；默认0-按照天算。',
+    `product_code` varchar(64) NULL DEFAULT NULL COMMENT '商品代码。',
     `product_amount` decimal(8,2) DEFAULT NULL COMMENT '商品总价（元）。',
     `product_description` varchar(1024) DEFAULT NULL COMMENT '商品描述。',
     `date_value` smallint(2) DEFAULT NULL COMMENT '对应的日期值',
     `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间。',
     `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     PRIMARY KEY (`product_id`) USING BTREE,
-    KEY `key_product_name` (`product_name`) USING BTREE
+    KEY `key_product_name` (`product_name`) USING BTREE,
+    KEY `key_product_code` (`product_code`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='商品信息记录表';
 
 -- ----------------------------

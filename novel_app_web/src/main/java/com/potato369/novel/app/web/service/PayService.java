@@ -3,8 +3,11 @@ package com.potato369.novel.app.web.service;
 import javax.servlet.http.HttpServletRequest;
 
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
+import com.potato369.novel.app.web.model.AliPayQueryResult;
 import com.potato369.novel.app.web.model.AliPayResult;
-import com.potato369.novel.app.web.model.WeixinPayResult;
+import com.potato369.novel.app.web.model.WeChatPayQueryResult;
+import com.potato369.novel.app.web.model.WeChatPayResult;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.service.impl
@@ -26,7 +29,7 @@ public interface PayService {
      * @return
      * </pre>
      */
-    WeixinPayResult weixinPay(String orderId);
+    WeChatPayResult weixinPay(String orderId);
     
     /**
      * <pre>
@@ -80,4 +83,20 @@ public interface PayService {
      * </pre>
      */
     void close(String orderId);
+    
+    /**
+     * <pre>
+     * 查询微信支付的结果
+     * @param orderId
+     * </pre>
+     */
+    WeChatPayQueryResult queryWeChatPayResult(String orderId);
+    
+    /**
+     * <pre>
+     * 查询支付宝支付的结果
+     * @param orderId
+     * </pre>
+     */
+    AliPayQueryResult queryAliPayResult(String orderId);
 }

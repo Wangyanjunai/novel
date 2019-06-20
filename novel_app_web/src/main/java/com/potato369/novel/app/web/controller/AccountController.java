@@ -108,8 +108,7 @@ public class AccountController {
      * 	"phoneNumber":"13852369856"
      * }
      * 绑定提现账户信息接口
-     * @param accountDTO
-     * @param bindingResult
+     * @param userId
      * @return
      */
 	@GetMapping(value = "/find")

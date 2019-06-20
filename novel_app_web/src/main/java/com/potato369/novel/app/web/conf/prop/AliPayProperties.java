@@ -32,8 +32,8 @@ public class AliPayProperties {
      * @Field 1、serverUrl：请求接口地址。
      * </pre>
      */
-    @Value(value = "${alipay.pay.serverUrl}")
-    private String serverUrl;
+    @Value(value = "${alipay.pay.serverPayUrl}")
+    private String serverPayUrl;
 	
     /**
      * <pre>
@@ -98,6 +98,15 @@ public class AliPayProperties {
      */
     @Value(value = "${alipay.pay.notifyUrl}")
     private String notifyUrl;
+    
+    
+    /**
+     * <pre>
+     * @Field 10、alipayPublicKey：支付宝公钥。
+     * </pre>
+     */
+    @Value(value = "${alipay.pay.alipayPublicKey}")
+    private String alipayPublicKey;
     
     @Override
     public String toString() {

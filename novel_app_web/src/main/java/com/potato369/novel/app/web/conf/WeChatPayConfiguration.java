@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
  * <pre>
  * @PackageName com.potato369.novel.app.web.conf.prop
  * @ClassName WeChatPayConfiguration
- * @Desc
+ * @Desc 微信支付Bean配置
  * @WebSite https://www.potato369.com
  * @Author Jack
  * @Date 2019/6/12 16:21

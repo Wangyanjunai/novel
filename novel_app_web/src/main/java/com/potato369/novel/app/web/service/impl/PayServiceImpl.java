@@ -1,6 +1,7 @@
 package com.potato369.novel.app.web.service.impl;
 
 import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradeAppPayModel;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
@@ -9,20 +10,26 @@ import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.github.binarywang.wxpay.bean.order.WxPayAppOrderResult;
 import com.github.binarywang.wxpay.bean.request.BaseWxPayRequest;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
+import com.github.binarywang.wxpay.bean.result.WxPayOrderQueryResult;
 import com.github.binarywang.wxpay.constant.WxPayConstants;
+import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.potato369.novel.app.web.conf.prop.AliPayProperties;
 import com.potato369.novel.app.web.conf.prop.ProjectUrlProperties;
+import com.potato369.novel.app.web.model.AliPayQueryResult;
 import com.potato369.novel.app.web.model.AliPayResult;
-import com.potato369.novel.app.web.model.WeixinPayResult;
+import com.potato369.novel.app.web.model.WeChatPayQueryResult;
+import com.potato369.novel.app.web.model.WeChatPayResult;
 import com.potato369.novel.app.web.service.PayService;
 import com.potato369.novel.app.web.utils.MathUtil;
 import com.potato369.novel.basic.dataobject.OrderMaster;
+import com.potato369.novel.basic.dataobject.ProductInfo;
 import com.potato369.novel.basic.enums.OrderStatusEnum;
 import com.potato369.novel.basic.enums.PayStatusEnum;
 import com.potato369.novel.basic.enums.PayTypeEnum;
 import com.potato369.novel.basic.enums.ResultEnum;
 import com.potato369.novel.basic.service.OrderService;
+import com.potato369.novel.basic.service.ProductService;
 import com.potato369.novel.basic.utils.DateUtil;
 import com.potato369.novel.basic.utils.WwwUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +39,7 @@ import java.util.Iterator;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,9 +66,6 @@ public class PayServiceImpl implements PayService {
     private WxPayService wxPayService;
     
     @Autowired
-    private AlipayClient alipayClientService;
-    
-    @Autowired
     private OrderService orderService;
     
     @Autowired
@@ -68,6 +73,9 @@ public class PayServiceImpl implements PayService {
     
     @Autowired
     private AliPayProperties properties;
+    
+    @Autowired
+    private ProductService productService;
 
     /**
      * <pre>
@@ -77,25 +85,34 @@ public class PayServiceImpl implements PayService {
      * </pre>
      */
     @Override
-    public WeixinPayResult weixinPay(String orderId) {
-    	WeixinPayResult payResult = new WeixinPayResult();
+    public WeChatPayResult weixinPay(String orderId) {
+    	WeChatPayResult payResult = new WeChatPayResult();
     	try {
-    		OrderMaster order = checkOrder(orderId);
+    		if (log.isDebugEnabled()) {
+				log.debug("start====================生成微信APP预支付订单信息====================start");
+			}
+    		OrderMaster orderInfo = checkOrder(orderId);
+    		ProductInfo productInfo = productService.findOne(orderInfo.getProductId());
+    		if (productInfo == null) {
+    			log.error("【检查支付的订单信息】 商品信息不存在，商品id={}", orderInfo.getProductId());
+    			throw new Exception(ResultEnum.PRODUCT_NOT_EXIST.getMessage());
+    		}
     		WxPayUnifiedOrderRequest orderRequest = new WxPayUnifiedOrderRequest();
-    		orderRequest.setBody(order.getOrderName());
-    		orderRequest.setOutTradeNo(order.getOrderId());
-    		orderRequest.setTotalFee(order.getOrderAmount().multiply(new BigDecimal(100)).intValue());
+    		orderRequest.setBody(orderInfo.getOrderName());
+    		orderRequest.setOutTradeNo(orderInfo.getOrderId());
+    		orderRequest.setTotalFee(orderInfo.getOrderAmount().multiply(new BigDecimal(100)).intValue());
     		ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
     		HttpServletRequest request = requestAttributes.getRequest();
     		orderRequest.setSpbillCreateIp(WwwUtil.getIpAddr4(request));
     		orderRequest.setTradeType(WxPayConstants.TradeType.APP);
+    		orderRequest.setProductId(productInfo.getProductId());
     		WxPayAppOrderResult result = wxPayService.createOrder(orderRequest);
     		if (result != null) {
     			payResult.setReturnCode("SUCCESS");
 				payResult.setReturnMsg("生成微信APP预支付订单信息成功。");
 				payResult.setResultCode("SUCCESS");
 				payResult.setErrCode("SUCCESS");
-				payResult.setErrCodeDes("请求微信支付统一下单接口生成预付单数据成功。");
+				payResult.setErrCodeDes("请求微信支付统一下单接口生成预付单信息成功。");
 				payResult.setAppId(result.getAppId());
 				payResult.setPartnerId(result.getPartnerId());
 				payResult.setPackageValue(result.getPackageValue());
@@ -103,25 +120,29 @@ public class PayServiceImpl implements PayService {
 				payResult.setNonceStr(result.getNonceStr());
 				payResult.setSign(result.getSign());
 				payResult.setTimeStamp(result.getTimeStamp());
-				return payResult;
-			} else {
-				payResult.setReturnCode("FAIL");
-				payResult.setReturnMsg("生成微信APP预支付订单信息失败");
-				payResult.setResultCode("FAIL");
-				payResult.setErrCode("FAIL");
-				payResult.setErrCodeDes("请求微信支付统一下单接口生成预付单数据为空。");
+				payResult.setOrderId(orderId);
 				return payResult;
 			}
-		} catch (Exception e) {
-			log.error("生成微信APP预支付订单信息出现错误", e);
-			payResult.setReturnCode("FAIL");
-			payResult.setReturnMsg("生成微信APP预支付订单信息失败");
+    		payResult.setReturnCode("FAIL");
+			payResult.setReturnMsg("生成微信APP预支付订单信息失败。");
 			payResult.setResultCode("FAIL");
 			payResult.setErrCode("FAIL");
-			payResult.setErrCodeDes("生成微信APP预支付订单信息出现错误。");
+			payResult.setErrCodeDes("请求微信支付统一下单接口生成预付单信息为空。");
+			payResult.setOrderId(orderId);
+			return payResult;
+		} catch (Exception e) {
+			log.error("生成微信APP预支付订单信息出现错误。", e);
+			payResult.setReturnCode("FAIL");
+			payResult.setReturnMsg("请求微信支付统一下单接口生成预付单信息失败。");
+			payResult.setResultCode("FAIL");
+			payResult.setErrCode("FAIL");
+			payResult.setErrCodeDes("请求微信支付统一下单接口生成预付单信息出现错误。");
+			payResult.setOrderId(orderId);
 			return payResult;
 		} finally {
-			
+			if (log.isDebugEnabled()) {
+				log.debug("end======================生成微信APP预支付订单信息======================end");
+			}
 		}
     }
     
@@ -137,26 +158,34 @@ public class PayServiceImpl implements PayService {
     	AliPayResult alipayResult = new AliPayResult();
     	try {
     		if (log.isDebugEnabled()) {
-				log.debug("start=================【支付宝支付】=================start");
+				log.debug("start====================生成支付宝APP预支付订单信息====================start");
 			}
-			OrderMaster orderMaster = checkOrder(orderId);
+			OrderMaster orderInfo = checkOrder(orderId);
+			ProductInfo productInfo = productService.findOne(orderInfo.getProductId());
+    		if (productInfo == null) {
+    			log.error("【检查支付的订单信息】 商品信息不存在，商品id={}", orderInfo.getProductId());
+    			throw new Exception(ResultEnum.PRODUCT_NOT_EXIST.getMessage());
+    		}
 			AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
 			AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-			model.setBody(orderMaster.getOrderName());
-			model.setSubject(orderMaster.getOrderName());
-			model.setOutTradeNo(orderMaster.getOrderId());
+			model.setBody(orderInfo.getOrderName());
+			model.setSubject("急速追书" + orderInfo.getOrderName());
+			model.setOutTradeNo(orderInfo.getOrderId());
 			model.setTimeoutExpress(StringUtils.trimToNull(this.properties.getTimeoutExpress()));
-			model.setTotalAmount(orderMaster.getOrderAmount().toString());
-			model.setProductCode(orderMaster.getOrderName());
+			model.setTotalAmount(orderInfo.getOrderAmount().toString());
+			model.setGoodsType("0");
+			model.setProductCode(productInfo.getProductCode());
 			request.setBizModel(model);
 			request.setNotifyUrl(StringUtils.trimToNull(this.urlProperties.getDomainUrl() + this.urlProperties.getProjectName() + this.properties.getNotifyUrl()));
-			if (log.isDebugEnabled()) {
-				log.debug("request={}", request);
-			}
-			AlipayTradeAppPayResponse response = alipayClientService.sdkExecute(request);
-			if (log.isDebugEnabled()) {
-				log.debug("response={}", response);
-			}
+			AlipayClient alipayClient = new DefaultAlipayClient(
+	        		StringUtils.trimToNull(this.properties.getServerPayUrl()),
+	        		StringUtils.trimToNull(this.properties.getAppId()),
+	        		StringUtils.trimToNull(this.properties.getAppPrivateKey()),
+	        		StringUtils.trimToNull(this.properties.getFormat()),
+	        		StringUtils.trimToNull(this.properties.getCharSet()), 
+	        		StringUtils.trimToNull(this.properties.getAppPublicKey()),
+	        		StringUtils.trimToNull(this.properties.getSignType()));
+			AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
 			if (response != null) {
 				String body = response.getBody();
 				if (body != null) {
@@ -164,22 +193,36 @@ public class PayServiceImpl implements PayService {
 					alipayResult.setBody(body);
 					alipayResult.setReturnCode("SUCCESS");
 					alipayResult.setResultCode("SUCCESS");
-					alipayResult.setReturnMsg("【支付宝支付】返回数据成功。");
+					alipayResult.setReturnMsg("生成支付宝APP预支付订单信息返回数据成功。");
+					alipayResult.setErrCode("SUCCESS");
+					alipayResult.setErrCodeDes("生成支付宝APP预支付订单信息返回数据成功。");
+					alipayResult.setOrderId(orderId);
 					return alipayResult;
 				}
 			}
-			return alipayResult;
-    	} catch (Exception e) {
-			log.error("【支付宝支付】出现错误", e);
 			alipayResult.setAppId(StringUtils.trimToNull(this.properties.getAppId()));
 			alipayResult.setBody(null);
 			alipayResult.setReturnCode("FAIL");
 			alipayResult.setResultCode("FAIL");
-			alipayResult.setReturnMsg("【支付宝支付】返回数据失败。");
+			alipayResult.setReturnMsg("生成支付宝APP预支付订单信息返回数据失败。");
+			alipayResult.setErrCode("FAIL");
+			alipayResult.setErrCodeDes("生成支付宝APP预支付订单信息返回数据失败。");
+			alipayResult.setOrderId(orderId);
+			return alipayResult;
+    	} catch (Exception e) {
+			log.error("生成支付宝APP预支付订单信息出现错误", e);
+			alipayResult.setAppId(StringUtils.trimToNull(this.properties.getAppId()));
+			alipayResult.setBody(null);
+			alipayResult.setReturnCode("FAIL");
+			alipayResult.setResultCode("FAIL");
+			alipayResult.setReturnMsg("生成支付宝APP预支付订单信息返回数据失败。");
+			alipayResult.setErrCode("FAIL");
+			alipayResult.setErrCodeDes("生成支付宝APP预支付订单信息返回数据失败。");
+			alipayResult.setOrderId(orderId);
 			return alipayResult;
 		} finally {
 			if (log.isDebugEnabled()) {
-				log.debug("end===================【支付宝支付】===================end");
+				log.debug("end======================生成支付宝APP预支付订单信息======================end");
 			}
 		}
 	}
@@ -313,7 +356,7 @@ public class PayServiceImpl implements PayService {
 			//boolean AlipaySignature.rsaCheckV1(Map<String, String> params, String
 			//publicKey, String charset, String sign_type)
 			AlipaySignature.rsaCheckV1(params,
-					StringUtils.trimToNull(this.properties.getAppPublicKey()),
+					StringUtils.trimToNull(this.properties.getAlipayPublicKey()),
 					StringUtils.trimToNull(this.properties.getCharSet()),
 					StringUtils.trimToNull(this.properties.getSignType()));
 			if (log.isDebugEnabled()) {
@@ -349,26 +392,87 @@ public class PayServiceImpl implements PayService {
 
     }
     
+    /**
+     * <pre>
+     * 关闭超时未支付的订单
+     * @param orderId
+     * </pre>
+     */
+    @Override
+    public WeChatPayQueryResult queryWeChatPayResult(String orderId) {
+		WeChatPayQueryResult queryResult = new WeChatPayQueryResult();
+		WxPayOrderQueryResult result = null;
+    	try {
+    		if (log.isDebugEnabled()) {
+    			log.debug("start====================查询微信支付订单结果====================start");
+			}
+    		result = wxPayService.queryOrder(null, orderId);
+    		if (result != null) {
+				BeanUtils.copyProperties(result, queryResult);
+				queryResult.setResultCode("SUCCESS");
+				queryResult.setReturnCode("SUCCESS");
+				queryResult.setReturnMsg("查询微信支付订单结果成功。");
+				queryResult.setErrCode("SUCCESS");
+				queryResult.setErrCodeDes("查询微信支付订单结果成功。");
+				return queryResult;
+			}
+		} catch (WxPayException e) {
+			BeanUtils.copyProperties(result, queryResult);
+		} catch (Exception e) {
+			log.error("查询微信支付订单结果出现错误", e);
+			queryResult.setResultCode("FAIL");
+			queryResult.setReturnCode("FAIL");
+			queryResult.setReturnMsg("查询微信支付订单结果失败。");
+			queryResult.setErrCode("FAIL");
+			queryResult.setErrCodeDes("查询微信支付订单结果失败。");
+			return queryResult;
+		} finally {
+			if (log.isDebugEnabled()) {
+				log.debug("end======================查询微信支付订单结果======================end");
+			}
+		}
+    	return queryResult;
+    }
+    
+    /**
+     * <pre>
+     * 关闭超时未支付的订单
+     * @param orderId
+     * </pre>
+     */
+    @Override
+    public AliPayQueryResult queryAliPayResult(String orderId) {
+		AliPayQueryResult queryResult = new AliPayQueryResult( );
+    	try {
+			
+		} catch (Exception e) {
+			
+		} finally {
+			
+		}
+    	return queryResult;
+    }
+    
     public OrderMaster checkOrder(String orderId) throws Exception {
-    	OrderMaster order = orderService.findOne(orderId);
-		if (order == null) {
+    	OrderMaster orderInfo = orderService.findOne(orderId);
+		if (orderInfo == null) {
 			log.error("【检查支付的订单信息】 订单信息不存在，订单id={}", orderId);
 			throw new Exception(ResultEnum.ORDER_NOT_EXIST.getMessage());
 		}
-		if (order.getOrderStatus() != OrderStatusEnum.NEW.getCode()) {
-			log.error("【检查支付的订单信息】 订单状态不正确，订单id={}，订单状态={}", orderId, order.getOrderStatusEnum().getMessage());
+		if (orderInfo.getOrderStatus() != OrderStatusEnum.NEW.getCode()) {
+			log.error("【检查支付的订单信息】 订单状态不正确，订单id={}，订单状态={}", orderId, orderInfo.getOrderStatusEnum().getMessage());
 			throw new Exception(ResultEnum.ORDER_STATUS_ERROR.getMessage());
 		}
-		if (order.getPayStatus() != PayStatusEnum.WAITING.getCode()) {
-			log.error("【检查支付的订单信息】 订单支付状态不正确，订单id={}，订单支付状态={}", orderId, order.getPayStatusEnum().getMessage());
+		if (orderInfo.getPayStatus() != PayStatusEnum.WAITING.getCode()) {
+			log.error("【检查支付的订单信息】 订单支付状态不正确，订单id={}，订单支付状态={}", orderId, orderInfo.getPayStatusEnum().getMessage());
 			throw new Exception(ResultEnum.ORDER_PAY_STATUS_ERROR.getMessage());
 		}
-		if (order.getPayType() != PayTypeEnum.PAY_WITH_ALIPAY.getCode() && 
-			order.getPayType() != PayTypeEnum.PAY_WITH_WECHAT.getCode() && 
-			order.getPayType() != PayTypeEnum.PAY_WITH_BALANCE.getCode()) {
-			log.error("【检查支付的订单信息】 订单支付方式不正确，订单id={}，订单支付方式={}", orderId, order.getPayTypeEnum().getMessage());
+		if (orderInfo.getPayType() != PayTypeEnum.PAY_WITH_ALIPAY.getCode() && 
+			orderInfo.getPayType() != PayTypeEnum.PAY_WITH_WECHAT.getCode() && 
+			orderInfo.getPayType() != PayTypeEnum.PAY_WITH_BALANCE.getCode()) {
+			log.error("【检查支付的订单信息】 订单支付方式不正确，订单id={}，订单支付方式={}", orderId, orderInfo.getPayTypeEnum().getMessage());
 			throw new Exception(ResultEnum.ORDER_PAY_STATUS_ERROR.getMessage());
 		}
-		return order;
+		return orderInfo;
 	}
 }

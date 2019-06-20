@@ -1,14 +1,12 @@
 package com.potato369.novel.app.web.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.app.web.model
- * @ClassName WeixinPayResult
+ * @ClassName WeChatPayResult
  * @Desc
  * @WebSite https://www.potato369.com
  * @Author Jack
@@ -18,50 +16,10 @@ import lombok.NoArgsConstructor;
  * </pre>
  */
 @AllArgsConstructor
-@Builder
 @Data
 @NoArgsConstructor
-public class WeixinPayResult {
-	
-	/**
-	 * <pre>
-	 * @JsonProperty returnCode：返回状态码，SUCCESS/FAIL 此字段是通信标识，非交易标识，交易是否成功需要查看result_code来判断。
-	 * </pre>
-	 */
-	@JsonProperty(value = "return_code")
-	private String returnCode;
-	
-	/**
-	 * <pre>
-	 * @JsonProperty returnMsg：返回信息，如非空，为错误原因，签名失败，参数格式校验错误。
-	 * </pre>
-	 */
-	@JsonProperty(value = "return_msg")
-	private String returnMsg;
-	
-    /**
-	 * <pre>
-	 * @JsonProperty resultCode：业务结果，微信返回的业务结果，SUCCESS/FAIL。
-	 * </pre>
-	 */
-    @JsonProperty(value = "result_code")
-    private String resultCode;
-
-    /**
-	 * <pre>
-	 * @JsonProperty errCode：错误代码，详细参见第6节错误列表。
-	 * </pre>
-	 */
-    @JsonProperty(value = "err_code")
-    private String errCode;
-    
-    /**
-	 * <pre>
-	 * @JsonProperty errCodeDes：错误代码描述，错误返回的信息描述。
-	 * </pre>
-	 */
-    @JsonProperty(value = "err_code_des")
-    private String errCodeDes;
+@EqualsAndHashCode(callSuper = false)
+public class WeChatPayResult extends Result{
     
 	/**
 	 * <pre>
@@ -120,5 +78,11 @@ public class WeixinPayResult {
     @JsonProperty(value = "sign")
     private String sign;
 
-
+    /**
+	 * <pre>
+	 * @JsonProperty orderId：商户订单id。
+	 * </pre>
+	 */
+    @JsonProperty(value = "out_trade_no")
+    private String orderId;
 }

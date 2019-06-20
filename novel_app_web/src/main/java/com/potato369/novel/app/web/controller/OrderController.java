@@ -2,7 +2,7 @@ package com.potato369.novel.app.web.controller;
 
 import com.potato369.novel.app.web.conf.prop.WeChatPayProperties;
 import com.potato369.novel.app.web.model.AliPayResult;
-import com.potato369.novel.app.web.model.WeixinPayResult;
+import com.potato369.novel.app.web.model.WeChatPayResult;
 import com.potato369.novel.app.web.service.PayService;
 import com.potato369.novel.app.web.vo.ResultVO;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
@@ -137,7 +137,7 @@ public class OrderController {
                 }
 			    orderService.save(orderMaster);
 			    if (PayTypeEnum.PAY_WITH_WECHAT.getCode().equals(type)) {//微信支付
-			    	WeixinPayResult payResult = payService.weixinPay(orderMaster.getOrderId());
+			    	WeChatPayResult payResult = payService.weixinPay(orderMaster.getOrderId());
 			    	resultVO.setCode(0);
 			    	resultVO.setMsg("请求微信支付生成预支付信息成功。");
 			    	resultVO.setData(payResult);
