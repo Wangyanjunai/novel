@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import lombok.extern.slf4j.Slf4j;
+
 import java.math.BigDecimal;
 import java.util.List;
+
 /**
  * <pre>
  * @ClassName TaskController
@@ -39,6 +41,7 @@ public class TaskController {
 
     @Autowired
     private UserInfoService userInfoService;
+
     /**
      * <pre>
      * 任务列表数据
@@ -46,24 +49,24 @@ public class TaskController {
      */
     @GetMapping(value = "/list")
     public ResultVO<List<TaskInfoVO>> list() {
-      try {
-        ResultVO<List<TaskInfoVO>> resultVO = new ResultVO<>();
-        if (log.isDebugEnabled()) {
-            log.debug("start==================后端查询任务信息列表==================start");
+        try {
+            ResultVO<List<TaskInfoVO>> resultVO = new ResultVO<>();
+            if (log.isDebugEnabled()) {
+                log.debug("start==================后端查询任务信息列表==================start");
+            }
+            List<TaskInfoVO> taskInfoVOList = TaskInfo2TaskInfoVOConverter.convertToTaskInfoVOList(taskInfoService.findAll());
+            resultVO.setData(taskInfoVOList);
+            resultVO.setCode(0);
+            resultVO.setMsg("返回数据成功");
+            return resultVO;
+        } catch (Exception e) {
+            log.error("后端查询任务信息列表失败", e);
+            return ResultVOUtil.error(-1, "返回数据失败");
+        } finally {
+            if (log.isDebugEnabled()) {
+                log.debug("end====================后端查询任务信息列表====================end");
+            }
         }
-        List<TaskInfoVO> taskInfoVOList = TaskInfo2TaskInfoVOConverter.convertToTaskInfoVOList(taskInfoService.findAll());
-        resultVO.setData(taskInfoVOList);
-        resultVO.setCode(0);
-        resultVO.setMsg("返回数据成功");
-        return resultVO;
-      } catch (Exception e) {
-          log.error("后端查询任务信息列表失败", e);
-          return ResultVOUtil.error(-1, "返回数据失败");
-      } finally {
-          if (log.isDebugEnabled()) {
-              log.debug("end====================后端查询任务信息列表====================end");
-          }
-      }
     }
 
     @GetMapping(value = "/balance")

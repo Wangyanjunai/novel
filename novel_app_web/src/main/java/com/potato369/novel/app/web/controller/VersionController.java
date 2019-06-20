@@ -12,6 +12,7 @@ package com.potato369.novel.app.web.controller;
  * @Copyright Copyright (c) 2016 ~ 2020 版权所有 (C) 土豆互联科技(深圳)有限公司 https://www.potato369.com All Rights Reserved。
  * </pre>
  */
+
 import com.potato369.novel.app.web.utils.ResultVOUtil;
 import com.potato369.novel.app.web.vo.AppVersionVO;
 import com.potato369.novel.app.web.vo.ResultVO;
@@ -24,6 +25,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
 @RestController
 @RequestMapping(value = "/android/releases")

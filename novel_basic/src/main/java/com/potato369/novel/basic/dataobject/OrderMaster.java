@@ -10,15 +10,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.dataobject
@@ -45,7 +43,7 @@ public class OrderMaster implements Serializable {
      * @serialField serialVersionUID：序列号。
      * </pre>
      */
-	@Transient
+    @Transient
     private static final long serialVersionUID = 3765541505739277089L;
 
     /**
@@ -56,7 +54,7 @@ public class OrderMaster implements Serializable {
     @Id
     @Column(name = "order_id", nullable = false, length = 32)
     private String orderId;
-    
+
     /**
      * <pre>
      * @serialField userId：用户mid。
@@ -64,7 +62,7 @@ public class OrderMaster implements Serializable {
      */
     @Column(name = "user_id", nullable = false, length = 20)
     private String userId;
-    
+
     /**
      * <pre>
      * @serialField transactionId：订单支付交易流水号。
@@ -96,7 +94,7 @@ public class OrderMaster implements Serializable {
      */
     @Column(name = "buyer_openid", length = 64)
     private String buyerOpenid;
-    
+
     /**
      * <pre>
      * @serialField productId：商品id。
@@ -104,7 +102,7 @@ public class OrderMaster implements Serializable {
      */
     @Column(name = "product_id", nullable = false, length = 32)
     private String productId;
-    
+
     /**
      * <pre>
      * @serialField orderAmount：订单总金额，默认：0.00。
@@ -121,7 +119,7 @@ public class OrderMaster implements Serializable {
      */
     @Column(name = "order_name", length = 64)
     private String orderName;
-    
+
     /**
      * <pre>
      * @serialField orderType：订单产品类型，0-提现；1-兑换；2-充值，“默认：0-提现”。
@@ -130,7 +128,7 @@ public class OrderMaster implements Serializable {
     @Builder.Default
     @Column(name = "order_type", nullable = false, length = 1)
     private Integer orderType = OrderTypeEnum.WITHDRAW.getCode();
-    
+
     /**
      * <pre>
      * @serialField orderStatus：订单状态，0-新订单；1-已完结；2-已取消，“默认：0-新订单”。
@@ -148,7 +146,7 @@ public class OrderMaster implements Serializable {
     @Builder.Default
     @Column(name = "pay_status", nullable = false, length = 1)
     private Integer payStatus = PayStatusEnum.WAITING.getCode();
-    
+
     /**
      * <pre>
      * @serialField payType：订单支付方式，1-支付宝；2-微信支付；3-余额支付，”默认：1-支付宝“。
@@ -157,7 +155,7 @@ public class OrderMaster implements Serializable {
     @Builder.Default
     @Column(name = "pay_type", nullable = false, length = 1)
     private Integer payType = PayTypeEnum.PAY_WITH_ALIPAY.getCode();
-    
+
     /**
      * <pre>
      * @serialField payTime：支付时间。
@@ -181,7 +179,7 @@ public class OrderMaster implements Serializable {
      */
     @Column(name = "update_time", nullable = false, length = 64)
     private Date updateTime;
-    
+
     /**
      * <pre>
      * @serialField orderDetailList：订单详情列表。

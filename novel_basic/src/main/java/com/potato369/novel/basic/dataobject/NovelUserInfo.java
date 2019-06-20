@@ -10,14 +10,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.Id;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.dataobject
@@ -55,7 +53,7 @@ public class NovelUserInfo implements Serializable {
     @Id
     @Column(name = "m_id", nullable = false, length = 20)
     private String mId;
-    
+
     /**
      * <pre>
      * @serialField meId：手机串号。
@@ -276,7 +274,7 @@ public class NovelUserInfo implements Serializable {
 
     @Transient
     public UserInfoVIPGradeIdEnum getUserInfoVIPGradeIdEnum() {
-        return EnumUtil.getByCode(0,UserInfoVIPGradeIdEnum.class);
+        return EnumUtil.getByCode(0, UserInfoVIPGradeIdEnum.class);
     }
 
     @Transient

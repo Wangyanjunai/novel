@@ -27,12 +27,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.app.web.controller
@@ -242,8 +244,8 @@ public class NovelController {
             }
         }
     }
-    
-	@GetMapping(value = "/info/download/{novelId}")//小说下载
+
+    @GetMapping(value = "/info/download/{novelId}")//小说下载
     public ResultVO download(@PathVariable(name = "novelId") String novelId) {
         ResultVO<NovelChapterTitleAndContentVO> resultVO = new ResultVO<NovelChapterTitleAndContentVO>();
         try {
@@ -254,27 +256,27 @@ public class NovelController {
             String title = null;
             String statusString = null;
             if (novelInfo != null) {
-            	title = novelInfo.getTitle();
-            	Integer status = novelInfo.getNovelStatus();
-            	if (Integer.valueOf(0).equals(status)) {
-            		statusString = "已完结";
-				}
-            	if (Integer.valueOf(1).equals(status)) {
-            		statusString = "连载中";
-				}
-			}
+                title = novelInfo.getTitle();
+                Integer status = novelInfo.getNovelStatus();
+                if (Integer.valueOf(0).equals(status)) {
+                    statusString = "已完结";
+                }
+                if (Integer.valueOf(1).equals(status)) {
+                    statusString = "连载中";
+                }
+            }
             List<NovelChapter> contentList = novelChapterService.findAllContentByNovelId(novelId);
             if (contentList != null && !contentList.isEmpty() && contentList.size() > 0) {
-            	StringBuffer sBuffer = new StringBuffer();
-            	for (NovelChapter chapter : contentList) {
-            		sBuffer.append(chapter.getTitle());
-            		sBuffer.append("\n");
-            		sBuffer.append(chapter.getContent());
-				}
-            	if (log.isDebugEnabled()) { 
-            		log.debug("content={}", sBuffer.toString());
-				}
-            	writeInFileByfi(title, statusString, sBuffer.toString());
+                StringBuffer sBuffer = new StringBuffer();
+                for (NovelChapter chapter : contentList) {
+                    sBuffer.append(chapter.getTitle());
+                    sBuffer.append("\n");
+                    sBuffer.append(chapter.getContent());
+                }
+                if (log.isDebugEnabled()) {
+                    log.debug("content={}", sBuffer.toString());
+                }
+                writeInFileByfi(title, statusString, sBuffer.toString());
             }
             resultVO.setCode(0);
             resultVO.setData(null);
@@ -289,7 +291,7 @@ public class NovelController {
             }
         }
     }
-    
+
 
     @GetMapping(value = "/book/hotWords-search")//热词搜索，大家都在搜，获取搜索热词
     public ResultVO<WordsVO> hotWordsSearch(@RequestParam(name = "page", defaultValue = "1") Integer page,
@@ -487,6 +489,7 @@ public class NovelController {
             }
         }
     }
+
     private synchronized void updateClickNumber(NovelInfo novelInfo) {
         if (novelInfo != null) {
             String novelId = novelInfo.getId();
@@ -494,12 +497,12 @@ public class NovelController {
             novelInfoService.updateClickNumber(clickNumber, novelId);
         }
     }
-    
-    private synchronized void writeInFileByfi(String title, String status,String content){
-        File f = new File(title+"["+status+"]"+".txt");
+
+    private synchronized void writeInFileByfi(String title, String status, String content) {
+        File f = new File(title + "[" + status + "]" + ".txt");
         FileOutputStream fos = null;
         try {
-            if(!f.exists()){
+            if (!f.exists()) {
                 f.createNewFile();
             }
             fos = new FileOutputStream(f);
@@ -507,14 +510,14 @@ public class NovelController {
         } catch (IOException e) {
             log.error("", e);
         } finally {
-            if(fos != null){
+            if (fos != null) {
                 try {
                     fos.close();
                 } catch (IOException e) {
-                	log.error("", e);
+                    log.error("", e);
                 }
             }
         }
-        
+
     }
 }

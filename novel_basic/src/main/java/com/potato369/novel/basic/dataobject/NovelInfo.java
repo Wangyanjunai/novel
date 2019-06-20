@@ -18,10 +18,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.dataobject
@@ -48,7 +50,7 @@ public class NovelInfo implements Serializable {
      * @serialField serialVersionUID：序列号。
      * </pre>
      */
-	@Transient
+    @Transient
     private static final long serialVersionUID = -8639503100980373589L;
 
     /**
@@ -133,7 +135,7 @@ public class NovelInfo implements Serializable {
      */
     @Column(name = "category_cn_text", length = 64)
     private String categoryCNText;
-    
+
     /**
      * <pre>
      * @serialField categoryEnText：英文名称。
@@ -158,7 +160,7 @@ public class NovelInfo implements Serializable {
     @Builder.Default
     @Column(name = "readers", length = 16)
     private BigDecimal readers = BigDecimal.ZERO;
-    
+
     /**
      * <pre>
      * @serialField recentReaders：最近跟随阅读（点击）用户数；默认“0-最近跟随阅读（点击）用户数”。
@@ -167,7 +169,7 @@ public class NovelInfo implements Serializable {
     @Builder.Default
     @Column(name = "recent_readers", length = 16)
     private BigDecimal recentReaders = BigDecimal.ZERO;
-    
+
     /**
      * <pre>
      * @serialField clickNumber：点击次数。
@@ -176,7 +178,7 @@ public class NovelInfo implements Serializable {
     @Builder.Default
     @Column(name = "click_number", length = 16)
     private BigDecimal clickNumber = BigDecimal.ZERO;
-    
+
     /**
      * <pre>
      * @serialField newestChapterId：最新章节id。
@@ -184,7 +186,7 @@ public class NovelInfo implements Serializable {
      */
     @Column(name = "newest_chapter_id", length = 32)
     private String newestChapterId;
-    
+
     /**
      * <pre>
      * @serialField newestChapterTitle：最新章节标题（名称）。
@@ -192,7 +194,7 @@ public class NovelInfo implements Serializable {
      */
     @Column(name = "newest_chapter_title", length = 512)
     private String newestChapterTitle;
-    
+
     /**
      * <pre>
      * @serialField totalChapters：章节总数。
@@ -201,7 +203,7 @@ public class NovelInfo implements Serializable {
     @Builder.Default
     @Column(name = "total_chapters", length = 6)
     private Integer totalChapters = Integer.valueOf(0);
-    
+
     /**
      * <pre>
      * @serialField retention：留存率，现在只是保存数字，显示的时候加上百分比。
@@ -227,13 +229,13 @@ public class NovelInfo implements Serializable {
     @Column(name = "update_time", nullable = false, length = 64)
     private Date updateTime;
 
-    public NovelInfo (String categoryCNText) {
+    public NovelInfo(String categoryCNText) {
         NovelInfo novelInfo = NovelInfo.builder().build();
         novelInfo.setId(UUIDUtil.gen32UUID());//1、设置小说id
         novelInfo.setCategoryCNText(categoryCNText);//2、设置小说分类中文名称
         compasByCategoryCNText(novelInfo, categoryCNText);
     }
-    
+
     public NovelInfo compasByCategoryCNText(NovelInfo novelInfo, String categoryCNText) {
         if ("玄幻魔法".equals(categoryCNText)) {
             novelInfo.setCategoryType(CategoryTypeEnum.XUANHUANQIHUAN.getCode());//3、设置小说分类类型type

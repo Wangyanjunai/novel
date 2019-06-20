@@ -6,12 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -29,8 +25,8 @@ import java.util.Date;
  */
 @AllArgsConstructor
 @Builder
-@DynamicUpdate
 @Data
+@DynamicUpdate
 @Entity(name = "NovelShelf")
 @NoArgsConstructor
 @Table(name = "novel_shelf")
@@ -38,15 +34,15 @@ import java.util.Date;
 public class NovelShelf implements Serializable {
 
     /**
-	 * <pre>
-	 * serialVersionUID：序列号。
-	 * @since JDK 1.6
-	 * </pre>
-	 */
-	@Transient	
-	private static final long serialVersionUID = 7818526440474990984L;
+     * <pre>
+     * serialVersionUID：序列号。
+     * @since JDK 1.6
+     * </pre>
+     */
+    @Transient
+    private static final long serialVersionUID = 7818526440474990984L;
 
-	/**
+    /**
      * <pre>
      * @serialField shelfId：联合主键，书架id。
      * </pre>

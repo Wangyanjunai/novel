@@ -7,14 +7,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.dataobject
@@ -37,14 +35,14 @@ import java.util.Date;
 public class HotWordsInfo implements Serializable {
 
     /**
-	 * <pre>
-	 * serialVersionUID：序列号。
-	 * </pre>
-	 */
-	@Transient
-	private static final long serialVersionUID = -5083836642166628301L;
+     * <pre>
+     * serialVersionUID：序列号。
+     * </pre>
+     */
+    @Transient
+    private static final long serialVersionUID = -5083836642166628301L;
 
-	/**
+    /**
      * <pre>
      * @serialField wordsId：搜索热词id，主键。
      * </pre>

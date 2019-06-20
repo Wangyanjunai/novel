@@ -18,8 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.app.web.controller
@@ -49,7 +51,7 @@ public class OrderController {
 
     @Autowired
     private PayService payService;
-    
+
     @Autowired
     private WeChatPayProperties properties;
 
@@ -62,106 +64,106 @@ public class OrderController {
      * @param type 支付方式
      * </pre>
      */
-	@GetMapping(value = "/create")
+    @GetMapping(value = "/create")
     public ResultVO create(@RequestParam(name = "mid", required = false) String mid,
-    					   @RequestParam(name = "pid", required = false) String pid,
-    					   @RequestParam(name = "type", required = false) Integer type) {
+                           @RequestParam(name = "pid", required = false) String pid,
+                           @RequestParam(name = "type", required = false) Integer type) {
         ResultVO resultVO = new ResultVO();
         try {
-			if (log.isDebugEnabled()) {
-				log.debug("start====================【创建订单】后台生成订单信息并支付====================start");
-			}
-			if (StringUtils.isEmpty(mid)) {
-				resultVO.setMsg("【创建订单】缺少必要参数用户mid，用户mid不能为空。");
+            if (log.isDebugEnabled()) {
+                log.debug("start====================【创建订单】后台生成订单信息并支付====================start");
+            }
+            if (StringUtils.isEmpty(mid)) {
+                resultVO.setMsg("【创建订单】缺少必要参数用户mid，用户mid不能为空。");
                 resultVO.setCode(-100);
                 return resultVO;
-			}
-			if (StringUtils.isEmpty(pid)) {
-				resultVO.setMsg("【创建订单】缺少必要参数选择的VIP套餐商品id，VIP套餐商品id不能为空。");
+            }
+            if (StringUtils.isEmpty(pid)) {
+                resultVO.setMsg("【创建订单】缺少必要参数选择的VIP套餐商品id，VIP套餐商品id不能为空。");
                 resultVO.setCode(-100);
                 return resultVO;
-			}
-			if (type == null) {
-				resultVO.setMsg("【创建订单】缺少必要参数支付方式，支付方式不能为空。");
+            }
+            if (type == null) {
+                resultVO.setMsg("【创建订单】缺少必要参数支付方式，支付方式不能为空。");
                 resultVO.setCode(-100);
                 return resultVO;
-			}
+            }
             NovelUserInfo novelUserInfo = userInfoService.findByUserMId(mid);
-			if (novelUserInfo == null) {
+            if (novelUserInfo == null) {
                 resultVO.setMsg("【创建订单】查询用户信息不存在。");
                 resultVO.setCode(-200);
                 return resultVO;
             }
             ProductInfo productInfo = productService.findOne(pid);
-			if (productInfo == null) {
+            if (productInfo == null) {
                 resultVO.setMsg("【创建订单】查询商品信息不存在。");
                 resultVO.setCode(-300);
                 return resultVO;
             }
             Integer productType = productInfo.getProductType();
-			if (productType != null) {
-				OrderMaster orderMaster = OrderMaster.builder().build();
-	            String orderId = UUIDUtil.genTimstampUUID();//创建订单id
-	            orderMaster.setOrderId(orderId);//设置订单id
-	            orderMaster.setUserId(novelUserInfo.getMId());//设置用户mid
-	            orderMaster.setBuyerName(novelUserInfo.getNickName());//设置用户名称
-	            orderMaster.setBuyerAddress(novelUserInfo.getAddress());//设置用户地址
-	            orderMaster.setBuyerOpenid(novelUserInfo.getOpenid());//设置用户平台openid
-	            orderMaster.setOrderName(new StringBuffer().append(this.properties.getOrderNamePrefix()).append(productInfo.getProductName()).toString().trim());//设置订单名称
-	            orderMaster.setProductId(productInfo.getProductId());//设置商品id
-			    orderMaster.setPayType(type);//设置支付方式
-			    orderMaster.setOrderAmount(productInfo.getProductAmount());//设置支付总金额
-			    List<OrderDetail> orderDetailList = new ArrayList<OrderDetail>();
-			    OrderDetail orderDetail = OrderDetail.builder().build();
-			    orderDetail.setDetailId(UUIDUtil.genTimstampUUID());//设置订单详情id
-			    orderDetail.setOrderId(orderId);//设置订单id
-			    orderDetail.setBuyerOpenid(novelUserInfo.getOpenid());//设置用户平台openid
-			    orderDetail.setProductId(productInfo.getProductId());//设置商品id
-			    orderDetail.setUserId(novelUserInfo.getMId());//设置用户mid
-			    orderDetailList.add(orderDetail);
-			    orderMaster.setOrderDetailList(orderDetailList);
-			    if (ProductTypeEnum.CHARGE.getCode().equals(productType)) {//充值
-			    	orderMaster.setOrderStatus(OrderStatusEnum.NEW.getCode());//设置订单状态
-		            orderMaster.setPayStatus(PayStatusEnum.WAITING.getCode());//设置支付状态
-		            orderMaster.setOrderType(ProductTypeEnum.CHARGE.getCode());//设置订单类型
+            if (productType != null) {
+                OrderMaster orderMaster = OrderMaster.builder().build();
+                String orderId = UUIDUtil.genTimstampUUID();//创建订单id
+                orderMaster.setOrderId(orderId);//设置订单id
+                orderMaster.setUserId(novelUserInfo.getMId());//设置用户mid
+                orderMaster.setBuyerName(novelUserInfo.getNickName());//设置用户名称
+                orderMaster.setBuyerAddress(novelUserInfo.getAddress());//设置用户地址
+                orderMaster.setBuyerOpenid(novelUserInfo.getOpenid());//设置用户平台openid
+                orderMaster.setOrderName(new StringBuffer().append(this.properties.getOrderNamePrefix()).append(productInfo.getProductName()).toString().trim());//设置订单名称
+                orderMaster.setProductId(productInfo.getProductId());//设置商品id
+                orderMaster.setPayType(type);//设置支付方式
+                orderMaster.setOrderAmount(productInfo.getProductAmount());//设置支付总金额
+                List<OrderDetail> orderDetailList = new ArrayList<OrderDetail>();
+                OrderDetail orderDetail = OrderDetail.builder().build();
+                orderDetail.setDetailId(UUIDUtil.genTimstampUUID());//设置订单详情id
+                orderDetail.setOrderId(orderId);//设置订单id
+                orderDetail.setBuyerOpenid(novelUserInfo.getOpenid());//设置用户平台openid
+                orderDetail.setProductId(productInfo.getProductId());//设置商品id
+                orderDetail.setUserId(novelUserInfo.getMId());//设置用户mid
+                orderDetailList.add(orderDetail);
+                orderMaster.setOrderDetailList(orderDetailList);
+                if (ProductTypeEnum.CHARGE.getCode().equals(productType)) {//充值
+                    orderMaster.setOrderStatus(OrderStatusEnum.NEW.getCode());//设置订单状态
+                    orderMaster.setPayStatus(PayStatusEnum.WAITING.getCode());//设置支付状态
+                    orderMaster.setOrderType(ProductTypeEnum.CHARGE.getCode());//设置订单类型
                 }
-			    if (ProductTypeEnum.EXCHANGE.getCode().equals(productType)) {//兑换
-			    	orderMaster.setOrderStatus(OrderStatusEnum.EXCHANG_ING.getCode());
-			    	orderMaster.setPayStatus(PayStatusEnum.DEDUCT_ING.getCode());
-			    	orderMaster.setOrderType(ProductTypeEnum.EXCHANGE.getCode());
+                if (ProductTypeEnum.EXCHANGE.getCode().equals(productType)) {//兑换
+                    orderMaster.setOrderStatus(OrderStatusEnum.EXCHANG_ING.getCode());
+                    orderMaster.setPayStatus(PayStatusEnum.DEDUCT_ING.getCode());
+                    orderMaster.setOrderType(ProductTypeEnum.EXCHANGE.getCode());
                 }
-			    if (ProductTypeEnum.WITHDRAW.getCode().equals(productType)) {//提现
-			    	orderMaster.setOrderStatus(OrderStatusEnum.WITHDRAW_ING.getCode());
-			    	orderMaster.setPayStatus(PayStatusEnum.DEDUCT_ING.getCode());
-			    	orderMaster.setOrderType(ProductTypeEnum.WITHDRAW.getCode());
+                if (ProductTypeEnum.WITHDRAW.getCode().equals(productType)) {//提现
+                    orderMaster.setOrderStatus(OrderStatusEnum.WITHDRAW_ING.getCode());
+                    orderMaster.setPayStatus(PayStatusEnum.DEDUCT_ING.getCode());
+                    orderMaster.setOrderType(ProductTypeEnum.WITHDRAW.getCode());
                 }
-			    orderService.save(orderMaster);
-			    if (PayTypeEnum.PAY_WITH_WECHAT.getCode().equals(type)) {//微信支付
-			    	WeChatPayResult payResult = payService.weixinPay(orderMaster.getOrderId());
-			    	resultVO.setCode(0);
-			    	resultVO.setMsg("请求微信支付生成预支付信息成功。");
-			    	resultVO.setData(payResult);
-			    	return resultVO;
-			    }
-			    if (PayTypeEnum.PAY_WITH_ALIPAY.getCode().equals(type)) {//支付宝支付
-			    	AliPayResult payResult = payService.aliPay(orderId);
-			    	resultVO.setCode(0);
-			    	resultVO.setMsg("请求支付宝支付生成预支付信息成功。");
-			    	resultVO.setData(payResult);
-			    	return resultVO;
-				}
-			    if (PayTypeEnum.PAY_WITH_BALANCE.getCode().equals(type)) {//余额支付
-			    	payService.balancePay(orderId);
-				}
+                orderService.save(orderMaster);
+                if (PayTypeEnum.PAY_WITH_WECHAT.getCode().equals(type)) {//微信支付
+                    WeChatPayResult payResult = payService.weixinPay(orderMaster.getOrderId());
+                    resultVO.setCode(0);
+                    resultVO.setMsg("请求微信支付生成预支付信息成功。");
+                    resultVO.setData(payResult);
+                    return resultVO;
+                }
+                if (PayTypeEnum.PAY_WITH_ALIPAY.getCode().equals(type)) {//支付宝支付
+                    AliPayResult payResult = payService.aliPay(orderId);
+                    resultVO.setCode(0);
+                    resultVO.setMsg("请求支付宝支付生成预支付信息成功。");
+                    resultVO.setData(payResult);
+                    return resultVO;
+                }
+                if (PayTypeEnum.PAY_WITH_BALANCE.getCode().equals(type)) {//余额支付
+                    payService.balancePay(orderId);
+                }
             }
-			return resultVO;
-		} catch (Exception e) {
-			log.error("【创建订单】后台生成订单信息并支付出现错误", e);
             return resultVO;
-		} finally {
-			if (log.isDebugEnabled()) {
-				log.debug("end======================【创建订单】后台生成订单信息并支付======================end");
-			}
-		}
+        } catch (Exception e) {
+            log.error("【创建订单】后台生成订单信息并支付出现错误", e);
+            return resultVO;
+        } finally {
+            if (log.isDebugEnabled()) {
+                log.debug("end======================【创建订单】后台生成订单信息并支付======================end");
+            }
+        }
     }
 }

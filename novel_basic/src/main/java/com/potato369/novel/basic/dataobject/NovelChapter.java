@@ -1,17 +1,14 @@
 package com.potato369.novel.basic.dataobject;
 
-import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import org.hibernate.annotations.DynamicUpdate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 /**
  * <pre>
  * 类名: NovelChapter

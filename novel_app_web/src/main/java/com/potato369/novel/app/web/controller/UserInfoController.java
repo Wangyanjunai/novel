@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.validation.Valid;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.app.web.controller
@@ -41,10 +43,10 @@ public class UserInfoController {
 
     @Autowired
     private UserInfoService userInfoService;
-    
+
     @Autowired
     private VipGradeService vipGradeService;
-    
+
     /**
      * <pre>
      * 用户登录注册
@@ -68,12 +70,12 @@ public class UserInfoController {
                 resultVO.setData(null);
                 return resultVO;
             }
-            String meId      = null; // 手机串号
-            String openid    = null; // 平台openid
+            String meId = null; // 手机串号
+            String openid = null; // 平台openid
             Integer userType = null; // 登录身份类型
             String gradeName = null; // 等级名称
-            Integer gender   = null; // 性别
-            NovelUserInfo novelUserInfo  = null;// 需要保存或者更新的对象信息
+            Integer gender = null; // 性别
+            NovelUserInfo novelUserInfo = null;// 需要保存或者更新的对象信息
             NovelUserInfo userInfoResult = null;// 保存或者更新的对象结果信息
             Date nowDate = new Date();// 当前系统时间
             if (userInfoDTO != null) {
@@ -83,78 +85,78 @@ public class UserInfoController {
                 gender = userInfoDTO.getGender();
             }
             if (UserInfoGenderEnum.VISITOR.getCode().equals(userType)) {
-            	novelUserInfo = userInfoService.findByUserMeIdAndUserType(meId, userType);
-            	if (novelUserInfo != null) {
-            		NovelVipGrade vipGrade = vipGradeService.findOne(novelUserInfo.getVipGradeId());
-            		if (vipGrade != null) {
-    					gradeName = vipGrade.getGradeName();
-    				}
-    				userInfoResult = userInfoService.update(novelUserInfo);
-    				if (log.isDebugEnabled()) {
+                novelUserInfo = userInfoService.findByUserMeIdAndUserType(meId, userType);
+                if (novelUserInfo != null) {
+                    NovelVipGrade vipGrade = vipGradeService.findOne(novelUserInfo.getVipGradeId());
+                    if (vipGrade != null) {
+                        gradeName = vipGrade.getGradeName();
+                    }
+                    userInfoResult = userInfoService.update(novelUserInfo);
+                    if (log.isDebugEnabled()) {
                         log.debug("【前端用户平台账号登录】更新用户信息，userInfo用户信息={}", novelUserInfo);
                     }
-				} else {
-					novelUserInfo = UserInfo2UserInfoDTOConverter.convert(userInfoDTO);
-	        		if (UserInfoGenderEnum.WECHAT.getCode().equals(userType)) {
-	        			novelUserInfo.setIsOrNotBandWechat(UserInfoGenderEnum.FINISHED.getCode());
-	        			novelUserInfo.setBalanceAmount(new BigDecimal(6.66));
-					} else {
-						novelUserInfo.setIsOrNotBandWechat(UserInfoGenderEnum.UNFINISHED.getCode());
-						novelUserInfo.setBalanceAmount(BigDecimal.ZERO);
-					}
-	        		if (gender == null) {
-	        			novelUserInfo.setGender(UserInfoGenderEnum.GENDER_UNKNOWN.getCode());
-					}
-	        		NovelVipGrade vipGrade = vipGradeService.findOne(novelUserInfo.getVipGradeId());
-	        		if (vipGrade != null) {
-						gradeName = vipGrade.getGradeName();
-					}
-	        		novelUserInfo.setUserType(userType);
-	        		novelUserInfo.setMId(UUIDUtil.gen13MID());
-	        		novelUserInfo.setVipStartTime(nowDate);
-	        		novelUserInfo.setVipEndTime(DateUtil.getAfterDayDate(nowDate, 7));
-	                userInfoResult = userInfoService.save(novelUserInfo);//平台openid账号不覆盖登录
-	                if (log.isDebugEnabled()) {
-	                    log.debug("【前端用户平台账号登录】保存用户信息，userInfo用户信息={}", novelUserInfo);
-	                }
-				}
-			} else {
-				novelUserInfo = userInfoService.findByMeIdAndOpenidAndUserType(meId, openid, userType);
-	            if (novelUserInfo == null) {
-	            	novelUserInfo = UserInfo2UserInfoDTOConverter.convert(userInfoDTO);
-	        		if (UserInfoGenderEnum.WECHAT.getCode().equals(userType)) {
-	        			novelUserInfo.setIsOrNotBandWechat(UserInfoGenderEnum.FINISHED.getCode());
-	        			novelUserInfo.setBalanceAmount(new BigDecimal(6.66));
-					} else {
-						novelUserInfo.setIsOrNotBandWechat(UserInfoGenderEnum.UNFINISHED.getCode());
-						novelUserInfo.setBalanceAmount(BigDecimal.ZERO);
-					}
-	        		if (gender == null) {
-	        			novelUserInfo.setGender(UserInfoGenderEnum.GENDER_UNKNOWN.getCode());
-					}
-	        		NovelVipGrade vipGrade = vipGradeService.findOne(novelUserInfo.getVipGradeId());
-	        		if (vipGrade != null) {
-						gradeName = vipGrade.getGradeName();
-					}
-	        		novelUserInfo.setUserType(userType);
-	        		novelUserInfo.setMId(UUIDUtil.gen13MID());
-	        		novelUserInfo.setVipStartTime(nowDate);
-	        		novelUserInfo.setVipEndTime(DateUtil.getAfterDayDate(nowDate, 7));
-	                userInfoResult = userInfoService.save(novelUserInfo);//平台openid账号不覆盖登录
-	                if (log.isDebugEnabled()) {
-	                    log.debug("【前端用户平台账号登录】保存用户信息，userInfo用户信息={}", novelUserInfo);
-	                }
-				} else {
-					NovelVipGrade vipGrade = vipGradeService.findOne(novelUserInfo.getVipGradeId());
-	        		if (vipGrade != null) {
-						gradeName = vipGrade.getGradeName();
-					}
-					userInfoResult = userInfoService.update(novelUserInfo);
-					if (log.isDebugEnabled()) {
-	                    log.debug("【前端用户平台账号登录】更新用户信息，userInfo用户信息={}", novelUserInfo);
-	                }
-				}
-			}
+                } else {
+                    novelUserInfo = UserInfo2UserInfoDTOConverter.convert(userInfoDTO);
+                    if (UserInfoGenderEnum.WECHAT.getCode().equals(userType)) {
+                        novelUserInfo.setIsOrNotBandWechat(UserInfoGenderEnum.FINISHED.getCode());
+                        novelUserInfo.setBalanceAmount(new BigDecimal(6.66));
+                    } else {
+                        novelUserInfo.setIsOrNotBandWechat(UserInfoGenderEnum.UNFINISHED.getCode());
+                        novelUserInfo.setBalanceAmount(BigDecimal.ZERO);
+                    }
+                    if (gender == null) {
+                        novelUserInfo.setGender(UserInfoGenderEnum.GENDER_UNKNOWN.getCode());
+                    }
+                    NovelVipGrade vipGrade = vipGradeService.findOne(novelUserInfo.getVipGradeId());
+                    if (vipGrade != null) {
+                        gradeName = vipGrade.getGradeName();
+                    }
+                    novelUserInfo.setUserType(userType);
+                    novelUserInfo.setMId(UUIDUtil.gen13MID());
+                    novelUserInfo.setVipStartTime(nowDate);
+                    novelUserInfo.setVipEndTime(DateUtil.getAfterDayDate(nowDate, 7));
+                    userInfoResult = userInfoService.save(novelUserInfo);//平台openid账号不覆盖登录
+                    if (log.isDebugEnabled()) {
+                        log.debug("【前端用户平台账号登录】保存用户信息，userInfo用户信息={}", novelUserInfo);
+                    }
+                }
+            } else {
+                novelUserInfo = userInfoService.findByMeIdAndOpenidAndUserType(meId, openid, userType);
+                if (novelUserInfo == null) {
+                    novelUserInfo = UserInfo2UserInfoDTOConverter.convert(userInfoDTO);
+                    if (UserInfoGenderEnum.WECHAT.getCode().equals(userType)) {
+                        novelUserInfo.setIsOrNotBandWechat(UserInfoGenderEnum.FINISHED.getCode());
+                        novelUserInfo.setBalanceAmount(new BigDecimal(6.66));
+                    } else {
+                        novelUserInfo.setIsOrNotBandWechat(UserInfoGenderEnum.UNFINISHED.getCode());
+                        novelUserInfo.setBalanceAmount(BigDecimal.ZERO);
+                    }
+                    if (gender == null) {
+                        novelUserInfo.setGender(UserInfoGenderEnum.GENDER_UNKNOWN.getCode());
+                    }
+                    NovelVipGrade vipGrade = vipGradeService.findOne(novelUserInfo.getVipGradeId());
+                    if (vipGrade != null) {
+                        gradeName = vipGrade.getGradeName();
+                    }
+                    novelUserInfo.setUserType(userType);
+                    novelUserInfo.setMId(UUIDUtil.gen13MID());
+                    novelUserInfo.setVipStartTime(nowDate);
+                    novelUserInfo.setVipEndTime(DateUtil.getAfterDayDate(nowDate, 7));
+                    userInfoResult = userInfoService.save(novelUserInfo);//平台openid账号不覆盖登录
+                    if (log.isDebugEnabled()) {
+                        log.debug("【前端用户平台账号登录】保存用户信息，userInfo用户信息={}", novelUserInfo);
+                    }
+                } else {
+                    NovelVipGrade vipGrade = vipGradeService.findOne(novelUserInfo.getVipGradeId());
+                    if (vipGrade != null) {
+                        gradeName = vipGrade.getGradeName();
+                    }
+                    userInfoResult = userInfoService.update(novelUserInfo);
+                    if (log.isDebugEnabled()) {
+                        log.debug("【前端用户平台账号登录】更新用户信息，userInfo用户信息={}", novelUserInfo);
+                    }
+                }
+            }
             BeanUtils.copyProperties(userInfoResult, userInfoVO);
             userInfoVO.setVipGradeName(gradeName);
             resultVO.setCode(0);

@@ -5,13 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.repository
@@ -34,14 +32,14 @@ import java.util.Date;
 public class AppVersion implements Serializable {
 
     /**
-	 * <pre>
-	 * @serialField serialVersionUID：序列号。
-	 * </pre>
-	 */
-	@Transient
-	private static final long serialVersionUID = -9194913387697676310L;
+     * <pre>
+     * @serialField serialVersionUID：序列号。
+     * </pre>
+     */
+    @Transient
+    private static final long serialVersionUID = -9194913387697676310L;
 
-	/**
+    /**
      * <pre>
      * @serialField id：版本id，主键。
      * </pre>

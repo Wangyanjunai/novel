@@ -1,22 +1,26 @@
 package com.potato369.novel.app.web.controller;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import com.potato369.novel.app.web.converter.NovelInfo2NovelInfoVOConverter;
 import com.potato369.novel.app.web.utils.ResultVOUtil;
-import com.potato369.novel.app.web.vo.*;
+import com.potato369.novel.app.web.vo.CategoryBookVO;
+import com.potato369.novel.app.web.vo.CategoryInfoVO;
+import com.potato369.novel.app.web.vo.NovelInfoVO;
+import com.potato369.novel.app.web.vo.ResultVO;
+import com.potato369.novel.basic.dataobject.NovelCategory;
+import com.potato369.novel.basic.dataobject.NovelInfo;
+import com.potato369.novel.basic.service.CategoryService;
+import com.potato369.novel.basic.service.NovelInfoService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
-import com.potato369.novel.basic.dataobject.NovelCategory;
-import com.potato369.novel.basic.dataobject.NovelInfo;
-import com.potato369.novel.basic.service.CategoryService;
-import com.potato369.novel.basic.service.NovelInfoService;
-import lombok.extern.slf4j.Slf4j;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <pre>
@@ -53,7 +57,7 @@ public class CategoryController {
      * @since JDK 1.6
      * </pre>
      */
-	@GetMapping(value = "/statistics/{type}")//type：male, female,picture，查询分类信息
+    @GetMapping(value = "/statistics/{type}")//type：male, female,picture，查询分类信息
     public ResultVO<List<CategoryInfoVO>> list(
             @PathVariable(name = "type") String type) {
         ResultVO<List<CategoryInfoVO>> resultVO = new ResultVO<>();
@@ -65,7 +69,7 @@ public class CategoryController {
             NovelCategory novelCategory = categoryService.findByCategoryEnName(type);
             String categoryId = novelCategory.getCategoryId();
             List<NovelCategory> subCategories = categoryService.findByParentCategoryId(categoryId);
-            for (NovelCategory novelCategory2:subCategories) {
+            for (NovelCategory novelCategory2 : subCategories) {
                 CategoryInfoVO categoryInfoVO = new CategoryInfoVO();
                 categoryInfoVO.setName(novelCategory2.getCategoryCNText());
                 categoryInfoVO.setId(novelCategory2.getCategoryId());
@@ -95,7 +99,7 @@ public class CategoryController {
      * @api
      * </pre>
      */
-	@GetMapping(value = "/statistics/category/{categoryId}")//查询每分类下的小说，传入分类id
+    @GetMapping(value = "/statistics/category/{categoryId}")//查询每分类下的小说，传入分类id
     public ResultVO<CategoryBookVO> getCategory(@PathVariable(name = "categoryId") String categoryId,
                                                 @RequestParam(name = "page", defaultValue = "1") Integer page,
                                                 @RequestParam(name = "size", defaultValue = "10") Integer size) {
@@ -114,7 +118,7 @@ public class CategoryController {
                 List<NovelInfo> novelInfoList = novelInfoPage.getContent();
                 List<NovelInfoVO> novelInfoVOList = new ArrayList<>();
                 if (novelInfoList != null && !novelInfoList.isEmpty() && novelInfoList.size() > 0) {
-                    for (NovelInfo novelInfo:novelInfoList) {
+                    for (NovelInfo novelInfo : novelInfoList) {
                         NovelInfoVO novelInfoVO = NovelInfoVO.builder().build();
                         BeanUtils.copyProperties(novelInfo, novelInfoVO);
                         novelInfoVOList.add(novelInfoVO);
@@ -152,7 +156,7 @@ public class CategoryController {
      * @api
      * </pre>
      */
-	@GetMapping(value = "/statistics/category/all/{categoryType}")//查询父级分类下的所有小说信息
+    @GetMapping(value = "/statistics/category/all/{categoryType}")//查询父级分类下的所有小说信息
     public ResultVO<CategoryBookVO> getAllCategory(@PathVariable(name = "categoryType") String categoryType,
                                                    @RequestParam(name = "page", defaultValue = "1") Integer page,
                                                    @RequestParam(name = "size", defaultValue = "10") Integer size) {
@@ -166,7 +170,7 @@ public class CategoryController {
                 String parentId = parentNovelCategory.getCategoryId();
                 List<NovelCategory> categories = categoryService.findByParentCategoryId(parentId);
                 List<Integer> cateTypeList = new ArrayList<>();
-                for (NovelCategory category:categories) {
+                for (NovelCategory category : categories) {
                     cateTypeList.add(category.getCategoryType());
                     updateNumber(category);
                 }
@@ -200,7 +204,7 @@ public class CategoryController {
         }
     }
 
-	@GetMapping(value = "/statistics/featured/{categoryType}")//同类型书籍推荐接口
+    @GetMapping(value = "/statistics/featured/{categoryType}")//同类型书籍推荐接口
     public ResultVO<CategoryBookVO> tongLeiFeatured(@PathVariable(name = "categoryType") Integer categoryType,
                                                     @RequestParam(name = "page", defaultValue = "1") Integer page,
                                                     @RequestParam(name = "size", defaultValue = "6") Integer size) {

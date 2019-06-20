@@ -5,11 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -40,7 +37,7 @@ public class NovelMenuInfo implements Serializable {
      * @serialField serialVersionUID: 序列号。
      * </pre>
      */
-	@Transient
+    @Transient
     private static final long serialVersionUID = -8636503100980376529L;
 
     /**

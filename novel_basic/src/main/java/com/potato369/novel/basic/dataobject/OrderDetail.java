@@ -5,13 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.dataobject
@@ -38,7 +36,7 @@ public class OrderDetail implements Serializable {
      * @serialField serialVersionUID：序列号。
      * </pre>
      */
-	@Transient
+    @Transient
     private static final long serialVersionUID = -2922952467636846483L;
 
     /**
@@ -57,7 +55,7 @@ public class OrderDetail implements Serializable {
      */
     @Column(name = "order_id", nullable = false, length = 32)
     private String orderId;
-    
+
     /**
      * <pre>
      * @serialField userId：用户mid。

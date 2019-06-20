@@ -19,7 +19,7 @@ import com.potato369.novel.basic.service.ProductService;
 
 import lombok.extern.slf4j.Slf4j;
 
-/** 
+/**
  * <pre>
  * @ClassName: BuyerProductController
  * @Function:
@@ -37,32 +37,32 @@ import lombok.extern.slf4j.Slf4j;
 @SuppressWarnings("unchecked")
 public class ProductController {
 
-	@Autowired
-	private ProductService productService;
-	
-	@GetMapping(value = "/list/{type}")
-	public ResultVO<ProductVO> list(@PathVariable(name = "type") Integer type) {
-		try {
-			ResultVO<ProductVO> resultVO = new ResultVO<>();
-			if (log.isDebugEnabled()) {
-				log.debug("start====================后端获取产品信息数据====================start");
-			}
-			ProductVO productVO = ProductVO.builder().build();
-			List<ProductInfo> productInfoList = productService.findAllByType(type);
-			List<ProductInfoVO> productInfoVOList = ProductInfo2ProductInfoVOConverter.convertToProductInfoVOList(productInfoList);
+    @Autowired
+    private ProductService productService;
+
+    @GetMapping(value = "/list/{type}")
+    public ResultVO<ProductVO> list(@PathVariable(name = "type") Integer type) {
+        try {
+            ResultVO<ProductVO> resultVO = new ResultVO<>();
+            if (log.isDebugEnabled()) {
+                log.debug("start====================后端获取产品信息数据====================start");
+            }
+            ProductVO productVO = ProductVO.builder().build();
+            List<ProductInfo> productInfoList = productService.findAllByType(type);
+            List<ProductInfoVO> productInfoVOList = ProductInfo2ProductInfoVOConverter.convertToProductInfoVOList(productInfoList);
             productVO.setList(productInfoVOList);
             productVO.setTotalPage(BigDecimal.ONE);
-			resultVO.setCode(0);
-			resultVO.setData(productVO);
-			resultVO.setMsg("返回数据成功");
-			return resultVO;
-		} catch (Exception e) {
-			log.error("后端获取产品信息数据出现错误", e);
-			return ResultVOUtil.error(-1, "返回数据失败");
-		} finally {
-			if (log.isDebugEnabled()) {
-				log.debug("end======================后端获取产品信息数据======================end");
-			}
-		}
-	}
+            resultVO.setCode(0);
+            resultVO.setData(productVO);
+            resultVO.setMsg("返回数据成功");
+            return resultVO;
+        } catch (Exception e) {
+            log.error("后端获取产品信息数据出现错误", e);
+            return ResultVOUtil.error(-1, "返回数据失败");
+        } finally {
+            if (log.isDebugEnabled()) {
+                log.debug("end======================后端获取产品信息数据======================end");
+            }
+        }
+    }
 }
