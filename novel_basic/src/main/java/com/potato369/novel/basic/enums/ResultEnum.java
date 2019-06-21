@@ -118,6 +118,12 @@ public enum ResultEnum implements CodeEnum<Object> {
     NOVEL_INFO_LIST_ERROR(54, "查询小说信息列表出现错误"),
     
     ORDER_PAY_TYPE_ERROR(55, "订单支付方式出现错误"),
+
+    ALIPAY_NOTIFY_MONEY_VERIFY_ERROR(56, "支付宝支付异步通知金额校验不通过"),
+
+    ALIPAY_NOTIFY_PID_VERIFY_ERROR(57, "支付宝支付异步通知卖家支付宝用户号校验不一致"),
+
+    ALIPAY_NOTIFY_APPID_VERIFY_ERROR(58, "支付宝分配给开发者的应用Id校验不一致"),
     ;
 
     private Integer code;

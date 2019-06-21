@@ -40,4 +40,23 @@ public class MathUtil {
       return false;
     }
   }
+  /**
+   * <pre>
+   * 比较两个金额大小，如果double1 >= double2，返回true，否则返回false。
+   * @param double1 金额1
+   * @param double2 金额2
+   * @return Boolean
+   * </pre>
+   */
+  public static Boolean compareTo(Double double1, Double double2) {
+    Double result =  Math.abs(double1 - double2);
+    if (result >= 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  public static void main(String[] args) {
+	System.out.println(MathUtil.compareTo(0.01, 0.01));
+}
 }

@@ -145,7 +145,7 @@ public class OrderMaster implements Serializable {
      */
     @Builder.Default
     @Column(name = "pay_status", nullable = false, length = 1)
-    private Integer payStatus = PayStatusEnum.WAITING.getCode();
+    private Integer payStatus = PayStatusEnum.NEW.getCode();
 
     /**
      * <pre>

@@ -1,6 +1,7 @@
 package com.potato369.novel.basic.repository;
 
 import com.potato369.novel.basic.dataobject.NovelUserAccount;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

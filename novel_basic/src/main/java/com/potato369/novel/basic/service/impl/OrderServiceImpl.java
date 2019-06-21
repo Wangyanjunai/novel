@@ -150,7 +150,7 @@ public class OrderServiceImpl implements OrderService {
             throw new Exception(ResultEnum.ORDER_STATUS_ERROR.getMessage());
         }
         /** 3、修改订单的状态 */
-        orderMaster.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
+        orderMaster.setOrderStatus(OrderStatusEnum.CLOSE.getCode());
         OrderMaster updateResult = orderMasterRepository.save(orderMaster);
         if (updateResult == null){
             log.error("【取消订单】更新失败，orderMaster={}", orderMaster);
@@ -174,7 +174,7 @@ public class OrderServiceImpl implements OrderService {
             throw new Exception(ResultEnum.ORDER_STATUS_ERROR.getMessage());
         }
         /** 2.修改订单状态为完结状态 */
-        orderMaster.setOrderStatus(OrderStatusEnum.FINISHED.getCode());
+        orderMaster.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
         OrderMaster updateResult = orderMasterRepository.save(orderMaster);
         if (updateResult == null){
             log.error("【完结订单】 更新失败，orderMaster={}", orderMaster);
@@ -190,11 +190,12 @@ public class OrderServiceImpl implements OrderService {
      * </pre>
      */
     @Override
-    public OrderMaster paid(OrderMaster orderMaster) throws Exception{
-        checkOrder(orderMaster);
+    public OrderMaster paidByWeChatPay(OrderMaster orderMaster) throws Exception{
+        checkWeChatPayNotifyOrder(orderMaster);
         /** 4、修改订单状态 */
-        orderMaster.setPayStatus(PayStatusEnum.SUCCESS.getCode());//订单支付状态：成功
-        orderMaster.setOrderStatus(OrderStatusEnum.FINISHED.getCode());//订单状态，完成
+        orderMaster.setPayStatus(PayStatusEnum.SUCCESS.getCode());//订单支付状态：支付成功
+        orderMaster.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());//订单状态，交易支付成功
+        orderMaster.setPayType(PayTypeEnum.PAY_WITH_WECHAT.getCode());//订单支付方式，微信
         List<OrderDetail> orderDetailList = orderMaster.getOrderDetailList();
         for (OrderDetail orderDetail:orderDetailList) {
             ProductInfo productInfo = productRepository.findOne(orderDetail.getProductId());
@@ -241,7 +242,61 @@ public class OrderServiceImpl implements OrderService {
         }
         return orderMaster;
     }
-
+    /**
+     * <pre>
+     * 支付宝支付回调修改支付订单信息
+     * @param orderMaster
+     * @return OrderMaster.class
+     * </pre>
+     */
+    @Override
+    public OrderMaster paidByAliPay(OrderMaster orderMaster) throws Exception{
+        List<OrderDetail> orderDetailList = orderMaster.getOrderDetailList();
+        for (OrderDetail orderDetail:orderDetailList) {
+            ProductInfo productInfo = productRepository.findOne(orderDetail.getProductId());
+            if (productInfo == null) {
+                log.error("【微信APP支付回调更新订单】查询商品信息不存在， 商品id={}", orderDetail.getProductId());
+                throw new Exception(ResultEnum.PRODUCT_NOT_EXIST.getMessage());
+            }
+            NovelUserInfo userInfo = userInfoRepository.selectByUserMId(orderDetail.getUserId());
+            if (userInfo == null) {
+                log.error("【微信APP支付回调更新订单】查询用户信息不存在，给对应的用户增加VIP时长失败，用户mid={}", orderDetail.getUserId());
+                throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
+            }
+            BigDecimal chargeAmount = userInfo.getChargeAmount();
+            userInfo.setChargeAmount(chargeAmount.add(orderMaster.getOrderAmount()));
+            userInfo.setVipGradeId(UserInfoVIPGradeIdEnum.VIP2.getMessage());
+            Date vipEndTime = userInfo.getVipEndTime();
+            Integer calculateType = productInfo.getProductCalculateType();
+            Integer dateValue = productInfo.getDateValue();
+            Date updateVIPEndTime = null;
+            if (ProductCalculateTypeEnum.DAY.getCode().equals(calculateType)) {
+                updateVIPEndTime = DateUtil.getAfterDayDate(vipEndTime, dateValue);
+            }
+            if (ProductCalculateTypeEnum.MONTH.getCode().equals(calculateType)) {
+                updateVIPEndTime = DateUtil.getAfterMonthDate(vipEndTime, dateValue);
+            }
+            userInfo.setVipEndTime(updateVIPEndTime);
+            NovelUserInfo userInfoUpdateResult = userInfoRepository.save(userInfo);
+            if (userInfoUpdateResult == null) {
+                log.error("【微信APP支付回调更新订单】给对应的用户增加VIP时长失败，用户信息={}", userInfo);
+                throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
+            }
+            /**更新订单详情表数据*/
+            OrderDetail orderDetailUpdateResult = orderDetailRepository.save(orderDetail);
+            if (orderDetailUpdateResult == null) {
+                log.error("【微信APP支付回调更新订单】更新订单详情失败，orderDetail={}", orderDetail);
+                throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
+            }
+        }
+        /**更新订单表数据*/
+        OrderMaster orderMasterUpdateResult = orderMasterRepository.save(orderMaster);
+        if (orderMasterUpdateResult == null) {
+            log.error("【微信APP支付回调更新订单】更新订单失败，orderMaster={}", orderMaster);
+            throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
+        }
+        return orderMaster;
+    }
     /**
      * <pre>
      * findAll:(分页查询订单列表)
@@ -254,7 +309,7 @@ public class OrderServiceImpl implements OrderService {
         return orderMasterRepository.findAll(pageable);
     }
     
-    public OrderMaster checkOrder(OrderMaster order) throws Exception {
+    public OrderMaster checkWeChatPayNotifyOrder(OrderMaster order) throws Exception {
 		if (order == null) {
 			log.error("【微信APP预支付订单】 订单信息不存在");
 			throw new Exception(ResultEnum.ORDER_NOT_EXIST.getMessage());
@@ -264,7 +319,7 @@ public class OrderServiceImpl implements OrderService {
 			log.error("【微信APP预支付订单】 订单状态不正确，订单id={}，订单状态={}", orderId, order.getOrderStatusEnum().getMessage());
 			throw new Exception(ResultEnum.ORDER_STATUS_ERROR.getMessage());
 		}
-		if (order.getPayStatus() != PayStatusEnum.WAITING.getCode()) {
+		if (order.getPayStatus() != PayStatusEnum.NEW.getCode()) {
 			log.error("【微信APP预支付订单】 订单支付状态不正确，订单id={}，订单支付状态={}", orderId, order.getPayStatusEnum().getMessage());
 			throw new Exception(ResultEnum.ORDER_PAY_STATUS_ERROR.getMessage());
 		}

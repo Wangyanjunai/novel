@@ -39,7 +39,7 @@ public class CancelUnpaidTimeoutOrderTask {
             if(log.isDebugEnabled()) {
                 log.debug("【取消超时未支付订单定时任务】执行开始时间：{}", DateUtil.getTimeCN());
             }
-            List<OrderDTO> orderDTOList = orderService.findTimeOutUnpaid(PayStatusEnum.WAITING.getCode(), OrderStatusEnum.NEW.getCode());
+            List<OrderDTO> orderDTOList = orderService.findTimeOutUnpaid(PayStatusEnum.NEW.getCode(), OrderStatusEnum.NEW.getCode());
             Calendar calendar = Calendar.getInstance();
             String s1 = new StringBuffer().append(DateUtil.strFormat(calendar.getTime(), "yyyy-MM-dd HH:mm:ss")).toString();//系统当前时间，既是定时任务执行的时间
             for (OrderDTO orderDTO:orderDTOList) {

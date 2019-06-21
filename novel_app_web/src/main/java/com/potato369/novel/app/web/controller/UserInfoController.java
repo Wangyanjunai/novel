@@ -1,20 +1,25 @@
 package com.potato369.novel.app.web.controller;
 
 import com.potato369.novel.app.web.converter.UserInfo2UserInfoDTOConverter;
+import com.potato369.novel.app.web.converter.UserInfo2UserInfoVOConverter;
 import com.potato369.novel.app.web.dto.UserInfoDTO;
 import com.potato369.novel.app.web.vo.ResultVO;
 import com.potato369.novel.app.web.vo.UserInfoVO;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.dataobject.NovelVipGrade;
 import com.potato369.novel.basic.enums.UserInfoGenderEnum;
+import com.potato369.novel.basic.enums.UserInfoVIPGradeIdEnum;
 import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.basic.service.VipGradeService;
 import com.potato369.novel.basic.utils.DateUtil;
 import com.potato369.novel.basic.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -174,5 +179,41 @@ public class UserInfoController {
                 log.debug("end======================【前端用户登录】======================end ");
             }
         }
+    }
+    
+    @GetMapping(value = "/find/{mid}")
+    public ResultVO<UserInfoVO> find(@PathVariable(name = "mid", required = true) String mid) {
+    	ResultVO<UserInfoVO> result = new ResultVO<>();
+    	try {
+			if (log.isDebugEnabled()) {
+				log.debug("start==================查找用户信息==================start");
+			}
+			NovelUserInfo userInfo = userInfoService.findById(mid);
+			if (userInfo == null) {
+				result.setCode(-1);
+				result.setMsg("用户信息不存在");
+				return result;
+			}
+			UserInfoVO userInfoVO = UserInfo2UserInfoVOConverter.convert(userInfo);
+			NovelVipGrade vipGrade = vipGradeService.findOne(userInfo.getVipGradeId());
+			String gradeName = UserInfoVIPGradeIdEnum.VIP0_NAME.getMessage();
+            if (vipGrade != null) {
+                gradeName = vipGrade.getGradeName();
+            }
+            userInfoVO.setVipGradeName(gradeName);
+			result.setCode(0);
+			result.setMsg("用户信息存在");
+			result.setData(userInfoVO);
+			return result;
+		} catch (Exception e) {
+			log.error("查找用户信息出现错误", e);
+			result.setCode(-2);
+			result.setMsg("查找用户信息出现错误");
+			return result;
+		} finally {
+			if (log.isDebugEnabled()) {
+				log.debug("end====================查找用户信息====================end");
+			}
+		}
     }
 }

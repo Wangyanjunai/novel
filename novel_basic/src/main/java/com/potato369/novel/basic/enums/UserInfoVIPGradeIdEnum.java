@@ -26,6 +26,12 @@ public enum UserInfoVIPGradeIdEnum implements CodeEnum<Object>{
     VIP1(1, "450b9b4f90b14fb784f45643ded0dff6"),
     
     VIP2(2, "450b9b4f90b14fb784f45643ded0dff7"),
+    
+    VIP0_NAME(0, "VIP0"),
+    
+    VIP1_NAME(1, "VIP1"),
+    
+    VIP2_NAME(2, "VIP2"),
 
     ;
 

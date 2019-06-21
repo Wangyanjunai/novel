@@ -112,7 +112,7 @@ public class AliPayProperties {
      * @Field 11、aesKey：接口内容加密方式：AES密钥。
      * </pre>
      */
-    @Value(value = "aliPay.pay.aesKey")
+    @Value(value = "${aliPay.pay.aesKey}")
     private String aesKey;
 
     /**
@@ -120,8 +120,16 @@ public class AliPayProperties {
      * @Field 12、returnUrl：页面跳转同步通知页面路径 需http://或者https://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问 商户可以自定义同步跳转地址。
      * </pre>
      */
-    @Value(value = "aliPay.pay.returnUrl")
+    @Value(value = "${aliPay.pay.returnUrl}")
     private String returnUrl;
+
+    /**
+     * <pre>
+     * @Field 13、sellerId：卖家支付宝用户号。
+     * </pre>
+     */
+    @Value(value = "${aliPay.pay.sellerId}")
+    private String sellerId;
     
     @Override
     public String toString() {

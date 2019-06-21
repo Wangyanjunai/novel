@@ -101,7 +101,7 @@ public class OrderServiceImpl implements OrderService {
         orderMaster.setOrderId(orderId);
         orderMaster.setOrderAmount(orderAmount);
         orderMaster.setOrderStatus(OrderStatusEnum.NEW.getCode());
-        orderMaster.setPayStatus(PayStatusEnum.WAITING.getCode());
+        orderMaster.setPayStatus(PayStatusEnum.NEW.getCode());
         orderMasterRepository.save(orderMaster);
         orderDTO.setOrderAmount(orderAmount);
         orderDTO.setOrderId(orderId);
@@ -184,7 +184,7 @@ public class OrderServiceImpl implements OrderService {
             throw new NovelOrderException(ResultEnum.ORDER_STATUS_ERROR);
         }
         /** 3、修改订单的状态 */
-        orderDTO.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
+        orderDTO.setOrderStatus(OrderStatusEnum.CLOSE.getCode());
         OrderMaster orderMaster = new OrderMaster();
         BeanUtils.copyProperties(orderDTO, orderMaster);
         OrderMaster updateResult = orderMasterRepository.save(orderMaster);
@@ -217,7 +217,7 @@ public class OrderServiceImpl implements OrderService {
             throw new NovelOrderException(ResultEnum.ORDER_STATUS_ERROR);
         }
         /** 2.修改订单状态为完结状态 */
-        orderDTO.setOrderStatus(OrderStatusEnum.FINISHED.getCode());
+        orderDTO.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
         OrderMaster orderMaster = new OrderMaster();
         BeanUtils.copyProperties(orderDTO, orderMaster);
         OrderMaster updateResult = orderMasterRepository.save(orderMaster);
@@ -246,7 +246,7 @@ public class OrderServiceImpl implements OrderService {
             throw new NovelOrderException(ResultEnum.ORDER_STATUS_ERROR);
         }
         /** 2、判断支付状态 */
-        if (PayStatusEnum.WAITING.getCode() != orderDTO.getPayStatus()){
+        if (PayStatusEnum.NEW.getCode() != orderDTO.getPayStatus()){
             log.error("【微信公众号支付订单】订单支付状态不正确， orderId={}，orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
             throw new NovelOrderException(ResultEnum.ORDER_PAY_STATUS_ERROR);
         }

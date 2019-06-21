@@ -5,6 +5,7 @@ import com.potato369.novel.app.web.model.AliPayResult;
 import com.potato369.novel.app.web.model.WeChatPayResult;
 import com.potato369.novel.app.web.service.PayService;
 import com.potato369.novel.app.web.vo.ResultVO;
+import com.potato369.novel.app.web.vo.UserInfoVO;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.dataobject.OrderDetail;
 import com.potato369.novel.basic.dataobject.OrderMaster;
@@ -124,17 +125,17 @@ public class OrderController {
                 orderMaster.setOrderDetailList(orderDetailList);
                 if (ProductTypeEnum.CHARGE.getCode().equals(productType)) {//充值
                     orderMaster.setOrderStatus(OrderStatusEnum.NEW.getCode());//设置订单状态
-                    orderMaster.setPayStatus(PayStatusEnum.WAITING.getCode());//设置支付状态
+                    orderMaster.setPayStatus(PayStatusEnum.NEW.getCode());//设置支付状态
                     orderMaster.setOrderType(ProductTypeEnum.CHARGE.getCode());//设置订单类型
                 }
                 if (ProductTypeEnum.EXCHANGE.getCode().equals(productType)) {//兑换
                     orderMaster.setOrderStatus(OrderStatusEnum.EXCHANG_ING.getCode());
-                    orderMaster.setPayStatus(PayStatusEnum.DEDUCT_ING.getCode());
+                    orderMaster.setPayStatus(PayStatusEnum.EXCHANG_ING.getCode());
                     orderMaster.setOrderType(ProductTypeEnum.EXCHANGE.getCode());
                 }
                 if (ProductTypeEnum.WITHDRAW.getCode().equals(productType)) {//提现
                     orderMaster.setOrderStatus(OrderStatusEnum.WITHDRAW_ING.getCode());
-                    orderMaster.setPayStatus(PayStatusEnum.DEDUCT_ING.getCode());
+                    orderMaster.setPayStatus(PayStatusEnum.WITHDRAW_ING.getCode());
                     orderMaster.setOrderType(ProductTypeEnum.WITHDRAW.getCode());
                 }
                 orderService.save(orderMaster);
@@ -153,7 +154,11 @@ public class OrderController {
                     return resultVO;
                 }
                 if (PayTypeEnum.PAY_WITH_BALANCE.getCode().equals(type)) {//余额支付
-                    payService.balancePay(orderId);
+                    UserInfoVO userInfoVO = payService.balancePay(orderId);
+                    resultVO.setCode(0);
+                    resultVO.setMsg("请求余额支付信息成功。");
+                    resultVO.setData(userInfoVO);
+                    return resultVO;
                 }
             }
             return resultVO;

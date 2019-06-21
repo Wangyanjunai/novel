@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -69,9 +70,9 @@ public class PayController {
      * @return ModelAndView
      * <pre>
      */
-    @PostMapping(value = "/notify")
-    public ModelAndView notify(@RequestBody String notifyData) {
-        payService.notify(notifyData);//修改微信支付结果
+    @PostMapping(value = "/weChatPay/notify")
+    public ModelAndView weChatPayNotify(@RequestBody String notifyData) {
+        payService.weChatPayNotify(notifyData);//修改微信支付结果
         return new ModelAndView("pay/success");//返回给微信处理结果
     }
 
@@ -82,8 +83,9 @@ public class PayController {
      * @return
      * <pre>
      */
-    @PostMapping(value = "/notify1")
-    public String notify1(HttpServletRequest request, HttpServletResponse response) {
+    @PostMapping(value = "/aliPay/notify.do")
+    @ResponseBody
+    public String aliPayNotify(HttpServletRequest request, HttpServletResponse response) {
         try {
             if (log.isDebugEnabled()) {
                 log.debug("start==================支付宝异步返回支付结果==================start");
@@ -93,7 +95,7 @@ public class PayController {
             Map<String, String[]> aliParams = request.getParameterMap();
             //用以存放转化后的参数集合
             Map<String, String> conversionParams = new HashMap<>();
-            for (Iterator<String> iter = aliParams.keySet().iterator(); iter.hasNext();) {
+            for (Iterator<String> iter = aliParams.keySet().iterator(); iter.hasNext(); ) {
                 String key = iter.next();
                 String[] values = aliParams.get(key);
                 String valueStr = "";
@@ -107,7 +109,7 @@ public class PayController {
             if (log.isDebugEnabled()) {
                 log.debug("返回参数集合={}", conversionParams);
             }
-            return payService.notify1(conversionParams);
+            return payService.aliPayNotify(conversionParams);
         } catch (Exception e) {
             log.error("支付宝异步返回支付结果出现错误", e);
             return "fail";
@@ -118,6 +120,22 @@ public class PayController {
         }
     }
 
+    @GetMapping(value = "/aliPay/return.do")
+    public ModelAndView aliPayReturn() {
+        try {
+            if (log.isDebugEnabled()) {
+                log.debug("");
+            }
+        } catch (Exception e) {
+            log.error("", e);
+        } finally {
+            if (log.isDebugEnabled()) {
+                log.debug("");
+            }
+        }
+        return new ModelAndView("pay/aliPayReturn");
+    }
+
     /**
      * <pre>
      * 查询微信APP支付结果
@@ -125,9 +143,9 @@ public class PayController {
      * @return
      * </pre>
      */
-    @GetMapping(value = "/query")
+    @GetMapping(value = "/queryWeChatPay.do")
     @ResponseBody
-    public ResultVO<WeChatPayQueryResult> query(@RequestParam(name = "outTradeNo") String outTradeNo) {
+    public ResultVO<WeChatPayQueryResult> queryWechatPayResult(@RequestParam(name = "outTradeNo") String outTradeNo) {
         ResultVO<WeChatPayQueryResult> resultVO = new ResultVO<>();
         WeChatPayQueryResult result = new WeChatPayQueryResult();
         try {
@@ -167,9 +185,9 @@ public class PayController {
      * @return
      * </pre>
      */
-    @GetMapping(value = "/query1")
+    @GetMapping(value = "/queryAliPay.do")
     @ResponseBody
-    public ResultVO<AliPayQueryResult> query1(@RequestParam(name = "outTradeNo") String outTradeNo) {
+    public ResultVO<AliPayQueryResult> queryAliPayResult(@RequestParam(name = "outTradeNo") String outTradeNo) {
         ResultVO<AliPayQueryResult> resultVO = new ResultVO<AliPayQueryResult>();
         AliPayQueryResult result = new AliPayQueryResult();
         try {
@@ -207,37 +225,34 @@ public class PayController {
                     StringUtils.trimToNull(this.properties.getAliPayPublicKey()),
                     StringUtils.trimToNull(this.properties.getSignType()));
             AlipayTradeQueryResponse response = alipayClient.execute(request);
-            if (response != null) {
-                String code = response.getCode();
-                if ("10000".equals(code)) {
-                    String msg = response.getMsg();
-                    result.setErrCode("SUCCESS");
-                    result.setErrCodeDes("返回数据成功。");
-                    result.setOpenid(response.getBuyerUserId());
-                    result.setResultCode("SUCCESS");
-                    result.setReturnCode("SUCCESS");
-                    result.setReturnMsg(msg);
-                    resultVO.setCode(0);
-                    resultVO.setMsg("返回数据成功");
-                    resultVO.setData(result);
-                    return resultVO;
-                }
-                result.setErrCode("FAIL");
-                result.setErrCodeDes("返回数据失败。");
-                result.setResultCode("FAIL");
-                result.setReturnCode("FAIL");
-                result.setReturnMsg("返回数据失败。");
-                resultVO.setCode(-1);
-                resultVO.setMsg("返回数据失败。");
-                return resultVO;
+            if (response != null && response.isSuccess()) {
+            	BeanUtils.copyProperties(response, result);
+                switch (response.getTradeStatus()) {
+				case "TRADE_CLOSED":
+				case "TRADE_FINISHED":
+				case "WAIT_BUYER_PAY":
+					result.setErrCode("FAIL");
+	                result.setErrCodeDes("返回数据失败。");
+	                result.setResultCode("FAIL");
+	                result.setReturnCode("FAIL");
+	                result.setReturnMsg("返回数据失败。");
+	                resultVO.setCode(-1);
+	                resultVO.setMsg("返回数据失败。");
+	                break;
+				case "TRADE_SUCCESS": 
+					result.setErrCode("SUCCESS");
+	                result.setErrCodeDes("返回数据成功。");
+	                result.setResultCode("SUCCESS");
+	                result.setReturnCode("SUCCESS");
+	                result.setReturnMsg("返回数据成功。");
+	                resultVO.setCode(0);
+	                resultVO.setMsg("返回数据成功。");
+	                break;
+				default:
+					break;
+				}
+                resultVO.setData(result);
             }
-            result.setErrCode("FAIL");
-            result.setErrCodeDes("返回数据失败。");
-            result.setResultCode("FAIL");
-            result.setReturnCode("FAIL");
-            result.setReturnMsg("返回数据失败。");
-            resultVO.setCode(-1);
-            resultVO.setMsg("返回数据失败。");
             return resultVO;
         } catch (Exception e) {
             log.error("返回数据失败", e);

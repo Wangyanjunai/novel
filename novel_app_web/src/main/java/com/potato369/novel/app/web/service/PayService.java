@@ -1,12 +1,11 @@
 package com.potato369.novel.app.web.service;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.potato369.novel.app.web.model.AliPayQueryResult;
 import com.potato369.novel.app.web.model.AliPayResult;
 import com.potato369.novel.app.web.model.WeChatPayQueryResult;
 import com.potato369.novel.app.web.model.WeChatPayResult;
+import com.potato369.novel.app.web.vo.UserInfoVO;
 
 import java.util.Map;
 
@@ -46,10 +45,10 @@ public interface PayService {
      * <pre>
      * 余额APP支付订单
      * @param orderId
-     * @return
+     * @return UserInfoVO
      * </pre>
      */
-    void balancePay(String orderId);
+    UserInfoVO balancePay(String orderId);
 
     /**
      * <pre>
@@ -58,7 +57,7 @@ public interface PayService {
      * @return
      * </pre>
      */
-    WxPayOrderNotifyResult notify(String notifyData);
+    WxPayOrderNotifyResult weChatPayNotify(String notifyData);
     
     /**
      * <pre>
@@ -67,7 +66,7 @@ public interface PayService {
      * @return String
      * </pre>
      */
-    String notify1(Map<String, String> conversionParams);
+    String aliPayNotify(Map<String, String> conversionParams);
 
     /**
      * <pre>

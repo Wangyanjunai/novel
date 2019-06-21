@@ -85,12 +85,21 @@ public interface OrderService {
 
     /**
      * <pre>
-     * 支付订单
+     * 回调修改微信支付订单信息
      * @param orderMaster
      * @return OrderMaster.class
      * </pre>
      */
-    OrderMaster paid(OrderMaster orderMaster) throws Exception;
+    OrderMaster paidByWeChatPay(OrderMaster orderMaster) throws Exception;
+    
+    /**
+     * <pre>
+     * 回调修改支付宝支付订单信息
+     * @param orderMaster
+     * @return OrderMaster.class
+     * </pre>
+     */
+    OrderMaster paidByAliPay(OrderMaster orderMaster) throws Exception;
 
     /**
      * <pre>

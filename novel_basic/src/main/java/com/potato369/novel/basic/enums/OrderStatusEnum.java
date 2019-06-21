@@ -21,11 +21,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum OrderStatusEnum implements CodeEnum<Object> {
 
-    NEW(0, "新下单"),
+    NEW(0, "交易创建并等待买家付款"),
 
-    FINISHED(1, "已完结"),
+    SUCCESS(1, "交易支付成功"),
 
-    CANCEL(2, "已取消"),
+    CLOSE(2, "未付款交易超时关闭或支付完成后全额退款"),
+
+    FAIL(3, "交易结束并不可退款"),
     
     EXCHANG_ING(3, "等待兑换"),
     
