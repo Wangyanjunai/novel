@@ -38,4 +38,8 @@ public interface OrderMasterRepository extends JpaRepository<OrderMaster, String
      * </pre>
      */
     List<OrderMaster> findOrderMastersByPayStatusAndOrderStatus(Integer payStatus, Integer orderStatus);
+
+    Page<OrderMaster> findOrderMasterByOrderStatusInAndPayStatusIn(List<Integer> payStatusList, List<Integer> orderStatusList, Pageable pageable);
+
+    Page<OrderMaster> findOrderMasterByOrderStatusInAndPayStatusInAndOrderType(List<Integer> payStatusList, List<Integer> orderStatusList, Integer orderType, Pageable pageable);
 }

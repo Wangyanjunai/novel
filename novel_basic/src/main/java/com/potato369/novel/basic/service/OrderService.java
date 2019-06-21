@@ -109,4 +109,22 @@ public interface OrderService {
      * </pre>
      */
     Page<OrderMaster> findAll(Pageable pageable) throws Exception;
+
+    /**
+     * <pre>
+     * 根据订单状态，支付状态分页查询订单列表
+     * @param pageable
+     * @return Page<OrderMaster>.class
+     * </pre>
+     */
+    Page<OrderMaster> findByOrderStatusAndPayStatus(List<Integer> orderStatusList, List<Integer> payStatusList, Pageable pageable) throws Exception;
+
+    /**
+     * <pre>
+     * 根据订单状态，支付状态，订单类型分页查询订单列表
+     * @param pageable
+     * @return Page<OrderMaster>.class
+     * </pre>
+     */
+    Page<OrderMaster> findByOrderStatusAndPayStatusAndOrderType(List<Integer> orderStatusList, List<Integer> payStatusList, Integer orderType, Pageable pageable) throws Exception;
 }

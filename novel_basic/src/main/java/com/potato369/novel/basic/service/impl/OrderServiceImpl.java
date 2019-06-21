@@ -1,9 +1,9 @@
 package com.potato369.novel.basic.service.impl;
 
+import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.dataobject.OrderDetail;
 import com.potato369.novel.basic.dataobject.OrderMaster;
 import com.potato369.novel.basic.dataobject.ProductInfo;
-import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.enums.*;
 import com.potato369.novel.basic.repository.OrderDetailRepository;
 import com.potato369.novel.basic.repository.OrderMasterRepository;
@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -331,4 +332,26 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return order;
 	}
+
+    /**
+     * <pre>
+     * 根据订单状态，支付状态分页查询订单列表
+     * @param pageable
+     * @return Page<OrderMaster>.class
+     * </pre>
+     */
+    public Page<OrderMaster> findByOrderStatusAndPayStatus(List<Integer> orderStatusList, List<Integer> payStatusList, Pageable pageable) throws Exception {
+       return  orderMasterRepository.findOrderMasterByOrderStatusInAndPayStatusIn(orderStatusList, payStatusList, pageable);
+    }
+
+    /**
+     * <pre>
+     * 根据订单状态，支付状态，订单类型分页查询订单列表
+     * @param pageable
+     * @return Page<OrderMaster>.class
+     * </pre>
+     */
+    public Page<OrderMaster> findByOrderStatusAndPayStatusAndOrderType(List<Integer> orderStatus, List<Integer> payStatusList, Integer orderType, Pageable pageable) throws Exception {
+        return orderMasterRepository.findOrderMasterByOrderStatusInAndPayStatusInAndOrderType(orderStatus, payStatusList, orderType, pageable);
+    }
 }

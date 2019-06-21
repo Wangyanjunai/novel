@@ -4,6 +4,7 @@ import com.potato369.novel.app.web.conf.prop.WeChatPayProperties;
 import com.potato369.novel.app.web.model.AliPayResult;
 import com.potato369.novel.app.web.model.WeChatPayResult;
 import com.potato369.novel.app.web.service.PayService;
+import com.potato369.novel.app.web.vo.MessageVO;
 import com.potato369.novel.app.web.vo.ResultVO;
 import com.potato369.novel.app.web.vo.UserInfoVO;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
@@ -17,10 +18,15 @@ import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.basic.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tools.ant.taskdefs.EchoXML;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -170,5 +176,34 @@ public class OrderController {
                 log.debug("end======================【创建订单】后台生成订单信息并支付======================end");
             }
         }
+    }
+
+    @GetMapping(value = "/message")
+    public ResultVO<MessageVO> findOrderMessage(@RequestParam(name = "orderType", required = false) Integer orderType) {
+        ResultVO<MessageVO> resultVO = new ResultVO<>();
+        try {
+            if (orderType == null) {//查询所有的订单前10条记录
+                Sort sort = new Sort(Sort.Direction.DESC, "createTime", "updateTime");
+                PageRequest pageRequest = new PageRequest(0, 10, sort);
+                List<Integer> orderStatusList = new ArrayList<>();
+                orderStatusList.add(OrderStatusEnum.SUCCESS.getCode());
+                orderStatusList.add(OrderStatusEnum.EXCHANGE_SUCCESSED.getCode());
+                orderStatusList.add(OrderStatusEnum.WITHDRAW_SUCCESSED.getCode());
+                List<Integer> payStatusList = new ArrayList<>();
+                payStatusList.add(PayStatusEnum.SUCCESS.getCode());
+                payStatusList.add(PayStatusEnum.EXCHANG_SUCCESS.getCode());
+                payStatusList.add(PayStatusEnum.WITHDRAW_SUCCESS.getCode());
+                Page<OrderMaster> orderMasterPage = orderService.findByOrderStatusAndPayStatus(orderStatusList, payStatusList, pageRequest);
+                if (log.isDebugEnabled()) {
+                    log.debug("totalPage={}", orderMasterPage.getTotalPages());
+                    log.debug("getTotalElements={}", orderMasterPage.getTotalElements());
+                }
+            }
+        } catch (Exception e) {
+
+        } finally {
+
+        }
+        return resultVO;
     }
 }
