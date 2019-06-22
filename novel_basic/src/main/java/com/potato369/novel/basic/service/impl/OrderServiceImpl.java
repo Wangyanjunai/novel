@@ -146,12 +146,12 @@ public class OrderServiceImpl implements OrderService {
             throw new Exception(ResultEnum.ORDER_NOT_EXIST.getMessage());
         }
         /** 2、判断订单的状态 */
-        if (orderMaster.getOrderStatus() != OrderStatusEnum.NEW.getCode()) {
+        if (orderMaster.getOrderStatus() != OrderStatusEnum.RECHARGE_WAITING.getCode()) {
             log.error("【取消订单】订单状态不正确， orderId={}，orderStatus={}", orderMaster.getOrderId(), orderMaster.getOrderStatus());
             throw new Exception(ResultEnum.ORDER_STATUS_ERROR.getMessage());
         }
         /** 3、修改订单的状态 */
-        orderMaster.setOrderStatus(OrderStatusEnum.CLOSE.getCode());
+        orderMaster.setOrderStatus(OrderStatusEnum.RECHARGE_CLOSE.getCode());
         OrderMaster updateResult = orderMasterRepository.save(orderMaster);
         if (updateResult == null){
             log.error("【取消订单】更新失败，orderMaster={}", orderMaster);
@@ -170,12 +170,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderMaster finish(OrderMaster orderMaster) throws Exception{
         /** 1、判断订单状态 */
-        if (orderMaster.getOrderStatus() != OrderStatusEnum.NEW.getCode()){
+        if (orderMaster.getOrderStatus() != OrderStatusEnum.RECHARGE_WAITING.getCode()){
             log.error("【完结订单】 订单状态不正确， orderId={}，orderStatus={}", orderMaster.getOrderId(), orderMaster.getOrderStatus());
             throw new Exception(ResultEnum.ORDER_STATUS_ERROR.getMessage());
         }
         /** 2.修改订单状态为完结状态 */
-        orderMaster.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
+        orderMaster.setOrderStatus(OrderStatusEnum.RECHARGE_SUCCESS.getCode());
         OrderMaster updateResult = orderMasterRepository.save(orderMaster);
         if (updateResult == null){
             log.error("【完结订单】 更新失败，orderMaster={}", orderMaster);
@@ -194,8 +194,8 @@ public class OrderServiceImpl implements OrderService {
     public OrderMaster paidByWeChatPay(OrderMaster orderMaster) throws Exception{
         checkWeChatPayNotifyOrder(orderMaster);
         /** 4、修改订单状态 */
-        orderMaster.setPayStatus(PayStatusEnum.SUCCESS.getCode());//订单支付状态：支付成功
-        orderMaster.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());//订单状态，交易支付成功
+        orderMaster.setPayStatus(PayStatusEnum.PAY_SUCCESS.getCode());//订单支付状态：支付成功
+        orderMaster.setOrderStatus(OrderStatusEnum.RECHARGE_SUCCESS.getCode());//订单状态，交易支付成功
         orderMaster.setPayType(PayTypeEnum.PAY_WITH_WECHAT.getCode());//订单支付方式，微信
         List<OrderDetail> orderDetailList = orderMaster.getOrderDetailList();
         for (OrderDetail orderDetail:orderDetailList) {
@@ -316,11 +316,11 @@ public class OrderServiceImpl implements OrderService {
 			throw new Exception(ResultEnum.ORDER_NOT_EXIST.getMessage());
 		}
 		String orderId = order.getOrderId();
-		if (order.getOrderStatus() != OrderStatusEnum.NEW.getCode()) {
+		if (order.getOrderStatus() != OrderStatusEnum.RECHARGE_WAITING.getCode()) {
 			log.error("【微信APP预支付订单】 订单状态不正确，订单id={}，订单状态={}", orderId, order.getOrderStatusEnum().getMessage());
 			throw new Exception(ResultEnum.ORDER_STATUS_ERROR.getMessage());
 		}
-		if (order.getPayStatus() != PayStatusEnum.NEW.getCode()) {
+		if (order.getPayStatus() != PayStatusEnum.PAY_WAITING.getCode()) {
 			log.error("【微信APP预支付订单】 订单支付状态不正确，订单id={}，订单支付状态={}", orderId, order.getPayStatusEnum().getMessage());
 			throw new Exception(ResultEnum.ORDER_PAY_STATUS_ERROR.getMessage());
 		}

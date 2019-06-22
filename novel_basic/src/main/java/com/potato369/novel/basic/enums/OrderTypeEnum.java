@@ -21,11 +21,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum OrderTypeEnum implements CodeEnum<Object>{
 	
-	WITHDRAW(0, "提现"),
+	WITHDRAW(0, "提现交易"),
 
-	EXCHANGE(1, "兑换"),
+	EXCHANGE(1, "兑换交易"),
 
-    RECHARGE(2, "充值"),
+    RECHARGE(2, "充值交易"),
     ;
     
     private Integer code;

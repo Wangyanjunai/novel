@@ -7,6 +7,7 @@ import com.potato369.novel.basic.dataobject.HotWordsInfo;
 import com.potato369.novel.basic.dataobject.NovelCategory;
 import com.potato369.novel.basic.dataobject.NovelChapter;
 import com.potato369.novel.basic.dataobject.NovelInfo;
+import com.potato369.novel.basic.enums.HotWordsIsNewEnum;
 import com.potato369.novel.basic.enums.NovelInfoStatusEnum;
 import com.potato369.novel.basic.enums.TypeEnum;
 import com.potato369.novel.basic.service.CategoryService;
@@ -462,7 +463,7 @@ public class NovelController {
                     hotWordsInfo.setWordId(UUIDUtil.gen32UUID());
                     hotWordsInfo.setWord(hotWords);
                     hotWordsInfo.setSoaring(new BigDecimal(1));
-                    hotWordsInfo.setIsNew(TypeEnum.IS_NEW.getCode());
+                    hotWordsInfo.setIsNew(HotWordsIsNewEnum.NEW.getCode());
                     hotWordsInfo.setTimes(new BigDecimal(1));
                     if (log.isDebugEnabled()) {
                         log.debug("搜索热词添加");
@@ -473,7 +474,7 @@ public class NovelController {
                     if (hotWordsInfo != null) {
                         hotWordsInfo.setSoaring(hotWordsInfo.getSoaring().add(new BigDecimal(1)));
                         hotWordsInfo.setTimes(hotWordsInfo.getTimes().add(new BigDecimal(1)));
-                        hotWordsInfo.setIsNew(TypeEnum.NOT_IS_NEW.getCode());
+                        hotWordsInfo.setIsNew(HotWordsIsNewEnum.OLD.getCode());
                         if (log.isDebugEnabled()) {
                             log.debug("搜索热词更新");
                         }

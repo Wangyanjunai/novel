@@ -64,8 +64,9 @@ public class HotWordsInfo implements Serializable {
      * @serialField times：搜索次数。
      * </pre>
      */
+    @Builder.Default
     @Column(name = "times", nullable = false, length = 16)
-    private BigDecimal times;
+    private BigDecimal times = BigDecimal.ZERO;
 
     /**
      * <pre>
@@ -102,7 +103,7 @@ public class HotWordsInfo implements Serializable {
     private Date updateTime;
 
     @Transient
-    public HotWordsIsNewEnum getHotWordsIsNewEnum(Integer code) {
-        return EnumUtil.getByCode(code, HotWordsIsNewEnum.class);
+    public HotWordsIsNewEnum getHotWordsIsNewEnum() {
+        return EnumUtil.getByCode(isNew, HotWordsIsNewEnum.class);
     }
 }

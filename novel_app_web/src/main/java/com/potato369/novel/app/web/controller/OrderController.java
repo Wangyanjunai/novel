@@ -18,7 +18,6 @@ import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.basic.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tools.ant.taskdefs.EchoXML;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,7 +25,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -129,19 +127,19 @@ public class OrderController {
                 orderDetail.setUserId(novelUserInfo.getMId());//设置用户mid
                 orderDetailList.add(orderDetail);
                 orderMaster.setOrderDetailList(orderDetailList);
-                if (ProductTypeEnum.CHARGE.getCode().equals(productType)) {//充值
-                    orderMaster.setOrderStatus(OrderStatusEnum.NEW.getCode());//设置订单状态
-                    orderMaster.setPayStatus(PayStatusEnum.NEW.getCode());//设置支付状态
-                    orderMaster.setOrderType(ProductTypeEnum.CHARGE.getCode());//设置订单类型
+                if (ProductTypeEnum.RECHARGE.getCode().equals(productType)) {//充值
+                    orderMaster.setOrderStatus(OrderStatusEnum.RECHARGE_WAITING.getCode());//设置订单状态
+                    orderMaster.setPayStatus(PayStatusEnum.PAY_WAITING.getCode());//设置支付状态
+                    orderMaster.setOrderType(ProductTypeEnum.RECHARGE.getCode());//设置订单类型
                 }
                 if (ProductTypeEnum.EXCHANGE.getCode().equals(productType)) {//兑换
-                    orderMaster.setOrderStatus(OrderStatusEnum.EXCHANG_ING.getCode());
-                    orderMaster.setPayStatus(PayStatusEnum.EXCHANG_ING.getCode());
+                    orderMaster.setOrderStatus(OrderStatusEnum.EXCHANGE_WAITING.getCode());
+                    orderMaster.setPayStatus(PayStatusEnum.EXCHANGE_WAITING.getCode());
                     orderMaster.setOrderType(ProductTypeEnum.EXCHANGE.getCode());
                 }
                 if (ProductTypeEnum.WITHDRAW.getCode().equals(productType)) {//提现
                     orderMaster.setOrderStatus(OrderStatusEnum.WITHDRAW_ING.getCode());
-                    orderMaster.setPayStatus(PayStatusEnum.WITHDRAW_ING.getCode());
+                    orderMaster.setPayStatus(PayStatusEnum.WITHDRAW_WAITING.getCode());
                     orderMaster.setOrderType(ProductTypeEnum.WITHDRAW.getCode());
                 }
                 orderService.save(orderMaster);
@@ -186,12 +184,12 @@ public class OrderController {
                 Sort sort = new Sort(Sort.Direction.DESC, "createTime", "updateTime");
                 PageRequest pageRequest = new PageRequest(0, 10, sort);
                 List<Integer> orderStatusList = new ArrayList<>();
-                orderStatusList.add(OrderStatusEnum.SUCCESS.getCode());
-                orderStatusList.add(OrderStatusEnum.EXCHANGE_SUCCESSED.getCode());
-                orderStatusList.add(OrderStatusEnum.WITHDRAW_SUCCESSED.getCode());
+                orderStatusList.add(OrderStatusEnum.RECHARGE_SUCCESS.getCode());
+                orderStatusList.add(OrderStatusEnum.EXCHANGE_SUCCESS.getCode());
+                orderStatusList.add(OrderStatusEnum.WITHDRAW_SUCCESS.getCode());
                 List<Integer> payStatusList = new ArrayList<>();
-                payStatusList.add(PayStatusEnum.SUCCESS.getCode());
-                payStatusList.add(PayStatusEnum.EXCHANG_SUCCESS.getCode());
+                payStatusList.add(PayStatusEnum.PAY_SUCCESS.getCode());
+                payStatusList.add(PayStatusEnum.EXCHANGE_SUCCESS.getCode());
                 payStatusList.add(PayStatusEnum.WITHDRAW_SUCCESS.getCode());
                 Page<OrderMaster> orderMasterPage = orderService.findByOrderStatusAndPayStatus(orderStatusList, payStatusList, pageRequest);
                 if (log.isDebugEnabled()) {

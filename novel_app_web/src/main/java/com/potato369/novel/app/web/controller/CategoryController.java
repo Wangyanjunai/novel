@@ -58,8 +58,7 @@ public class CategoryController {
      * </pre>
      */
     @GetMapping(value = "/statistics/{type}")//type：male, female,picture，查询分类信息
-    public ResultVO<List<CategoryInfoVO>> list(
-            @PathVariable(name = "type") String type) {
+    public ResultVO<List<CategoryInfoVO>> list(@PathVariable(name = "type") String type) {
         ResultVO<List<CategoryInfoVO>> resultVO = new ResultVO<>();
         try {
             if (log.isDebugEnabled()) {
@@ -103,7 +102,7 @@ public class CategoryController {
     public ResultVO<CategoryBookVO> getCategory(@PathVariable(name = "categoryId") String categoryId,
                                                 @RequestParam(name = "page", defaultValue = "1") Integer page,
                                                 @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        ResultVO<CategoryBookVO> resultVO = new ResultVO<CategoryBookVO>();
+        ResultVO<CategoryBookVO> resultVO = new ResultVO<>();
         try {
             if (log.isDebugEnabled()) {
                 log.debug("【按照类别查询小说分类】查询小说分类categoryId={}, page={}, size={}", categoryId, page, size);

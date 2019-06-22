@@ -64,10 +64,10 @@ public class ProductInfo implements Serializable {
      */
     @Builder.Default
     @Column(name = "product_type", nullable = false, length = 1)
-    private Integer productType = ProductTypeEnum.CHARGE.getCode();
+    private Integer productType = ProductTypeEnum.RECHARGE.getCode();
     
     /**
-     * @serialField productCalculateType：计算类型，0-按照天算，1-按照月算；默认：0-按照天算。
+     * @serialField productCalculateType：计算类型，0-按天算，1-按月算，2-按元算；默认：0-按天算。
      */
     @Builder.Default
     @Column(name = "product_calculate_type", nullable = false, length = 1)

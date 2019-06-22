@@ -136,7 +136,7 @@ public class OrderMaster implements Serializable {
      */
     @Builder.Default
     @Column(name = "order_status", nullable = false, length = 1)
-    private Integer orderStatus = OrderStatusEnum.NEW.getCode();
+    private Integer orderStatus = OrderStatusEnum.RECHARGE_WAITING.getCode();
 
     /**
      * <pre>
@@ -145,7 +145,7 @@ public class OrderMaster implements Serializable {
      */
     @Builder.Default
     @Column(name = "pay_status", nullable = false, length = 1)
-    private Integer payStatus = PayStatusEnum.NEW.getCode();
+    private Integer payStatus = PayStatusEnum.PAY_WAITING.getCode();
 
     /**
      * <pre>

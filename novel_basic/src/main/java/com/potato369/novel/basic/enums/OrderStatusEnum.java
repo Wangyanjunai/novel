@@ -21,25 +21,29 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum OrderStatusEnum implements CodeEnum<Object> {
 
-    NEW(0, "交易创建并等待买家付款"),
+    RECHARGE_WAITING(0, "等待充值"),
 
-    SUCCESS(1, "交易支付成功"),
+    RECHARGE_SUCCESS(1, "充值成功"),
 
-    CLOSE(2, "未付款交易超时关闭或支付完成后全额退款"),
+    RECHARGE_FAIL(2, "充值失败"),
 
-    FAIL(3, "交易结束并不可退款"),
+    RECHARGE_CLOSE(3, "充值关闭"),
     
-    EXCHANG_ING(3, "等待兑换"),
+    EXCHANGE_WAITING(4, "等待兑换"),
     
-    EXCHANGE_SUCCESSED(4, "兑换成功"),
+    EXCHANGE_SUCCESS(5, "兑换成功"),
+
+    EXCHANGE_FAIL(6, "兑换失败"),
+
+    EXCHANGE_CLOSE(7, "兑换关闭"),
+
+    WITHDRAW_ING(8, "等待提现"),
     
-    EXCHANGE_FAILED(5, "兑换失败"),
+    WITHDRAW_SUCCESS(9, "提现成功"),
+
+    WITHDRAW_CLOSE(10, "提现关闭"),
     
-    WITHDRAW_ING(6, "等待提现"),
-    
-    WITHDRAW_SUCCESSED(7, "提现成功"),
-    
-    WITHDRAW_FAILED(8, "提现失败"),
+    WITHDRAW_FAIL(11, "提现失败"),
     ;
     private Integer code;
 

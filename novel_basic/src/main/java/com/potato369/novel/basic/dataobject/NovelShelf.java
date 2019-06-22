@@ -53,7 +53,7 @@ public class NovelShelf implements Serializable {
 
     /**
      * <pre>
-     * @serialField userId：联合主键，用户id。
+     * @serialField userId：联合主键，用户mid。
      * </pre>
      */
     @Id

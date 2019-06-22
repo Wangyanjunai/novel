@@ -3,6 +3,7 @@ package com.potato369.novel.app.web.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.potato369.novel.app.web.model.BizContentParams;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.annotation.JSONField;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradeQueryRequest;
@@ -27,10 +27,6 @@ import com.potato369.novel.app.web.service.PayService;
 import com.potato369.novel.app.web.vo.ResultVO;
 import com.potato369.novel.basic.dataobject.OrderMaster;
 import com.potato369.novel.basic.service.OrderService;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
@@ -153,10 +149,10 @@ public class PayController {
             if (orderInfo == null) {
                 resultVO.setCode(0);
                 resultVO.setMsg("返回数据成功。");
-                result.setResultCode("SUCCESS");
-                result.setReturnCode("SUCCESS");
+                result.setResultCode("PAY_SUCCESS");
+                result.setReturnCode("PAY_SUCCESS");
                 result.setErrCodeDes("订单信息不存在。");
-                result.setErrCode("SUCCESS");
+                result.setErrCode("PAY_SUCCESS");
                 resultVO.setData(result);
                 return resultVO;
             }
@@ -169,9 +165,9 @@ public class PayController {
             log.error("查询订单出现错误。", e);
             resultVO.setCode(0);
             resultVO.setMsg("返回数据失败。");
-            result.setErrCode("FAIL");
-            result.setResultCode("FAIL");
-            result.setReturnCode("FAIL");
+            result.setErrCode("PAY_FAIL");
+            result.setResultCode("PAY_FAIL");
+            result.setReturnCode("PAY_FAIL");
             result.setErrCodeDes("查询订单出现错误。");
             resultVO.setData(result);
             return resultVO;
@@ -195,19 +191,19 @@ public class PayController {
             if (orderInfo == null) {
                 resultVO.setCode(0);
                 resultVO.setMsg("返回数据成功。");
-                result.setResultCode("SUCCESS");
-                result.setReturnCode("SUCCESS");
+                result.setResultCode("PAY_SUCCESS");
+                result.setReturnCode("PAY_SUCCESS");
                 result.setErrCodeDes("订单信息不存在。");
-                result.setErrCode("SUCCESS");
+                result.setErrCode("PAY_SUCCESS");
                 return resultVO;
             }
         } catch (Exception e) {
             resultVO.setCode(0);
             resultVO.setMsg("返回数据成功。");
-            result.setResultCode("SUCCESS");
-            result.setReturnCode("SUCCESS");
+            result.setResultCode("PAY_SUCCESS");
+            result.setReturnCode("PAY_SUCCESS");
             result.setErrCodeDes("订单信息不存在。");
-            result.setErrCode("SUCCESS");
+            result.setErrCode("PAY_SUCCESS");
             return resultVO;
         }
         try {
@@ -231,19 +227,19 @@ public class PayController {
 				case "TRADE_CLOSED":
 				case "TRADE_FINISHED":
 				case "WAIT_BUYER_PAY":
-					result.setErrCode("FAIL");
+					result.setErrCode("PAY_FAIL");
 	                result.setErrCodeDes("返回数据失败。");
-	                result.setResultCode("FAIL");
-	                result.setReturnCode("FAIL");
+	                result.setResultCode("PAY_FAIL");
+	                result.setReturnCode("PAY_FAIL");
 	                result.setReturnMsg("返回数据失败。");
 	                resultVO.setCode(-1);
 	                resultVO.setMsg("返回数据失败。");
 	                break;
 				case "TRADE_SUCCESS": 
-					result.setErrCode("SUCCESS");
+					result.setErrCode("PAY_SUCCESS");
 	                result.setErrCodeDes("返回数据成功。");
-	                result.setResultCode("SUCCESS");
-	                result.setReturnCode("SUCCESS");
+	                result.setResultCode("PAY_SUCCESS");
+	                result.setReturnCode("PAY_SUCCESS");
 	                result.setReturnMsg("返回数据成功。");
 	                resultVO.setCode(0);
 	                resultVO.setMsg("返回数据成功。");
@@ -256,10 +252,10 @@ public class PayController {
             return resultVO;
         } catch (Exception e) {
             log.error("返回数据失败", e);
-            result.setErrCode("FAIL");
+            result.setErrCode("PAY_FAIL");
             result.setErrCodeDes("返回数据失败。");
-            result.setResultCode("FAIL");
-            result.setReturnCode("FAIL");
+            result.setResultCode("PAY_FAIL");
+            result.setReturnCode("PAY_FAIL");
             result.setReturnMsg("返回数据失败。");
             resultVO.setCode(-1);
             resultVO.setMsg("返回数据失败。");
@@ -269,41 +265,3 @@ public class PayController {
     }
 }
 
-@AllArgsConstructor
-@Builder
-@Data
-@NoArgsConstructor
-class BizContentParams {
-
-    /**
-     * <pre>
-     * @JsonProperty outTradeNo：商户订单号；说明：订单支付时传入的商户订单号，和支付宝交易号不能同时为空。 trade_no，out_trade_no如果同时存在优先取trade_no。
-     * </pre>
-     */
-    @JSONField(name = "out_trade_no")
-    private String outTradeNo;
-
-    /**
-     * <pre>
-     * @JsonProperty tradeNo：支付宝交易号；说明：支付宝交易号，和商户订单号不能同时为空。
-     * </pre>
-     */
-    @JSONField(name = "trade_no")
-    private String tradeNo;
-
-    /**
-     * <pre>
-     * @JsonProperty orgPid：银行间联模式下有用，其它场景请不要使用； 双联通过该参数指定需要查询的交易所属收单机构的pid。
-     * </pre>
-     */
-    @JSONField(name = "org_pid")
-    private String orgPid;
-
-    /**
-     * <pre>
-     * @JsonProperty queryOptions：查询选项参数。
-     * </pre>
-     */
-    @JSONField(name = "query_options")
-    private String queryOptions;
-}

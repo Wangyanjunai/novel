@@ -26,7 +26,7 @@ public class Result {
 
     /**
      * <pre>
-     * @JsonProperty returnCode：返回状态码，SUCCESS/FAIL 此字段是通信标识，非交易标识，交易是否成功需要查看result_code来判断。
+     * @JsonProperty returnCode：返回状态码，PAY_SUCCESS/PAY_FAIL 此字段是通信标识，非交易标识，交易是否成功需要查看result_code来判断。
      * </pre>
      */
     @JsonProperty(value = "return_code")
@@ -42,7 +42,7 @@ public class Result {
 
     /**
      * <pre>
-     * @JsonProperty resultCode：业务结果，微信返回的业务结果，SUCCESS/FAIL。
+     * @JsonProperty resultCode：业务结果，微信返回的业务结果，PAY_SUCCESS/PAY_FAIL。
      * </pre>
      */
     @JsonProperty(value = "result_code")

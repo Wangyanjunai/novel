@@ -39,10 +39,12 @@ import com.potato369.novel.basic.utils.DateUtil;
 import com.potato369.novel.basic.utils.UUIDUtil;
 import com.potato369.novel.basic.utils.WwwUtil;
 import lombok.extern.slf4j.Slf4j;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +84,7 @@ public class PayServiceImpl implements PayService {
 
     @Autowired
     private ProductService productService;
-    
+
     @Autowired
     private UserInfoService userInfoService;
 
@@ -117,10 +119,10 @@ public class PayServiceImpl implements PayService {
             orderRequest.setProductId(productInfo.getProductId());
             WxPayAppOrderResult result = wxPayService.createOrder(orderRequest);
             if (result != null) {
-                payResult.setReturnCode("SUCCESS");
+                payResult.setReturnCode("PAY_SUCCESS");
                 payResult.setReturnMsg("生成微信APP预支付订单信息成功。");
-                payResult.setResultCode("SUCCESS");
-                payResult.setErrCode("SUCCESS");
+                payResult.setResultCode("PAY_SUCCESS");
+                payResult.setErrCode("PAY_SUCCESS");
                 payResult.setErrCodeDes("请求微信支付统一下单接口生成预付单信息成功。");
                 payResult.setAppId(result.getAppId());
                 payResult.setPartnerId(result.getPartnerId());
@@ -132,19 +134,19 @@ public class PayServiceImpl implements PayService {
                 payResult.setOrderId(orderId);
                 return payResult;
             }
-            payResult.setReturnCode("FAIL");
+            payResult.setReturnCode("PAY_FAIL");
             payResult.setReturnMsg("生成微信APP预支付订单信息失败。");
-            payResult.setResultCode("FAIL");
-            payResult.setErrCode("FAIL");
+            payResult.setResultCode("PAY_FAIL");
+            payResult.setErrCode("PAY_FAIL");
             payResult.setErrCodeDes("请求微信支付统一下单接口生成预付单信息为空。");
             payResult.setOrderId(orderId);
             return payResult;
         } catch (Exception e) {
             log.error("生成微信APP预支付订单信息出现错误。", e);
-            payResult.setReturnCode("FAIL");
+            payResult.setReturnCode("PAY_FAIL");
             payResult.setReturnMsg("请求微信支付统一下单接口生成预付单信息失败。");
-            payResult.setResultCode("FAIL");
-            payResult.setErrCode("FAIL");
+            payResult.setResultCode("PAY_FAIL");
+            payResult.setErrCode("PAY_FAIL");
             payResult.setErrCodeDes("请求微信支付统一下单接口生成预付单信息出现错误。");
             payResult.setOrderId(orderId);
             return payResult;
@@ -200,10 +202,10 @@ public class PayServiceImpl implements PayService {
                 if (body != null) {
                     alipayResult.setAppId(StringUtils.trimToNull(this.properties.getAppId()));
                     alipayResult.setBody(body);
-                    alipayResult.setReturnCode("SUCCESS");
-                    alipayResult.setResultCode("SUCCESS");
+                    alipayResult.setReturnCode("PAY_SUCCESS");
+                    alipayResult.setResultCode("PAY_SUCCESS");
                     alipayResult.setReturnMsg("生成支付宝APP预支付订单信息返回数据成功。");
-                    alipayResult.setErrCode("SUCCESS");
+                    alipayResult.setErrCode("PAY_SUCCESS");
                     alipayResult.setErrCodeDes("生成支付宝APP预支付订单信息返回数据成功。");
                     alipayResult.setOrderId(orderId);
                     return alipayResult;
@@ -211,10 +213,10 @@ public class PayServiceImpl implements PayService {
             }
             alipayResult.setAppId(StringUtils.trimToNull(this.properties.getAppId()));
             alipayResult.setBody(null);
-            alipayResult.setReturnCode("FAIL");
-            alipayResult.setResultCode("FAIL");
+            alipayResult.setReturnCode("PAY_FAIL");
+            alipayResult.setResultCode("PAY_FAIL");
             alipayResult.setReturnMsg("生成支付宝APP预支付订单信息返回数据失败。");
-            alipayResult.setErrCode("FAIL");
+            alipayResult.setErrCode("PAY_FAIL");
             alipayResult.setErrCodeDes("生成支付宝APP预支付订单信息返回数据失败。");
             alipayResult.setOrderId(orderId);
             return alipayResult;
@@ -222,10 +224,10 @@ public class PayServiceImpl implements PayService {
             log.error("生成支付宝APP预支付订单信息出现错误", e);
             alipayResult.setAppId(StringUtils.trimToNull(this.properties.getAppId()));
             alipayResult.setBody(null);
-            alipayResult.setReturnCode("FAIL");
-            alipayResult.setResultCode("FAIL");
+            alipayResult.setReturnCode("PAY_FAIL");
+            alipayResult.setResultCode("PAY_FAIL");
             alipayResult.setReturnMsg("生成支付宝APP预支付订单信息返回数据失败。");
-            alipayResult.setErrCode("FAIL");
+            alipayResult.setErrCode("PAY_FAIL");
             alipayResult.setErrCodeDes("生成支付宝APP预支付订单信息返回数据失败。");
             alipayResult.setOrderId(orderId);
             return alipayResult;
@@ -245,71 +247,71 @@ public class PayServiceImpl implements PayService {
      */
     @Override
     public UserInfoVO balancePay(String orderId) {
-    	UserInfoVO userInfoVO = new UserInfoVO();
-    	try {
-			OrderMaster orderMaster = checkOrder(orderId);
-			if (orderMaster != null) {
-				String userId = orderMaster.getUserId();
-				NovelUserInfo userInfo = userInfoService.findById(userId);
-				if (userInfo == null) {
-					log.error("余额支付，用户信息不存在");
-					throw new Exception("余额支付，用户信息不存在");
-				}
-				BigDecimal balanceAmount = userInfo.getBalanceAmount();
-				if (!MathUtil.compareTo(balanceAmount.doubleValue(), orderMaster.getOrderAmount().doubleValue())) {
-					log.error("余额支付，用户余额不足");
-					throw new Exception("余额支付，用户余额不足");
-				}
-				String productId = orderMaster.getProductId();
-				ProductInfo productInfo = productService.findOne(productId);
-				if (productInfo == null) {
-					log.error("余额支付，商品信息不存在");
-					throw new Exception("余额支付，商品信息不存在");
-				}
-				if (!ProductTypeEnum.EXCHANGE.getCode().equals(productInfo.getProductType()) && 
-					!ProductTypeEnum.WITHDRAW.getCode().equals(productInfo.getProductType())) {
-					log.error("余额支付，商品类型不支持余额支付");
-					throw new Exception("余额支付，商品类型不支持余额支付");
-				}
-				userInfo.setBalanceAmount(balanceAmount.subtract(orderMaster.getOrderAmount()));
-				userInfo.setVipGradeId(UserInfoVIPGradeIdEnum.VIP2.getMessage());
-	            Date vipEndTime = userInfo.getVipEndTime();
-	            Integer calculateType = productInfo.getProductCalculateType();
-	            Integer dateValue = productInfo.getDateValue();
-	            Date updateVIPEndTime = null;
-	            if (ProductCalculateTypeEnum.DAY.getCode().equals(calculateType)) {
-	                updateVIPEndTime = DateUtil.getAfterDayDate(vipEndTime, dateValue);
-	            }
-	            if (ProductCalculateTypeEnum.MONTH.getCode().equals(calculateType)) {
-	                updateVIPEndTime = DateUtil.getAfterMonthDate(vipEndTime, dateValue);
-	            }
-	            userInfo.setVipEndTime(updateVIPEndTime);
-	            NovelUserInfo userInfoUpdateResult = userInfoService.save(userInfo);
-	            if (userInfoUpdateResult == null) {
-	                log.error("【余额支付回调更新订单】给对应的用户增加VIP时长失败，用户信息={}", userInfo);
-	                throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
-	            }
-	            
-				orderMaster.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
-				orderMaster.setPayStatus(PayStatusEnum.SUCCESS.getCode());
-				orderMaster.setOrderType(productInfo.getProductType());
-				orderMaster.setPayTime(new Date());
-				orderMaster.setTransactionId(UUIDUtil.genTimstampUUID());
-				OrderMaster orderMasterUpdateResult = orderService.save(orderMaster);
-				if (orderMasterUpdateResult == null) {
-		            log.error("【余额支付回调更新订单】更新订单失败，orderMaster={}", orderMaster);
-		            throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
-		        }
-				userInfoVO = UserInfo2UserInfoVOConverter.convert(userInfoUpdateResult);
-				return userInfoVO;
-			}
-			return userInfoVO;
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			return userInfoVO;
-		} finally {
-			
-		} 
+        UserInfoVO userInfoVO = new UserInfoVO();
+        try {
+            OrderMaster orderMaster = checkOrder(orderId);
+            if (orderMaster != null) {
+                String userId = orderMaster.getUserId();
+                NovelUserInfo userInfo = userInfoService.findById(userId);
+                if (userInfo == null) {
+                    log.error("余额支付，用户信息不存在");
+                    throw new Exception("余额支付，用户信息不存在");
+                }
+                BigDecimal balanceAmount = userInfo.getBalanceAmount();
+                if (!MathUtil.compareTo(balanceAmount.doubleValue(), orderMaster.getOrderAmount().doubleValue())) {
+                    log.error("余额支付，用户余额不足");
+                    throw new Exception("余额支付，用户余额不足");
+                }
+                String productId = orderMaster.getProductId();
+                ProductInfo productInfo = productService.findOne(productId);
+                if (productInfo == null) {
+                    log.error("余额支付，商品信息不存在");
+                    throw new Exception("余额支付，商品信息不存在");
+                }
+                if (!ProductTypeEnum.EXCHANGE.getCode().equals(productInfo.getProductType()) &&
+                        !ProductTypeEnum.WITHDRAW.getCode().equals(productInfo.getProductType())) {
+                    log.error("余额支付，商品类型不支持余额支付");
+                    throw new Exception("余额支付，商品类型不支持余额支付");
+                }
+                userInfo.setBalanceAmount(balanceAmount.subtract(orderMaster.getOrderAmount()));
+                userInfo.setVipGradeId(UserInfoVIPGradeIdEnum.VIP2.getMessage());
+                Date vipEndTime = userInfo.getVipEndTime();
+                Integer calculateType = productInfo.getProductCalculateType();
+                Integer dateValue = productInfo.getDateValue();
+                Date updateVIPEndTime = null;
+                if (ProductCalculateTypeEnum.DAY.getCode().equals(calculateType)) {
+                    updateVIPEndTime = DateUtil.getAfterDayDate(vipEndTime, dateValue);
+                }
+                if (ProductCalculateTypeEnum.MONTH.getCode().equals(calculateType)) {
+                    updateVIPEndTime = DateUtil.getAfterMonthDate(vipEndTime, dateValue);
+                }
+                userInfo.setVipEndTime(updateVIPEndTime);
+                NovelUserInfo userInfoUpdateResult = userInfoService.save(userInfo);
+                if (userInfoUpdateResult == null) {
+                    log.error("【余额支付回调更新订单】给对应的用户增加VIP时长失败，用户信息={}", userInfo);
+                    throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
+                }
+
+                orderMaster.setOrderStatus(OrderStatusEnum.RECHARGE_SUCCESS.getCode());
+                orderMaster.setPayStatus(PayStatusEnum.PAY_SUCCESS.getCode());
+                orderMaster.setOrderType(productInfo.getProductType());
+                orderMaster.setPayTime(new Date());
+                orderMaster.setTransactionId(UUIDUtil.genTimstampUUID());
+                OrderMaster orderMasterUpdateResult = orderService.save(orderMaster);
+                if (orderMasterUpdateResult == null) {
+                    log.error("【余额支付回调更新订单】更新订单失败，orderMaster={}", orderMaster);
+                    throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
+                }
+                userInfoVO = UserInfo2UserInfoVOConverter.convert(userInfoUpdateResult);
+                return userInfoVO;
+            }
+            return userInfoVO;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return userInfoVO;
+        } finally {
+
+        }
     }
 
     /**
@@ -326,9 +328,9 @@ public class PayServiceImpl implements PayService {
             payOrderNotifyResult = wxPayService.parseOrderNotifyResult(notifyData);
             if (payOrderNotifyResult != null) {
                 String returnCode = payOrderNotifyResult.getReturnCode();
-                if ("SUCCESS".equals(returnCode)) {
+                if ("PAY_SUCCESS".equals(returnCode)) {
                     String resultCode = payOrderNotifyResult.getResultCode();
-                    if ("SUCCESS".equals(resultCode)) {
+                    if ("PAY_SUCCESS".equals(resultCode)) {
                         OrderMaster orderMaster = orderService.findOne(payOrderNotifyResult.getOutTradeNo());//商户订单号
                         if (orderMaster == null) {
                             log.error("【微信APP支付】异步通知，订单不存在 orderId={}", payOrderNotifyResult.getOutTradeNo());
@@ -438,32 +440,32 @@ public class PayServiceImpl implements PayService {
                     orderMaster.setPayType(PayTypeEnum.PAY_WITH_ALIPAY.getCode());//支付方式，支付宝
                     switch (result.getTradeStatus()) {
                         case "TRADE_FINISHED":// 交易结束并不可退款
-                            orderMaster.setOrderStatus(OrderStatusEnum.FAIL.getCode());//3
-                            orderMaster.setPayStatus(PayStatusEnum.FAIL.getCode());//3
+                            orderMaster.setOrderStatus(OrderStatusEnum.RECHARGE_FAIL.getCode());//3
+                            orderMaster.setPayStatus(PayStatusEnum.PAY_FAIL.getCode());//3
                             break;
                         case "TRADE_CLOSED":// 未付款交易超时关闭或支付完成后全额退款
-                            orderMaster.setOrderStatus(OrderStatusEnum.CLOSE.getCode());//2
-                            orderMaster.setPayStatus(PayStatusEnum.CLOSE.getCode());//2
+                            orderMaster.setOrderStatus(OrderStatusEnum.RECHARGE_CLOSE.getCode());//2
+                            orderMaster.setPayStatus(PayStatusEnum.PAY_CLOSE.getCode());//2
                             break;
                         case "TRADE_SUCCESS":// 交易支付成功
-                            orderMaster.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());//1
-                            orderMaster.setPayStatus(PayStatusEnum.SUCCESS.getCode());//1
+                            orderMaster.setOrderStatus(OrderStatusEnum.RECHARGE_SUCCESS.getCode());//1
+                            orderMaster.setPayStatus(PayStatusEnum.PAY_SUCCESS.getCode());//1
                             break;
                         case "WAIT_BUYER_PAY": // 交易创建并等待买家付款
-                            orderMaster.setOrderStatus(OrderStatusEnum.NEW.getCode());//0
-                            orderMaster.setPayStatus(PayStatusEnum.NEW.getCode());//0
+                            orderMaster.setOrderStatus(OrderStatusEnum.RECHARGE_WAITING.getCode());//0
+                            orderMaster.setPayStatus(PayStatusEnum.PAY_WAITING.getCode());//0
                             break;
                         default:
                             break;
                     }
-                   OrderMaster orderInfoUpdateResult = orderService.paidByAliPay(orderMaster);
+                    OrderMaster orderInfoUpdateResult = orderService.paidByAliPay(orderMaster);
                     if ("TRADE_SUCCESS".equals(result.getTradeStatus())) {
-                    	if (orderInfoUpdateResult != null) {
-							return "success";
-						} else {
-							return "fail";
-						}
-					}
+                        if (orderInfoUpdateResult != null) {
+                            return "success";
+                        } else {
+                            return "fail";
+                        }
+                    }
                 }
             } else {
                 log.error("调用SDK验证签名不通过");
@@ -491,10 +493,10 @@ public class PayServiceImpl implements PayService {
             result = wxPayService.queryOrder(null, orderId);
             if (result != null) {
                 BeanUtils.copyProperties(result, queryResult);
-                queryResult.setResultCode("SUCCESS");
-                queryResult.setReturnCode("SUCCESS");
+                queryResult.setResultCode("PAY_SUCCESS");
+                queryResult.setReturnCode("PAY_SUCCESS");
                 queryResult.setReturnMsg("查询微信支付订单结果成功。");
-                queryResult.setErrCode("SUCCESS");
+                queryResult.setErrCode("PAY_SUCCESS");
                 queryResult.setErrCodeDes("查询微信支付订单结果成功。");
                 return queryResult;
             }
@@ -502,10 +504,10 @@ public class PayServiceImpl implements PayService {
             BeanUtils.copyProperties(result, queryResult);
         } catch (Exception e) {
             log.error("查询微信支付订单结果出现错误", e);
-            queryResult.setResultCode("FAIL");
-            queryResult.setReturnCode("FAIL");
+            queryResult.setResultCode("PAY_FAIL");
+            queryResult.setReturnCode("PAY_FAIL");
             queryResult.setReturnMsg("查询微信支付订单结果失败。");
-            queryResult.setErrCode("FAIL");
+            queryResult.setErrCode("PAY_FAIL");
             queryResult.setErrCodeDes("查询微信支付订单结果失败。");
             return queryResult;
         } finally {
@@ -541,21 +543,21 @@ public class PayServiceImpl implements PayService {
             log.error("【检查支付的订单信息】 订单信息不存在，订单id={}", orderId);
             throw new Exception(ResultEnum.ORDER_NOT_EXIST.getMessage());
         }
-        if (orderInfo.getOrderStatus() != OrderStatusEnum.NEW.getCode() && 
-        		orderInfo.getOrderStatus() != OrderStatusEnum.EXCHANG_ING.getCode() && 
-        		orderInfo.getOrderStatus() != OrderStatusEnum.WITHDRAW_ING.getCode()) {
+        if (orderInfo.getOrderStatus() != OrderStatusEnum.RECHARGE_WAITING.getCode() &&
+                orderInfo.getOrderStatus() != OrderStatusEnum.EXCHANGE_WAITING.getCode() &&
+                orderInfo.getOrderStatus() != OrderStatusEnum.WITHDRAW_ING.getCode()) {
             log.error("【检查支付的订单信息】 订单状态不正确，订单id={}，订单状态={}", orderId, orderInfo.getOrderStatusEnum().getMessage());
             throw new Exception(ResultEnum.ORDER_STATUS_ERROR.getMessage());
         }
-        if (orderInfo.getPayStatus() != PayStatusEnum.NEW.getCode() &&
-            orderInfo.getPayStatus() != PayStatusEnum.EXCHANG_ING.getCode() && 
-            orderInfo.getPayStatus() != PayStatusEnum.WITHDRAW_ING.getCode()) {
+        if (orderInfo.getPayStatus() != PayStatusEnum.PAY_WAITING.getCode() &&
+                orderInfo.getPayStatus() != PayStatusEnum.EXCHANGE_WAITING.getCode() &&
+                orderInfo.getPayStatus() != PayStatusEnum.WITHDRAW_WAITING.getCode()) {
             log.error("【检查支付的订单信息】 订单支付状态不正确，订单id={}，订单支付状态={}", orderId, orderInfo.getPayStatusEnum().getMessage());
             throw new Exception(ResultEnum.ORDER_PAY_STATUS_ERROR.getMessage());
         }
         if (orderInfo.getPayType() != PayTypeEnum.PAY_WITH_ALIPAY.getCode() &&
-            orderInfo.getPayType() != PayTypeEnum.PAY_WITH_WECHAT.getCode() &&
-            orderInfo.getPayType() != PayTypeEnum.PAY_WITH_BALANCE.getCode()) {
+                orderInfo.getPayType() != PayTypeEnum.PAY_WITH_WECHAT.getCode() &&
+                orderInfo.getPayType() != PayTypeEnum.PAY_WITH_BALANCE.getCode()) {
             log.error("【检查支付的订单信息】 订单支付方式不正确，订单id={}，订单支付方式={}", orderId, orderInfo.getPayTypeEnum().getMessage());
             throw new Exception(ResultEnum.ORDER_PAY_STATUS_ERROR.getMessage());
         }

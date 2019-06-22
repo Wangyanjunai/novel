@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
  * <pre>
  * @PackageName com.potato369.novel.enums
  * @EnumName ProductCalculateTypeEnum
- * @Desc 产品信息枚举
+ * @Desc 商品类型信息枚举
  * @WebSite https://www.potato369.com
  * @Author Jack
  * @Date 2019/01/11 10:40
@@ -21,11 +21,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum ProductTypeEnum implements CodeEnum<Object> {
 
-    CHARGE(0, "充值"),
+    RECHARGE(0, "充值类型商品"),
 
-    EXCHANGE(1, "兑换"),
+    EXCHANGE(1, "兑换类型商品"),
 
-    WITHDRAW(2, "提现"),
+    WITHDRAW(2, "提现类型商品"),
 
     ;
 

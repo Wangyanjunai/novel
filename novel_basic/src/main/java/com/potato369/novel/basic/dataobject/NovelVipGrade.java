@@ -1,5 +1,6 @@
 package com.potato369.novel.basic.dataobject;
 
+import com.potato369.novel.basic.enums.UserInfoVIPGradeIdEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -47,6 +48,15 @@ public class NovelVipGrade implements Serializable {
     @Id
     @Column(name = "grade_id", nullable = false, length = 32)
     private String gradeId;
+
+    /**
+     * <pre>
+     * @serialField gradeType：VIP等级类型，0-VIP0；1-VIP1；2-VIP2，默认:0-VIP0。
+     * </pre>
+     */
+    @Builder.Default
+    @Column(name = "grade_type", nullable = false, length = 1)
+    private Integer gradeType = UserInfoVIPGradeIdEnum.VIP0_NAME.getCode();
 
     /**
      * <pre>

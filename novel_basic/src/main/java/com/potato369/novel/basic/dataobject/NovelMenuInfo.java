@@ -81,7 +81,7 @@ public class NovelMenuInfo implements Serializable {
      * @serialField key：菜单KEY值，用于消息接口推送，不超过128字节，click等点击类型必须。
      * </pre>
      */
-    @Column(name = "key", nullable = true, length = 64)
+    @Column(name = "key", length = 64)
     private String key;
 
     /**
@@ -97,7 +97,7 @@ public class NovelMenuInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField readingNumber：阅读（点击）用户数。
+     * @serialField readingNumber：阅读（点击）用户数，默认：0。
      * </pre>
      */
     @Builder.Default
@@ -106,7 +106,7 @@ public class NovelMenuInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField clickNumber：点击次数。
+     * @serialField clickNumber：点击次数，默认：0。
      * </pre>
      */
     @Builder.Default

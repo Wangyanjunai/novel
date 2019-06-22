@@ -92,7 +92,7 @@ public class NovelCategory implements Serializable {
 
     /**
      * <pre>
-     * @serialField readingNumber：阅读（点击）用户数。
+     * @serialField readingNumber：阅读（点击）用户数，默认：0。
      * <pre>
      */
     @Builder.Default
@@ -101,7 +101,7 @@ public class NovelCategory implements Serializable {
 
     /**
      * <pre>
-     * @serialField clickNumber：点击次数。
+     * @serialField clickNumber：点击次数，默认：0。
      * <pre>
      */
     @Builder.Default
@@ -110,7 +110,7 @@ public class NovelCategory implements Serializable {
 
     /**
      * <pre>
-     * @serialField isDeleted：类目是否删除；0-否，1-是。
+     * @serialField isDeleted：类目是否删除；0-否，1-是，默认：0-否。
      * </pre>
      */
     @Builder.Default

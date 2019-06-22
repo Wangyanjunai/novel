@@ -100,8 +100,8 @@ public class OrderServiceImpl implements OrderService {
         BeanUtils.copyProperties(orderDTO, orderMaster);
         orderMaster.setOrderId(orderId);
         orderMaster.setOrderAmount(orderAmount);
-        orderMaster.setOrderStatus(OrderStatusEnum.NEW.getCode());
-        orderMaster.setPayStatus(PayStatusEnum.NEW.getCode());
+        orderMaster.setOrderStatus(OrderStatusEnum.RECHARGE_WAITING.getCode());
+        orderMaster.setPayStatus(PayStatusEnum.PAY_WAITING.getCode());
         orderMasterRepository.save(orderMaster);
         orderDTO.setOrderAmount(orderAmount);
         orderDTO.setOrderId(orderId);
@@ -179,12 +179,12 @@ public class OrderServiceImpl implements OrderService {
             throw new NovelOrderException(ResultEnum.ORDER_NOT_EXIST);
         }
         /** 2、判断订单的状态 */
-        if (orderDTO.getOrderStatus() != OrderStatusEnum.NEW.getCode()) {
+        if (orderDTO.getOrderStatus() != OrderStatusEnum.RECHARGE_WAITING.getCode()) {
             log.error("【取消订单】订单状态不正确， orderId={}，orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
             throw new NovelOrderException(ResultEnum.ORDER_STATUS_ERROR);
         }
         /** 3、修改订单的状态 */
-        orderDTO.setOrderStatus(OrderStatusEnum.CLOSE.getCode());
+        orderDTO.setOrderStatus(OrderStatusEnum.RECHARGE_CLOSE.getCode());
         OrderMaster orderMaster = new OrderMaster();
         BeanUtils.copyProperties(orderDTO, orderMaster);
         OrderMaster updateResult = orderMasterRepository.save(orderMaster);
@@ -193,7 +193,7 @@ public class OrderServiceImpl implements OrderService {
             throw new NovelOrderException(ResultEnum.ORDER_UPDATE_FAIL);
         }
         /** 4、如果订单已经支付，需要退款 */
-        if (orderDTO.getPayStatus().equals(PayStatusEnum.SUCCESS.getCode())) {
+        if (orderDTO.getPayStatus().equals(PayStatusEnum.PAY_SUCCESS.getCode())) {
             weChatPayService.refund(orderDTO);
         }
         /** 5、推送订单取消通知模板消息 */
@@ -212,12 +212,12 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public OrderDTO finish(OrderDTO orderDTO) {
         /** 1、判断订单状态 */
-        if (orderDTO.getOrderStatus() != OrderStatusEnum.NEW.getCode()){
+        if (orderDTO.getOrderStatus() != OrderStatusEnum.RECHARGE_WAITING.getCode()){
             log.error("【完结订单】 订单状态不正确， orderId={}，orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
             throw new NovelOrderException(ResultEnum.ORDER_STATUS_ERROR);
         }
         /** 2.修改订单状态为完结状态 */
-        orderDTO.setOrderStatus(OrderStatusEnum.SUCCESS.getCode());
+        orderDTO.setOrderStatus(OrderStatusEnum.RECHARGE_SUCCESS.getCode());
         OrderMaster orderMaster = new OrderMaster();
         BeanUtils.copyProperties(orderDTO, orderMaster);
         OrderMaster updateResult = orderMasterRepository.save(orderMaster);
@@ -241,17 +241,17 @@ public class OrderServiceImpl implements OrderService {
     public OrderDTO paid(OrderDTO orderDTO) {
         Date now = new Date();
         /** 1、判断订单状态 */
-        if (OrderStatusEnum.NEW.getCode() != orderDTO.getOrderStatus()){
+        if (OrderStatusEnum.RECHARGE_WAITING.getCode() != orderDTO.getOrderStatus()){
             log.error("【微信公众号支付订单】订单状态不正确， orderId={}，orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
             throw new NovelOrderException(ResultEnum.ORDER_STATUS_ERROR);
         }
         /** 2、判断支付状态 */
-        if (PayStatusEnum.NEW.getCode() != orderDTO.getPayStatus()){
+        if (PayStatusEnum.PAY_WAITING.getCode() != orderDTO.getPayStatus()){
             log.error("【微信公众号支付订单】订单支付状态不正确， orderId={}，orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
             throw new NovelOrderException(ResultEnum.ORDER_PAY_STATUS_ERROR);
         }
         /** 3、修改订单支付状态 */
-        orderDTO.setPayStatus(PayStatusEnum.SUCCESS.getCode());
+        orderDTO.setPayStatus(PayStatusEnum.PAY_SUCCESS.getCode());
         OrderMaster orderMaster = OrderMaster.builder().build();
         BeanUtils.copyProperties(orderDTO, orderMaster);
 //        orderMaster.setPayTime(now);

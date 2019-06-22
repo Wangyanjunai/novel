@@ -52,14 +52,6 @@ public class TaskInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField userId：用户mid。
-     * </pre>
-     */
-    @Column(name = "user_id", nullable = false, length = 20)
-    private String userId;
-
-    /**
-     * <pre>
      * @serialField taskName：任务名称。
      * </pre>
      */
@@ -68,7 +60,7 @@ public class TaskInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField taskType：任务类型，1-绑定任务；2-分享任务；3-下载任务；4-阅读任务。
+     * @serialField taskType：任务类型，1-绑定任务；2-分享任务；3-下载任务；4-阅读任务，默认：1-绑定任务。
      * </pre>
      */
     @Builder.Default

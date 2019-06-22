@@ -98,8 +98,8 @@ CREATE TABLE `novel_category` (
   `category_cn_text` varchar(64) NULL DEFAULT NULL COMMENT '类目中文名称。',
   `category_en_text` varchar(64) NULL DEFAULT NULL COMMENT '类目英文名称。',
   `category_type` smallint(4) UNSIGNED NULL DEFAULT NULL COMMENT '类型编号。',
-  `reading_number` decimal(16,0) UNSIGNED NULL DEFAULT 0 COMMENT '阅读（点击）用户数。',
-  `click_number` decimal(16,0) UNSIGNED NULL DEFAULT 0 COMMENT '点击次数。',
+  `reading_number` decimal(16,0) UNSIGNED NULL DEFAULT 0 COMMENT '阅读（点击）用户数，默认：0。',
+  `click_number` decimal(16,0) UNSIGNED NULL DEFAULT 0 COMMENT '点击次数，默认：0。',
   `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '是否删除；0-否；1-是，默认：0-否。',
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间。',
@@ -213,8 +213,8 @@ CREATE TABLE `novel_menu_info` (
   `name` varchar(64) NOT NULL COMMENT '菜单标题，不超过16个字节，子菜单不超过60个字节。',
   `key` varchar(64) NULL DEFAULT NULL COMMENT '菜单KEY值，用于消息接口推送，不超过128字节，click等点击类型必须。',
   `url` varchar(1024) NULL DEFAULT NULL COMMENT '网页链接，用户点击菜单可打开链接，不超过1024字节。type为miniprogram时，不支持小程序的老版本客户端将打开本url。view、miniprogram类型必须。',
-  `reading_number` decimal(16, 0) UNSIGNED NULL DEFAULT 0 COMMENT '阅读（点击）用户数。',
-  `click_number` decimal(16, 0) UNSIGNED NULL DEFAULT 0 COMMENT '点击次数。',
+  `reading_number` decimal(16, 0) UNSIGNED NULL DEFAULT 0 COMMENT '阅读（点击）用户数，默认：0。',
+  `click_number` decimal(16, 0) UNSIGNED NULL DEFAULT 0 COMMENT '点击次数，默认：0。',
   `media_id` varchar(128) NULL DEFAULT NULL COMMENT '调用新增永久素材接口返回的合法media_id，media_id类型和view_limited类型必须。',
   `app_id` varchar(64) NULL DEFAULT NULL COMMENT '小程序的appid，miniprogram类型必须。',
   `page_path` varchar(1024) NULL DEFAULT NULL COMMENT '小程序的页面路径，miniprogram类型必须。',
@@ -248,11 +248,11 @@ DROP TABLE IF EXISTS `novel_shelf`;
 CREATE TABLE `novel_shelf` (
   `shelf_id` varchar(32) NOT NULL COMMENT '小说id，联合主键。',
   `user_id` varchar(20) NOT NULL COMMENT '用户mid，联合主键。',
-  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
-  `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间。',
   `novel_id` varchar(32) NOT NULL COMMENT '小说id。',
   `chapter_id` varchar(32) NULL DEFAULT NULL COMMENT '已经阅读到的小说章节id。',
   `chapter_index` smallint(6) NULL DEFAULT NULL COMMENT '已经阅读到的小说章节索引。',
+  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
+  `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间。',
   PRIMARY KEY (`shelf_id`, `user_id`) USING BTREE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '书架信息数据记录表' ROW_FORMAT = DYNAMIC;
 
@@ -351,9 +351,9 @@ CREATE TABLE `novel_vip_grade` (
 -- ----------------------------
 -- Records of novel_vip_grade
 -- ----------------------------
-INSERT INTO `novel_vip_grade` VALUES ('450b9b4f90b14fb784f45643ded0dff5', 'VIP-0', 'VIP-0：普通用户，广告全开，VIP-1到期后获得VIP-0。', '2019-06-05 10:33:39', '2019-06-05 10:37:01');
-INSERT INTO `novel_vip_grade` VALUES ('450b9b4f90b14fb784f45643ded0dff6', 'VIP-1', 'VIP-1：章节免广告用户，免除章节阅读时的广告，新注册用户、以及邀请码的方式获得。', '2019-06-05 10:33:50', '2019-06-05 10:36:39');
-INSERT INTO `novel_vip_grade` VALUES ('450b9b4f90b14fb784f45643ded0dff7', 'VIP-2', 'VIP-2：全场免广告用户，全场免广告（除开屏、精选界面轮播广告）通过充值、兑换获得VIP-2全场免广告用户。', '2019-06-05 10:34:50', '2019-06-05 10:38:31');
+INSERT INTO `novel_vip_grade` VALUES ('450b9b4f90b14fb784f45643ded0dff5', '0', 'VIP0', 'VIP0：普通用户，广告全开，VIP-1到期后获得VIP-0。', '2019-06-05 10:33:39', '2019-06-05 10:37:01');
+INSERT INTO `novel_vip_grade` VALUES ('450b9b4f90b14fb784f45643ded0dff6', '1', 'VIP1', 'VIP1：章节免广告用户，免除章节阅读时的广告，新注册用户、以及邀请码的方式获得。', '2019-06-05 10:33:50', '2019-06-05 10:36:39');
+INSERT INTO `novel_vip_grade` VALUES ('450b9b4f90b14fb784f45643ded0dff7', '2', 'VIP2', 'VIP2：全场免广告用户，全场免广告（除开屏、精选界面轮播广告）通过充值、兑换获得VIP-2全场免广告用户。', '2019-06-05 10:34:50', '2019-06-05 10:38:31');
 
 -- ----------------------------
 -- 【13】Table structure for novel_user_account
@@ -385,7 +385,7 @@ DROP TABLE IF EXISTS `order_master`;
 CREATE TABLE `order_master` (
   `order_id` varchar(32) NOT NULL COMMENT '订单id，主键。',
   `user_id` varchar(20) NOT NULL COMMENT '用户mid。', 
-  `transactional_id` varchar(64) NULL DEFAULT NULL COMMENT '订单支付流水号。',
+  `transaction_id` varchar(64) NULL DEFAULT NULL COMMENT '订单支付流水号。',
   `buyer_name` varchar(64) NULL DEFAULT NULL COMMENT '买家名字。',
   `buyer_address` varchar(128) NULL DEFAULT NULL COMMENT '买家地址。',
   `buyer_openid` varchar(64) NULL DEFAULT NULL COMMENT '买家平台openid。', 
@@ -401,7 +401,7 @@ CREATE TABLE `order_master` (
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0)  ON UPDATE CURRENT_TIMESTAMP(0)  COMMENT '更新时间。',
   PRIMARY KEY (`order_id`) USING BTREE,
   KEY `key_user_id` (`user_id`) USING BTREE,
-  KEY `key_transactional_id` (`transactional_id`) USING BTREE,
+  KEY `key_transaction_id` (`transaction_id`) USING BTREE,
   KEY `key_buyer_openid` (`buyer_openid`) USING BTREE,
   KEY `key_product_id` (`product_id`) USING BTREE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单信息记录表' ROW_FORMAT = DYNAMIC;
@@ -433,7 +433,6 @@ CREATE TABLE `order_detail` (
 -- Records of order_detail
 -- ----------------------------
 
-
 -- ----------------------------
 -- 【16】Table structure for product_info
 -- ----------------------------
@@ -445,13 +444,13 @@ CREATE TABLE `product_info` (
     `product_id` varchar(32) NOT NULL COMMENT '商品id，主键。',
     `product_name` varchar(64) NOT NULL COMMENT '商品名称。',
     `product_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '产品类型，0-充值，1-兑换；2-提现，默认：0-充值。',
-    `product_calculate_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '计算类型，0-按照天算，1-按照月算；默认0-按照天算。',
+    `product_calculate_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '计算类型，0-按天算，1-按月算，2-按元算；默认0-按照天算。',
     `product_code` varchar(64) NULL DEFAULT NULL COMMENT '商品代码。',
-    `product_amount` decimal(8,2) DEFAULT NULL COMMENT '商品总价（元）。',
+    `product_amount` decimal(8, 2) DEFAULT NULL COMMENT '商品总价（元）。',
     `product_description` varchar(1024) DEFAULT NULL COMMENT '商品描述。',
     `date_value` smallint(2) DEFAULT NULL COMMENT '对应的日期值',
-    `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间。',
-    `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
+    `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间。',
     PRIMARY KEY (`product_id`) USING BTREE,
     KEY `key_product_name` (`product_name`) USING BTREE,
     KEY `key_product_code` (`product_code`) USING BTREE
@@ -460,15 +459,15 @@ CREATE TABLE `product_info` (
 -- ----------------------------
 -- Records of product_info
 -- ----------------------------
-INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bf', 'VIP - 7天', '1', '0', '5.00', '兑换VIP2等级权限7天。', '7', '2019-06-05 10:22:53', '2019-06-13 17:41:12');
-INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bg', 'VIP - 30天', '1', '0', '20.00', '兑换VIP2等级权限30天。', '30', '2019-06-05 10:23:55', '2019-06-13 17:41:14');
-INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bh', 'VIP - 60天', '1', '0', '40.00', '兑换VIP2等级权限60天。', '60', '2019-06-05 10:24:51', '2019-06-13 17:41:15');
-INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bi', 'VIP - 90天', '1', '0', '60.00', '兑换VIP2等级权限90天。', '90', '2019-06-05 10:26:00', '2019-06-13 17:41:20');
-INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4ae9', '提现20元', '2', '2', '20.00', '提现20元。', null, '2019-06-11 17:17:27', '2019-06-13 17:39:09');
-INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4cb9', '1个月 - VIP', '0', '1', '10.00', '充值开通一个月VIP2等级权限。', '1', '2019-06-05 10:28:20', '2019-06-13 17:46:54');
-INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4cc9', '3个月 - VIP', '0', '1', '30.00', '充值开通三个月VIP2等级权限。', '3', '2019-06-05 10:29:04', '2019-06-13 17:47:20');
-INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4cd9', '6个月 - VIP', '0', '1', '60.00', '充值开通六个月VIP2等级权限。', '6', '2019-06-05 10:29:53', '2019-06-13 17:47:05');
-INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4ce9', '12个月 - VIP', '0', '1', '120.00', '充值开通十二个月VIP2等级权限。', '12', '2019-06-05 10:31:05', '2019-06-13 17:47:11');
+INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bf', 'VIP-7天', '1', '0', '', '5.00', '兑换VIP2等级权限7天。', '7', '2019-06-05 10:22:53', '2019-06-13 17:41:12');
+INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bg', 'VIP-30天', '1', '0', '', '20.00', '兑换VIP2等级权限30天。', '30', '2019-06-05 10:23:55', '2019-06-13 17:41:14');
+INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bh', 'VIP-60天', '1', '0', '', '40.00', '兑换VIP2等级权限60天。', '60', '2019-06-05 10:24:51', '2019-06-13 17:41:15');
+INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bi', 'VIP-90天', '1', '0', '', '60.00', '兑换VIP2等级权限90天。', '90', '2019-06-05 10:26:00', '2019-06-13 17:41:20');
+INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4ae9', '提现20元', '2', '2', '', '20.00', '提现20元。', null, '2019-06-11 17:17:27', '2019-06-13 17:39:09');
+INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4cb9', '1个月-VIP', '0', '1', '', '10.00', '充值开通一个月VIP2等级权限。', '1', '2019-06-05 10:28:20', '2019-06-13 17:46:54');
+INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4cc9', '3个月-VIP', '0', '1', '', '30.00', '充值开通三个月VIP2等级权限。', '3', '2019-06-05 10:29:04', '2019-06-13 17:47:20');
+INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4cd9', '6个月-VIP', '0', '1', '', '60.00', '充值开通六个月VIP2等级权限。', '6', '2019-06-05 10:29:53', '2019-06-13 17:47:05');
+INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4ce9', '12个月-VIP', '0', '1', '', '120.00', '充值开通十二个月VIP2等级权限。', '12', '2019-06-05 10:31:05', '2019-06-13 17:47:11');
 
 
 -- ----------------------------
@@ -480,7 +479,7 @@ CREATE TABLE `task_info` (
   `task_name` varchar(64) NOT NULL COMMENT '任务名称。',
   `task_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '任务类型，1-绑定任务；2-分享任务；3-下载任务；4-阅读任务，默认：1-绑定任务。',
   `task_description` varchar(1024) NULL DEFAULT NULL COMMENT '任务描述。',
-  `task_progress_value` smallint(2) NULL DEFAULT NULL COMMENT '任务红包进度条。',
+  `task_progress_value` smallint(2) NULL DEFAULT 0 NULL COMMENT '任务红包进度条。',
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间。',
   PRIMARY KEY (`task_id`) USING BTREE,
@@ -516,10 +515,10 @@ DROP TABLE IF EXISTS `seller_info`;
 CREATE TABLE `seller_info` (
   `seller_id` varchar(32) NOT NULL COMMENT '卖家id，主键。',
   `seller_name` varchar(64) NOT NULL COMMENT '卖家名字。',
-  `password` varchar(64) NOT NULL COMMENT '登录密码。',
-  `openid` varchar(64) NOT NULL COMMENT '买家登录openid。',
-  `login_time` timestamp(0) NULL DEFAULT NULL COMMENT '登录时间。',
-  `login_ip` varchar(25) NULL DEFAULT NULL COMMENT '登录终端外网ip。',
+  `password` varchar(64) NOT NULL COMMENT '卖家登录密码。',
+  `openid` varchar(64) NOT NULL COMMENT '卖家登录openid。',
+  `login_time` timestamp(0) NULL DEFAULT NULL COMMENT '卖家登录时间。',
+  `login_ip` varchar(25) NULL DEFAULT NULL COMMENT '卖家登录终端外网IP。',
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间。',
   PRIMARY KEY (`seller_id`) USING BTREE,
