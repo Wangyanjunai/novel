@@ -26,9 +26,10 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 public class AppVersionVO {
+
     /**
      * <pre>
-     * versionCode：版本代码
+     * @JsonProperty versionCode：版本代码。
      * </pre>
      */
     @JsonProperty(value = "version_code")
@@ -36,7 +37,7 @@ public class AppVersionVO {
 
     /**
      * <pre>
-     * versionName：版本名称
+     * @JsonProperty versionName：版本名称。
      * </pre>
      */
     @JsonProperty(value = "version_name")
@@ -44,7 +45,7 @@ public class AppVersionVO {
 
     /**
      * <pre>
-     * releaseNotes：更新版本说明
+     * @JsonProperty releaseNotes：更新版本说明。
      * </pre>
      */
     @JsonProperty(value = "release_notes")
@@ -52,7 +53,7 @@ public class AppVersionVO {
 
     /**
      * <pre>
-     * app包下载资源地址
+     * @JsonProperty sourceFileUrl：app包下载资源地址。
      * </pre>
      */
     @JsonProperty(value = "source_file_url")
@@ -60,7 +61,7 @@ public class AppVersionVO {
 
     /**
      * <pre>
-     * publishTime：发布更新时间
+     * @JsonProperty publishTime：发布更新时间。
      * </pre>
      */
     @JsonProperty(value = "publish_time")

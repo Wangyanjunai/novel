@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  * <pre>
  * @PackageName com.potato369.novel.app.web.vo
  * @ClassName BalanceVO
- * @Desc
+ * @Desc 收益json数据封装实体。
  * @WebSite https://www.potato369.com
  * @Author Jack
  * @Date 2019/6/11 15:23
@@ -26,12 +26,27 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class BalanceVO {
 
+    /**
+     * <pre>
+     * @JsonProperty userId：用户mid。
+     * </pre>
+     */
     @JsonProperty(value = "userId")
-    private String userId;// 用户mid。
+    private String userId;
 
+    /**
+     * <pre>
+     * @JsonProperty balanceAmount：总余额（0.00元）。
+     * </pre>
+     */
     @JsonProperty(value = "balance")
-    private BigDecimal balanceAmount;//总余额（0.00元）
+    private BigDecimal balanceAmount;
 
+    /**
+     * <pre>
+     * @JsonProperty yieldAmount：最近7天收益（0.00元）。
+     * </pre>
+     */
     @JsonProperty(value = "yield")
-    private BigDecimal yieldAmount;//最近7天收益（0.00元）
+    private BigDecimal yieldAmount;
 }
