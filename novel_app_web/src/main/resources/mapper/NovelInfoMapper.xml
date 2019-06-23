@@ -3,27 +3,27 @@
 <mapper namespace="com.potato369.novel.basic.repository.mapper.NovelInfoMapper">
 
     <resultMap id="BaseResultMap" type="com.potato369.novel.basic.dataobject.NovelInfo">
-        <id column="id" property="id" javaType="string" jdbcType="VARCHAR" />
-        <id column="cover_url" property="coverURL" javaType="string" jdbcType="VARCHAR" />
-        <id column="data_url" property="dataURL" javaType="string" jdbcType="VARCHAR" />
-        <id column="title" property="title" javaType="string" jdbcType="VARCHAR" />
-        <id column="author" property="author" javaType="string" jdbcType="VARCHAR" />
-        <id column="publisher" property="publisher" javaType="string" jdbcType="VARCHAR" />
-        <id column="total_words" property="totalWords" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
-        <id column="novel_status" property="novelStatus" javaType="int" jdbcType="INTEGER" />
-        <id column="category_type" property="categoryType" javaType="int" jdbcType="INTEGER" />
-        <id column="category_cn_text" property="categoryCNText" javaType="string" jdbcType="VARCHAR" />
-        <id column="category_en_text" property="categoryENText" javaType="string" jdbcType="VARCHAR" />
-        <id column="introduction" property="introduction" javaType="string" jdbcType="LONGVARCHAR" />
-        <id column="readers" property="readers" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
-        <id column="recent_readers" property="recentReaders" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
-        <id column="click_number" property="clickNumber" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
-        <id column="newest_chapter_id" property="newestChapterId" javaType="string" jdbcType="VARCHAR" />
-        <id column="newest_chapter_title" property="newestChapterTitle" javaType="string" jdbcType="VARCHAR" />
-        <id column="total_chapters" property="totalChapters" javaType="int" jdbcType="INTEGER" />
-        <id column="retention" property="retention" javaType="int" jdbcType="INTEGER" />
-        <id column="create_time" property="createTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-        <id column="update_time" property="updateTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+        <id column="id" property="id" javaType="string" jdbcType="VARCHAR"/>
+        <id column="cover_url" property="coverURL" javaType="string" jdbcType="VARCHAR"/>
+        <id column="data_url" property="dataURL" javaType="string" jdbcType="VARCHAR"/>
+        <id column="title" property="title" javaType="string" jdbcType="VARCHAR"/>
+        <id column="author" property="author" javaType="string" jdbcType="VARCHAR"/>
+        <id column="publisher" property="publisher" javaType="string" jdbcType="VARCHAR"/>
+        <id column="total_words" property="totalWords" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        <id column="novel_status" property="novelStatus" javaType="int" jdbcType="INTEGER"/>
+        <id column="category_type" property="categoryType" javaType="int" jdbcType="INTEGER"/>
+        <id column="category_cn_text" property="categoryCNText" javaType="string" jdbcType="VARCHAR"/>
+        <id column="category_en_text" property="categoryENText" javaType="string" jdbcType="VARCHAR"/>
+        <id column="introduction" property="introduction" javaType="string" jdbcType="LONGVARCHAR"/>
+        <id column="readers" property="readers" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        <id column="recent_readers" property="recentReaders" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        <id column="click_number" property="clickNumber" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        <id column="newest_chapter_id" property="newestChapterId" javaType="string" jdbcType="VARCHAR"/>
+        <id column="newest_chapter_title" property="newestChapterTitle" javaType="string" jdbcType="VARCHAR"/>
+        <id column="total_chapters" property="totalChapters" javaType="int" jdbcType="INTEGER"/>
+        <id column="retention" property="retention" javaType="int" jdbcType="INTEGER"/>
+        <id column="create_time" property="createTime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <id column="update_time" property="updateTime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <select id="selectDataUrl" resultType="java.lang.String">

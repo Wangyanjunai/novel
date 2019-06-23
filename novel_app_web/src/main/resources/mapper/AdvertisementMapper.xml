@@ -3,15 +3,15 @@
 <mapper namespace="com.potato369.novel.basic.repository.mapper.AdvertisementMapper">
 
     <resultMap id="AllResultMap" type="com.potato369.novel.basic.dataobject.NovelAdvertisement">
-        <id column="ad_id" property="adId" javaType="string" jdbcType="VARCHAR" />
-        <id column="tag1" property="tag1" javaType="int" jdbcType="INTEGER" />
-        <id column="tag2" property="tag2" javaType="int" jdbcType="INTEGER" />
-        <id column="image_url" property="imageUrl" javaType="string" jdbcType="VARCHAR" />
-        <id column="link_url" property="linkUrl" javaType="string" jdbcType="VARCHAR" />
-        <id column="novel_id" property="novelId" javaType="string" jdbcType="VARCHAR" />
-        <id column="novel_parent_category_id" property="novelParentCategoryId" javaType="string" jdbcType="VARCHAR" />
-        <id column="create_time" property="createTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-        <id column="update_time" property="updateTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+        <id column="ad_id" property="adId" javaType="string" jdbcType="VARCHAR"/>
+        <id column="tag1" property="tag1" javaType="int" jdbcType="INTEGER"/>
+        <id column="tag2" property="tag2" javaType="int" jdbcType="INTEGER"/>
+        <id column="image_url" property="imageUrl" javaType="string" jdbcType="VARCHAR"/>
+        <id column="link_url" property="linkUrl" javaType="string" jdbcType="VARCHAR"/>
+        <id column="novel_id" property="novelId" javaType="string" jdbcType="VARCHAR"/>
+        <id column="novel_parent_category_id" property="novelParentCategoryId" javaType="string" jdbcType="VARCHAR"/>
+        <id column="create_time" property="createTime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <id column="update_time" property="updateTime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <select id="selectAllByTag1AndTag2" resultMap="AllResultMap" parameterType="java.util.HashMap">

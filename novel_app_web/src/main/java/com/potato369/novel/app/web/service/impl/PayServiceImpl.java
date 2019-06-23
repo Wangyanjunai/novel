@@ -363,27 +363,6 @@ public class PayServiceImpl implements PayService {
 
     /**
      * <pre>
-     * 微信公众号支付退款
-     * @param orderId
-     * @return
-     * </pre>
-     */
-    @Override
-    public void refund(String orderId) {
-    }
-
-    /**
-     * <pre>
-     * 关闭超时未支付的订单
-     * @param orderId
-     * </pre>
-     */
-    @Override
-    public void close(String orderId) {
-    }
-
-    /**
-     * <pre>
      * 支付宝异步请求逻辑处理
      * @param conversionParams
      * @return
@@ -480,6 +459,27 @@ public class PayServiceImpl implements PayService {
                 log.debug("end======================对验签进行数据处理======================end");
             }
         }
+    }
+
+    /**
+     * <pre>
+     * 微信公众号支付退款
+     * @param orderId
+     * @return
+     * </pre>
+     */
+    @Override
+    public void refund(String orderId) {
+    }
+
+    /**
+     * <pre>
+     * 关闭超时未支付的订单
+     * @param orderId
+     * </pre>
+     */
+    @Override
+    public void close(String orderId) {
     }
 
     @Override

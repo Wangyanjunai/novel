@@ -309,7 +309,36 @@ public class OrderServiceImpl implements OrderService {
     public Page<OrderMaster> findAll(Pageable pageable) throws Exception{
         return orderMasterRepository.findAll(pageable);
     }
-    
+
+    /**
+     * <pre>
+     * 根据订单支付状态列表，订单状态列表和分页排序信息查询订单信息列表。
+     * @param orderStatusList
+     * @param payStatusList
+     * @param pageable
+     * @return List
+     * </pre>
+     */
+    @Override
+    public List<OrderMaster> findByOrderStatusAndPayStatus(List<Integer> orderStatusList, List<Integer> payStatusList, Pageable pageable) {
+        return orderMasterRepository.findOrderMastersByOrderStatusInAndPayStatusIn(orderStatusList, payStatusList, pageable);
+    }
+
+    /**
+     * <pre>
+     * 根据订单支付状态列表，订单状态列表，订单类型和分页排序信息查询订单信息列表。
+     * @param orderStatusList
+     * @param payStatusList
+     * @param orderTypeList
+     * @param pageable
+     * @return List
+     * </pre>
+     */
+    @Override
+    public List<OrderMaster> findByOrderStatusAndPayStatusAndOrderType(List<Integer> orderStatusList, List<Integer> payStatusList, List<Integer> orderTypeList, Pageable pageable) {
+        return orderMasterRepository.findOrderMastersByOrderStatusInAndPayStatusInAndOrderTypeIn(orderStatusList, payStatusList, orderTypeList, pageable);
+    }
+
     public OrderMaster checkWeChatPayNotifyOrder(OrderMaster order) throws Exception {
 		if (order == null) {
 			log.error("【微信APP预支付订单】 订单信息不存在");
@@ -332,26 +361,4 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return order;
 	}
-
-    /**
-     * <pre>
-     * 根据订单状态，支付状态分页查询订单列表
-     * @param pageable
-     * @return Page<OrderMaster>.class
-     * </pre>
-     */
-    public Page<OrderMaster> findByOrderStatusAndPayStatus(List<Integer> orderStatusList, List<Integer> payStatusList, Pageable pageable) throws Exception {
-       return  orderMasterRepository.findOrderMasterByOrderStatusInAndPayStatusIn(orderStatusList, payStatusList, pageable);
-    }
-
-    /**
-     * <pre>
-     * 根据订单状态，支付状态，订单类型分页查询订单列表
-     * @param pageable
-     * @return Page<OrderMaster>.class
-     * </pre>
-     */
-    public Page<OrderMaster> findByOrderStatusAndPayStatusAndOrderType(List<Integer> orderStatus, List<Integer> payStatusList, Integer orderType, Pageable pageable) throws Exception {
-        return orderMasterRepository.findOrderMasterByOrderStatusInAndPayStatusInAndOrderType(orderStatus, payStatusList, orderType, pageable);
-    }
 }

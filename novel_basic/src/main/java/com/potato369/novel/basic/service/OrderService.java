@@ -39,7 +39,6 @@ public interface OrderService {
     /**
      * <pre>
      * 查询所有的订单列表
-     * @param orderId
      * @return OrderMaster.class
      * </pre>
      */
@@ -112,19 +111,24 @@ public interface OrderService {
 
     /**
      * <pre>
-     * 根据订单状态，支付状态分页查询订单列表
+     * 根据订单支付状态列表，订单状态列表和分页排序信息查询订单信息列表。
+     * @param orderStatusList
+     * @param payStatusList
      * @param pageable
-     * @return Page<OrderMaster>.class
+     * @return List
      * </pre>
      */
-    Page<OrderMaster> findByOrderStatusAndPayStatus(List<Integer> orderStatusList, List<Integer> payStatusList, Pageable pageable) throws Exception;
+    List<OrderMaster> findByOrderStatusAndPayStatus(List<Integer> orderStatusList, List<Integer> payStatusList, Pageable pageable) throws Exception;
 
     /**
      * <pre>
-     * 根据订单状态，支付状态，订单类型分页查询订单列表
+     * 根据订单支付状态列表，订单状态列表，订单类型列表和分页排序信息查询订单信息列表。
+     * @param orderStatusList
+     * @param payStatusList
+     * @param orderTypeList
      * @param pageable
-     * @return Page<OrderMaster>.class
+     * @return List
      * </pre>
      */
-    Page<OrderMaster> findByOrderStatusAndPayStatusAndOrderType(List<Integer> orderStatusList, List<Integer> payStatusList, Integer orderType, Pageable pageable) throws Exception;
+    List<OrderMaster> findByOrderStatusAndPayStatusAndOrderType(List<Integer> orderStatusList, List<Integer> payStatusList, List<Integer> orderTypeList, Pageable pageable) throws Exception;
 }

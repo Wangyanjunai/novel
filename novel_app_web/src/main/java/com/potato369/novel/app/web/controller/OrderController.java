@@ -5,6 +5,7 @@ import com.potato369.novel.app.web.model.AliPayResult;
 import com.potato369.novel.app.web.model.WeChatPayResult;
 import com.potato369.novel.app.web.service.PayService;
 import com.potato369.novel.app.web.vo.MessageVO;
+import com.potato369.novel.app.web.vo.OrderMessageVO;
 import com.potato369.novel.app.web.vo.ResultVO;
 import com.potato369.novel.app.web.vo.UserInfoVO;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
@@ -24,6 +25,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,11 +64,12 @@ public class OrderController {
 
     /**
      * <pre>
-     * 创建订单并提交生成并返回预支付订单信息
+     * 创建订单并提交生成并返回预支付订单信息接口。
      * 创建订单微信文档地址：https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_1
      * @param mid 用户mid
      * @param pid 商品id
      * @param type 支付方式
+     * @return
      * </pre>
      */
     @GetMapping(value = "/create")
@@ -176,32 +179,89 @@ public class OrderController {
         }
     }
 
+    /**
+     * <pre>
+     * 拼接订单成功滚动消息接口。
+     * @param orderType 订单类型， 0-提现交易，1-兑换交易，2-充值交易，参数不传查询所有类型交易。
+     * @return
+     * </pre>
+     */
     @GetMapping(value = "/message")
     public ResultVO<MessageVO> findOrderMessage(@RequestParam(name = "orderType", required = false) Integer orderType) {
         ResultVO<MessageVO> resultVO = new ResultVO<>();
+        MessageVO messageVO = MessageVO.builder().build();
+        List<OrderMessageVO> messageVOList = new ArrayList<>();
         try {
-            if (orderType == null) {//查询所有的订单前10条记录
-                Sort sort = new Sort(Sort.Direction.DESC, "createTime", "updateTime");
-                PageRequest pageRequest = new PageRequest(0, 10, sort);
-                List<Integer> orderStatusList = new ArrayList<>();
-                orderStatusList.add(OrderStatusEnum.RECHARGE_SUCCESS.getCode());
-                orderStatusList.add(OrderStatusEnum.EXCHANGE_SUCCESS.getCode());
-                orderStatusList.add(OrderStatusEnum.WITHDRAW_SUCCESS.getCode());
-                List<Integer> payStatusList = new ArrayList<>();
-                payStatusList.add(PayStatusEnum.PAY_SUCCESS.getCode());
-                payStatusList.add(PayStatusEnum.EXCHANGE_SUCCESS.getCode());
-                payStatusList.add(PayStatusEnum.WITHDRAW_SUCCESS.getCode());
-                Page<OrderMaster> orderMasterPage = orderService.findByOrderStatusAndPayStatus(orderStatusList, payStatusList, pageRequest);
-                if (log.isDebugEnabled()) {
-                    log.debug("totalPage={}", orderMasterPage.getTotalPages());
-                    log.debug("getTotalElements={}", orderMasterPage.getTotalElements());
-                }
+            if (log.isDebugEnabled()) {
+                log.debug("");
             }
+            Sort sort = new Sort(Sort.Direction.DESC, "createTime", "updateTime");
+            PageRequest pageRequest = new PageRequest(0, 10, sort);
+            List<Integer> orderStatusList = new ArrayList<>();
+            orderStatusList.add(OrderStatusEnum.RECHARGE_SUCCESS.getCode());
+            orderStatusList.add(OrderStatusEnum.EXCHANGE_SUCCESS.getCode());
+            orderStatusList.add(OrderStatusEnum.WITHDRAW_SUCCESS.getCode());
+            List<Integer> payStatusList = new ArrayList<>();
+            payStatusList.add(PayStatusEnum.PAY_SUCCESS.getCode());
+            payStatusList.add(PayStatusEnum.EXCHANGE_SUCCESS.getCode());
+            payStatusList.add(PayStatusEnum.WITHDRAW_SUCCESS.getCode());
+            List<Integer> orderTypeList = new ArrayList<>();
+            if (orderType == null) {
+                orderTypeList.add(OrderTypeEnum.WITHDRAW.getCode());
+                orderTypeList.add(OrderTypeEnum.EXCHANGE.getCode());
+                orderTypeList.add(OrderTypeEnum.RECHARGE.getCode());
+            } else {
+                orderTypeList.add(orderType);
+            }
+            //查询所有的订单前10条记录
+            List<OrderMaster> orderMasterList = orderService.findByOrderStatusAndPayStatusAndOrderType(orderStatusList, payStatusList, orderTypeList, pageRequest);
+            if (orderMasterList != null && !orderMasterList.isEmpty() && orderMasterList.size() > 0) {
+                if (log.isDebugEnabled()) {
+                    log.debug("size={}", orderMasterList.size());
+                }
+                List<OrderMaster> userOrderMasterList = new ArrayList<>();
+                BigDecimal orderAmount = BigDecimal.ZERO;
+                for (OrderMaster orderInfo : orderMasterList) {
+                    OrderMessageVO orderMessageVO = OrderMessageVO.builder().build();
+                    String userId = orderInfo.getUserId();
+                    NovelUserInfo userInfo = userInfoService.findByUserMId(userId);
+                    if (userInfo != null) {
+                        orderMessageVO.setUserName(userInfo.getNickName());
+                        if (OrderTypeEnum.RECHARGE.getCode().equals(orderInfo.getOrderType())) {
+                            orderMessageVO.setTotalAmount(userInfo.getChargeAmount());
+                        }
+                        if (OrderTypeEnum.WITHDRAW.getCode().equals(orderInfo.getOrderType()) || OrderTypeEnum.EXCHANGE.getCode().equals(orderInfo.getOrderType())) {
+                            userOrderMasterList.add(orderInfo);
+                            for (OrderMaster orderMaster:orderMasterList) {
+                                orderAmount = orderAmount.add(orderMaster.getOrderAmount());
+                                orderMessageVO.setTotalAmount(orderAmount);
+                            }
+                        }
+                    }
+                    String productId = orderInfo.getProductId();
+                    ProductInfo productInfo = productService.findOne(productId);
+                    if (productInfo != null) {
+                        orderMessageVO.setProductName(productInfo.getProductName());
+                    }
+                    orderMessageVO.setOrderType(orderInfo.getOrderTypeEnum().getMessage());
+                    messageVOList.add(orderMessageVO);
+                }
+                messageVO.setMessageVOList(messageVOList);
+                messageVO.setTotalPage(new BigDecimal(messageVOList.size()));
+            }
+            resultVO.setCode(0);
+            resultVO.setMsg("返回数据成功");
+            resultVO.setData(messageVO);
+            return resultVO;
         } catch (Exception e) {
-
+            log.error("", e);
+            resultVO.setCode(-1);
+            resultVO.setMsg("返回数据失败");
+            return resultVO;
         } finally {
-
+            if (log.isDebugEnabled()) {
+                log.debug("");
+            }
         }
-        return resultVO;
     }
 }

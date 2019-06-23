@@ -161,7 +161,7 @@ public class NovelUserInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField chargeAmount：总充值金额（元）。
+     * @serialField chargeAmount：总交易金额（元）。
      * </pre>
      */
     @Builder.Default

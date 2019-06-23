@@ -4,6 +4,8 @@ import com.potato369.novel.basic.dataobject.OrderMaster;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
 import java.util.List;
 /**
  * <pre>
@@ -31,7 +33,7 @@ public interface OrderMasterRepository extends JpaRepository<OrderMaster, String
 
     /**
      * <pre>
-     * 根据支付状态和订单状态查询订单信息
+     * 根据支付状态和订单状态查询订单信息列表。
      * @param payStatus
      * @param orderStatus
      * @return
@@ -39,7 +41,26 @@ public interface OrderMasterRepository extends JpaRepository<OrderMaster, String
      */
     List<OrderMaster> findOrderMastersByPayStatusAndOrderStatus(Integer payStatus, Integer orderStatus);
 
-    Page<OrderMaster> findOrderMasterByOrderStatusInAndPayStatusIn(List<Integer> payStatusList, List<Integer> orderStatusList, Pageable pageable);
+    /**
+     * <pre>
+     * 根据订单支付状态列表，订单状态列表和分页排序信息查询订单信息列表。
+     * @param payStatusList
+     * @param orderStatusList
+     * @param pageable
+     * @return
+     * </pre>
+     */
+    List<OrderMaster> findOrderMastersByOrderStatusInAndPayStatusIn(List<Integer> payStatusList, List<Integer> orderStatusList, Pageable pageable);
 
-    Page<OrderMaster> findOrderMasterByOrderStatusInAndPayStatusInAndOrderType(List<Integer> payStatusList, List<Integer> orderStatusList, Integer orderType, Pageable pageable);
+    /**
+     * <pre>
+     * 根据订单支付状态列表，订单状态列表，订单类型列表和分页排序信息查询订单信息列表。
+     * @param payStatusList
+     * @param orderStatusList
+     * @param orderTypeList
+     * @param pageable
+     * @return
+     * </pre>
+     */
+    List<OrderMaster> findOrderMastersByOrderStatusInAndPayStatusInAndOrderTypeIn(List<Integer> payStatusList, List<Integer> orderStatusList, List<Integer> orderTypeList, Pageable pageable);
 }
