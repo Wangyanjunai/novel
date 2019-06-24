@@ -39,9 +39,11 @@ spring:
 logging:
   level:
     org.springframework.web: info
-    com.potato369.novel.weixin.web: info
+    com.potato369.novel.basic: info
+    com.potato369.novel.app.web: info
     com.alibaba.druid: info
-    com.potato369.novel.weixin.web.dataobject.mapper: info
+    com.potato369.novel.basic.dataobject.mapper: info
+    com.github.binarywang: info
 projectUrl:
   projectName: /novel
   domainUrl: http://potato369.mynatapp.cc

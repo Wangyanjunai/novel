@@ -392,7 +392,7 @@ CREATE TABLE `order_master` (
   `product_id` varchar(32) NOT NULL COMMENT '商品id。',
   `order_amount` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '订单总金额，默认：0.00。',
   `order_name` varchar(64) NULL DEFAULT NULL COMMENT '订单名称。',
-  `order_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单产品类型，0-提现；1-兑换；2-充值，“默认：0-提现”。',
+  `order_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单产品类型，0-充值；1-兑换；2-提现，“默认：0-充值”。',
   `order_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单状态，0-新订单；1-已完结；2-已取消，“默认：0-新订单”。',
   `pay_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单支付状态，0-等待支付；1-支付成功；2-已经关闭，“默认：0-等待支付。”。',
   `pay_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 NULL COMMENT '订单支付方式，1-支付宝；2-微信支付；3-余额支付，”默认：1-支付宝“。',
@@ -459,16 +459,15 @@ CREATE TABLE `product_info` (
 -- ----------------------------
 -- Records of product_info
 -- ----------------------------
-INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bf', 'VIP-7天', '1', '0', '', '5.00', '兑换VIP2等级权限7天。', '7', '2019-06-05 10:22:53', '2019-06-13 17:41:12');
-INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bg', 'VIP-30天', '1', '0', '', '20.00', '兑换VIP2等级权限30天。', '30', '2019-06-05 10:23:55', '2019-06-13 17:41:14');
-INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bh', 'VIP-60天', '1', '0', '', '40.00', '兑换VIP2等级权限60天。', '60', '2019-06-05 10:24:51', '2019-06-13 17:41:15');
-INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bi', 'VIP-90天', '1', '0', '', '60.00', '兑换VIP2等级权限90天。', '90', '2019-06-05 10:26:00', '2019-06-13 17:41:20');
-INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4ae9', '提现20元', '2', '2', '', '20.00', '提现20元。', null, '2019-06-11 17:17:27', '2019-06-13 17:39:09');
-INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4cb9', '1个月-VIP', '0', '1', '', '10.00', '充值开通一个月VIP2等级权限。', '1', '2019-06-05 10:28:20', '2019-06-13 17:46:54');
-INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4cc9', '3个月-VIP', '0', '1', '', '30.00', '充值开通三个月VIP2等级权限。', '3', '2019-06-05 10:29:04', '2019-06-13 17:47:20');
-INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4cd9', '6个月-VIP', '0', '1', '', '60.00', '充值开通六个月VIP2等级权限。', '6', '2019-06-05 10:29:53', '2019-06-13 17:47:05');
-INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4ce9', '12个月-VIP', '0', '1', '', '120.00', '充值开通十二个月VIP2等级权限。', '12', '2019-06-05 10:31:05', '2019-06-13 17:47:11');
-
+INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4cb9', '1个月-VIP', '0', '1', 'APP_VIP_1_MONTHS_QUICK_MSECURITY_PAY', '10.00', '充值开通一个月VIP2等级权限。', '1', '2019-06-05 10:28:20', '2019-06-13 17:46:54');
+INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4cc9', '3个月-VIP', '0', '1', 'APP_VIP_3_MONTHS_QUICK_MSECURITY_PAY', '30.00', '充值开通三个月VIP2等级权限。', '3', '2019-06-05 10:29:04', '2019-06-13 17:47:20');
+INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4cd9', '6个月-VIP', '0', '1', 'APP_VIP_6_MONTHS_QUICK_MSECURITY_PAY', '60.00', '充值开通六个月VIP2等级权限。', '6', '2019-06-05 10:29:53', '2019-06-13 17:47:05');
+INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4ce9', '12个月-VIP', '0', '1', 'APP_VIP_12_MONTHS_QUICK_MSECURITY_PAY', '120.00', '充值开通十二个月VIP2等级权限。', '12', '2019-06-05 10:31:05', '2019-06-13 17:47:11');
+INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bf', 'VIP-7天', '1', '0', 'APP_VIP_7_DAYS_QUICK_MSECURITY_PAY', '5.00', '兑换开通7天VIP2等级权限。', '7', '2019-06-05 10:22:53', '2019-06-13 17:41:12');
+INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bg', 'VIP-30天', '1', '0', 'APP_VIP_30_DAYS_QUICK_MSECURITY_PAY', '20.00', '兑换开通30天VIP2等级权限。', '30', '2019-06-05 10:23:55', '2019-06-13 17:41:14');
+INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bh', 'VIP-60天', '1', '0', 'APP_VIP_60_DAYS_QUICK_MSECURITY_PAY', '40.00', '兑换开通60天VIP2等级权限。', '60', '2019-06-05 10:24:51', '2019-06-13 17:41:15');
+INSERT INTO `product_info` VALUES ('7567a11992b14c9dafaf46fe17f1d3bi', 'VIP-90天', '1', '0', 'APP_VIP_90_DAYS_QUICK_MSECURITY_PAY', '60.00', '兑换开通90天VIP2等级权限。', '90', '2019-06-05 10:26:00', '2019-06-13 17:41:20');
+INSERT INTO `product_info` VALUES ('8553a8275c474f39885d00c7e96a4ae9', '提现20元', '2', '2', 'APP_WITHDRAW_20_QUICK_MSECURITY_PAY', '20.00', '提现20元。', null, '2019-06-11 17:17:27', '2019-06-13 17:39:09');
 
 -- ----------------------------
 -- 【17】Table structure for task_info

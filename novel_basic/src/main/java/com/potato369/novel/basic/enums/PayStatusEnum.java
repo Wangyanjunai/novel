@@ -21,13 +21,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum PayStatusEnum implements CodeEnum<Object> {
 
-    PAY_WAITING(0, "等待支付"),
+    RECHARGE_WAITING(0, "等待支付"),
 
-    PAY_SUCCESS(1, "支付成功"),
+    RECHARGE_SUCCESS(1, "支付成功"),
 
-    PAY_CLOSE(2, "支付关闭"),
+    RECHARGE_CLOSE(2, "支付关闭"),
 
-    PAY_FAIL(3, "支付失败"),
+    RECHARGE_FAIL(3, "支付失败"),
     
     EXCHANGE_WAITING(4, "等待兑换"),
     

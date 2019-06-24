@@ -194,7 +194,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderMaster paidByWeChatPay(OrderMaster orderMaster) throws Exception{
         checkWeChatPayNotifyOrder(orderMaster);
         /** 4、修改订单状态 */
-        orderMaster.setPayStatus(PayStatusEnum.PAY_SUCCESS.getCode());//订单支付状态：支付成功
+        orderMaster.setPayStatus(PayStatusEnum.RECHARGE_SUCCESS.getCode());//订单支付状态：支付成功
         orderMaster.setOrderStatus(OrderStatusEnum.RECHARGE_SUCCESS.getCode());//订单状态，交易支付成功
         orderMaster.setPayType(PayTypeEnum.PAY_WITH_WECHAT.getCode());//订单支付方式，微信
         List<OrderDetail> orderDetailList = orderMaster.getOrderDetailList();
@@ -349,7 +349,7 @@ public class OrderServiceImpl implements OrderService {
 			log.error("【微信APP预支付订单】 订单状态不正确，订单id={}，订单状态={}", orderId, order.getOrderStatusEnum().getMessage());
 			throw new Exception(ResultEnum.ORDER_STATUS_ERROR.getMessage());
 		}
-		if (order.getPayStatus() != PayStatusEnum.PAY_WAITING.getCode()) {
+		if (order.getPayStatus() != PayStatusEnum.RECHARGE_WAITING.getCode()) {
 			log.error("【微信APP预支付订单】 订单支付状态不正确，订单id={}，订单支付状态={}", orderId, order.getPayStatusEnum().getMessage());
 			throw new Exception(ResultEnum.ORDER_PAY_STATUS_ERROR.getMessage());
 		}

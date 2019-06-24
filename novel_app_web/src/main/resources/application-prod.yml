@@ -39,9 +39,11 @@ spring:
 logging:
   level:
     org.springframework.web: error
-    com.potato369.novel.weixin.web: error
+    com.potato369.novel.basic: error
+    com.potato369.novel.app.web: error
     com.alibaba.druid: error
-    com.potato369.novel.weixin.web.dataobject.mapper: error
+    com.potato369.novel.basic.dataobject.mapper: error
+    com.github.binarywang: error
 projectUrl: 
   projectName: /novel
   domainUrl: https://www.potato369.com

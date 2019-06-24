@@ -293,7 +293,7 @@ public class PayServiceImpl implements PayService {
                 }
 
                 orderMaster.setOrderStatus(OrderStatusEnum.RECHARGE_SUCCESS.getCode());
-                orderMaster.setPayStatus(PayStatusEnum.PAY_SUCCESS.getCode());
+                orderMaster.setPayStatus(PayStatusEnum.RECHARGE_SUCCESS.getCode());
                 orderMaster.setOrderType(productInfo.getProductType());
                 orderMaster.setPayTime(new Date());
                 orderMaster.setTransactionId(UUIDUtil.genTimstampUUID());
@@ -420,19 +420,19 @@ public class PayServiceImpl implements PayService {
                     switch (result.getTradeStatus()) {
                         case "TRADE_FINISHED":// 交易结束并不可退款
                             orderMaster.setOrderStatus(OrderStatusEnum.RECHARGE_FAIL.getCode());//3
-                            orderMaster.setPayStatus(PayStatusEnum.PAY_FAIL.getCode());//3
+                            orderMaster.setPayStatus(PayStatusEnum.RECHARGE_FAIL.getCode());//3
                             break;
                         case "TRADE_CLOSED":// 未付款交易超时关闭或支付完成后全额退款
                             orderMaster.setOrderStatus(OrderStatusEnum.RECHARGE_CLOSE.getCode());//2
-                            orderMaster.setPayStatus(PayStatusEnum.PAY_CLOSE.getCode());//2
+                            orderMaster.setPayStatus(PayStatusEnum.RECHARGE_CLOSE.getCode());//2
                             break;
                         case "TRADE_SUCCESS":// 交易支付成功
                             orderMaster.setOrderStatus(OrderStatusEnum.RECHARGE_SUCCESS.getCode());//1
-                            orderMaster.setPayStatus(PayStatusEnum.PAY_SUCCESS.getCode());//1
+                            orderMaster.setPayStatus(PayStatusEnum.RECHARGE_SUCCESS.getCode());//1
                             break;
                         case "WAIT_BUYER_PAY": // 交易创建并等待买家付款
                             orderMaster.setOrderStatus(OrderStatusEnum.RECHARGE_WAITING.getCode());//0
-                            orderMaster.setPayStatus(PayStatusEnum.PAY_WAITING.getCode());//0
+                            orderMaster.setPayStatus(PayStatusEnum.RECHARGE_WAITING.getCode());//0
                             break;
                         default:
                             break;
@@ -549,7 +549,7 @@ public class PayServiceImpl implements PayService {
             log.error("【检查支付的订单信息】 订单状态不正确，订单id={}，订单状态={}", orderId, orderInfo.getOrderStatusEnum().getMessage());
             throw new Exception(ResultEnum.ORDER_STATUS_ERROR.getMessage());
         }
-        if (orderInfo.getPayStatus() != PayStatusEnum.PAY_WAITING.getCode() &&
+        if (orderInfo.getPayStatus() != PayStatusEnum.RECHARGE_WAITING.getCode() &&
                 orderInfo.getPayStatus() != PayStatusEnum.EXCHANGE_WAITING.getCode() &&
                 orderInfo.getPayStatus() != PayStatusEnum.WITHDRAW_WAITING.getCode()) {
             log.error("【检查支付的订单信息】 订单支付状态不正确，订单id={}，订单支付状态={}", orderId, orderInfo.getPayStatusEnum().getMessage());

@@ -30,19 +30,20 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
-    generate-ddl: true
+    show-sql: false
+    generate-ddl: false
   redis:
     host: 127.0.0.1
     port: 6379
     password: foobared123!@#
 logging:
   level:
-    org.springframework.web: debug
-    com.potato369.novel.basic: debug
-    com.potato369.novel.app.web: debug
-    com.alibaba.druid: debug
-    com.potato369.novel.basic.dataobject.mapper: debug
+    org.springframework.web: error
+    com.potato369.novel.basic: error
+    com.potato369.novel.app.web: error
+    com.alibaba.druid: error
+    com.potato369.novel.basic.dataobject.mapper: error
+    com.github.binarywang: debug
 projectUrl: 
   projectName: /novel
   domainUrl: http://potato369.mynatapp.cc
@@ -58,6 +59,6 @@ projectUrl:
   uploadFilePath: D:/Program/Resources
   coverImgFilePath: D:/Program/Resources/epbu2
   resUrl: http://172.16.101.59:9000
-weChat:
+weChat: 
   pay:
     keyPath: D:\Users\wangyanjun\workspace\novel\src\main\resources\cert\open.p12

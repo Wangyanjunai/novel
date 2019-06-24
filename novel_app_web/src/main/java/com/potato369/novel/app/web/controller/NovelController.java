@@ -9,7 +9,6 @@ import com.potato369.novel.basic.dataobject.NovelChapter;
 import com.potato369.novel.basic.dataobject.NovelInfo;
 import com.potato369.novel.basic.enums.HotWordsIsNewEnum;
 import com.potato369.novel.basic.enums.NovelInfoStatusEnum;
-import com.potato369.novel.basic.enums.TypeEnum;
 import com.potato369.novel.basic.service.CategoryService;
 import com.potato369.novel.basic.service.HotWordsInfoService;
 import com.potato369.novel.basic.service.NovelChapterService;

@@ -20,15 +20,12 @@ import com.potato369.novel.basic.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * <pre>
  * @PackageName com.potato369.novel.app.web.controller
@@ -117,7 +114,7 @@ public class OrderController {
                 orderMaster.setBuyerName(novelUserInfo.getNickName());//设置用户名称
                 orderMaster.setBuyerAddress(novelUserInfo.getAddress());//设置用户地址
                 orderMaster.setBuyerOpenid(novelUserInfo.getOpenid());//设置用户平台openid
-                orderMaster.setOrderName(new StringBuffer().append(this.properties.getOrderNamePrefix()).append(productInfo.getProductName()).toString().trim());//设置订单名称
+                orderMaster.setOrderName(new StringBuffer().append(this.properties.getOrderNamePrefix()).append(productInfo.getProductTypeEnum().getMessage()).append("-").append(productInfo.getProductName()).toString().trim());//设置订单名称
                 orderMaster.setProductId(productInfo.getProductId());//设置商品id
                 orderMaster.setPayType(type);//设置支付方式
                 orderMaster.setOrderAmount(productInfo.getProductAmount());//设置支付总金额
@@ -132,18 +129,18 @@ public class OrderController {
                 orderMaster.setOrderDetailList(orderDetailList);
                 if (ProductTypeEnum.RECHARGE.getCode().equals(productType)) {//充值
                     orderMaster.setOrderStatus(OrderStatusEnum.RECHARGE_WAITING.getCode());//设置订单状态
-                    orderMaster.setPayStatus(PayStatusEnum.PAY_WAITING.getCode());//设置支付状态
-                    orderMaster.setOrderType(ProductTypeEnum.RECHARGE.getCode());//设置订单类型
+                    orderMaster.setPayStatus(PayStatusEnum.RECHARGE_WAITING.getCode());//设置支付状态
+                    orderMaster.setOrderType(OrderTypeEnum.RECHARGE.getCode());//设置订单类型
                 }
                 if (ProductTypeEnum.EXCHANGE.getCode().equals(productType)) {//兑换
                     orderMaster.setOrderStatus(OrderStatusEnum.EXCHANGE_WAITING.getCode());
                     orderMaster.setPayStatus(PayStatusEnum.EXCHANGE_WAITING.getCode());
-                    orderMaster.setOrderType(ProductTypeEnum.EXCHANGE.getCode());
+                    orderMaster.setOrderType(OrderTypeEnum.EXCHANGE.getCode());
                 }
                 if (ProductTypeEnum.WITHDRAW.getCode().equals(productType)) {//提现
                     orderMaster.setOrderStatus(OrderStatusEnum.WITHDRAW_ING.getCode());
                     orderMaster.setPayStatus(PayStatusEnum.WITHDRAW_WAITING.getCode());
-                    orderMaster.setOrderType(ProductTypeEnum.WITHDRAW.getCode());
+                    orderMaster.setOrderType(OrderTypeEnum.WITHDRAW.getCode());
                 }
                 orderService.save(orderMaster);
                 if (PayTypeEnum.PAY_WITH_WECHAT.getCode().equals(type)) {//微信支付
@@ -182,7 +179,7 @@ public class OrderController {
     /**
      * <pre>
      * 拼接订单成功滚动消息接口。
-     * @param orderType 订单类型， 0-提现交易，1-兑换交易，2-充值交易，参数不传查询所有类型交易。
+     * @param orderType 订单类型， 0-充值交易，1-兑换交易，2-提现交易，参数不传查询所有类型交易。
      * @return
      * </pre>
      */
@@ -193,7 +190,7 @@ public class OrderController {
         List<OrderMessageVO> messageVOList = new ArrayList<>();
         try {
             if (log.isDebugEnabled()) {
-                log.debug("");
+                log.debug("start====================拼接订单交易成功滚动消息====================start");
             }
             Sort sort = new Sort(Sort.Direction.DESC, "createTime", "updateTime");
             PageRequest pageRequest = new PageRequest(0, 10, sort);
@@ -202,7 +199,7 @@ public class OrderController {
             orderStatusList.add(OrderStatusEnum.EXCHANGE_SUCCESS.getCode());
             orderStatusList.add(OrderStatusEnum.WITHDRAW_SUCCESS.getCode());
             List<Integer> payStatusList = new ArrayList<>();
-            payStatusList.add(PayStatusEnum.PAY_SUCCESS.getCode());
+            payStatusList.add(PayStatusEnum.RECHARGE_SUCCESS.getCode());
             payStatusList.add(PayStatusEnum.EXCHANGE_SUCCESS.getCode());
             payStatusList.add(PayStatusEnum.WITHDRAW_SUCCESS.getCode());
             List<Integer> orderTypeList = new ArrayList<>();
@@ -243,7 +240,7 @@ public class OrderController {
                     if (productInfo != null) {
                         orderMessageVO.setProductName(productInfo.getProductName());
                     }
-                    orderMessageVO.setOrderType(orderInfo.getOrderTypeEnum().getMessage());
+                    orderMessageVO.setOrderType(productInfo.getProductTypeEnum().getMessage());
                     messageVOList.add(orderMessageVO);
                 }
                 messageVO.setMessageVOList(messageVOList);
@@ -254,13 +251,13 @@ public class OrderController {
             resultVO.setData(messageVO);
             return resultVO;
         } catch (Exception e) {
-            log.error("", e);
+            log.error("拼接订单交易成功滚动消息出现错误", e);
             resultVO.setCode(-1);
             resultVO.setMsg("返回数据失败");
             return resultVO;
         } finally {
             if (log.isDebugEnabled()) {
-                log.debug("");
+                log.debug("end======================拼接订单交易成功滚动消息======================end");
             }
         }
     }

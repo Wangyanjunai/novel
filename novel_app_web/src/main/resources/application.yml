@@ -24,7 +24,7 @@ weChat:
     mchKey: 9dc8133c841faf945fd5844823755a34
     appSecret: 9dc8133c841faf945fd5844823755a34
     notifyUrl: /pay/weChatPay/notify
-    orderNamePrefix: 急速追书VIP会员-充值
+    orderNamePrefix: 急速追书VIP会员-
 aliPay:
   pay:
     serverPayUrl: https://openapi.alipay.com/gateway.do
@@ -42,7 +42,7 @@ aliPay:
     returnUrl: /pay/aliPay/return.do
 server:
   context-path: /novel
-  port: 8080
+  port: 8081
   error:
     path: /error
   session:

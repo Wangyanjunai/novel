@@ -21,11 +21,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum ProductTypeEnum implements CodeEnum<Object> {
 
-    RECHARGE(0, "充值类型商品"),
+    RECHARGE(0, "充值"),
 
-    EXCHANGE(1, "兑换类型商品"),
+    EXCHANGE(1, "兑换"),
 
-    WITHDRAW(2, "提现类型商品"),
+    WITHDRAW(2, "提现"),
 
     ;
 

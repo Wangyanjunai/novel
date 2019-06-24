@@ -122,12 +122,12 @@ public class OrderMaster implements Serializable {
 
     /**
      * <pre>
-     * @serialField orderType：订单产品类型，0-提现；1-兑换；2-充值，“默认：0-提现”。
+     * @serialField orderType：订单产品类型，0-充值；1-兑换；2-提现，“默认：0-充值”。
      * </pre>
      */
     @Builder.Default
     @Column(name = "order_type", nullable = false, length = 1)
-    private Integer orderType = OrderTypeEnum.WITHDRAW.getCode();
+    private Integer orderType = OrderTypeEnum.RECHARGE.getCode();
 
     /**
      * <pre>
@@ -145,7 +145,7 @@ public class OrderMaster implements Serializable {
      */
     @Builder.Default
     @Column(name = "pay_status", nullable = false, length = 1)
-    private Integer payStatus = PayStatusEnum.PAY_WAITING.getCode();
+    private Integer payStatus = PayStatusEnum.RECHARGE_WAITING.getCode();
 
     /**
      * <pre>
