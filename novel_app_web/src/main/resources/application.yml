@@ -42,7 +42,7 @@ aliPay:
     returnUrl: /pay/aliPay/return.do
 server:
   context-path: /novel
-  port: 8081
+  port: 8080
   error:
     path: /error
   session:
