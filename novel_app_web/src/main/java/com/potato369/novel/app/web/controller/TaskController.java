@@ -54,15 +54,15 @@ public class TaskController {
      * </pre>
      */
     @GetMapping(value = "/list")
-    public ResultVO<TaskVO> list(@RequestParam(name = "page", required=true, defaultValue="1") Integer page,
-    									   @RequestParam(name = "size", required=true, defaultValue="10") Integer size) {
-    	
-    	try {
+    public ResultVO<TaskVO> list(@RequestParam(name = "page", defaultValue = "1") Integer page,
+                                 @RequestParam(name = "size", defaultValue = "10") Integer size) {
+
+        try {
             if (log.isDebugEnabled()) {
                 log.debug("start==================后端查询任务信息列表==================start");
             }
             ResultVO<TaskVO> resultVO = new ResultVO<>();
-        	TaskVO taskVO = TaskVO.builder().build();
+            TaskVO taskVO = TaskVO.builder().build();
             Sort sort = new Sort(Direction.ASC, "createTime", "updateTime");
             PageRequest pageRequest = new PageRequest(page - 1, size, sort);
             Page<TaskInfo> taskInfoPage = taskInfoService.findAll(pageRequest);
@@ -84,7 +84,7 @@ public class TaskController {
     }
 
     @GetMapping(value = "/balance")
-    public ResultVO<BalanceVO> getBalance(@RequestParam(name = "userId", required = true) String userId) {
+    public ResultVO<BalanceVO> getBalance(@RequestParam(name = "userId") String userId) {
         try {
             if (log.isDebugEnabled()) {
                 log.debug("start====================任务中心查询我的余额和最近7天收益====================start");
@@ -109,50 +109,47 @@ public class TaskController {
             log.error("任务中心查询我的余额和最近7天收益出现错误", e);
             return ResultVOUtil.error(-1, "返回数据失败");
         } finally {
-        	if (log.isDebugEnabled()) {
+            if (log.isDebugEnabled()) {
                 log.debug("end======================任务中心查询我的余额和最近7天收益======================end");
             }
         }
     }
 
     /**
-     * 
      * <pre>
      * addEnvelopeAmount方法的作用：添加用户红包进度值。
      * </pre>
      */
-    @GetMapping(value = "/envelope/add.do") 
-    public void addEnvelopeAmount(@RequestParam(name = "userId", required = true) String userId,
-    							 @RequestParam(name = "envelopeAmount", required = true) BigDecimal envelopeAmount) {
-    	try {
-			
-		} catch (Exception e) {
-			
-		} finally {
-			
-		}
+    @GetMapping(value = "/envelope/add.do")
+    public void addEnvelope(@RequestParam(name = "userId") String userId,
+                            @RequestParam(name = "envelopeAmount") BigDecimal envelopeAmount) {
+        try {
+
+        } catch (Exception e) {
+
+        } finally {
+
+        }
     }
-    
+
     /**
-     * 
      * <pre>
      * findEnvelopeAmount方法的作用：获取用户红包进度值。
      * @param userId 用户mid。
      * </pre>
      */
     @GetMapping(value = "/envelope/find.do")
-    public void findEnvelopeAmount(@RequestParam(name = "userId", required = true) String userId) {
-    	try {
-			
-		} catch (Exception e) {
-			
-		} finally {
-			
-		}
+    public void findEnvelope(@RequestParam(name = "userId") String userId) {
+        try {
+
+        } catch (Exception e) {
+
+        } finally {
+
+        }
     }
-    
+
     /**
-     * 
      * <pre>
      * consumEnvelopeAmount方法的作用：消费用户红包进度值。
      * @param userId 用户mid。
@@ -160,14 +157,14 @@ public class TaskController {
      * </pre>
      */
     @GetMapping(value = "/envelope/consume.do")
-    public void consumEnvelopeAmount(@RequestParam(name = "userId", required = true) String userId,
-			 @RequestParam(name = "envelopeAmount", required = true) BigDecimal envelopeAmount) {
-    	try {
-			
-		} catch (Exception e) {
-			
-		} finally {
-			
-		}    	
+    public void consumeEnvelope(@RequestParam(name = "userId") String userId,
+                                @RequestParam(name = "envelopeAmount") BigDecimal envelopeAmount) {
+        try {
+
+        } catch (Exception e) {
+
+        } finally {
+
+        }
     }
 }

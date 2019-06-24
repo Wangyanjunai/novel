@@ -23,9 +23,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.app.web.controller
@@ -230,7 +232,7 @@ public class OrderController {
                         }
                         if (OrderTypeEnum.WITHDRAW.getCode().equals(orderInfo.getOrderType()) || OrderTypeEnum.EXCHANGE.getCode().equals(orderInfo.getOrderType())) {
                             userOrderMasterList.add(orderInfo);
-                            for (OrderMaster orderMaster:orderMasterList) {
+                            for (OrderMaster orderMaster : orderMasterList) {
                                 orderAmount = orderAmount.add(orderMaster.getOrderAmount());
                                 orderMessageVO.setTotalAmount(orderAmount);
                             }

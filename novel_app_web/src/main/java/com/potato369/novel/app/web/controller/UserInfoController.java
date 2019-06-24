@@ -180,40 +180,40 @@ public class UserInfoController {
             }
         }
     }
-    
+
     @GetMapping(value = "/find/{mid}")
     public ResultVO<UserInfoVO> find(@PathVariable(name = "mid", required = true) String mid) {
-    	ResultVO<UserInfoVO> result = new ResultVO<>();
-    	try {
-			if (log.isDebugEnabled()) {
-				log.debug("start==================查找用户信息==================start");
-			}
-			NovelUserInfo userInfo = userInfoService.findById(mid);
-			if (userInfo == null) {
-				result.setCode(-1);
-				result.setMsg("用户信息不存在");
-				return result;
-			}
-			UserInfoVO userInfoVO = UserInfo2UserInfoVOConverter.convert(userInfo);
-			NovelVipGrade vipGrade = vipGradeService.findOne(userInfo.getVipGradeId());
-			String gradeName = UserInfoVIPGradeIdEnum.VIP0_NAME.getMessage();
+        ResultVO<UserInfoVO> result = new ResultVO<>();
+        try {
+            if (log.isDebugEnabled()) {
+                log.debug("start==================查找用户信息==================start");
+            }
+            NovelUserInfo userInfo = userInfoService.findById(mid);
+            if (userInfo == null) {
+                result.setCode(-1);
+                result.setMsg("用户信息不存在");
+                return result;
+            }
+            UserInfoVO userInfoVO = UserInfo2UserInfoVOConverter.convert(userInfo);
+            NovelVipGrade vipGrade = vipGradeService.findOne(userInfo.getVipGradeId());
+            String gradeName = UserInfoVIPGradeIdEnum.VIP0_NAME.getMessage();
             if (vipGrade != null) {
                 gradeName = vipGrade.getGradeName();
             }
             userInfoVO.setVipGradeName(gradeName);
-			result.setCode(0);
-			result.setMsg("用户信息存在");
-			result.setData(userInfoVO);
-			return result;
-		} catch (Exception e) {
-			log.error("查找用户信息出现错误", e);
-			result.setCode(-2);
-			result.setMsg("查找用户信息出现错误");
-			return result;
-		} finally {
-			if (log.isDebugEnabled()) {
-				log.debug("end====================查找用户信息====================end");
-			}
-		}
+            result.setCode(0);
+            result.setMsg("用户信息存在");
+            result.setData(userInfoVO);
+            return result;
+        } catch (Exception e) {
+            log.error("查找用户信息出现错误", e);
+            result.setCode(-2);
+            result.setMsg("查找用户信息出现错误");
+            return result;
+        } finally {
+            if (log.isDebugEnabled()) {
+                log.debug("end====================查找用户信息====================end");
+            }
+        }
     }
 }

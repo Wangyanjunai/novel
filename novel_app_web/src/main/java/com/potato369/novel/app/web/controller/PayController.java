@@ -222,31 +222,31 @@ public class PayController {
                     StringUtils.trimToNull(this.properties.getSignType()));
             AlipayTradeQueryResponse response = alipayClient.execute(request);
             if (response != null && response.isSuccess()) {
-            	BeanUtils.copyProperties(response, result);
+                BeanUtils.copyProperties(response, result);
                 switch (response.getTradeStatus()) {
-				case "TRADE_CLOSED":
-				case "TRADE_FINISHED":
-				case "WAIT_BUYER_PAY":
-					result.setErrCode("PAY_FAIL");
-	                result.setErrCodeDes("返回数据失败。");
-	                result.setResultCode("PAY_FAIL");
-	                result.setReturnCode("PAY_FAIL");
-	                result.setReturnMsg("返回数据失败。");
-	                resultVO.setCode(-1);
-	                resultVO.setMsg("返回数据失败。");
-	                break;
-				case "TRADE_SUCCESS": 
-					result.setErrCode("PAY_SUCCESS");
-	                result.setErrCodeDes("返回数据成功。");
-	                result.setResultCode("PAY_SUCCESS");
-	                result.setReturnCode("PAY_SUCCESS");
-	                result.setReturnMsg("返回数据成功。");
-	                resultVO.setCode(0);
-	                resultVO.setMsg("返回数据成功。");
-	                break;
-				default:
-					break;
-				}
+                    case "TRADE_CLOSED":
+                    case "TRADE_FINISHED":
+                    case "WAIT_BUYER_PAY":
+                        result.setErrCode("PAY_FAIL");
+                        result.setErrCodeDes("返回数据失败。");
+                        result.setResultCode("PAY_FAIL");
+                        result.setReturnCode("PAY_FAIL");
+                        result.setReturnMsg("返回数据失败。");
+                        resultVO.setCode(-1);
+                        resultVO.setMsg("返回数据失败。");
+                        break;
+                    case "TRADE_SUCCESS":
+                        result.setErrCode("PAY_SUCCESS");
+                        result.setErrCodeDes("返回数据成功。");
+                        result.setResultCode("PAY_SUCCESS");
+                        result.setReturnCode("PAY_SUCCESS");
+                        result.setReturnMsg("返回数据成功。");
+                        resultVO.setCode(0);
+                        resultVO.setMsg("返回数据成功。");
+                        break;
+                    default:
+                        break;
+                }
                 resultVO.setData(result);
             }
             return resultVO;
