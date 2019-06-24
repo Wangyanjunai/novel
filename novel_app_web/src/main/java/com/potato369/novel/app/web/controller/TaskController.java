@@ -5,10 +5,16 @@ import com.potato369.novel.app.web.utils.ResultVOUtil;
 import com.potato369.novel.app.web.vo.BalanceVO;
 import com.potato369.novel.app.web.vo.ResultVO;
 import com.potato369.novel.app.web.vo.TaskInfoVO;
+import com.potato369.novel.app.web.vo.TaskVO;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
+import com.potato369.novel.basic.dataobject.TaskInfo;
 import com.potato369.novel.basic.service.TaskInfoService;
 import com.potato369.novel.basic.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,14 +54,22 @@ public class TaskController {
      * </pre>
      */
     @GetMapping(value = "/list")
-    public ResultVO<List<TaskInfoVO>> list() {
-        try {
-            ResultVO<List<TaskInfoVO>> resultVO = new ResultVO<>();
+    public ResultVO<TaskVO> list(@RequestParam(name = "page", required=true, defaultValue="1") Integer page,
+    									   @RequestParam(name = "size", required=true, defaultValue="10") Integer size) {
+    	
+    	try {
             if (log.isDebugEnabled()) {
                 log.debug("start==================后端查询任务信息列表==================start");
             }
-            List<TaskInfoVO> taskInfoVOList = TaskInfo2TaskInfoVOConverter.convertToTaskInfoVOList(taskInfoService.findAll());
-            resultVO.setData(taskInfoVOList);
+            ResultVO<TaskVO> resultVO = new ResultVO<>();
+        	TaskVO taskVO = TaskVO.builder().build();
+            Sort sort = new Sort(Direction.ASC, "createTime", "updateTime");
+            PageRequest pageRequest = new PageRequest(page - 1, size, sort);
+            Page<TaskInfo> taskInfoPage = taskInfoService.findAll(pageRequest);
+            List<TaskInfoVO> taskInfoVOList = TaskInfo2TaskInfoVOConverter.convertToTaskInfoVOList(taskInfoPage.getContent());
+            taskVO.setTaskInfoVOList(taskInfoVOList);
+            taskVO.setTotalPage(new BigDecimal(taskInfoPage.getTotalPages()));
+            resultVO.setData(taskVO);
             resultVO.setCode(0);
             resultVO.setMsg("返回数据成功");
             return resultVO;
@@ -73,7 +87,7 @@ public class TaskController {
     public ResultVO<BalanceVO> getBalance(@RequestParam(name = "userId", required = true) String userId) {
         try {
             if (log.isDebugEnabled()) {
-                log.debug("");
+                log.debug("start====================任务中心查询我的余额和最近7天收益====================start");
             }
             ResultVO<BalanceVO> resultVO = new ResultVO<>();
             BalanceVO balanceVO = BalanceVO.builder().build();
@@ -92,13 +106,68 @@ public class TaskController {
             }
             return resultVO;
         } catch (Exception e) {
-            log.error("", e);
+            log.error("任务中心查询我的余额和最近7天收益出现错误", e);
             return ResultVOUtil.error(-1, "返回数据失败");
         } finally {
-            if (log.isDebugEnabled()) {
-                log.debug("");
+        	if (log.isDebugEnabled()) {
+                log.debug("end======================任务中心查询我的余额和最近7天收益======================end");
             }
         }
     }
 
+    /**
+     * 
+     * <pre>
+     * addEnvelopeAmount方法的作用：添加用户红包进度值。
+     * </pre>
+     */
+    @GetMapping(value = "/envelope/add.do") 
+    public void addEnvelopeAmount(@RequestParam(name = "userId", required = true) String userId,
+    							 @RequestParam(name = "envelopeAmount", required = true) BigDecimal envelopeAmount) {
+    	try {
+			
+		} catch (Exception e) {
+			
+		} finally {
+			
+		}
+    }
+    
+    /**
+     * 
+     * <pre>
+     * findEnvelopeAmount方法的作用：获取用户红包进度值。
+     * @param userId 用户mid。
+     * </pre>
+     */
+    @GetMapping(value = "/envelope/find.do")
+    public void findEnvelopeAmount(@RequestParam(name = "userId", required = true) String userId) {
+    	try {
+			
+		} catch (Exception e) {
+			
+		} finally {
+			
+		}
+    }
+    
+    /**
+     * 
+     * <pre>
+     * consumEnvelopeAmount方法的作用：消费用户红包进度值。
+     * @param userId 用户mid。
+     * @param envelopeAmount 红包值。
+     * </pre>
+     */
+    @GetMapping(value = "/envelope/consume.do")
+    public void consumEnvelopeAmount(@RequestParam(name = "userId", required = true) String userId,
+			 @RequestParam(name = "envelopeAmount", required = true) BigDecimal envelopeAmount) {
+    	try {
+			
+		} catch (Exception e) {
+			
+		} finally {
+			
+		}    	
+    }
 }

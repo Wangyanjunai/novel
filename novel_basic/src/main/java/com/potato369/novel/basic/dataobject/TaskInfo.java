@@ -69,7 +69,7 @@ public class TaskInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField taskName：任务描述。
+     * @serialField taskDescription：任务描述。
      * </pre>
      */
     @Column(name = "task_description", length = 1024)
@@ -83,6 +83,15 @@ public class TaskInfo implements Serializable {
     @Builder.Default
     @Column(name = "task_progress_value", length = 2)
     private Integer taskProgressValue = Integer.valueOf(0);
+    
+    /**
+     * <pre>
+     * @serialField taskTimes：任务需要的完成次数。
+     * </pre>
+     */
+    @Builder.Default
+    @Column(name = "task_times", length = 1)
+    private Integer taskTimes = Integer.valueOf(1);
 
     /**
      * <pre>

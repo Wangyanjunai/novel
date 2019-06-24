@@ -179,6 +179,7 @@ public class OrderController {
     /**
      * <pre>
      * 拼接订单成功滚动消息接口。
+     * 地址：https://potato369.mynatapp.cc/novel/order/message
      * @param orderType 订单类型， 0-充值交易，1-兑换交易，2-提现交易，参数不传查询所有类型交易。
      * @return
      * </pre>

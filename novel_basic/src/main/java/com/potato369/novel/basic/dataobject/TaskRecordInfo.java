@@ -51,7 +51,7 @@ public class TaskRecordInfo implements Serializable {
 
     /**
      * <pre>
-     * @serialField taskId：任务id，主键。
+     * @serialField taskId：任务id。
      * </pre>
      */
     @Column(name = "task_id", nullable = false, length = 32)
@@ -73,6 +73,23 @@ public class TaskRecordInfo implements Serializable {
     @Builder.Default
     @Column(name = "task_status", nullable = false, length = 1)
     private Integer taskStatus = TaskTypeEnum.UNFINISHED.getCode();
+    
+    /**
+     * <pre>
+     * @serialField taskFinishedTimes：已经完成的次数。
+     * </pre>
+     */
+    @Builder.Default
+    @Column(name = "task_finished_times", nullable = false, length = 1)
+    private Integer taskFinishedTimes = Integer.valueOf(0);
+    
+    /**
+     * <pre>
+     * @serialField finishedTime：完成时间。
+     * </pre>
+     */
+    @Column(name = "finished_time", length = 64)
+    private Date finishedTime;
 
     /**
      * <pre>

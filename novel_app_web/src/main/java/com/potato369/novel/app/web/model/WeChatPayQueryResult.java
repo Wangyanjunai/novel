@@ -21,18 +21,43 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = false)
 public class WeChatPayQueryResult extends Result{
 
+	/**
+     * <pre>
+     * @JsonProperty openid：微信支付平台账号id。
+     * </pre>
+     */
     @JsonProperty(value = "openid")
     private String openid;
 
+    /**
+     * <pre>
+     * @JsonProperty tradeType：交易类型。
+     * </pre>
+     */
     @JsonProperty(value = "trade_type")
     private String tradeType;
 
+    /**
+     * <pre>
+     * @JsonProperty tradeState：交易状态。
+     * </pre>
+     */
     @JsonProperty(value = "trade_state")
     private String tradeState;
 
+    /**
+     * <pre>
+     * @JsonProperty totalFee：交易总金额（元）。
+     * </pre>
+     */
     @JsonProperty(value = "total_fee")
     private Integer totalFee;
 
+    /**
+     * <pre>
+     * @JsonProperty tradeStateDesc：交易状态描述。
+     * </pre>
+     */
     @JsonProperty(value = "trade_state_desc")
     private String tradeStateDesc;
 }

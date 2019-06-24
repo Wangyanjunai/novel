@@ -1,5 +1,7 @@
 package com.potato369.novel.app.web.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.*;
 
 /**
@@ -20,5 +22,11 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = false)
 public class AliPayQueryResult extends Result{
 	
+	/**
+     * <pre>
+     * @JsonProperty openid：支付宝用户的平台账号id。
+     * </pre>
+     */
+    @JsonProperty(value = "openid")
 	private String openid;
 }

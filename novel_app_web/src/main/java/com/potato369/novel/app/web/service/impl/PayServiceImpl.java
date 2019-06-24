@@ -23,6 +23,7 @@ import com.potato369.novel.app.web.service.PayService;
 import com.potato369.novel.app.web.utils.MathUtil;
 import com.potato369.novel.app.web.vo.UserInfoVO;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
+import com.potato369.novel.basic.dataobject.NovelVipGrade;
 import com.potato369.novel.basic.dataobject.OrderMaster;
 import com.potato369.novel.basic.dataobject.ProductInfo;
 import com.potato369.novel.basic.enums.OrderStatusEnum;
@@ -35,6 +36,7 @@ import com.potato369.novel.basic.enums.UserInfoVIPGradeIdEnum;
 import com.potato369.novel.basic.service.OrderService;
 import com.potato369.novel.basic.service.ProductService;
 import com.potato369.novel.basic.service.UserInfoService;
+import com.potato369.novel.basic.service.VipGradeService;
 import com.potato369.novel.basic.utils.DateUtil;
 import com.potato369.novel.basic.utils.UUIDUtil;
 import com.potato369.novel.basic.utils.WwwUtil;
@@ -87,6 +89,9 @@ public class PayServiceImpl implements PayService {
 
     @Autowired
     private UserInfoService userInfoService;
+    
+    @Autowired
+    private VipGradeService vipGradeService;
 
     /**
      * <pre>
@@ -274,24 +279,25 @@ public class PayServiceImpl implements PayService {
                     throw new Exception("余额支付，商品类型不支持余额支付");
                 }
                 userInfo.setBalanceAmount(balanceAmount.subtract(orderMaster.getOrderAmount()));
-                userInfo.setVipGradeId(UserInfoVIPGradeIdEnum.VIP2.getMessage());
-                Date vipEndTime = userInfo.getVipEndTime();
-                Integer calculateType = productInfo.getProductCalculateType();
-                Integer dateValue = productInfo.getDateValue();
-                Date updateVIPEndTime = null;
-                if (ProductCalculateTypeEnum.DAY.getCode().equals(calculateType)) {
-                    updateVIPEndTime = DateUtil.getAfterDayDate(vipEndTime, dateValue);
-                }
-                if (ProductCalculateTypeEnum.MONTH.getCode().equals(calculateType)) {
-                    updateVIPEndTime = DateUtil.getAfterMonthDate(vipEndTime, dateValue);
-                }
-                userInfo.setVipEndTime(updateVIPEndTime);
+                if (ProductTypeEnum.EXCHANGE.getCode().equals(productInfo.getProductType())) {
+                	userInfo.setVipGradeId(UserInfoVIPGradeIdEnum.VIP2.getMessage());
+                	Date vipEndTime = userInfo.getVipEndTime();
+                    Integer calculateType = productInfo.getProductCalculateType();
+                    Integer dateValue = productInfo.getDateValue();
+                    Date updateVIPEndTime = null;
+                    if (ProductCalculateTypeEnum.DAY.getCode().equals(calculateType)) {
+                        updateVIPEndTime = DateUtil.getAfterDayDate(vipEndTime, dateValue);
+                    }
+                    if (ProductCalculateTypeEnum.MONTH.getCode().equals(calculateType)) {
+                        updateVIPEndTime = DateUtil.getAfterMonthDate(vipEndTime, dateValue);
+                    }
+                    userInfo.setVipEndTime(updateVIPEndTime);
+				}
                 NovelUserInfo userInfoUpdateResult = userInfoService.save(userInfo);
                 if (userInfoUpdateResult == null) {
-                    log.error("【余额支付回调更新订单】给对应的用户增加VIP时长失败，用户信息={}", userInfo);
+                    log.error("【余额支付回调更新订单】更新用户信息，用户信息={}", userInfo);
                     throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
                 }
-
                 orderMaster.setOrderStatus(OrderStatusEnum.RECHARGE_SUCCESS.getCode());
                 orderMaster.setPayStatus(PayStatusEnum.RECHARGE_SUCCESS.getCode());
                 orderMaster.setOrderType(productInfo.getProductType());
@@ -302,7 +308,14 @@ public class PayServiceImpl implements PayService {
                     log.error("【余额支付回调更新订单】更新订单失败，orderMaster={}", orderMaster);
                     throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
                 }
-                userInfoVO = UserInfo2UserInfoVOConverter.convert(userInfoUpdateResult);
+                userInfoVO = UserInfo2UserInfoVOConverter.convert(userInfo);
+                userInfoVO.setVipEndTime(userInfo.getVipEndTime());
+                String vipGradeName = null;
+                NovelVipGrade vipGrade = vipGradeService.findOne(userInfo.getVipGradeId());
+                if (vipGrade != null) {
+                	vipGradeName = vipGrade.getGradeName();
+                }
+                userInfoVO.setVipGradeName(vipGradeName);
                 return userInfoVO;
             }
             return userInfoVO;

@@ -476,9 +476,10 @@ DROP TABLE IF EXISTS `task_info`;
 CREATE TABLE `task_info` (
   `task_id` varchar(32) NOT NULL COMMENT '任务id，主键。',
   `task_name` varchar(64) NOT NULL COMMENT '任务名称。',
-  `task_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '任务类型，1-绑定任务；2-分享任务；3-下载任务；4-阅读任务，默认：1-绑定任务。',
+  `task_type` tinyint(1) unsigned NOT NULL DEFAULT 1 COMMENT '任务类型，1-绑定任务；2-分享任务；3-下载任务；4-阅读任务，默认：1-绑定任务。',
   `task_description` varchar(1024) NULL DEFAULT NULL COMMENT '任务描述。',
   `task_progress_value` smallint(2) NULL DEFAULT 0 NULL COMMENT '任务红包进度条。',
+  `task_times` tinyint(1) unsigned NULL DEFAULT 1 COMMENT '任务需要的完成次数。',
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间。',
   PRIMARY KEY (`task_id`) USING BTREE,
@@ -495,12 +496,17 @@ CREATE TABLE `task_info` (
 DROP TABLE IF EXISTS `task_record_info`;
 CREATE TABLE `task_record_info` (
   `task_record_id` varchar(32) NOT NULL COMMENT '任务记录id，主键。',
-  `task_id` varchar(32) NOT NULL COMMENT '任务id，主键。',
+  `task_id` varchar(32) NOT NULL COMMENT '任务id。',
   `user_id` varchar(20) NOT NULL COMMENT '用户mid。',
-  `task_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '任务完成状态，0-未完成，1-完成，默认：0-未完成。',
+  `task_status` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '完成状态，0-未完成，1-完成，默认：0-未完成。',
+  `task_finished_times` tinyint(1) unsigned NULL DEFAULT 0 COMMENT '已经完成的次数。',
+  `finished_time` timestamp(0) NULL DEFAULT NULL COMMENT '完成时间。',
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间。',
-  PRIMARY KEY (`task_record_id`) USING BTREE
+  PRIMARY KEY (`task_record_id`) USING BTREE,
+  INDEX `key_task_id`(`task_id`) USING BTREE,
+  INDEX `key_user_id`(`user_id`) USING BTREE,
+  INDEX `key_finished_time`(`finished_time`) USING BTREE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '任务记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
