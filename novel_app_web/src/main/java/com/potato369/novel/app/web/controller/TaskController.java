@@ -54,13 +54,13 @@ public class TaskController {
 
     @Autowired
     private TaskInfoService taskInfoService;
-    
+
     @Autowired
     private TaskRecordInfoService taskRecordInfoService;
 
     @Autowired
     private UserInfoService userInfoService;
-    
+
     @Autowired
     private IncomeInfoService incomeInfoService;
 
@@ -72,7 +72,7 @@ public class TaskController {
     @GetMapping(value = "/task/list.do")
     public ResultVO<TaskVO> list(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                  @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                 @RequestParam(name="userId") String userId) {
+                                 @RequestParam(name = "userId") String userId) {
 
         try {
             if (log.isDebugEnabled()) {
@@ -88,35 +88,35 @@ public class TaskController {
             Date start = DateUtil.dateFormat(DateUtil.sdfTimeFmt, DateUtil.strFormat(date, DateUtil.sdfDayFmt).concat(" 00:00:00"));
             Date end = DateUtil.dateFormat(DateUtil.sdfTimeFmt, DateUtil.strFormat(date, DateUtil.sdfDayFmt).concat(" 23:59:59"));
             for (TaskInfo taskInfo : taskInfoPage.getContent()) {
-				String taskId = taskInfo.getTaskId();
-				TaskInfoVO taskInfoVO = TaskInfoVO.builder().build();
-				List<TaskRecordInfo> taskRecordList = taskRecordInfoService.findByDateTask(taskId, userId, start, end);
-				if (taskRecordList != null && taskRecordList.isEmpty() && taskRecordList.size() > 0) {
-					Integer taskFinished = 0;
-					for (TaskRecordInfo taskRecordInfo : taskRecordList) {
-						taskFinished += taskRecordInfo.getTaskFinishedTimes();
-						if (TaskTypeEnum.FINISHED.getCode().equals(taskRecordInfo.getTaskStatus())) {
-							if (taskFinished.equals(taskInfo.getTaskTimes())) {
-								taskInfoVO.setFinishedTime(taskRecordInfo.getFinishedTime());
-								taskInfoVO.setIsOrNotFinished(TaskTypeEnum.FINISHED.getCode());
-							}
-						}
-						taskInfoVO.setHasfinishedTimes(taskFinished);
-					}
-				} else {
-					taskInfoVO.setFinishedTime(null);
-					taskInfoVO.setIsOrNotFinished(TaskTypeEnum.UNFINISHED.getCode());
-					taskInfoVO.setHasfinishedTimes(0);
-				}
-				taskInfoVO.setTaskDescription(taskInfo.getTaskDescription());
-				taskInfoVO.setTaskId(taskInfo.getTaskId());
-				taskInfoVO.setTaskName(taskInfo.getTaskName());
-				taskInfoVO.setTaskProgressValue(taskInfo.getTaskProgressValue());
-				taskInfoVO.setTaskTimes(taskInfo.getTaskTimes());
-				taskInfoVO.setTaskType(taskInfo.getTaskType());
-				taskInfoVO.setUserId(userId);
-				taskInfoVOList.add(taskInfoVO);
-			}
+                String taskId = taskInfo.getTaskId();
+                TaskInfoVO taskInfoVO = TaskInfoVO.builder().build();
+                List<TaskRecordInfo> taskRecordList = taskRecordInfoService.findByDateTask(taskId, userId, start, end);
+                if (taskRecordList != null && taskRecordList.isEmpty() && taskRecordList.size() > 0) {
+                    Integer taskFinished = 0;
+                    for (TaskRecordInfo taskRecordInfo : taskRecordList) {
+                        taskFinished += taskRecordInfo.getTaskFinishedTimes();
+                        if (TaskTypeEnum.FINISHED.getCode().equals(taskRecordInfo.getTaskStatus())) {
+                            if (taskFinished.equals(taskInfo.getTaskTimes())) {
+                                taskInfoVO.setFinishedTime(taskRecordInfo.getFinishedTime());
+                                taskInfoVO.setIsOrNotFinished(TaskTypeEnum.FINISHED.getCode());
+                            }
+                        }
+                        taskInfoVO.setHasfinishedTimes(taskFinished);
+                    }
+                } else {
+                    taskInfoVO.setFinishedTime(null);
+                    taskInfoVO.setIsOrNotFinished(TaskTypeEnum.UNFINISHED.getCode());
+                    taskInfoVO.setHasfinishedTimes(0);
+                }
+                taskInfoVO.setTaskDescription(taskInfo.getTaskDescription());
+                taskInfoVO.setTaskId(taskInfo.getTaskId());
+                taskInfoVO.setTaskName(taskInfo.getTaskName());
+                taskInfoVO.setTaskProgressValue(taskInfo.getTaskProgressValue());
+                taskInfoVO.setTaskTimes(taskInfo.getTaskTimes());
+                taskInfoVO.setTaskType(taskInfo.getTaskType());
+                taskInfoVO.setUserId(userId);
+                taskInfoVOList.add(taskInfoVO);
+            }
             taskVO.setTaskInfoVOList(taskInfoVOList);
             taskVO.setTotalPage(new BigDecimal(taskInfoPage.getTotalPages()));
             resultVO.setData(taskVO);
@@ -134,21 +134,22 @@ public class TaskController {
     }
 
     @GetMapping(value = "/task/finish.do")
-    public void finishTask(@RequestParam(name="userId") String userId, 
-    					   @RequestParam(name="taskId") String taskId,
-    					   @RequestParam(name="finisheDate") Date finisheDate) {
-    	try {
-			if (log.isDebugEnabled()) {
-				log.debug("");
-			}
-		} catch (Exception e) {
-			log.error("", e);
-		} finally {
-			if (log.isDebugEnabled()) {
-				log.debug("");
-			}
-		}
+    public void finishTask(@RequestParam(name = "userId") String userId,
+                           @RequestParam(name = "taskId") String taskId,
+                           @RequestParam(name = "finishedDate") Date finishedDate) {
+        try {
+            if (log.isDebugEnabled()) {
+                log.debug("");
+            }
+        } catch (Exception e) {
+            log.error("", e);
+        } finally {
+            if (log.isDebugEnabled()) {
+                log.debug("");
+            }
+        }
     }
+
     @GetMapping(value = "/balance/find.do")
     public ResultVO<BalanceVO> findBalance(@RequestParam(name = "userId") String userId) {
         try {
@@ -159,15 +160,15 @@ public class TaskController {
             BalanceVO balanceVO = BalanceVO.builder().build();
             NovelUserInfo userInfo = userInfoService.findByUserMId(userId);
             if (userInfo == null) {
-            	log.error("任务中心查询我的余额和最近7天收益，用户信息不存在在。");
-				throw new Exception(ResultEnum.MP_USER_INFO_EMPTY.getMessage());
+                log.error("任务中心查询我的余额和最近7天收益，用户信息不存在在。");
+                throw new Exception(ResultEnum.MP_USER_INFO_EMPTY.getMessage());
             }
             Date date = new Date();
             Date start = DateUtil.dateFormat(DateUtil.sdfTimeFmt, DateUtil.strFormat(date, DateUtil.sdfDayFmt).concat(" 00:00:00"));
             Date end = DateUtil.dateFormat(DateUtil.sdfTimeFmt, DateUtil.strFormat(DateUtil.getAfterDayDate(date, 7), DateUtil.sdfDayFmt).concat(" 23:59:59"));
             if (log.isDebugEnabled()) {
-				log.debug("start date = {}, end date = {}", DateUtil.strFormat(start, DateUtil.sdfTimeCNFmt), DateUtil.strFormat(end, DateUtil.sdfTimeCNFmt));
-			}
+                log.debug("start date = {}, end date = {}", DateUtil.strFormat(start, DateUtil.sdfTimeCNFmt), DateUtil.strFormat(end, DateUtil.sdfTimeCNFmt));
+            }
             BigDecimal yieldAmount = incomeInfoService.get7DaysIncomeAmount(userInfo.getMId(), start, end);
             resultVO.setMsg("返回数据成功");
             resultVO.setCode(0);
@@ -194,45 +195,45 @@ public class TaskController {
      */
     @GetMapping(value = "/envelope/add.do")
     public ResultVO<EnvelopeVO> addEnvelope(@RequestParam(name = "userId") String userId,
-                            @RequestParam(name = "envelope") BigDecimal envelope) {
-    	ResultVO<EnvelopeVO> resultVO = new ResultVO<>();
-    	try {
-        	if (log.isDebugEnabled()) {
-				log.debug("start======================添加用户红包进度值======================start");
-			}
-        	if (log.isDebugEnabled()) {
-				log.debug("添加用户红包进度值，用户mid={}，红包进度值={}", userId, envelope);
-			}
-        	NovelUserInfo userInfo = userInfoService.findById(userId);
-        	if (userInfo == null) {
-				log.error("添加用户红包进度值，用户信息不存在。");
-				throw new Exception(ResultEnum.MP_USER_INFO_EMPTY.getMessage());
-			}
-        	if (log.isDebugEnabled()) {
-        		log.info("更新前，userInfo={}", userInfo);
-			}
-        	userInfo.setEnvelopeAmount(userInfo.getEnvelopeAmount().add(envelope));
-        	userInfoService.update(userInfo);
-        	if (log.isDebugEnabled()) {
-        		log.debug("更新后，userInfo={}", userInfo);
-			}
-        	EnvelopeVO envelopeVO = EnvelopeVO.builder().build();
-        	envelopeVO.setBalanceAmount(userInfo.getBalanceAmount());
-        	envelopeVO.setEnvelopeAmount(userInfo.getEnvelopeAmount());
-        	envelopeVO.setUserId(userInfo.getMId());
-        	resultVO.setCode(0);
-        	resultVO.setData(envelopeVO);
-        	resultVO.setMsg("添加红包进度值成功");
-        	return resultVO;
+                                            @RequestParam(name = "envelope") BigDecimal envelope) {
+        ResultVO<EnvelopeVO> resultVO = new ResultVO<>();
+        try {
+            if (log.isDebugEnabled()) {
+                log.debug("start======================添加用户红包进度值======================start");
+            }
+            if (log.isDebugEnabled()) {
+                log.debug("添加用户红包进度值，用户mid={}，红包进度值={}", userId, envelope);
+            }
+            NovelUserInfo userInfo = userInfoService.findById(userId);
+            if (userInfo == null) {
+                log.error("添加用户红包进度值，用户信息不存在。");
+                throw new Exception(ResultEnum.MP_USER_INFO_EMPTY.getMessage());
+            }
+            if (log.isDebugEnabled()) {
+                log.info("更新前，userInfo={}", userInfo);
+            }
+            userInfo.setEnvelopeAmount(userInfo.getEnvelopeAmount().add(envelope));
+            userInfoService.update(userInfo);
+            if (log.isDebugEnabled()) {
+                log.debug("更新后，userInfo={}", userInfo);
+            }
+            EnvelopeVO envelopeVO = EnvelopeVO.builder().build();
+            envelopeVO.setBalanceAmount(userInfo.getBalanceAmount());
+            envelopeVO.setEnvelopeAmount(userInfo.getEnvelopeAmount());
+            envelopeVO.setUserId(userInfo.getMId());
+            resultVO.setCode(0);
+            resultVO.setData(envelopeVO);
+            resultVO.setMsg("添加红包进度值成功");
+            return resultVO;
         } catch (Exception e) {
-        	log.error("添加用户红包进度值出现错误", e);
-        	resultVO.setCode(-1);
-        	resultVO.setMsg("添加红包进度值失败");
-        	return resultVO;
+            log.error("添加用户红包进度值出现错误", e);
+            resultVO.setCode(-1);
+            resultVO.setMsg("添加红包进度值失败");
+            return resultVO;
         } finally {
-        	if (log.isDebugEnabled()) {
-				log.debug("end========================添加用户红包进度值========================end");
-			}
+            if (log.isDebugEnabled()) {
+                log.debug("end========================添加用户红包进度值========================end");
+            }
         }
     }
 
@@ -283,63 +284,63 @@ public class TaskController {
      * <pre>
      * consumeEnvelope方法的作用：消费用户红包进度值，领取随机获得0.1-0.5元提现金额（真随机）。
      * @param userId 用户mid。
-     * @param envelopeAmount 红包值。
+     * @param envelope 红包值。
      * </pre>
      */
     @GetMapping(value = "/envelope/consume.do")
     public ResultVO<EnvelopeVO> consumeEnvelope(@RequestParam(name = "userId") String userId,
-                                @RequestParam(name = "envelope") BigDecimal envelope) {
-    	ResultVO<EnvelopeVO> resultVO = new ResultVO<>(); 
+                                                @RequestParam(name = "envelope") BigDecimal envelope) {
+        ResultVO<EnvelopeVO> resultVO = new ResultVO<>();
         try {
-        	if (log.isDebugEnabled()) {
-				log.debug("start======================用户消费红包进度值======================start");
-			}
-        	if (log.isDebugEnabled()) {
-				log.debug("用户消费红包进度值，用户mid={}，红包进度值={}", userId, envelope);
-			}
-        	NovelUserInfo userInfo = userInfoService.findById(userId);
-        	if (userInfo == null) {
-				log.error("用户消费红包进度值，用户信息不存在。");
-				throw new Exception(ResultEnum.MP_USER_INFO_EMPTY.getMessage());
-			}
-        	if (log.isDebugEnabled()) {
-        		log.debug("更新前，userInfo={}", userInfo);
-			}
-        	if (!MathUtil.compareTo(userInfo.getEnvelopeAmount().doubleValue(), envelope.doubleValue())) {
-        		log.error("用户消费红包进度值，红包进度条总额不足。");
-				throw new Exception(ResultEnum.ENVELOPE_DEFICIENCY.getMessage());
-			}
-        	double balance = MathUtil.getRandom(4);
-        	BigDecimal envelopeBalance = BigDecimal.valueOf(balance);
-        	userInfo.setBalanceAmount(userInfo.getBalanceAmount().add(envelopeBalance));
-        	userInfo.setEnvelopeAmount(userInfo.getEnvelopeAmount().subtract(envelope));
-        	userInfoService.update(userInfo);
-        	if (log.isDebugEnabled()) {
-        		log.debug("更新后，userInfo={}", userInfo);
-			}
-        	IncomeInfo incomeInfo = IncomeInfo.builder().build();
-        	incomeInfo.setIncomeId(UUIDUtil.gen32UUID());
-        	incomeInfo.setUserId(userInfo.getMId());
-        	incomeInfo.setIncomeAmount(envelopeBalance);
-        	incomeInfoService.save(incomeInfo);
-        	EnvelopeVO envelopeVO = EnvelopeVO.builder().build();
-        	envelopeVO.setUserId(userId);
-        	envelopeVO.setBalanceAmount(userInfo.getBalanceAmount());
-        	envelopeVO.setEnvelopeAmount(userInfo.getEnvelopeAmount());
-        	envelopeVO.setRandomEnvelope(envelopeBalance);
+            if (log.isDebugEnabled()) {
+                log.debug("start======================用户消费红包进度值======================start");
+            }
+            if (log.isDebugEnabled()) {
+                log.debug("用户消费红包进度值，用户mid={}，红包进度值={}", userId, envelope);
+            }
+            NovelUserInfo userInfo = userInfoService.findById(userId);
+            if (userInfo == null) {
+                log.error("用户消费红包进度值，用户信息不存在。");
+                throw new Exception(ResultEnum.MP_USER_INFO_EMPTY.getMessage());
+            }
+            if (log.isDebugEnabled()) {
+                log.debug("更新前，userInfo={}", userInfo);
+            }
+            if (!MathUtil.compareTo(userInfo.getEnvelopeAmount().doubleValue(), envelope.doubleValue())) {
+                log.error("用户消费红包进度值，红包进度条总额不足。");
+                throw new Exception(ResultEnum.ENVELOPE_DEFICIENCY.getMessage());
+            }
+            double balance = MathUtil.getRandom(4);
+            BigDecimal envelopeBalance = BigDecimal.valueOf(balance);
+            userInfo.setBalanceAmount(userInfo.getBalanceAmount().add(envelopeBalance));
+            userInfo.setEnvelopeAmount(userInfo.getEnvelopeAmount().subtract(envelope));
+            userInfoService.update(userInfo);
+            if (log.isDebugEnabled()) {
+                log.debug("更新后，userInfo={}", userInfo);
+            }
+            IncomeInfo incomeInfo = IncomeInfo.builder().build();
+            incomeInfo.setIncomeId(UUIDUtil.gen32UUID());
+            incomeInfo.setUserId(userInfo.getMId());
+            incomeInfo.setIncomeAmount(envelopeBalance);
+            incomeInfoService.save(incomeInfo);
+            EnvelopeVO envelopeVO = EnvelopeVO.builder().build();
+            envelopeVO.setUserId(userId);
+            envelopeVO.setBalanceAmount(userInfo.getBalanceAmount());
+            envelopeVO.setEnvelopeAmount(userInfo.getEnvelopeAmount());
+            envelopeVO.setRandomEnvelope(envelopeBalance);
             resultVO.setCode(0);
             resultVO.setData(envelopeVO);
             resultVO.setMsg("返回数据成功");
             return resultVO;
         } catch (Exception e) {
-        	log.error("用户消费红包进度值出现错误", e);
-        	resultVO.setCode(-1);
+            log.error("用户消费红包进度值出现错误", e);
+            resultVO.setCode(-1);
             resultVO.setMsg(e.getMessage());
             return resultVO;
         } finally {
-        	if (log.isDebugEnabled()) {
-				log.debug("end========================用户消费红包进度值========================end");
-			}
+            if (log.isDebugEnabled()) {
+                log.debug("end========================用户消费红包进度值========================end");
+            }
         }
     }
 
