@@ -4,6 +4,7 @@ import com.potato369.novel.basic.dataobject.TaskRecordInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -64,6 +65,19 @@ public interface TaskRecordInfoService {
      * </pre>
      */
     TaskRecordInfo findByTaskId(String taskId);
+    
+    /**
+     * <pre>
+     * 根据任务信息id，用户id，今天的时间，查找任务记录信息，
+     * 查询用户某天任务是否完成
+     * @param taskId 任务id
+     * @param userId 用户id
+     * @param start 任务完成开始查询时间
+     * @param end 任务完成结束查询时间
+     * @return
+     * </pre>
+     */
+    List<TaskRecordInfo> findByDateTask(String taskId, String userId, Date start, Date end);
 
     /**
      * <pre>

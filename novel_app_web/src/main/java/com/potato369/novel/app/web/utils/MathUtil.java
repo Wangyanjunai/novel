@@ -7,6 +7,9 @@
  * Copyright (c) 2017, 版权所有 (C) 2016-2036  土豆互联科技(深圳)有限公司 www.potato369.com All Rights Reserved.<br/> 
  */
 package com.potato369.novel.app.web.utils;
+
+import java.math.BigDecimal;
+
 /**
  * <pre>
  * ClassName:MathUtil
@@ -32,15 +35,15 @@ public class MathUtil {
    * @return Boolean
    * </pre>
    */
-  public static Boolean equals(Double double1, Double double2) {
-    Double result =  Math.abs(double1 - double2);
-    if (result < MONEY_RANG) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  /**
+	public static synchronized Boolean equals(Double double1, Double double2) {
+		Double result = Math.abs(double1 - double2);
+		if (result < MONEY_RANG) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+  	/**
    * <pre>
    * 比较两个金额大小，如果double1 >= double2，返回true，否则返回false。
    * @param double1 金额1
@@ -48,15 +51,28 @@ public class MathUtil {
    * @return Boolean
    * </pre>
    */
-  public static Boolean compareTo(Double double1, Double double2) {
-    Double result =  Math.abs(double1 - double2);
-    if (result >= 0) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  public static void main(String[] args) {
-	System.out.println(MathUtil.compareTo(0.01, 0.01));
-}
+	public static synchronized Boolean compareTo(Double double1, Double double2) {
+		Double result = Math.abs(double1 - double2);
+		if (result >= 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * <pre>
+	 * getRandom方法的作用：产生随机红包余额
+	 * @param rang
+	 * @return
+	 * </pre>
+	 */
+	public static synchronized Double getRandom(int rang) {
+		return new BigDecimal((Math.random() * rang + 1) / 10).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	}
+
+	public static void main(String[] args) {
+		System.out.println(MathUtil.compareTo(0.01, 0.01));
+		System.out.println(MathUtil.getRandom(4));
+	}
 }

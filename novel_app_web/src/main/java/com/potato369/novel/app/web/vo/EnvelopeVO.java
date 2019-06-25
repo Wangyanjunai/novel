@@ -24,7 +24,7 @@ import java.math.BigDecimal;
 @Builder
 @Data
 @NoArgsConstructor
-public class BalanceVO {
+public class EnvelopeVO {
 
     /**
      * <pre>
@@ -44,19 +44,17 @@ public class BalanceVO {
     
     /**
      * <pre>
-     * @JsonProperty envelopeAmount：红包进度值。
+     * @JsonProperty balanceAmount：用户红包进度值。
      * </pre>
      */
     @JsonProperty(value = "envelope")
     private BigDecimal envelopeAmount;
-
+    
     /**
      * <pre>
-     * @JsonProperty yieldAmount：最近7天收益（0.00元）。
+     * @JsonProperty randomEnvelope：用户红包进度值达到某范围可领取的状态随机产生的金额。
      * </pre>
      */
-    @JsonProperty(value = "yield")
-    private BigDecimal yieldAmount;
-    
-
+    @JsonProperty(value = "random")
+    private BigDecimal randomEnvelope;
 }

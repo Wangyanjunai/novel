@@ -92,6 +92,15 @@ public class TaskInfo implements Serializable {
     @Builder.Default
     @Column(name = "task_times", length = 1)
     private Integer taskTimes = Integer.valueOf(1);
+    
+    /**
+     * <pre>
+     * @serialField taskSort：任务排序。
+     * </pre>
+     */
+    @Builder.Default
+    @Column(name = "task_sort", length = 1)
+    private Integer taskSort = Integer.valueOf(1);
 
     /**
      * <pre>

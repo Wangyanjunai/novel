@@ -35,6 +35,14 @@ public class TaskInfoVO {
      */
 	@JsonProperty(value = "no")
 	private String taskId;
+	
+	/**
+     * <pre>
+     * @JsonProperty userId：用户mid。
+     * </pre>
+     */
+	@JsonProperty(value = "user")
+	private String userId;
 
     /**
      * <pre>
@@ -51,6 +59,14 @@ public class TaskInfoVO {
      */
     @JsonProperty(value = "type")
     private Integer taskType;
+    
+    /**
+     * <pre>
+     * @JsonProperty isOrNotFinished：是否完成任务。
+     * </pre>
+     */
+    @JsonProperty(value = "isOrNotFinished")
+    private Integer isOrNotFinished;
 
     /**
      * <pre>
@@ -75,22 +91,21 @@ public class TaskInfoVO {
      */
     @JsonProperty(value = "times")
     private Integer taskTimes;
+    
+    /**
+     * <pre>
+     * @JsonProperty hasfinishedTimes：已经完成次数。
+     * </pre>
+     */
+    @JsonProperty(value = "hasfinishedTimes")
+    private Integer hasfinishedTimes;
 
     /**
      * <pre>
-     * @JsonProperty createTime：创建时间。
+     * @JsonProperty finishedTime：完成时间。
      * </pre>
      */
-    @JsonProperty(value = "create")
+    @JsonProperty(value = "finishedTime")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
-
-    /**
-     * <pre>
-     * @JsonProperty updateTime：更新时间。
-     * </pre>
-     */
-    @JsonProperty(value = "update")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date updateTime;
+    private Date finishedTime;
 }

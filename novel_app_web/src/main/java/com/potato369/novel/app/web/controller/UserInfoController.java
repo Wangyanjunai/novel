@@ -7,8 +7,11 @@ import com.potato369.novel.app.web.vo.ResultVO;
 import com.potato369.novel.app.web.vo.UserInfoVO;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.dataobject.NovelVipGrade;
+import com.potato369.novel.basic.dataobject.TaskRecordInfo;
+import com.potato369.novel.basic.enums.TaskTypeEnum;
 import com.potato369.novel.basic.enums.UserInfoGenderEnum;
 import com.potato369.novel.basic.enums.UserInfoVIPGradeIdEnum;
+import com.potato369.novel.basic.service.TaskRecordInfoService;
 import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.basic.service.VipGradeService;
 import com.potato369.novel.basic.utils.DateUtil;
@@ -51,6 +54,9 @@ public class UserInfoController {
 
     @Autowired
     private VipGradeService vipGradeService;
+    
+    @Autowired
+    private TaskRecordInfoService taskRecordInfoService;
 
     /**
      * <pre>
@@ -132,6 +138,14 @@ public class UserInfoController {
                     if (UserInfoGenderEnum.WECHAT.getCode().equals(userType)) {
                         novelUserInfo.setIsOrNotBandWechat(UserInfoGenderEnum.FINISHED.getCode());
                         novelUserInfo.setBalanceAmount(new BigDecimal(6.66));
+                        TaskRecordInfo recordInfo = TaskRecordInfo.builder().build();
+                        recordInfo.setFinishedTime(new Date());
+                        recordInfo.setTaskFinishedTimes(1);
+                        recordInfo.setTaskId("0ed2ba762e364ce790661d86e59b162b");
+                        recordInfo.setTaskRecordId(UUIDUtil.gen32UUID());
+                        recordInfo.setTaskStatus(TaskTypeEnum.FINISHED.getCode());
+                        recordInfo.setUserId(novelUserInfo.getMId());
+                        taskRecordInfoService.save(recordInfo);
                     } else {
                         novelUserInfo.setIsOrNotBandWechat(UserInfoGenderEnum.UNFINISHED.getCode());
                         novelUserInfo.setBalanceAmount(BigDecimal.ZERO);

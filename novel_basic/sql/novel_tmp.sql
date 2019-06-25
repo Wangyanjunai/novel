@@ -480,6 +480,7 @@ CREATE TABLE `task_info` (
   `task_description` varchar(1024) NULL DEFAULT NULL COMMENT '任务描述。',
   `task_progress_value` smallint(2) NULL DEFAULT 0 NULL COMMENT '任务红包进度条。',
   `task_times` tinyint(1) unsigned NULL DEFAULT 1 COMMENT '任务需要的完成次数。',
+  `task_sort` tinyint(1) unsigned NOT NULL DEFAULT 1 COMMENT '任务排序。',
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间。',
   PRIMARY KEY (`task_id`) USING BTREE,
@@ -534,3 +535,20 @@ CREATE TABLE `seller_info` (
 -- Records of seller_info
 -- ----------------------------
 INSERT INTO `seller_info` VALUES ('0ed2ba762e364ce790661d86e59b162b', 'Jack', 'b814b812ec4b322e19fae7bb78d4d330', 'oSkiNv4fBXYxidv0wU_U0UDHNP4M', '2019-01-21 17:24:17', '183.14.30.126', '2017-12-17 21:18:22', '2019-01-21 17:24:17');
+
+-- ----------------------------
+-- 【20】Table structure for income_info
+-- ----------------------------
+DROP TABLE IF EXISTS `income_info`;
+CREATE TABLE `income_info` (
+  `income_id` varchar(32) NOT NULL COMMENT '收益id，主键。',
+  `user_id` varchar(20) NOT NULL COMMENT '用户mid。',
+  `income_amount` decimal(8, 2) NULL DEFAULT 0.00 COMMENT '收益金额（元）。',
+  `income_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '获得收益时间。',
+  PRIMARY KEY (`income_id`) USING BTREE,
+  KEY `key_user_id` (`user_id`) USING BTREE
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户收益记录表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of income_info
+-- ----------------------------

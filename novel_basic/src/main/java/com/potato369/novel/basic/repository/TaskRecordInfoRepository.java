@@ -1,7 +1,12 @@
 package com.potato369.novel.basic.repository;
 
 import com.potato369.novel.basic.dataobject.TaskRecordInfo;
+
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.repository
@@ -33,4 +38,19 @@ public interface TaskRecordInfoRepository extends JpaRepository<TaskRecordInfo, 
      * </pre>
      */
     TaskRecordInfo findByUserId(String userId);
+    
+    
+    /**
+     * <pre>
+     * 根据任务信息id，用户id，今天的时间，查找任务记录信息，
+     * 查询用户某天任务是否完成
+     * @param taskId 任务id
+     * @param userId 用户id
+     * @param start 任务完成开始查询时间
+     * @param end 任务完成结束查询时间
+     * @return
+     * </pre>
+     */
+    @Query("SELECT tr FROM TaskRecordInfo tr WHERE tr.taskId = ?1 AND tr.userId = ?2 AND tr.finishedTime >= ?3 AND tr.finishedTime <= ?4 ORDER BY tr.finishedTime ASC")
+    List<TaskRecordInfo> findByDateTask(String taskId, String userId, Date start, Date end);
 }

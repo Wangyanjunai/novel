@@ -292,14 +292,18 @@ public class PayServiceImpl implements PayService {
                         updateVIPEndTime = DateUtil.getAfterMonthDate(vipEndTime, dateValue);
                     }
                     userInfo.setVipEndTime(updateVIPEndTime);
+                    orderMaster.setOrderStatus(OrderStatusEnum.EXCHANGE_SUCCESS.getCode());
+                    orderMaster.setPayStatus(PayStatusEnum.EXCHANGE_SUCCESS.getCode());
+				}
+                if (ProductTypeEnum.WITHDRAW.getCode().equals(productInfo.getProductType())) {
+                    orderMaster.setOrderStatus(OrderStatusEnum.WITHDRAW_SUCCESS.getCode());
+                    orderMaster.setPayStatus(PayStatusEnum.WITHDRAW_SUCCESS.getCode());
 				}
                 NovelUserInfo userInfoUpdateResult = userInfoService.save(userInfo);
                 if (userInfoUpdateResult == null) {
                     log.error("【余额支付回调更新订单】更新用户信息，用户信息={}", userInfo);
                     throw new Exception(ResultEnum.ORDER_UPDATE_FAIL.getMessage());
                 }
-                orderMaster.setOrderStatus(OrderStatusEnum.RECHARGE_SUCCESS.getCode());
-                orderMaster.setPayStatus(PayStatusEnum.RECHARGE_SUCCESS.getCode());
                 orderMaster.setOrderType(productInfo.getProductType());
                 orderMaster.setPayTime(new Date());
                 orderMaster.setTransactionId(UUIDUtil.genTimstampUUID());

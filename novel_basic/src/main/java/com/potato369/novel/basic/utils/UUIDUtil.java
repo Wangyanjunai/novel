@@ -95,5 +95,6 @@ public class UUIDUtil {
 //        calendar_day90.add(Calendar.DATE, 90);
         String lastDayDateStr90 = DateUtil.strFormat(DateUtil.getAfterDayDate(now, 90), "yyyy-MM-dd HH:mm:ss");
         System.out.println("九十天后的时间：" + lastDayDateStr90);
+        System.out.println("随机数：" + ((Math.random()*4 +1)/10));
     }
 }
