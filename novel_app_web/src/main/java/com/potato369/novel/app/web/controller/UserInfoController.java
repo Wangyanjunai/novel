@@ -105,6 +105,7 @@ public class UserInfoController {
                     if (UserInfoGenderEnum.WECHAT.getCode().equals(userType)) {
                         novelUserInfo.setIsOrNotBandWechat(UserInfoGenderEnum.FINISHED.getCode());
                         novelUserInfo.setBalanceAmount(new BigDecimal(6.66));
+                        novelUserInfo.setBindWeChatOpenid(openid);
                     } else {
                         novelUserInfo.setIsOrNotBandWechat(UserInfoGenderEnum.UNFINISHED.getCode());
                         novelUserInfo.setBalanceAmount(BigDecimal.ZERO);
@@ -190,7 +191,7 @@ public class UserInfoController {
     }
 
     @GetMapping(value = "/find/{mid}")
-    public ResultVO<UserInfoVO> find(@PathVariable(name = "mid", required = true) String mid) {
+    public ResultVO<UserInfoVO> find(@PathVariable(name = "mid") String mid) {
         ResultVO<UserInfoVO> result = new ResultVO<>();
         try {
             if (log.isDebugEnabled()) {

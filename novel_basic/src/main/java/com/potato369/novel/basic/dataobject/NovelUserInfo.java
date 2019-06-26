@@ -117,6 +117,14 @@ public class NovelUserInfo implements Serializable {
      */
     @Column(name = "openid", length = 64)
     private String openid;
+    
+    /**
+     * <pre>
+     * @serialField bindWeChatOpenid：绑定的微信openid。
+     * </pre>
+     */
+    @Column(name = "bind_we_chat_openid", length = 64)
+    private String bindWeChatOpenid;
 
     /**
      * <pre>

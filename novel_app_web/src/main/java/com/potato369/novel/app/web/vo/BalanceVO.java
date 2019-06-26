@@ -57,6 +57,4 @@ public class BalanceVO {
      */
     @JsonProperty(value = "yield")
     private BigDecimal yieldAmount;
-
-
 }

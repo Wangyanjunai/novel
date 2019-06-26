@@ -126,6 +126,8 @@ public enum ResultEnum implements CodeEnum<Object> {
     ALIPAY_NOTIFY_APPID_VERIFY_ERROR(58, "支付宝分配给开发者的应用Id校验不一致"),
     
     ENVELOPE_DEFICIENCY(59, "红包进度条总额不足"),
+
+    TASK_INFO_EMPTY(60, "任务信息不存在"),
     ;
 
     private Integer code;

@@ -1,5 +1,6 @@
 package com.potato369.novel.app.web.controller;
 
+import com.potato369.novel.app.web.dto.TaskInfoDTO;
 import com.potato369.novel.app.web.utils.MathUtil;
 import com.potato369.novel.app.web.utils.ResultVOUtil;
 import com.potato369.novel.app.web.vo.*;
@@ -9,6 +10,8 @@ import com.potato369.novel.basic.dataobject.TaskInfo;
 import com.potato369.novel.basic.dataobject.TaskRecordInfo;
 import com.potato369.novel.basic.enums.ResultEnum;
 import com.potato369.novel.basic.enums.TaskTypeEnum;
+import com.potato369.novel.basic.enums.UserInfoIsOrNotBandWechatEnum;
+import com.potato369.novel.basic.enums.UserInfoUserTypeEnum;
 import com.potato369.novel.basic.service.IncomeInfoService;
 import com.potato369.novel.basic.service.TaskInfoService;
 import com.potato369.novel.basic.service.TaskRecordInfoService;
@@ -16,15 +19,16 @@ import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.basic.utils.DateUtil;
 import com.potato369.novel.basic.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,7 +48,7 @@ import java.util.List;
  */
 @RestController
 @Slf4j
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class TaskController {
 
     @Autowired
@@ -128,23 +132,102 @@ public class TaskController {
         }
     }
 
-    @GetMapping(value = "/task/finish.do")
-    public void finishTask(@RequestParam(name = "userId") String userId,
-                           @RequestParam(name = "taskId") String taskId,
-                           @RequestParam(name = "finishedDate") Date finishedDate) {
+    /**
+     * <pre>
+     * finishTask：完成某个特定的任务需要给对应的用户添加红包进度值。
+     * @param taskInfoDTO
+     * @param bindingResult
+     * </pre>
+     */
+    
+	@PostMapping(value = "/task/finish.do", produces = "application/json;charset=utf-8")
+    public ResultVO finishTask(@RequestBody @Valid TaskInfoDTO taskInfoDTO, BindingResult bindingResult) {
+        ResultVO resultVO = new ResultVO();
         try {
             if (log.isDebugEnabled()) {
-                log.debug("");
+                log.debug("start====================完成某个特定的任务需要给对应的用户添加红包进度值====================start");
+                log.debug("完成某个特定的任务，用户信息={}", taskInfoDTO);
             }
+            if (bindingResult.hasErrors()) {
+                resultVO.setMsg(bindingResult.getFieldError().getDefaultMessage());
+                resultVO.setCode(-1);
+                return resultVO;
+            }
+            if (taskInfoDTO == null) {
+                log.error("完成某个特定的任务需要给对应的用户添加红包进度值，用户信息不存在。");
+                throw new Exception(ResultEnum.MP_USER_INFO_EMPTY.getMessage());
+            }
+            NovelUserInfo userInfo = userInfoService.findByUserMId(taskInfoDTO.getMId());
+            if (userInfo == null) {
+                log.error("完成某个特定的任务需要给对应的用户添加红包进度值，用户信息不存在。");
+                throw new Exception(ResultEnum.MP_USER_INFO_EMPTY.getMessage());
+            }
+            TaskInfo taskInfo = taskInfoService.findOne(taskInfoDTO.getTaskId());
+            if (taskInfo == null) {
+                log.error("完成某个特定的任务需要给对应的用户添加红包进度值，任务信息不存在。");
+                throw new Exception(ResultEnum.TASK_INFO_EMPTY.getMessage());
+            }
+            if (TaskTypeEnum.BINDING.getCode().equals(taskInfo.getTaskType())) {
+                if (UserInfoIsOrNotBandWechatEnum.FINISHED.getCode().equals(userInfo.getIsOrNotBandWechat()) && StringUtils.isNotEmpty(userInfo.getBindWeChatOpenid())) {
+                    log.error("完成某个特定的任务需要给对应的用户添加红包进度值，用户已经完成绑定微信任务。");
+                    resultVO.setCode(0);
+                    resultVO.setMsg("用户已经完成绑定微信任务");
+                    return resultVO;
+                } else {
+                    if (UserInfoUserTypeEnum.VISITOR.getCode().equals(userInfo.getUserType())) {
+                        userInfo.setOpenid(taskInfoDTO.getOpenid());
+                        userInfo.setAddress(taskInfoDTO.getAddress());
+                        userInfo.setAvatarUrl(taskInfoDTO.getAvatarUrl());
+                        userInfo.setGender(taskInfoDTO.getGender());
+                        userInfo.setNickName(taskInfoDTO.getNickName());
+                    }
+                }
+            }
+            userInfo.setEnvelopeAmount(userInfo.getEnvelopeAmount().add(BigDecimal.valueOf(taskInfo.getTaskProgressValue())));
+            userInfo.setBindWeChatOpenid(taskInfoDTO.getOpenid());
+            userInfo.setIsOrNotBandWechat(UserInfoIsOrNotBandWechatEnum.FINISHED.getCode());
+            userInfoService.update(userInfo);
+            Date finishedDate = DateUtil.dateFormat(DateUtil.sdfTimeFmt, taskInfoDTO.getFinishedDateString());
+            if (finishedDate == null) {
+                log.error("完成某个特定的任务需要给对应的用户添加红包进度值，完成时间参数格式不正确。");
+                throw new Exception(ResultEnum.PARAM_ERROR.getMessage());
+            }
+            TaskRecordInfo taskRecordInfo = TaskRecordInfo.builder().build();
+            taskRecordInfo.setTaskId(taskInfo.getTaskId());
+            taskRecordInfo.setUserId(taskInfoDTO.getMId());
+            taskRecordInfo.setTaskRecordId(UUIDUtil.gen32UUID());
+            if (taskInfo.getTaskTimes() == taskInfoDTO.getTimes()) {
+                taskRecordInfo.setTaskFinishedTimes(taskInfoDTO.getTimes());
+                taskRecordInfo.setFinishedTime(finishedDate);
+            }
+            taskRecordInfoService.save(taskRecordInfo);
+            BalanceVO balanceVO = BalanceVO.builder().build();
+            balanceVO.setUserId(userInfo.getMId());
+            balanceVO.setBalanceAmount(userInfo.getBalanceAmount());
+            balanceVO.setEnvelopeAmount(userInfo.getEnvelopeAmount());
+            resultVO.setMsg("任务完成成功");
+            resultVO.setCode(0);
+            resultVO.setData(balanceVO);
+            return resultVO;
         } catch (Exception e) {
-            log.error("", e);
+            log.error("完成某个特定的任务需要给对应的用户添加红包进度值出现错误", e);
+            resultVO.setCode(-1);
+            resultVO.setMsg("任务完成成功出错");
+            return resultVO;
         } finally {
             if (log.isDebugEnabled()) {
-                log.debug("");
+                log.debug("end======================完成某个特定的任务需要给对应的用户添加红包进度值======================end");
             }
         }
     }
 
+    /**
+     * <pre>
+     * findBalance：获取任务中心用户的余额，最近7天的收益和红包进度值
+     * @param userId
+     * @return
+     * </pre>
+     */
     @GetMapping(value = "/balance/find.do")
     public ResultVO<BalanceVO> findBalance(@RequestParam(name = "userId") String userId) {
         try {
@@ -186,6 +269,8 @@ public class TaskController {
     /**
      * <pre>
      * addEnvelope方法的作用：添加用户红包进度值。
+     * @param userId
+     * @param envelope
      * </pre>
      */
     @GetMapping(value = "/envelope/add.do")
@@ -231,7 +316,7 @@ public class TaskController {
             }
         }
     }
-
+    /*
     /**
      * <pre>
      * findEnvelope方法的作用：获取用户红包进度值。
@@ -338,6 +423,4 @@ public class TaskController {
             }
         }
     }
-
-
 }
