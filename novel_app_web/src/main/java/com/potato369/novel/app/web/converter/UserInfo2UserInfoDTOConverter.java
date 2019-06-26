@@ -3,6 +3,7 @@ package com.potato369.novel.app.web.converter;
 import com.potato369.novel.app.web.dto.UserInfoDTO;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import org.springframework.beans.BeanUtils;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.app.web.converter
@@ -17,15 +18,15 @@ import org.springframework.beans.BeanUtils;
  */
 public class UserInfo2UserInfoDTOConverter {
 
-	/**
-	 * <pre>
-	 * convert方法的作用：将NovelUserInfo对象转换为UserInfoDTO对象
-	 * @author Jack
-	 * @param userInfo
-	 * @return UserInfoDTO
-	 * @since JDK 1.6
-	 * </pre>
-	 */
+    /**
+     * <pre>
+     * convert方法的作用：将NovelUserInfo对象转换为UserInfoDTO对象
+     * @author Jack
+     * @param userInfo
+     * @return UserInfoDTO
+     * @since JDK 1.6
+     * </pre>
+     */
     public static UserInfoDTO convert(NovelUserInfo userInfo) {
         UserInfoDTO userInfoDTO = UserInfoDTO.builder().build();
         BeanUtils.copyProperties(userInfo, userInfoDTO);
@@ -33,14 +34,14 @@ public class UserInfo2UserInfoDTOConverter {
     }
 
     /**
-	 * <pre>
-	 * convert方法的作用：将UserInfoDTO对象转换为NovelUserInfo对象
-	 * @author Jack
-	 * @param userInfoDTO
-	 * @return NovelUserInfo
-	 * @since JDK 1.6
-	 * </pre>
-	 */
+     * <pre>
+     * convert方法的作用：将UserInfoDTO对象转换为NovelUserInfo对象
+     * @author Jack
+     * @param userInfoDTO
+     * @return NovelUserInfo
+     * @since JDK 1.6
+     * </pre>
+     */
     public static NovelUserInfo convert(UserInfoDTO userInfoDTO) {
         NovelUserInfo userInfo = NovelUserInfo.builder().build();
         BeanUtils.copyProperties(userInfoDTO, userInfo);

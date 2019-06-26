@@ -2,11 +2,7 @@ package com.potato369.novel.app.web.controller;
 
 import com.potato369.novel.app.web.utils.MathUtil;
 import com.potato369.novel.app.web.utils.ResultVOUtil;
-import com.potato369.novel.app.web.vo.BalanceVO;
-import com.potato369.novel.app.web.vo.EnvelopeVO;
-import com.potato369.novel.app.web.vo.ResultVO;
-import com.potato369.novel.app.web.vo.TaskInfoVO;
-import com.potato369.novel.app.web.vo.TaskVO;
+import com.potato369.novel.app.web.vo.*;
 import com.potato369.novel.basic.dataobject.IncomeInfo;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import com.potato369.novel.basic.dataobject.TaskInfo;
@@ -19,7 +15,7 @@ import com.potato369.novel.basic.service.TaskRecordInfoService;
 import com.potato369.novel.basic.service.UserInfoService;
 import com.potato369.novel.basic.utils.DateUtil;
 import com.potato369.novel.basic.utils.UUIDUtil;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,7 +24,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

@@ -1,23 +1,21 @@
 package com.potato369.novel.app.web.controller;
 
-import java.math.BigDecimal;
-import java.util.List;
-
+import com.potato369.novel.app.web.converter.ProductInfo2ProductInfoVOConverter;
+import com.potato369.novel.app.web.utils.ResultVOUtil;
+import com.potato369.novel.app.web.vo.ProductInfoVO;
 import com.potato369.novel.app.web.vo.ProductVO;
+import com.potato369.novel.app.web.vo.ResultVO;
+import com.potato369.novel.basic.dataobject.ProductInfo;
+import com.potato369.novel.basic.service.ProductService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.potato369.novel.app.web.converter.ProductInfo2ProductInfoVOConverter;
-import com.potato369.novel.app.web.utils.ResultVOUtil;
-import com.potato369.novel.app.web.vo.ProductInfoVO;
-import com.potato369.novel.app.web.vo.ResultVO;
-import com.potato369.novel.basic.dataobject.ProductInfo;
-import com.potato369.novel.basic.service.ProductService;
-
-import lombok.extern.slf4j.Slf4j;
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * <pre>

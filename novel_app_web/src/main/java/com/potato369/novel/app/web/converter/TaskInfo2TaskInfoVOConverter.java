@@ -22,9 +22,9 @@ import java.util.stream.Collectors;
 public class TaskInfo2TaskInfoVOConverter {
 
     public static TaskInfoVO convert(TaskInfo taskInfo) {
-      TaskInfoVO taskInfoVO = TaskInfoVO.builder().build();
-      BeanUtils.copyProperties(taskInfo, taskInfoVO);
-      return taskInfoVO;
+        TaskInfoVO taskInfoVO = TaskInfoVO.builder().build();
+        BeanUtils.copyProperties(taskInfo, taskInfoVO);
+        return taskInfoVO;
     }
 
     public static List<TaskInfoVO> convertToTaskInfoVOList(List<TaskInfo> taskInfoList) {

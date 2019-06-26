@@ -3,6 +3,7 @@ package com.potato369.novel.app.web.converter;
 import com.potato369.novel.app.web.vo.UserInfoVO;
 import com.potato369.novel.basic.dataobject.NovelUserInfo;
 import org.springframework.beans.BeanUtils;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.app.web.converter
@@ -17,30 +18,30 @@ import org.springframework.beans.BeanUtils;
  */
 public class UserInfo2UserInfoVOConverter {
 
-	/**
-	 * <pre>
-	 * convert方法的作用：将NovelUserInfo对象转换为UserInfoVO对象
-	 * @author Jack
-	 * @param userInfo
-	 * @return UserInfoVO
-	 * @since JDK 1.6
-	 * </pre>
-	 */
+    /**
+     * <pre>
+     * convert方法的作用：将NovelUserInfo对象转换为UserInfoVO对象
+     * @author Jack
+     * @param userInfo
+     * @return UserInfoVO
+     * @since JDK 1.6
+     * </pre>
+     */
     public static UserInfoVO convert(NovelUserInfo userInfo) {
-    	UserInfoVO userInfoVO = UserInfoVO.builder().build();
+        UserInfoVO userInfoVO = UserInfoVO.builder().build();
         BeanUtils.copyProperties(userInfo, userInfoVO);
         return userInfoVO;
     }
 
     /**
-	 * <pre>
-	 * convert方法的作用：将UserInfoVO对象转换为NovelUserInfo对象
-	 * @author Jack
-	 * @param userInfoVO
-	 * @return NovelUserInfo
-	 * @since JDK 1.6
-	 * </pre>
-	 */
+     * <pre>
+     * convert方法的作用：将UserInfoVO对象转换为NovelUserInfo对象
+     * @author Jack
+     * @param userInfoVO
+     * @return NovelUserInfo
+     * @since JDK 1.6
+     * </pre>
+     */
     public static NovelUserInfo convert(UserInfoVO userInfoVO) {
         NovelUserInfo userInfo = NovelUserInfo.builder().build();
         BeanUtils.copyProperties(userInfoVO, userInfo);

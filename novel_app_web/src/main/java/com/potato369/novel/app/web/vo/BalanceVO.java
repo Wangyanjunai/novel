@@ -41,7 +41,7 @@ public class BalanceVO {
      */
     @JsonProperty(value = "balance")
     private BigDecimal balanceAmount;
-    
+
     /**
      * <pre>
      * @JsonProperty envelopeAmount：红包进度值。
@@ -57,6 +57,6 @@ public class BalanceVO {
      */
     @JsonProperty(value = "yield")
     private BigDecimal yieldAmount;
-    
+
 
 }

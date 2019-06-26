@@ -1,20 +1,5 @@
 package com.potato369.novel.app.web.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.potato369.novel.app.web.model.BizContentParams;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
@@ -22,13 +7,22 @@ import com.alipay.api.request.AlipayTradeQueryRequest;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.potato369.novel.app.web.conf.prop.AliPayProperties;
 import com.potato369.novel.app.web.model.AliPayQueryResult;
+import com.potato369.novel.app.web.model.BizContentParams;
 import com.potato369.novel.app.web.model.WeChatPayQueryResult;
 import com.potato369.novel.app.web.service.PayService;
 import com.potato369.novel.app.web.vo.ResultVO;
 import com.potato369.novel.basic.dataobject.OrderMaster;
 import com.potato369.novel.basic.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;

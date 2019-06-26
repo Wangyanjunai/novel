@@ -1,10 +1,11 @@
 package com.potato369.novel.app.web.converter;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.beans.BeanUtils;
 import com.potato369.novel.app.web.vo.ProductInfoVO;
 import com.potato369.novel.basic.dataobject.ProductInfo;
+import org.springframework.beans.BeanUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <pre>
@@ -20,22 +21,22 @@ import com.potato369.novel.basic.dataobject.ProductInfo;
  */
 public class ProductInfo2ProductInfoVOConverter {
 
-	public static ProductInfoVO convert(ProductInfo productInfo) {
-		ProductInfoVO productInfoVO = ProductInfoVO.builder().build();
-		BeanUtils.copyProperties(productInfo, productInfoVO);
+    public static ProductInfoVO convert(ProductInfo productInfo) {
+        ProductInfoVO productInfoVO = ProductInfoVO.builder().build();
+        BeanUtils.copyProperties(productInfo, productInfoVO);
 //		if (ProductCalculateTypeEnum.DAY.getCode().equals(productInfo.getProductType())) {
 //			productInfoVO.setTypeName(ProductCalculateTypeEnum.DAY.getMessage());
 //		}
 //		if (ProductCalculateTypeEnum.MONTH.getCode().equals(productInfo.getProductType())) {
 //			productInfoVO.setTypeName(ProductCalculateTypeEnum.MONTH.getMessage());
 //		}
-		if (null == productInfo.getDateValue()) {
-			productInfoVO.setDateValue(productInfo.getProductAmount().intValue());
-		}
-		return productInfoVO;
-	}
-	
-	public static List<ProductInfoVO> convertToProductInfoVOList(List<ProductInfo> productInfoList) {
-		return productInfoList.stream().map(productInfo -> convert(productInfo)).collect(Collectors.toList());
-	}
+        if (null == productInfo.getDateValue()) {
+            productInfoVO.setDateValue(productInfo.getProductAmount().intValue());
+        }
+        return productInfoVO;
+    }
+
+    public static List<ProductInfoVO> convertToProductInfoVOList(List<ProductInfo> productInfoList) {
+        return productInfoList.stream().map(productInfo -> convert(productInfo)).collect(Collectors.toList());
+    }
 }

@@ -1,5 +1,8 @@
 package com.potato369.novel.app.web.controller;
 
+import com.potato369.novel.app.web.utils.ResultVOUtil;
+import com.potato369.novel.app.web.vo.LoadingDataVO;
+import com.potato369.novel.app.web.vo.ResultVO;
 import com.potato369.novel.basic.dataobject.NovelAdvertisement;
 import com.potato369.novel.basic.enums.NovelAdvertisementTag1Enum;
 import com.potato369.novel.basic.enums.NovelAdvertisementTag2Enum;
@@ -11,9 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.potato369.novel.app.web.utils.ResultVOUtil;
-import com.potato369.novel.app.web.vo.LoadingDataVO;
-import com.potato369.novel.app.web.vo.ResultVO;
 
 import java.util.ArrayList;
 import java.util.List;

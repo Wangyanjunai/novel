@@ -17,20 +17,14 @@ import com.potato369.novel.basic.service.VipGradeService;
 import com.potato369.novel.basic.utils.DateUtil;
 import com.potato369.novel.basic.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.validation.Valid;
 
 /**
  * <pre>
@@ -54,7 +48,7 @@ public class UserInfoController {
 
     @Autowired
     private VipGradeService vipGradeService;
-    
+
     @Autowired
     private TaskRecordInfoService taskRecordInfoService;
 

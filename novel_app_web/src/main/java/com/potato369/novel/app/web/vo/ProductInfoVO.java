@@ -1,14 +1,14 @@
 package com.potato369.novel.app.web.vo;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-/** 
+
+import java.math.BigDecimal;
+
+/**
  * <pre>
  * @ClassName: ProductInfoVO
  * @Function:
@@ -30,7 +30,7 @@ public class ProductInfoVO {
      * @JsonProperty productId：商品id，主键。
      * </pre>
      */
-	@JsonProperty(value = "no")
+    @JsonProperty(value = "no")
     private String productId;
 
     /**
