@@ -8,6 +8,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.app.web.conf.prop
@@ -74,7 +75,7 @@ public class WeChatPayProperties {
      */
     @Value(value = "${weChat.pay.notifyUrl}")
     private String notifyUrl;
-    
+
     /**
      * <pre>
      * @Field 7、orderNamePrefix：微信支付订单名称前缀

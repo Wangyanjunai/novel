@@ -32,18 +32,18 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
-    generate-ddl: true
+    show-sql: false
+    generate-ddl: false
   redis:
     host: 127.0.0.1
     port: 6379
     password: foobared123!@#
 logging:
   level:
-    org.springframework: info
-    com.potato369.novel: info
-    com.alibaba.druid: info
-    cn.wanghaomiao: info
+    org.springframework: error
+    com.potato369.novel: error
+    com.alibaba.druid: error
+    cn.wanghaomiao: error
 projectUrl:   
   projectName: /novel
   domainUrl: http://potato369.mynatapp.cc

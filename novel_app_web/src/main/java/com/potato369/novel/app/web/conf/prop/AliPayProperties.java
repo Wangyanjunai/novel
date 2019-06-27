@@ -8,6 +8,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.app.web.conf.prop
@@ -27,14 +28,14 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 public class AliPayProperties {
 
-	/**
+    /**
      * <pre>
      * @Field 1、serverUrl：支付宝网关。
      * </pre>
      */
     @Value(value = "${aliPay.pay.serverPayUrl}")
     private String serverPayUrl;
-	
+
     /**
      * <pre>
      * @Field 2、appId：支付宝分配给开发者的应用ID。
@@ -42,7 +43,7 @@ public class AliPayProperties {
      */
     @Value(value = "${aliPay.pay.appId}")
     private String appId;
-    
+
     /**
      * <pre>
      * @Field 3、appPrivateKey：商户应用私钥。
@@ -50,7 +51,7 @@ public class AliPayProperties {
      */
     @Value(value = "${aliPay.pay.appPrivateKey}")
     private String appPrivateKey;
-    
+
     /**
      * <pre>
      * @Field 4、format：请求数据格式，仅支持JSON。
@@ -58,7 +59,7 @@ public class AliPayProperties {
      */
     @Value(value = "${aliPay.pay.format}")
     private String format;
-    
+
     /**
      * <pre>
      * @Field 5、charSet：请求使用的编码格式，如utf-8,gbk,gb2312等。
@@ -66,7 +67,7 @@ public class AliPayProperties {
      */
     @Value(value = "${aliPay.pay.charSet}")
     private String charSet;
-    
+
     /**
      * <pre>
      * @Field 6、appPublicKey：商户应用公钥。
@@ -74,7 +75,7 @@ public class AliPayProperties {
      */
     @Value(value = "${aliPay.pay.appPublicKey}")
     private String appPublicKey;
-    
+
     /**
      * <pre>
      * @Field 7、signType：商户生成签名字符串所使用的签名算法类型，目前支持RSA2和RSA，推荐使用RSA2。
@@ -82,7 +83,7 @@ public class AliPayProperties {
      */
     @Value(value = "${aliPay.pay.signType}")
     private String signType;
-    
+
     /**
      * <pre>
      * @Field 8、timeoutExpress：支付宝支付超时时间。
@@ -90,7 +91,7 @@ public class AliPayProperties {
      */
     @Value(value = "${aliPay.pay.timeoutExpress}")
     private String timeoutExpress;
-    
+
     /**
      * <pre>
      * @Field 9、notifyUrl：服务器异步通知页面路径 需http://或者https://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问。
@@ -130,7 +131,7 @@ public class AliPayProperties {
      */
     @Value(value = "${aliPay.pay.sellerId}")
     private String sellerId;
-    
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);

@@ -72,20 +72,20 @@ public class TaskController {
     public ResultVO<TaskVO> list(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                  @RequestParam(name = "size", defaultValue = "10") Integer size,
                                  @RequestParam(name = "userId") String userId) {
-
         try {
             if (log.isDebugEnabled()) {
                 log.debug("start==================后端查询任务信息列表==================start");
             }
             ResultVO<TaskVO> resultVO = new ResultVO<>();
             TaskVO taskVO = TaskVO.builder().build();
-            Sort sort = new Sort(Direction.ASC, "taskSort");
+            Sort sort = new Sort(Direction.ASC, "taskSort", "createTime");
             PageRequest pageRequest = new PageRequest(page - 1, size, sort);
-            List<TaskInfoVO> taskInfoVOList = new ArrayList<TaskInfoVO>();
+            List<TaskInfoVO> taskInfoVOList = new ArrayList<>();
             Page<TaskInfo> taskInfoPage = taskInfoService.findAll(pageRequest);
-            Date date = new Date();
+            Date date = new Date();//今天的时间
             Date start = DateUtil.dateFormat(DateUtil.sdfTimeFmt, DateUtil.strFormat(date, DateUtil.sdfDayFmt).concat(" 00:00:00"));
             Date end = DateUtil.dateFormat(DateUtil.sdfTimeFmt, DateUtil.strFormat(date, DateUtil.sdfDayFmt).concat(" 23:59:59"));
+            NovelUserInfo userInfo = userInfoService.findByUserMId(userId);
             for (TaskInfo taskInfo : taskInfoPage.getContent()) {
                 String taskId = taskInfo.getTaskId();
                 TaskInfoVO taskInfoVO = TaskInfoVO.builder().build();
@@ -139,8 +139,8 @@ public class TaskController {
      * @param bindingResult
      * </pre>
      */
-    
-	@PostMapping(value = "/task/finish.do", produces = "application/json;charset=utf-8")
+
+    @PostMapping(value = "/task/finish.do", produces = "application/json;charset=utf-8")
     public ResultVO finishTask(@RequestBody @Valid TaskInfoDTO taskInfoDTO, BindingResult bindingResult) {
         ResultVO resultVO = new ResultVO();
         try {
