@@ -159,7 +159,7 @@ CREATE TABLE `novel_shelf` (
   `novel_id` varchar(32) NOT NULL COMMENT '小说id。',
   `chapter_id` varchar(32) NULL DEFAULT NULL COMMENT '已经阅读到的小说章节id。',
   `chapter_index` smallint(6) NULL DEFAULT NULL COMMENT '已经阅读到的小说章节索引。',
- PRIMARY KEY (`shelf_id`, `user_id`) USING BTREEs
+ PRIMARY KEY (`shelf_id`, `user_id`) USING BTREE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '书架信息数据记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
