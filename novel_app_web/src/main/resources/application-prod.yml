@@ -2,7 +2,7 @@ spring:
   datasource:
     druid:
       async-init: true
-      url: jdbc:mysql://127.0.0.1:3306/novel_tmp?useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&useOldAliasMetadataBehavior=true&serverTimezone=GMT%2B8
+      url: jdbc:mysql://139.159.210.42:3306/novel_tmp?useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&useOldAliasMetadataBehavior=true&serverTimezone=GMT%2B8
       driver-class-name: com.mysql.jdbc.Driver
       username: root
       password: MyNewPassword4!
@@ -33,7 +33,7 @@ spring:
     show-sql: false
     generate-ddl: false
   redis:
-    host: 127.0.0.1
+    host: 139.159.210.42
     port: 6379
     password: foobared123!@#
 logging:

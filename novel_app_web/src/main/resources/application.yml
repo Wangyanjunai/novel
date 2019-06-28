@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: prod
   freemarker:
     allow-request-override: false
     allow-session-override: false
@@ -41,7 +41,7 @@ aliPay:
     notifyUrl: /pay/aliPay/notify.do
     returnUrl: /pay/aliPay/return.do
 server:
-  context-path: /novel
+  context-path: /app
   port: 8080
   error:
     path: /error
