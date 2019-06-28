@@ -154,12 +154,12 @@ DROP TABLE IF EXISTS `novel_shelf`;
 CREATE TABLE `novel_shelf` (
   `shelf_id` varchar(32) NOT NULL COMMENT '小说id，联合主键。',
   `user_id` varchar(20) NOT NULL COMMENT '用户mid，联合主键。',
+  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
+  `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间。',
   `novel_id` varchar(32) NOT NULL COMMENT '小说id。',
   `chapter_id` varchar(32) NULL DEFAULT NULL COMMENT '已经阅读到的小说章节id。',
   `chapter_index` smallint(6) NULL DEFAULT NULL COMMENT '已经阅读到的小说章节索引。',
-  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间。',
-  `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间。',
-  PRIMARY KEY (`shelf_id`, `user_id`) USING BTREE
+ PRIMARY KEY (`shelf_id`, `user_id`) USING BTREEs
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '书架信息数据记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
