@@ -5,7 +5,7 @@
 	<groupId>com.potato369</groupId>
 	<artifactId>novel_weixin_web</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<name>novel_weixin_web</name>
 	<url>http://maven.apache.org</url>
 	<description>急速追书小说微信公众号前端内容接口服务支持项目</description>
