@@ -80,3 +80,5 @@ UPDATE `novel_info`  SET `category_type`=204,`category_cn_text`='青春校园',`
 
 IntelliJ IDEA For Mac 快捷键：
 https://github.com/icegomic/IntelliJ-IDEA-Tutorial/blob/master/keymap-mac-introduce.md
+
+nohup java -Dfile.encoding=UTF8 -Duser.timezone=GMT+08 -Xms128m -Xmx256m -Xmn256m -Xss256k -server -XX:+HeapDumpOnOutOfMemoryError -XX:PermSize=64m -XX:MaxPermSize=256m -jar novelapp.jar -verbose:class &
