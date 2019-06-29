@@ -35,7 +35,7 @@ aliPay:
     aliPayPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhm7qe+2DJkr7WNPj2uC5bZKA96wo7gN8ON4bw1Nd0gcw8lC0DI5kUm3/i8A4FETR/Eqdit1tj9vrtgw8qpF/e+xoWOMM2L62SsupbXik/0jUnuM/7PlHWb9tMSoko4cds221YzmQwtMQSPJ3PVoTDwtCvIvpuq2mE6Drljoe6F9ZepBzmbABcDPySjvwNjo+qOntaXfAyr9LxeJY7TCVtf+Wh8JkBb495yEODxhHqMTvRFc48++AlcTCv8V0WTdmDs5H9jcbjrVXf/yM57HEhBwb/fJHGAkSi78Izy0CAty+I6h7Z/N0ES3dsrF84ho1sYsybZaQXK5T+uNmoPP3eQIDAQAB
     aesKey: Nb/7FghMcOhOw07gw6udyA==
     format: json
-    charSet: UTF-8
+    charSet: utf-8
     signType: RSA2
     timeoutExpress: 30m
     notifyUrl: /pay/aliPay/notify.do
