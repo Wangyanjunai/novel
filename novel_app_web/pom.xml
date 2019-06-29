@@ -12,7 +12,7 @@
     <artifactId>novel_app_web</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>novel_app_web</name>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <url>http://maven.apache.org</url>
     <description>急速追书小说APP前端内容接口服务支持项目</description>
 

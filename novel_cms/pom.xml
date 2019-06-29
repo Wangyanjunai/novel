@@ -12,7 +12,7 @@
 	<artifactId>novel_cms</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>novel_cms</name>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<url>http://maven.apache.org</url>
 	<description>急速追书小说内容后台管理服务支持项目</description>
 
