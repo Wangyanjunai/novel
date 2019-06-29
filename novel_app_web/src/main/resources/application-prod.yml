@@ -45,7 +45,7 @@ logging:
     com.potato369.novel.basic.dataobject.mapper: error
     com.github.binarywang: error
 projectUrl: 
-  projectName: /app
+  projectName: /novelapp
   domainUrl: https://www.potato369.com
   weChatMpAuthorizeUrl: /wechat/authorize
   weChatMpAuthorizeUrlUserInfo: /wechat/userInfo
