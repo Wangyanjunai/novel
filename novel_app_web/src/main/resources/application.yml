@@ -41,7 +41,7 @@ aliPay:
     notifyUrl: /pay/aliPay/notify.do
     returnUrl: /pay/aliPay/return.do
 server:
-  context-path: /novelapp
+  context-path: /novel
   port: 8081
   error:
     path: /error
