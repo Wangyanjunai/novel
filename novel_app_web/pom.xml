@@ -70,7 +70,7 @@
     </dependencies>
 
     <build>
-        <finalName>novel</finalName>
+        <finalName>novelapp</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
