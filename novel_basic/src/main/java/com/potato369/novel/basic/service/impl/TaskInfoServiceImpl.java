@@ -6,6 +6,7 @@ import com.potato369.novel.basic.service.TaskInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -88,6 +89,19 @@ public class TaskInfoServiceImpl implements TaskInfoService {
         return repository.findAll();
     }
 
+    /**
+     * <pre>
+     * 排序查找任务进度记录信息列表
+     * @param sort
+     * @return List<TaskInfo>
+     * </pre>
+     */
+    @Override
+    public List<TaskInfo> findAll(Sort sort) {
+        return repository.findAll(sort);
+    }
+    
+    
     /**
      * <pre>
      * 分页查询任务进度记录信息列表

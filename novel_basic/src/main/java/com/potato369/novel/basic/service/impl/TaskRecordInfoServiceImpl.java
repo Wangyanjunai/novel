@@ -140,6 +140,19 @@ public class TaskRecordInfoServiceImpl implements TaskRecordInfoService {
      */
 	@Override
 	public List<TaskRecordInfo> findByDateTask(String taskId, String userId, Date start, Date end) {
-		return null;
+		return taskRecordInfoRepository.findByDateTask(taskId, userId, start, end);
+	}
+	
+	/**
+     * <pre>
+     * 根据任务信息id和用户id查找任务记录信息
+     * @param taskId 任务id
+     * @param userId 用户id
+     * @return
+     * </pre>
+     */
+	@Override
+	public List<TaskRecordInfo> findByUserIdAndTaskId(String userId, String taskId) {
+		return taskRecordInfoRepository.findByUserIdAndTaskId(userId, taskId);
 	}
 }

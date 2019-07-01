@@ -243,18 +243,4 @@ public class UserInfoController {
         }
         return userInfo;
     }
-
-    private NovelUserInfo updateUser(String gradeName, Date nowDate, NovelUserInfo novelUserInfo) {
-        NovelUserInfo userInfoResult;
-        novelUserInfo = vipOverDueOut(nowDate, novelUserInfo);
-        NovelVipGrade vipGrade = vipGradeService.findOne(novelUserInfo.getVipGradeId());
-        if (vipGrade != null) {
-            gradeName = vipGrade.getGradeName();
-        }
-        userInfoResult = userInfoService.update(novelUserInfo);
-        if (log.isDebugEnabled()) {
-            log.debug("【前端用户平台账号登录】更新用户信息，userInfo用户信息={}", novelUserInfo);
-        }
-        return userInfoResult;
-    }
 }

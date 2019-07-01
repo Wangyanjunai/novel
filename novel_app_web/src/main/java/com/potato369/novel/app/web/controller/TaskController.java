@@ -21,8 +21,6 @@ import com.potato369.novel.basic.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.validation.BindingResult;
@@ -69,55 +67,83 @@ public class TaskController {
      * </pre>
      */
     @GetMapping(value = "/task/list.do")
-    public ResultVO<TaskVO> list(@RequestParam(name = "page", defaultValue = "1") Integer page,
-                                 @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                 @RequestParam(name = "userId") String userId) {
+    public ResultVO<TaskVO> list(@RequestParam(name = "userId", required = false) String userId) {
         try {
             if (log.isDebugEnabled()) {
                 log.debug("start==================后端查询任务信息列表==================start");
             }
             ResultVO<TaskVO> resultVO = new ResultVO<>();
             TaskVO taskVO = TaskVO.builder().build();
-            Sort sort = new Sort(Direction.ASC, "taskSort", "createTime");
-            PageRequest pageRequest = new PageRequest(page - 1, size, sort);
-            List<TaskInfoVO> taskInfoVOList = new ArrayList<>();
-            Page<TaskInfo> taskInfoPage = taskInfoService.findAll(pageRequest);
-            Date date = new Date();//今天的时间
+            Sort sort = new Sort(Direction.ASC, "taskSort", "createTime", "updateTime");
+            List<TaskInfo> taskInfoList = taskInfoService.findAll(sort);
+            Date date  = new Date();// 今天的时间
             Date start = DateUtil.dateFormat(DateUtil.sdfTimeFmt, DateUtil.strFormat(date, DateUtil.sdfDayFmt).concat(" 00:00:00"));
-            Date end = DateUtil.dateFormat(DateUtil.sdfTimeFmt, DateUtil.strFormat(date, DateUtil.sdfDayFmt).concat(" 23:59:59"));
-            NovelUserInfo userInfo = userInfoService.findByUserMId(userId);
-            for (TaskInfo taskInfo : taskInfoPage.getContent()) {
-                String taskId = taskInfo.getTaskId();
-                TaskInfoVO taskInfoVO = TaskInfoVO.builder().build();
-                List<TaskRecordInfo> taskRecordList = taskRecordInfoService.findByDateTask(taskId, userId, start, end);
-                if (taskRecordList != null && taskRecordList.isEmpty() && taskRecordList.size() > 0) {
-                    Integer taskFinished = 0;
-                    for (TaskRecordInfo taskRecordInfo : taskRecordList) {
-                        taskFinished += taskRecordInfo.getTaskFinishedTimes();
-                        if (TaskTypeEnum.FINISHED.getCode().equals(taskRecordInfo.getTaskStatus())) {
-                            if (taskFinished.equals(taskInfo.getTaskTimes())) {
-                                taskInfoVO.setFinishedTime(taskRecordInfo.getFinishedTime());
-                                taskInfoVO.setIsOrNotFinished(TaskTypeEnum.FINISHED.getCode());
-                            }
-                        }
-                        taskInfoVO.setHasfinishedTimes(taskFinished);
-                    }
-                } else {
-                    taskInfoVO.setFinishedTime(null);
-                    taskInfoVO.setIsOrNotFinished(TaskTypeEnum.UNFINISHED.getCode());
-                    taskInfoVO.setHasfinishedTimes(0);
+            Date end   = DateUtil.dateFormat(DateUtil.sdfTimeFmt, DateUtil.strFormat(date, DateUtil.sdfDayFmt).concat(" 23:59:59"));
+            List<TaskInfoVO> taskInfoVOList = new ArrayList<>();
+            NovelUserInfo novelUserInfo =null;
+            if (StringUtils.isNoneEmpty(userId)) {
+            	novelUserInfo = userInfoService.findById(userId);
+			}
+            if (novelUserInfo != null) {
+            	for (TaskInfo taskInfo : taskInfoList) {
+                    String taskId = taskInfo.getTaskId();
+                    TaskInfoVO taskInfoVO = TaskInfoVO.builder().build();
+                    if (TaskTypeEnum.BINDING.getCode().equals(taskInfo.getTaskType())) {
+                    	List<TaskRecordInfo> taskRecordList1 = taskRecordInfoService.findByUserIdAndTaskId(userId, taskId);
+                    	for (TaskRecordInfo taskRecordInfo : taskRecordList1) {
+    						if (TaskTypeEnum.FINISHED.getCode().equals(taskRecordInfo.getTaskStatus()) 
+    							&& taskRecordInfo.getTaskFinishedTimes().equals(taskInfo.getTaskTimes())
+    							&& StringUtils.isNotEmpty(novelUserInfo.getBindWeChatOpenid())) {
+    							taskInfoVO.setFinishedTime(taskRecordInfo.getFinishedTime());// 设置任务的完成时间
+                                taskInfoVO.setIsOrNotFinished(TaskTypeEnum.FINISHED.getCode());// 设置任务的完成状态
+                                taskInfoVO.setHasfinishedTimes(taskRecordInfo.getTaskFinishedTimes());// 设置已经完成任务的次数
+    						}
+    					}
+    				} else {
+    					List<TaskRecordInfo> taskRecordList = taskRecordInfoService.findByDateTask(taskId, userId, start, end);
+    	                if (taskRecordList != null && !taskRecordList.isEmpty() && taskRecordList.size() > 0) {
+    	                    Integer taskFinished = 0;
+    	                    for (TaskRecordInfo taskRecordInfo : taskRecordList) {
+    	                        taskFinished += taskRecordInfo.getTaskFinishedTimes();
+    	                        if (TaskTypeEnum.FINISHED.getCode().equals(taskRecordInfo.getTaskStatus())) {
+    	                            if (taskFinished.equals(taskInfo.getTaskTimes())) {
+    	                                taskInfoVO.setFinishedTime(taskRecordInfo.getFinishedTime());// 设置任务的完成时间
+    	                                taskInfoVO.setIsOrNotFinished(TaskTypeEnum.FINISHED.getCode());// 设置任务的完成状态
+    	                            }
+    	                        }
+    	                    }
+    	                    taskInfoVO.setHasfinishedTimes(taskFinished);// 设置已经完成任务的次数
+    	                } else {
+    	                	taskInfoVO.setFinishedTime(null);// 设置任务的完成时间
+    	                    taskInfoVO.setIsOrNotFinished(TaskTypeEnum.UNFINISHED.getCode());// 设置任务的完成状态
+    	                    taskInfoVO.setHasfinishedTimes(Integer.valueOf(0));// 设置已经完成任务的次数
+    	                }
+    				}
+                    taskInfoVO.setTaskDescription(taskInfo.getTaskDescription());
+                    taskInfoVO.setTaskId(taskInfo.getTaskId());
+                    taskInfoVO.setTaskName(taskInfo.getTaskName());
+                    taskInfoVO.setTaskProgressValue(taskInfo.getTaskProgressValue());
+                    taskInfoVO.setTaskTimes(taskInfo.getTaskTimes());
+                    taskInfoVO.setTaskType(taskInfo.getTaskType());
+                    taskInfoVOList.add(taskInfoVO);
                 }
-                taskInfoVO.setTaskDescription(taskInfo.getTaskDescription());
-                taskInfoVO.setTaskId(taskInfo.getTaskId());
-                taskInfoVO.setTaskName(taskInfo.getTaskName());
-                taskInfoVO.setTaskProgressValue(taskInfo.getTaskProgressValue());
-                taskInfoVO.setTaskTimes(taskInfo.getTaskTimes());
-                taskInfoVO.setTaskType(taskInfo.getTaskType());
-                taskInfoVO.setUserId(userId);
-                taskInfoVOList.add(taskInfoVO);
-            }
+			} else {
+				for (TaskInfo taskInfo : taskInfoList) {
+                    TaskInfoVO taskInfoVO = TaskInfoVO.builder().build();
+                    taskInfoVO.setFinishedTime(null);// 设置任务的完成时间
+                    taskInfoVO.setIsOrNotFinished(TaskTypeEnum.UNFINISHED.getCode());// 设置任务的完成状态
+                    taskInfoVO.setHasfinishedTimes(Integer.valueOf(0));// 设置已经完成任务的次数
+                    taskInfoVO.setTaskDescription(taskInfo.getTaskDescription());
+                    taskInfoVO.setTaskId(taskInfo.getTaskId());
+                    taskInfoVO.setTaskName(taskInfo.getTaskName());
+                    taskInfoVO.setTaskProgressValue(taskInfo.getTaskProgressValue());
+                    taskInfoVO.setTaskTimes(taskInfo.getTaskTimes());
+                    taskInfoVO.setTaskType(taskInfo.getTaskType());
+                    taskInfoVOList.add(taskInfoVO);
+                }
+			}
             taskVO.setTaskInfoVOList(taskInfoVOList);
-            taskVO.setTotalPage(new BigDecimal(taskInfoPage.getTotalPages()));
+            taskVO.setTotalPage(new BigDecimal(taskInfoList.size()));
             resultVO.setData(taskVO);
             resultVO.setCode(0);
             resultVO.setMsg("返回数据成功");

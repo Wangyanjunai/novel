@@ -3,6 +3,8 @@ package com.potato369.novel.basic.service;
 import com.potato369.novel.basic.dataobject.TaskInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import java.util.List;
 /**
  * <pre>
@@ -60,6 +62,15 @@ public interface TaskInfoService {
      * </pre>
      */
     List<TaskInfo> findAll();
+    
+    /**
+     * <pre>
+     * 排序查找任务进度记录信息列表
+     * @param sort
+     * @return List<TaskInfo>
+     * </pre>
+     */
+    List<TaskInfo> findAll(Sort sort);
 
     /**
      * <pre>

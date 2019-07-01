@@ -53,4 +53,15 @@ public interface TaskRecordInfoRepository extends JpaRepository<TaskRecordInfo, 
      */
     @Query("SELECT tr FROM TaskRecordInfo tr WHERE tr.taskId = ?1 AND tr.userId = ?2 AND tr.finishedTime >= ?3 AND tr.finishedTime <= ?4 ORDER BY tr.finishedTime ASC")
     List<TaskRecordInfo> findByDateTask(String taskId, String userId, Date start, Date end);
+    
+    /**
+     * <pre>
+     * 根据任务信息id和用户id查找任务记录信息
+     * @param taskId 任务id
+     * @param userId 用户id
+     * @return
+     * </pre>
+     */
+    @Query("SELECT tr FROM TaskRecordInfo tr WHERE tr.userId = ?1 AND tr.taskId = ?2 ORDER BY tr.finishedTime ASC")
+    List<TaskRecordInfo> findByUserIdAndTaskId(String userId, String taskId);
 }

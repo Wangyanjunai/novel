@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: prod
+    active: dev
   freemarker:
     allow-request-override: false
     allow-session-override: false
@@ -69,5 +69,5 @@ security:
   basic:
     enabled: false
     path: /**
-endpoints:
+endpoints: 
   enabled: true

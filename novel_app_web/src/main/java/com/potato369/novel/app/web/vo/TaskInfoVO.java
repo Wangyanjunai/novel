@@ -35,14 +35,6 @@ public class TaskInfoVO {
      */
 	@JsonProperty(value = "no")
 	private String taskId;
-	
-	/**
-     * <pre>
-     * @JsonProperty userId：用户mid。
-     * </pre>
-     */
-	@JsonProperty(value = "user")
-	private String userId;
 
     /**
      * <pre>

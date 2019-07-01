@@ -78,6 +78,16 @@ public interface TaskRecordInfoService {
      * </pre>
      */
     List<TaskRecordInfo> findByDateTask(String taskId, String userId, Date start, Date end);
+    
+    /**
+     * <pre>
+     * 根据任务信息id和用户id查找任务记录信息
+     * @param taskId 任务id
+     * @param userId 用户id
+     * @return
+     * </pre>
+     */
+    List<TaskRecordInfo> findByUserIdAndTaskId(String userId, String taskId);
 
     /**
      * <pre>
