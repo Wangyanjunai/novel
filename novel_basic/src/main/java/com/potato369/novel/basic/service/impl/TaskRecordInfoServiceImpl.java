@@ -29,7 +29,6 @@ public class TaskRecordInfoServiceImpl implements TaskRecordInfoService {
 
     @Autowired
     private TaskRecordInfoRepository taskRecordInfoRepository;
-
     /**
      * <pre>
      * 新增任务记录信息

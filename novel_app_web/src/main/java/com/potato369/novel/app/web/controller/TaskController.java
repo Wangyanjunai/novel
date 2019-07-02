@@ -11,7 +11,6 @@ import com.potato369.novel.basic.dataobject.TaskRecordInfo;
 import com.potato369.novel.basic.enums.ResultEnum;
 import com.potato369.novel.basic.enums.TaskTypeEnum;
 import com.potato369.novel.basic.enums.UserInfoIsOrNotBandWechatEnum;
-import com.potato369.novel.basic.enums.UserInfoUserTypeEnum;
 import com.potato369.novel.basic.service.IncomeInfoService;
 import com.potato369.novel.basic.service.TaskInfoService;
 import com.potato369.novel.basic.service.TaskRecordInfoService;
@@ -180,7 +179,7 @@ public class TaskController {
                 return resultVO;
             }
             if (taskInfoDTO == null) {
-                log.error("完成某个特定的任务需要给对应的用户添加红包进度值，用户信息不存在。");
+                log.error("完成某个特定的任务需要给对应的用户添加红包进度值，前端传过来的信息不存在。");
                 throw new Exception(ResultEnum.MP_USER_INFO_EMPTY.getMessage());
             }
             NovelUserInfo userInfo = userInfoService.findByUserMId(taskInfoDTO.getMId());
@@ -193,44 +192,53 @@ public class TaskController {
                 log.error("完成某个特定的任务需要给对应的用户添加红包进度值，任务信息不存在。");
                 throw new Exception(ResultEnum.TASK_INFO_EMPTY.getMessage());
             }
+            NovelUserInfo updateInfo = userInfo;
             if (TaskTypeEnum.BINDING.getCode().equals(taskInfo.getTaskType())) {
-                if (UserInfoIsOrNotBandWechatEnum.FINISHED.getCode().equals(userInfo.getIsOrNotBandWechat()) && StringUtils.isNotEmpty(userInfo.getBindWeChatOpenid())) {
-                    log.error("完成某个特定的任务需要给对应的用户添加红包进度值，用户已经完成绑定微信任务。");
-                    resultVO.setCode(0);
-                    resultVO.setMsg("用户已经完成绑定微信任务");
-                    return resultVO;
-                } else {
-                    if (UserInfoUserTypeEnum.VISITOR.getCode().equals(userInfo.getUserType())) {
-                        userInfo.setOpenid(taskInfoDTO.getOpenid());
-                        userInfo.setAddress(taskInfoDTO.getAddress());
-                        userInfo.setAvatarUrl(taskInfoDTO.getAvatarUrl());
-                        userInfo.setGender(taskInfoDTO.getGender());
-                        userInfo.setNickName(taskInfoDTO.getNickName());
-                    }
-                }
-            }
-            userInfo.setEnvelopeAmount(userInfo.getEnvelopeAmount().add(BigDecimal.valueOf(taskInfo.getTaskProgressValue())));
-            userInfo.setBindWeChatOpenid(taskInfoDTO.getOpenid());
-            userInfo.setIsOrNotBandWechat(UserInfoIsOrNotBandWechatEnum.FINISHED.getCode());
-            userInfoService.update(userInfo);
-            Date finishedDate = DateUtil.dateFormat(DateUtil.sdfTimeFmt, taskInfoDTO.getFinishedDateString());
-            if (finishedDate == null) {
-                log.error("完成某个特定的任务需要给对应的用户添加红包进度值，完成时间参数格式不正确。");
-                throw new Exception(ResultEnum.PARAM_ERROR.getMessage());
-            }
-            TaskRecordInfo taskRecordInfo = TaskRecordInfo.builder().build();
-            taskRecordInfo.setTaskId(taskInfo.getTaskId());
-            taskRecordInfo.setUserId(taskInfoDTO.getMId());
-            taskRecordInfo.setTaskRecordId(UUIDUtil.gen32UUID());
-            if (taskInfo.getTaskTimes() == taskInfoDTO.getTimes()) {
-                taskRecordInfo.setTaskFinishedTimes(taskInfoDTO.getTimes());
-                taskRecordInfo.setFinishedTime(finishedDate);
-            }
-            taskRecordInfoService.save(taskRecordInfo);
+            	List<TaskRecordInfo> taskRecordList1 = taskRecordInfoService.findByUserIdAndTaskId(userInfo.getMId(), taskInfo.getTaskId());
+            	if (taskRecordList1 != null && !taskRecordList1.isEmpty() && taskRecordList1.size() > 0) {
+            		if (taskRecordList1.size() >= taskInfo.getTaskTimes()) {
+            			log.error("用户已经完成绑定微信任务，任务id={}，用户mid={}", taskInfo.getTaskId(), userInfo.getMId());
+						throw new Exception("用户已经完成绑定微信任务");
+					}
+            	} else {
+            		userInfo.setEnvelopeAmount(userInfo.getEnvelopeAmount().add(BigDecimal.valueOf(taskInfo.getTaskProgressValue())));
+            		userInfo.setBindWeChatOpenid(taskInfoDTO.getOpenid());
+            		userInfo.setIsOrNotBandWechat(UserInfoIsOrNotBandWechatEnum.FINISHED.getCode());
+            		updateInfo = userInfoService.update(userInfo);
+            		TaskRecordInfo taskRecordInfo = TaskRecordInfo.builder().build();
+                    taskRecordInfo.setTaskId(taskInfo.getTaskId());
+                    taskRecordInfo.setUserId(taskInfoDTO.getMId());
+                    taskRecordInfo.setTaskRecordId(UUIDUtil.gen32UUID());
+                    taskRecordInfo.setTaskFinishedTimes(1);
+                    taskRecordInfo.setFinishedTime(new Date());
+                    taskRecordInfo.setTaskStatus(TaskTypeEnum.FINISHED.getCode());
+                    taskRecordInfoService.save(taskRecordInfo);
+				}
+			} else {
+				Date date  = new Date();// 今天的时间
+	            Date start = DateUtil.dateFormat(DateUtil.sdfTimeFmt, DateUtil.strFormat(date, DateUtil.sdfDayFmt).concat(" 00:00:00"));
+	            Date end   = DateUtil.dateFormat(DateUtil.sdfTimeFmt, DateUtil.strFormat(date, DateUtil.sdfDayFmt).concat(" 23:59:59"));
+	    		List<TaskRecordInfo> taskRecordList2 = taskRecordInfoService.findByDateTask(taskInfo.getTaskId(), userInfo.getMId(), start, end);
+				if (taskRecordList2.size() >= taskInfo.getTaskTimes()) {
+					log.error("用户已经完成当天date={}特定的任务，任务id={}，用户mid={}",DateUtil.strFormat(date, DateUtil.sdfTimeCNFmt), taskInfo.getTaskId(), userInfo.getMId());
+					throw new Exception("用户已经完成当天特定的任务");
+				} else {
+					userInfo.setEnvelopeAmount(userInfo.getEnvelopeAmount().add(BigDecimal.valueOf(taskInfo.getTaskProgressValue())));
+					updateInfo = userInfoService.update(userInfo);
+		            TaskRecordInfo taskRecordInfo = TaskRecordInfo.builder().build();
+		            taskRecordInfo.setTaskId(taskInfo.getTaskId());
+		            taskRecordInfo.setUserId(taskInfoDTO.getMId());
+		            taskRecordInfo.setTaskRecordId(UUIDUtil.gen32UUID());
+		            taskRecordInfo.setTaskStatus(TaskTypeEnum.FINISHED.getCode());
+		            taskRecordInfo.setTaskFinishedTimes(1);
+		            taskRecordInfo.setFinishedTime(new Date());
+		            taskRecordInfoService.save(taskRecordInfo);
+				}
+			}
             BalanceVO balanceVO = BalanceVO.builder().build();
-            balanceVO.setUserId(userInfo.getMId());
-            balanceVO.setBalanceAmount(userInfo.getBalanceAmount());
-            balanceVO.setEnvelopeAmount(userInfo.getEnvelopeAmount());
+            balanceVO.setUserId(updateInfo.getMId());
+            balanceVO.setBalanceAmount(updateInfo.getBalanceAmount());
+            balanceVO.setEnvelopeAmount(updateInfo.getEnvelopeAmount());
             resultVO.setMsg("任务完成成功");
             resultVO.setCode(0);
             resultVO.setData(balanceVO);

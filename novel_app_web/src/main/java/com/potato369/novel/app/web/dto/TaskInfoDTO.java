@@ -33,30 +33,30 @@ public class TaskInfoDTO {
     @JsonProperty(value = "openid")
     private String openid;// 微信openid，或者微博openid，或者QQ账号openid。
 
-    @JsonProperty(value = "nickName")
-    private String nickName;// 用户微信，QQ，微博昵称。
-
-    @JsonProperty(value = "gender")
-    private Integer gender;// 性别，2-女；1-男；0-未知，默认：“0-未知“。
-
-    @JsonProperty(value = "avatar")
-    private String avatarUrl;// 头像地址URL。
-
-    @JsonProperty(value = "ip")
-    private String ip;// APP客户端登录的外网IP。
-    
-    @JsonProperty(value = "address")
-    private String address;// 用户登录或者设置的地址（国家省份城市）
+//    @JsonProperty(value = "nickName")
+//    private String nickName;// 用户微信，QQ，微博昵称。
+//
+//    @JsonProperty(value = "gender")
+//    private Integer gender;// 性别，2-女；1-男；0-未知，默认：“0-未知“。
+//
+//    @JsonProperty(value = "avatar")
+//    private String avatarUrl;// 头像地址URL。
+//
+//    @JsonProperty(value = "ip")
+//    private String ip;// APP客户端登录的外网IP，或者代理路由器外网IP。
+//    
+//    @JsonProperty(value = "address")
+//    private String address;// 用户登录或者设置的地址（国家省份城市）
 
     @NotNull(message = "完成的任务id不能为空")
     @JsonProperty(value = "taskId")
     private String taskId;//任务id
 
-    @NotNull(message = "完成的任务任务时间不能为空")
-    @JsonProperty(value = "finishedDate")
-    private String finishedDateString;//任务完成时间
+//    @NotNull(message = "完成的任务任务时间不能为空")
+//    @JsonProperty(value = "finishedDate")
+//    private String finishedDateString;//任务完成时间
 
-    @NotNull(message = "第几次完成任务不能为空")
-    @JsonProperty(value = "times")
-    private Integer times;//第几次完成任务
+//    @NotNull(message = "第几次完成任务不能为空")
+//    @JsonProperty(value = "times")
+//    private Integer times;//第几次完成任务
 }
