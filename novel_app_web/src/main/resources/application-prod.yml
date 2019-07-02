@@ -62,3 +62,5 @@ projectUrl:
 weChat: 
   pay:
     keyPath: /var/local/wechatPayKeyFilePath/cert/h5.p12
+server:
+  context-path: /novelapp    

@@ -2,10 +2,10 @@ spring:
   datasource:
     druid:
       async-init: true
-      url: jdbc:mysql://192.168.172:3306/novel_tmp?useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&useOldAliasMetadataBehavior=true&serverTimezone=GMT%2B8
+      url: jdbc:mysql://127.0.0.1:3306/novel_tmp?useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&useOldAliasMetadataBehavior=true&serverTimezone=GMT%2B8
       driver-class-name: com.mysql.jdbc.Driver
       username: root
-      password: 123456
+      password: MyNewPassword4!@#
       keep-alive: true
       initial-size: 2
       min-idle: 10
@@ -33,7 +33,7 @@ spring:
     show-sql: true
     generate-ddl: true
   redis:
-    host: 192.168.172
+    host: 127.0.0.1
     port: 6379
     password: foobared123!@#
 logging:
@@ -45,7 +45,7 @@ logging:
     com.potato369.novel.basic.dataobject.mapper: info
     com.github.binarywang: info
 projectUrl:
-  projectName: /novelapp
+  projectName: /novel
   domainUrl: http://potato369.mynatapp.cc
   weChatMpAuthorizeUrl: /wechat/authorize
   weChatMpAuthorizeUrlUserInfo: /wechat/userInfo
@@ -58,7 +58,9 @@ projectUrl:
   mp3FilePath: /ebookData/upgrade_file/http/Resources/mp3
   coverImgFilePath: /ebookData/upgrade_file/http/Resources/img
   uploadFilePath: /ebookData/upgrade_file/http/Resources/epub
-  resUrl: http://192.168.1.172:9000
-weChat: 
+  resUrl: http://127.0.0.1:9000
+weChat:  
   pay:
     keyPath: /var/local/wechatPayKeyFilePath/cert/h5.p12
+server:
+  context-path: /novel
