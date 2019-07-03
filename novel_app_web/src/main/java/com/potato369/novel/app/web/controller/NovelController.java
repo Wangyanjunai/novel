@@ -9,6 +9,7 @@ import com.potato369.novel.basic.dataobject.NovelChapter;
 import com.potato369.novel.basic.dataobject.NovelInfo;
 import com.potato369.novel.basic.enums.HotWordsIsNewEnum;
 import com.potato369.novel.basic.enums.NovelInfoStatusEnum;
+import com.potato369.novel.basic.model.NovelChapterModel;
 import com.potato369.novel.basic.service.CategoryService;
 import com.potato369.novel.basic.service.HotWordsInfoService;
 import com.potato369.novel.basic.service.NovelChapterService;
@@ -173,8 +174,8 @@ public class NovelController {
     @GetMapping(value = "/info/chapter/{novelId}/{index}")//分页显示小说章节目录列表，默认按照索引正序，第一页，每页100条
     public ResultVO<NovelChapterVO> chapterDetail(@PathVariable(name = "novelId") String novelId,//小说id
                                                   @PathVariable(name = "index") Integer index,//0-正序，1-倒序
-                                                  @RequestParam(name = "page", defaultValue = "1", required = true) Integer page,//页数
-                                                  @RequestParam(name = "size", defaultValue = "100", required = true) Integer size) {//每页条数
+                                                  @RequestParam(name = "page", defaultValue = "1") Integer page,//页数
+                                                  @RequestParam(name = "size", defaultValue = "100") Integer size) {//每页条数
         ResultVO<NovelChapterVO> infoVOResultVO = new ResultVO<>();
         try {
             if (log.isDebugEnabled()) {
@@ -190,10 +191,10 @@ public class NovelController {
                 }
             }
             PageRequest pageRequest = new PageRequest(page - 1, size, sort);
-            Page<NovelChapter> novelChapterPage = novelChapterService.findAllByNovelId(novelId, pageRequest);
-            List<NovelChapter> chapterList = novelChapterPage.getContent();
+            Page<NovelChapterModel> novelChapterPage = novelChapterService.findAllByNovelId(novelId, pageRequest);
+            List<NovelChapterModel> chapterList = novelChapterPage.getContent();
             List<NovelChapterInfoVO> novelChapterInfoVOList = new ArrayList<>();
-            for (NovelChapter novelChapter : chapterList) {
+            for (NovelChapterModel novelChapter : chapterList) {
                 NovelChapterInfoVO novelChapterInfoVO = NovelChapterInfoVO.builder().build();
                 BeanUtils.copyProperties(novelChapter, novelChapterInfoVO);
                 novelChapterInfoVOList.add(novelChapterInfoVO);
@@ -217,7 +218,7 @@ public class NovelController {
     @GetMapping(value = "/chapter/content/{novelId}/{index}")//小说章节内容
     public ResultVO<NovelChapterTitleAndContentVO> content(@PathVariable(name = "novelId") String novelId,
                                                            @PathVariable(name = "index") Integer index) {
-        ResultVO<NovelChapterTitleAndContentVO> resultVO = new ResultVO<NovelChapterTitleAndContentVO>();
+        ResultVO<NovelChapterTitleAndContentVO> resultVO = new ResultVO<>();
         try {
             if (log.isDebugEnabled()) {
                 log.debug("【后台小说接口】start====================获取小说内容数据====================start");

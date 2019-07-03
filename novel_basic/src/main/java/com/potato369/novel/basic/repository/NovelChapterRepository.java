@@ -2,12 +2,14 @@ package com.potato369.novel.basic.repository;
 
 import java.util.List;
 
+import com.potato369.novel.basic.model.NovelChapterModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import com.potato369.novel.basic.dataobject.NovelChapter;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -31,7 +33,8 @@ public interface NovelChapterRepository extends JpaRepository<NovelChapter, Stri
 
     NovelChapter findByTitleAndBookId(String title, String bookId, Sort sort);
 
-    Page<NovelChapter> findAllByBookId(String bookId, Pageable pageable);
+    @Query(value = "SELECT new com.potato369.novel.basic.model.NovelChapterModel(ch.id, ch.index, ch.title, ch.createTime) FROM NovelChapter ch WHERE ch.bookId=:bookId")
+    Page<NovelChapterModel> findAllByBookId(@Param("bookId") String bookId, Pageable pageable);
 
     @Query(value = "SELECT ch FROM NovelChapter ch WHERE ch.bookId = ?1 ORDER BY ch.index ASC")
     List<NovelChapter> selectByNovelId(String novelId);

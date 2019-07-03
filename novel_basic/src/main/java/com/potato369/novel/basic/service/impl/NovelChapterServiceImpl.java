@@ -2,6 +2,7 @@ package com.potato369.novel.basic.service.impl;
 
 import com.potato369.novel.basic.dataobject.NovelChapter;
 import com.potato369.novel.basic.dataobject.NovelInfo;
+import com.potato369.novel.basic.model.NovelChapterModel;
 import com.potato369.novel.basic.repository.mapper.ChapterMapper;
 import com.potato369.novel.basic.repository.NovelChapterRepository;
 import com.potato369.novel.basic.repository.NovelInfoRepository;
@@ -167,8 +168,8 @@ public class NovelChapterServiceImpl implements NovelChapterService {
      * @param pageable
      */
     @Override
-    public Page<NovelChapter> findAll(String bookId, Pageable pageable) {
-    	return repository.findAll(null, pageable);
+    public Page<NovelChapterModel> findAll(String bookId, Pageable pageable) {
+    	return repository.findAllByBookId(bookId, pageable);
     }
 
 	/**
@@ -219,7 +220,7 @@ public class NovelChapterServiceImpl implements NovelChapterService {
 	}
 
     @Override
-    public Page<NovelChapter> findAllByNovelId(String novelId, Pageable pageable) {
+    public Page<NovelChapterModel> findAllByNovelId(String novelId, Pageable pageable) {
         return repository.findAllByBookId(novelId, pageable);
     }
 
