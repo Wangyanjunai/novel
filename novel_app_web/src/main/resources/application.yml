@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: test
+    active: prod
   freemarker:
     allow-request-override: false
     allow-session-override: false
