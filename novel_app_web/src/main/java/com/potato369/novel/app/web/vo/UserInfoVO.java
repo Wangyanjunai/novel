@@ -1,11 +1,11 @@
 package com.potato369.novel.app.web.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -49,11 +49,9 @@ public class UserInfoVO {
     private String vipGradeName;// VIP等级名称
 
     @JsonProperty(value = "startTime")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date vipStartTime;// VIP开始时间
 
     @JsonProperty(value = "endTime")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date vipEndTime;// VIP结束时间
 
     @JsonProperty(value = "balance")

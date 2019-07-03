@@ -1,12 +1,13 @@
 package com.potato369.novel.app.web.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.Date;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.app.web.vo
@@ -86,7 +87,6 @@ public class ShelfDetailInfoVO {
      * </pre>
      */
     @JsonProperty(value = "lastChapterUpdateTime")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastChapterUpdateTime;
 
     /**
@@ -95,7 +95,6 @@ public class ShelfDetailInfoVO {
      * </pre>
      */
     @JsonProperty(value = "lastReadTime")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastReadTime;
 
     /**
@@ -104,7 +103,6 @@ public class ShelfDetailInfoVO {
      * </pre>
      */
     @JsonProperty(value = "createTime")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     /**
@@ -113,6 +111,5 @@ public class ShelfDetailInfoVO {
      * </pre>
      */
     @JsonProperty(value = "updateTime")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 }

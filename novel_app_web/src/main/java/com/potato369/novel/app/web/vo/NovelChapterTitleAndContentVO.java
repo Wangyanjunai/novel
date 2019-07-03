@@ -31,7 +31,7 @@ public class NovelChapterTitleAndContentVO {
      */
     @JsonProperty(value = "title")
     private String title;
-    
+
     /**
      * <pre>
      * @jsonField content：章节内容。

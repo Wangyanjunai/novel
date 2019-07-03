@@ -15,6 +15,7 @@ spring:
     charset: utf-8
     template-loader-path: classpath:/templates/
   jackson:
+    time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
     default-property-inclusion: NON_NULL
 weChat:

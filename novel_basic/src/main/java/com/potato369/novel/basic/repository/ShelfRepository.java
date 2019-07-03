@@ -4,6 +4,8 @@ import com.potato369.novel.basic.dataobject.NovelShelf;
 import com.potato369.novel.basic.dataobject.idClass.NovelShelfIdClass;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.basic.repository
@@ -16,6 +18,7 @@ import org.springframework.data.jpa.repository.Query;
  * @Copyright Copyright (c) 2016 ~ 2020 版权所有 (C) 土豆互联科技(深圳)有限公司 https://www.potato369.com All Rights Reserved。
  * </pre>
  */
+@Repository
 public interface ShelfRepository extends JpaRepository<NovelShelf, NovelShelfIdClass> {
 
     @Query(value = "select sh from NovelShelf sh where sh.userId = ?1", nativeQuery = false)

@@ -10,6 +10,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -83,6 +84,15 @@ public class TaskInfo implements Serializable {
     @Builder.Default
     @Column(name = "task_progress_value", length = 2)
     private Integer taskProgressValue = Integer.valueOf(0);
+    
+    /**
+     * <pre>
+     * @serialField profitAmount：完成任务可获得收益（元）。
+     * </pre>
+     */
+    @Builder.Default
+    @Column(name = "task_profit_amount", length = 10)
+    private BigDecimal profitAmount = BigDecimal.ZERO;
     
     /**
      * <pre>

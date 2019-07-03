@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.vo
@@ -25,10 +26,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class ResultVO<T> implements Serializable {
 
-	private static final long serialVersionUID = -1221897281371574516L;
+    private static final long serialVersionUID = -1221897281371574516L;
 
     @JsonProperty(value = "Code")
-	private Integer code;
+    private Integer code;
 
     @JsonProperty(value = "Msg")
     private String msg;

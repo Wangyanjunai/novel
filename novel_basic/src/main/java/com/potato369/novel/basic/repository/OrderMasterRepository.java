@@ -4,9 +4,10 @@ import com.potato369.novel.basic.dataobject.OrderMaster;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.repository
@@ -19,6 +20,7 @@ import java.util.List;
  * @Copyright Copyright (c) 2016 ~ 2020 版权所有 (C) 土豆互联科技(深圳)有限公司 https://www.potato369.com All Rights Reserved。
  * </pre>
  */
+@Repository
 public interface OrderMasterRepository extends JpaRepository<OrderMaster, String> {
 
     /**

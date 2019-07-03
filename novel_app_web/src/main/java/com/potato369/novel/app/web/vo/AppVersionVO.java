@@ -1,6 +1,5 @@
 package com.potato369.novel.app.web.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -65,6 +64,5 @@ public class AppVersionVO {
      * </pre>
      */
     @JsonProperty(value = "publish_time")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date publishTime;
 }

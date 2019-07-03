@@ -57,4 +57,20 @@ public class BalanceVO {
      */
     @JsonProperty(value = "yield")
     private BigDecimal yieldAmount;
+
+    /**
+     * <pre>
+     * @JsonProperty isOrNotFinished：是否完成任务。
+     * </pre>
+     */
+    @JsonProperty(value = "isOrNotFinished")
+    private Integer isOrNotFinished;
+
+    /**
+     * <pre>
+     * @JsonProperty hasfinishedTimes：已经完成次数。
+     * </pre>
+     */
+    @JsonProperty(value = "hasfinishedTimes")
+    private Integer hasfinishedTimes;
 }

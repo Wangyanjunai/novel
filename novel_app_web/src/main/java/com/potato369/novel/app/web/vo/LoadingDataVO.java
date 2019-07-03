@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
  * 类的作用:
  * 创建原因:
  * 创建时间: 2019年4月18日 上午10:55:21
- * 描述: 
+ * 描述:
  * @author Jack
- * @version 
+ * @version
  * @since JDK 1.6
  * </pre>
  */
@@ -24,59 +24,59 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoadingDataVO {
 
-	/**
-	 * <pre>
-	 * id:广告id
-	 * </pre>
-	 */
-	@JsonProperty(value="id", required=true)
-	private String id;
+    /**
+     * <pre>
+     * id:广告id
+     * </pre>
+     */
+    @JsonProperty(value = "id", required = true)
+    private String id;
 
-	/**
-	 * <pre>
-	 * tag1：tag1：标识广告是应用类广告还是初始页面跳转广告，0-跳转广告，1-应用内广告。
-	 * </pre>
-	 */
-	@JsonProperty(value="tag1", required=true)
-	private Integer tag1;
-	
-	/**
-	 * <pre>
-	 * tag2：标识广告是否可以跳转，0-可以跳转，1-不可以跳转。
-	 * </pre>
-	 */
-	@JsonProperty(value="tag2", required=true)
-	private Integer tag2;
+    /**
+     * <pre>
+     * tag1：tag1：标识广告是应用类广告还是初始页面跳转广告，0-跳转广告，1-应用内广告。
+     * </pre>
+     */
+    @JsonProperty(value = "tag1", required = true)
+    private Integer tag1;
 
-	/**
-	 * <pre>
-	 * imageUrl:图片链接地址
-	 * </pre>
-	 */
-	@JsonProperty(value="imageUrl", required=true)
-	private String imageUrl;
+    /**
+     * <pre>
+     * tag2：标识广告是否可以跳转，0-可以跳转，1-不可以跳转。
+     * </pre>
+     */
+    @JsonProperty(value = "tag2", required = true)
+    private Integer tag2;
 
-	/**
-	 * <pre>
-	 * linkUrl:广告跳转链接地址
-	 * </pre>
-	 */
-	@JsonProperty(value="linkUrl", required=false)
-	private String linkUrl;
-	
-	/**
-	 * <pre>
-	 * novelId:应用类推荐的小说id，不须是应用内广告，才必须，否则为空
-	 * </pre>
-	 */
-	@JsonProperty(value="novelId", required=false)
-	private String novelId;
-	
-	/**
-	 * <pre>
-	 * novelParentCategoryId:应用类推荐的小说父类类型id，不须是应用内广告，才必须，否则为空
-	 * </pre>
-	 */
-	@JsonProperty(value="novelParentCategoryId", required=false)
-	private String novelParentCategoryId;
+    /**
+     * <pre>
+     * imageUrl:图片链接地址
+     * </pre>
+     */
+    @JsonProperty(value = "imageUrl", required = true)
+    private String imageUrl;
+
+    /**
+     * <pre>
+     * linkUrl:广告跳转链接地址
+     * </pre>
+     */
+    @JsonProperty(value = "linkUrl")
+    private String linkUrl;
+
+    /**
+     * <pre>
+     * novelId:应用类推荐的小说id，不须是应用内广告，才必须，否则为空
+     * </pre>
+     */
+    @JsonProperty(value = "novelId")
+    private String novelId;
+
+    /**
+     * <pre>
+     * novelParentCategoryId:应用类推荐的小说父类类型id，不须是应用内广告，才必须，否则为空
+     * </pre>
+     */
+    @JsonProperty(value = "novelParentCategoryId")
+    private String novelParentCategoryId;
 }

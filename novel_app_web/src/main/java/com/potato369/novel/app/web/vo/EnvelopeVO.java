@@ -41,7 +41,7 @@ public class EnvelopeVO {
      */
     @JsonProperty(value = "balance")
     private BigDecimal balanceAmount;
-    
+
     /**
      * <pre>
      * @JsonProperty balanceAmount：用户红包进度值。
@@ -49,7 +49,7 @@ public class EnvelopeVO {
      */
     @JsonProperty(value = "envelope")
     private BigDecimal envelopeAmount;
-    
+
     /**
      * <pre>
      * @JsonProperty randomEnvelope：用户红包进度值达到某范围可领取的状态随机产生的金额。

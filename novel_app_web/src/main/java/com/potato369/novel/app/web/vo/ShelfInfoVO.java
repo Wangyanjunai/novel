@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.List;
+
 /**
  * <pre>
  * @PackageName com.potato369.novel.app.web.vo
@@ -23,6 +25,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class ShelfInfoVO {
+
     @JsonProperty(value = "details")
     private List<ShelfDetailInfoVO> shelfDetailInfoVOList;
 }

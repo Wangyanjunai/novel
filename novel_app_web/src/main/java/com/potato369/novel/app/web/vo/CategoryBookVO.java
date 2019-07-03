@@ -32,5 +32,4 @@ public class CategoryBookVO {
 
     @JsonProperty(value = "TotalPage")
     private BigDecimal totalPage;
-
 }

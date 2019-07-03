@@ -1,13 +1,13 @@
 package com.potato369.novel.app.web.vo;
 
-import java.math.BigDecimal;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * <pre>
@@ -26,20 +26,20 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class TaskVO {
-	
-	/**
+
+    /**
      * <pre>
      * @JsonProperty taskInfoVOList：任务信息数据列表。
      * </pre>
      */
-	@JsonProperty(value = "DataList")
-	private List<TaskInfoVO> taskInfoVOList;
+    @JsonProperty(value = "DataList")
+    private List<TaskInfoVO> taskInfoVOList;
 
     /**
      * <pre>
      * @JsonProperty totalPage：任务总页数。
      * </pre>
      */
-	@JsonProperty(value = "TotalPage")
+    @JsonProperty(value = "TotalPage")
     private BigDecimal totalPage;
 }

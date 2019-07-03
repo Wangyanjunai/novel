@@ -1,11 +1,11 @@
 package com.potato369.novel.app.web.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -137,13 +137,11 @@ public class NovelInfoVO {
      * @jsonField createTime：创建时间
      */
     @JsonProperty(value = "create_time")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     /**
      * @jsonField updateTime：更新时间
      */
     @JsonProperty(value = "update_time")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 }

@@ -193,10 +193,14 @@ public class TaskController {
                 throw new Exception(ResultEnum.TASK_INFO_EMPTY.getMessage());
             }
             NovelUserInfo updateInfo = userInfo;
+            Integer isOrNotFinished = TaskTypeEnum.UNFINISHED.getCode();
+            Integer hasfinishedTimes = 0;
             if (TaskTypeEnum.BINDING.getCode().equals(taskInfo.getTaskType())) {
             	List<TaskRecordInfo> taskRecordList1 = taskRecordInfoService.findByUserIdAndTaskId(userInfo.getMId(), taskInfo.getTaskId());
             	if (taskRecordList1 != null && !taskRecordList1.isEmpty() && taskRecordList1.size() > 0) {
             		if (taskRecordList1.size() >= taskInfo.getTaskTimes()) {
+                        isOrNotFinished = TaskTypeEnum.FINISHED.getCode();
+                        hasfinishedTimes = 1;
             			log.error("用户已经完成绑定微信任务，任务id={}，用户mid={}", taskInfo.getTaskId(), userInfo.getMId());
 						throw new Exception("用户已经完成绑定微信任务");
 					}
@@ -204,6 +208,7 @@ public class TaskController {
             		userInfo.setEnvelopeAmount(userInfo.getEnvelopeAmount().add(BigDecimal.valueOf(taskInfo.getTaskProgressValue())));
             		userInfo.setBindWeChatOpenid(taskInfoDTO.getOpenid());
             		userInfo.setIsOrNotBandWechat(UserInfoIsOrNotBandWechatEnum.FINISHED.getCode());
+            		userInfo.setBalanceAmount(userInfo.getBalanceAmount().add(taskInfo.getProfitAmount()));
             		updateInfo = userInfoService.update(userInfo);
             		TaskRecordInfo taskRecordInfo = TaskRecordInfo.builder().build();
                     taskRecordInfo.setTaskId(taskInfo.getTaskId());
@@ -213,6 +218,14 @@ public class TaskController {
                     taskRecordInfo.setFinishedTime(new Date());
                     taskRecordInfo.setTaskStatus(TaskTypeEnum.FINISHED.getCode());
                     taskRecordInfoService.save(taskRecordInfo);
+                    IncomeInfo incomeInfo = IncomeInfo.builder().build();
+                    incomeInfo.setIncomeId(UUIDUtil.gen32UUID());
+                    incomeInfo.setIncomeTime(new Date());
+                    incomeInfo.setUserId(updateInfo.getMId());
+                    incomeInfo.setIncomeAmount(taskInfo.getProfitAmount());
+                    incomeInfoService.save(incomeInfo);
+                    isOrNotFinished = TaskTypeEnum.FINISHED.getCode();
+                    hasfinishedTimes = 1;
 				}
 			} else {
 				Date date  = new Date();// 今天的时间
@@ -220,10 +233,13 @@ public class TaskController {
 	            Date end   = DateUtil.dateFormat(DateUtil.sdfTimeFmt, DateUtil.strFormat(date, DateUtil.sdfDayFmt).concat(" 23:59:59"));
 	    		List<TaskRecordInfo> taskRecordList2 = taskRecordInfoService.findByDateTask(taskInfo.getTaskId(), userInfo.getMId(), start, end);
 				if (taskRecordList2.size() >= taskInfo.getTaskTimes()) {
-					log.error("用户已经完成当天date={}特定的任务，任务id={}，用户mid={}",DateUtil.strFormat(date, DateUtil.sdfTimeCNFmt), taskInfo.getTaskId(), userInfo.getMId());
+                    isOrNotFinished = TaskTypeEnum.FINISHED.getCode();
+                    hasfinishedTimes = taskInfo.getTaskTimes();
+				    log.error("用户已经完成当天date={}特定的任务，任务id={}，用户mid={}",DateUtil.strFormat(date, DateUtil.sdfTimeCNFmt), taskInfo.getTaskId(), userInfo.getMId());
 					throw new Exception("用户已经完成当天特定的任务");
 				} else {
 					userInfo.setEnvelopeAmount(userInfo.getEnvelopeAmount().add(BigDecimal.valueOf(taskInfo.getTaskProgressValue())));
+					userInfo.setBalanceAmount(userInfo.getBalanceAmount().add(taskInfo.getProfitAmount()));
 					updateInfo = userInfoService.update(userInfo);
 		            TaskRecordInfo taskRecordInfo = TaskRecordInfo.builder().build();
 		            taskRecordInfo.setTaskId(taskInfo.getTaskId());
@@ -233,12 +249,33 @@ public class TaskController {
 		            taskRecordInfo.setTaskFinishedTimes(1);
 		            taskRecordInfo.setFinishedTime(new Date());
 		            taskRecordInfoService.save(taskRecordInfo);
+                    List<TaskRecordInfo> taskRecordList3 = taskRecordInfoService.findByDateTask(taskInfo.getTaskId(), userInfo.getMId(), start, end);
+                    if (taskRecordList3 != null && !taskRecordList3.isEmpty() && taskRecordList3.size() > 0) {
+                        if (taskRecordList3.size() >= taskInfo.getTaskTimes()) {
+                            isOrNotFinished = TaskTypeEnum.FINISHED.getCode();
+                            hasfinishedTimes = taskInfo.getTaskTimes();
+                        } else {
+                        	isOrNotFinished = TaskTypeEnum.UNFINISHED.getCode();
+                            hasfinishedTimes = taskInfo.getTaskTimes();
+						}
+                    }
+
 				}
 			}
+            Date date = new Date();
+            Date start = DateUtil.dateFormat(DateUtil.sdfTimeFmt, DateUtil.strFormat(date, DateUtil.sdfDayFmt).concat(" 00:00:00"));
+            Date end = DateUtil.dateFormat(DateUtil.sdfTimeFmt, DateUtil.strFormat(DateUtil.getAfterDayDate(date, 7), DateUtil.sdfDayFmt).concat(" 23:59:59"));
+            if (log.isDebugEnabled()) {
+                log.debug("start date = {}, end date = {}", DateUtil.strFormat(start, DateUtil.sdfTimeCNFmt), DateUtil.strFormat(end, DateUtil.sdfTimeCNFmt));
+            }
+            BigDecimal yieldAmount = incomeInfoService.get7DaysIncomeAmount(userInfo.getMId(), start, end);
             BalanceVO balanceVO = BalanceVO.builder().build();
             balanceVO.setUserId(updateInfo.getMId());
             balanceVO.setBalanceAmount(updateInfo.getBalanceAmount());
             balanceVO.setEnvelopeAmount(updateInfo.getEnvelopeAmount());
+            balanceVO.setYieldAmount(yieldAmount);
+            balanceVO.setIsOrNotFinished(isOrNotFinished);
+            balanceVO.setHasfinishedTimes(hasfinishedTimes);
             resultVO.setMsg("任务完成成功");
             resultVO.setCode(0);
             resultVO.setData(balanceVO);

@@ -1,13 +1,12 @@
 package com.potato369.novel.app.web.vo;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * <pre>
@@ -15,9 +14,9 @@ import lombok.NoArgsConstructor;
  * 类的作用:
  * 创建原因:
  * 创建时间: 2019年4月28日 上午10:58:12
- * 描述: 
+ * 描述:
  * @author Jack
- * @version 
+ * @version
  * @since JDK 1.6
  * </pre>
  */
@@ -32,7 +31,7 @@ public class CategoryVO {
 //
 //	@JsonProperty(value = "name")
 //	public String categoryName;
-	
-	@JsonProperty(value = "DataList")
-	public List<CategoryInfoVO> categoryInfoVOs;
+
+    @JsonProperty(value = "DataList")
+    public List<CategoryInfoVO> categoryInfoVOs;
 }

@@ -1,14 +1,12 @@
 package com.potato369.novel.app.web.vo;
 
-import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 /**
  * <pre>
@@ -27,21 +25,21 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class TaskInfoVO {
-	
-	/**
+
+    /**
      * <pre>
      * @JsonProperty taskId：任务id。
      * </pre>
      */
-	@JsonProperty(value = "no")
-	private String taskId;
+    @JsonProperty(value = "no")
+    private String taskId;
 
     /**
      * <pre>
      * @JsonProperty taskName：任务名称。
      * </pre>
      */
-	@JsonProperty(value = "name")
+    @JsonProperty(value = "name")
     private String taskName;
 
     /**
@@ -51,7 +49,7 @@ public class TaskInfoVO {
      */
     @JsonProperty(value = "type")
     private Integer taskType;
-    
+
     /**
      * <pre>
      * @JsonProperty isOrNotFinished：是否完成任务。
@@ -75,7 +73,7 @@ public class TaskInfoVO {
      */
     @JsonProperty(value = "progress")
     private Integer taskProgressValue;
-    
+
     /**
      * <pre>
      * @JsonProperty taskTimes：任务需要的完成次数。
@@ -83,7 +81,7 @@ public class TaskInfoVO {
      */
     @JsonProperty(value = "times")
     private Integer taskTimes;
-    
+
     /**
      * <pre>
      * @JsonProperty hasfinishedTimes：已经完成次数。
@@ -98,6 +96,5 @@ public class TaskInfoVO {
      * </pre>
      */
     @JsonProperty(value = "finishedTime")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date finishedTime;
 }
